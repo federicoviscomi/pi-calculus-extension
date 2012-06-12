@@ -298,12 +298,21 @@ We can make some clarification on the axioms of the structural congruence:
 
 \section{early semantic without structural congruence}
 
+% L’idea è che nella early quello che ricevi (cioe’ z) è un valore e come tale non ha vincoli rispetto ai free name esistenti, mentre nella late z sarebbe un place holder e quindi devi tenerlo distinto da tutti gli altri nomi free (onde evitare che quando andrai a fare la sostituzione in comunicazione, tu non vada a legare altri nomi che non hanno partecipato alla comunicazione). 
+
 The semantic of a $\pi$ calculus process is a labeled transition system such that:
 \begin{itemize}
   \item 
     the nodes are $\pi$ calculus process. The set of node is $\mathbb{P}$
   \item
-    the actions are $\pi$ calculus actions plus the bound output $\overline{x}(y)$. The set of actions is $\mathbb{A}$, we use $\alpha$ to range over the set of actions.
+    the actions can be:
+    \begin{itemize}
+      \item unbound input $xy$
+      \item unbound output $\overline{x}y$
+      \item the silent action $\tau$
+      \item bound output $\overline{x}(y)$
+    \end{itemize}
+    The set of actions is $\mathbb{A}$, we use $\alpha$ to range over the set of actions.
   \item
     the transition relations is $\rightarrow\subseteq \mathbb{P}\times \mathbb{A}\times \mathbb{P}$
 \end{itemize}
@@ -317,7 +326,6 @@ In the following section we present the early semantic without structural congru
 \end{center}
 there is no substitution, instead the substitution occurres at an early point in the inference of this translation, namely during the inference of the input action. 
 
-%nella semantica early non serve il bound input. Se omettiamo lo scope extension nella congruenza strutturale e usiamo CLOSE allora il buond input serve.
 
 \begin{definition}\index{transition relation! early! without structural congruence}
   The \emph{early transition relation} $\rightarrow\subseteq \mathbb{P}\times \mathbb{A} \times \mathbb{P}$ is the smallest relation induced by the following rules:
@@ -333,7 +341,6 @@ there is no substitution, instead the substitution occurres at an early point in
 	&
 	  \bf{EInp}
 	  \begin{tabular}{c}
-	      $z\notin fn(P)$
 	    \\\hline
 	      $x(y).P \xrightarrow{xz} P\{z/y\}$
 	  \end{tabular}
@@ -396,28 +403,36 @@ there is no substitution, instead the substitution occurres at an early point in
       \\\\
 	    \bf{ClsLOut}
 	    \begin{tabular}{c}
-		$P \xrightarrow{\overline{x}(\nu z)} P^{'}$  $Q \xrightarrow{xz} Q^{'}$ $z\notin fn(Q)$
+		$P \xrightarrow{\overline{x}(z)} P^{'}$  
+		$Q \xrightarrow{xz} Q^{'}$ 
+		$z\notin fn(Q)$
 	      \\\hline
 		$P|Q \xrightarrow{\tau} (\nu z)(P^{'}|Q^{'})$
 	    \end{tabular}
 	&
 	    \bf{ClsROut}
 	    \begin{tabular}{c}
-		$P \xrightarrow{xz} P^{'}$  $Q \xrightarrow{\overline{x}(z)} Q^{'}$ $z\notin fn(P)$
+		$P \xrightarrow{xz} P^{'}$  
+		$Q \xrightarrow{\overline{x}(z)} Q^{'}$ 
+		$z\notin fn(P)$
 	      \\\hline
 		$P|Q \xrightarrow{\tau} (\nu z)(P^{'}|Q^{'})$
 	    \end{tabular}
       \\\\
 	    \bf{ClsLIn}
 	    \begin{tabular}{c}
-		$P \xrightarrow{\overline{x}z} P^{'}$  $Q \xrightarrow{x(z)} Q^{'}$ $z\notin fn(Q)$
+		$P \xrightarrow{\overline{x}z} P^{'}$  
+		$Q \xrightarrow{x(z)} Q^{'}$ 
+		$z\notin fn(Q)$
 	      \\\hline
 		$P|Q \xrightarrow{\tau} (\nu z)(P^{'}|Q^{'})$
 	    \end{tabular}
 	&
 	    \bf{ClsRIn}
 	    \begin{tabular}{c}
-		$P \xrightarrow{x(\nu z)} P^{'}$  $Q \xrightarrow{\overline{x}z} Q^{'}$ $z\notin fn(P)$
+		$P \xrightarrow{x(\nu z)} P^{'}$  
+		$Q \xrightarrow{\overline{x}z} Q^{'}$ 
+		$z\notin fn(P)$
 	      \\\hline
 		$P|Q \xrightarrow{\tau} (\nu z)(P^{'}|Q^{'})$
 	    \end{tabular}
@@ -684,10 +699,11 @@ there is no substitution, instead the substitution occurres at an early point in
   The \emph{late transition relation without structural congruence} $\rightarrow\subseteq \mathbb{P}\times \mathbb{A} \times \mathbb{P}$ is the smallest relation induced by the following rules:
   \begin{center}
     \begin{tabular}{ll}
-	  \bf{Prf}
+	  \bf{LInp}
 	  \begin{tabular}{c}
-	    \hline
-	    $\alpha.P \xrightarrow{\alpha} P$
+	    $z\notin fn(P)$
+	    \\\hline
+	    $x(z).P \xrightarrow{xz} P$
 	  \end{tabular}
 	&
 	  \bf{Res}
@@ -746,6 +762,11 @@ there is no substitution, instead the substitution occurres at an early point in
 	      $(\nu z) P \xrightarrow{\overline{x}(z)} P^{'}$
 	  \end{tabular}
 	&
+	  \bf{Out}
+	  \begin{tabular}{c}
+	    \hline
+	    $\overline{x}y.P \xrightarrow{\overline{x}y} P$
+	  \end{tabular}
       \\\\
 	  \bf{CloseL}
 	  \begin{tabular}{c}
@@ -759,6 +780,12 @@ there is no substitution, instead the substitution occurres at an early point in
 	      $P \xrightarrow{xz} P^{'}$  $Q \xrightarrow{\overline{x}(z)} Q^{'}$ $z\notin fn(P)$
 	    \\\hline
 	      $P|Q \xrightarrow{\tau} (\nu z)(P^{'}|Q^{'})$
+	  \end{tabular}
+      \\\\
+	  \bf{Tau}
+	  \begin{tabular}{c}
+	    \hline
+	      $\tau.P \xrightarrow{\tau} P$
 	  \end{tabular}
     \end{tabular}
   \end{center}
