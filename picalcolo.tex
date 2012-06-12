@@ -43,39 +43,38 @@ and they have the following intuitive meaning:
 
 To resolve ambiguity we can use parentheses and observe the conventions that prefixing and restriction bind more tightly than composition and prefixing binds more tightly than sum. 
 
-\begin{definition}\index{guarded}
-  We say that $P$ is \emph{guarded} in $Q$ is $P$ is a proper subterm of a prefix from in $Q$.
-\end{definition}
-
 \begin{definition} \index{binder} \index{bind} \index{name occurrence! bound} \index{scope}
-  We say that the input prefix $x(z).P$\emph{binds} $z$ in $P$ or is a \emph{binder} for $z$ in $P$. We also say that $P$ is the \emph{scope} of the binder and that any occurrence of $z$ in $P$ are \emph{bound} by the binder. The restriction operator $(\nu z)P$ is also a binder for $z$.
+  We say that the input prefix $x(z).P$\emph{binds} $z$ in $P$ or is a \emph{binder} for $z$ in $P$. We also say that $P$ is the \emph{scope} of the binder and that any occurrence of $z$ in $P$ are \emph{bound} by the binder. The restriction operator $(\nu z)P$ and the is also a binder for $z$. The definition of an identifier $A(x_{1}, \cdots, x_{n}) = P$ is also a binder, specifically the names $x_{1}, \cdots, x_{n}$ are bound in the process $P$.
 \end{definition}
 
 \begin{definition} \index{$bn$}
-  $bn(P)$ is the set of names that have a bound occurrence in $P$ and is defined in the following way:
+  $bn(P)$ is the set of names that have a bound occurrence in $P$ and is defined as $B(P, \emptyset)$, where $B(P, I)$, with $I$ a set of process constants, is defined as follows: 
   \begin{center}
     \begin{tabular}{l}
-	    $bn(P)$ = match P with
-	  \\
-	    $\;\;\;\; |\; \pi.Q\; \rightarrow\; fn(Q)\cup $
-	  \\
-	    $\;\;\;\; \;\;\;\; \;\;\;\;$ match $\pi$ with 
-	  \\
-	    $\;\;\;\; \;\;\;\; \;\;\;\; \;\;\;\; \;\;\;\; |\; \overline{x}y\; \rightarrow\; \emptyset$
-	  \\
-	    $\;\;\;\; \;\;\;\; \;\;\;\; \;\;\;\; \;\;\;\; |\; x(y)\; \rightarrow\; \{y\}$
-	  \\
-	    $\;\;\;\; \;\;\;\; \;\;\;\; \;\;\;\; \;\;\;\; |\; \tau\; \rightarrow\; \emptyset $    
-	  \\
-	    $\;\;\;\; |\; 0\; \rightarrow\; \emptyset $    
-	  \\
-	    $\;\;\;\; |\; P|Q\; \rightarrow\; bn(P)\cup bn(Q)$
-	  \\
-	    $\;\;\;\; |\; P+Q\; \rightarrow\; bn(P)\cup bn(Q)$
-	  \\
-	    $\;\;\;\; |\; (\nu x)P\; \rightarrow\; bn(P)\cup\{x\}$
-	  \\
-	    $\;\;\;\; |\; A(y_{1}, \cdots, y_{n}) \; \rightarrow\; bn(def(A))$ 
+	$B(0, I)\; =\; \emptyset$
+      \\\\
+	$B(\overline{x}y.Q, I)\; =\; B(Q, I)$
+      \\\\
+	$B(x(y).Q, I)\; =\; \{y\}\cup B(Q, I)$
+      \\\\
+	$B(\tau.Q, I)\; =\; B(Q, I)$
+      \\\\
+	$B(A(x_{1},\cdots, x_{n}), I)=\left\{
+	  \begin{array}{ll}
+		\{x_{1},\cdots, x_{n}\}\cup B(Q, I\cup \{A\})
+	      &
+		if\; A\stackrel{def}{=}Q\; and\; A\notin I
+	    \\
+		\emptyset
+	      &
+		if\; A\in I
+	  \end{array}\right.$
+      \\\\
+	$B(Q+R,I)\; =\; B(Q,I)\cup B(R,I)$
+      \\\\
+	$B(Q|R,I)\; =\; B(Q,I)\cup B(R,I)$
+      \\\\
+	$B((\nu a)Q, I)\; =\; \{a, \overline{a}\}\cup B(Q, I)$
     \end{tabular}
   \end{center}
 \end{definition}
@@ -83,30 +82,33 @@ To resolve ambiguity we can use parentheses and observe the conventions that pre
 
 
 \begin{definition} \index{name occurrence! free}
-  We say that a name $x$ is \emph{free} in $P$ if $P$ contains a non bound occurrence of $x$. We write $fn(P)$ for the set of names with a free occurrence in $P$.  
+  We say that a name $x$ is \emph{free} in $P$ if $P$ contains a non bound occurrence of $x$. We write $fn(P)$ for the set of names with a free occurrence in $P$. $fn(P)$ is defined as $fn(P,\emptyset)$ where $fn(P, I)$, with $I$ a set of process constants, is defined as follows:
   \begin{center}
     \begin{tabular}{l}
-	    $fn(P)$ = match P with
-	  \\
-	    $\;\;\;\; |\; \pi.Q\; \rightarrow\; fn(Q)\cup $
-	  \\
-	    $\;\;\;\; \;\;\;\; \;\;\;\;$ match $\pi$ with 
-	  \\
-	    $\;\;\;\; \;\;\;\; \;\;\;\; \;\;\;\; \;\;\;\; |\; \overline{x}y\; \rightarrow\; \{x,y\} $
-	  \\
-	    $\;\;\;\; \;\;\;\; \;\;\;\; \;\;\;\; \;\;\;\; |\; x(y)\; \rightarrow\; \{x\} $
-	  \\
-	    $\;\;\;\; \;\;\;\; \;\;\;\; \;\;\;\; \;\;\;\; |\; \tau\; \rightarrow\; \emptyset $    
-	  \\
-	    $\;\;\;\; |\; 0\; \rightarrow\; \emptyset $    
-	  \\
-	    $\;\;\;\; |\; P|Q\; \rightarrow\; fn(P)\cup fn(Q)$
-	  \\
-	    $\;\;\;\; |\; P+Q\; \rightarrow\; fn(P)\cup fn(Q)$
-	  \\
-	    $\;\;\;\; |\; (\nu x)P\; \rightarrow\; fn(P)$
-	  \\
-	    $\;\;\;\; |\; A(y_{1}, \cdots, y_{n}) \; \rightarrow\; fn(def(A))$ 
+	$F(0, I)\; =\; \emptyset$
+      \\\\
+	$F(\overline{x}y.Q, I)\; =\; \{x,y\}\cup F(Q, I)$
+      \\\\
+	$F(x(y).Q, I)\; =\; (\{x\}\cup F(Q, I))-\{y,\overline{y}\}$
+      \\\\
+	$F(\tau.Q, I)\; =\; F(Q, I)$
+      \\\\
+	$F(A(x_{1},\cdots, x_{n}), I)=\left\{
+	  \begin{array}{ll}
+		F(Q, I\cup \{A\})-\{x_{1},\overline{x_{1}},\cdots, x_{n},\overline{x_{n}}\}
+	      &
+		if\; A\stackrel{def}{=}Q\; and\; A\notin I
+	    \\
+		\emptyset
+	      &
+		if\; A\in I
+	  \end{array}\right.$
+      \\\\
+	$F(Q+R,I)\; =\; F(Q,I)\cup F(R,I)$
+      \\\\
+	$F(Q|R,I)\; =\; F(Q,I)\cup F(R,I)$
+      \\\\
+	$F((\nu a)Q, I)\; =\; F(Q, I)-\{a, \overline{a}\}$
     \end{tabular}
   \end{center}
 \end{definition}
@@ -123,53 +125,46 @@ To resolve ambiguity we can use parentheses and observe the conventions that pre
 
 In a definition $A(x_{1}, \cdots, x_{n})=P$ we assume that $fn(P)\subseteq \{x_{1}, \cdots, x_{n}\}$. 
 
-\begin{definition}\index{substitution}
-  A \emph{substitution} is a function from names to names
+
+\begin{definition}\index{syntactic substitution}
+  $P\{b/a\}$ is the syntactic substitution of name $b$ for a different name $a$ inside a $\pi$ calculus process, and it consist in replacing every free occurrences of $a$ with $b$. If $b$ is a bound name in $P$, in order to avoid name capture we perform an appropriate $\alpha$ conversion. $P\{b/a\}$ is defined as follows:
   \begin{center}
-    $\sigma: \mathbb{N}\rightarrow \mathbb{N}$
-  \end{center}
-  We write $\{x_{1}/y_{1}, \cdots, x_{n}/y_{n}\}$ for the substitution that maps $y_{i}$ to $x_{i}$ and that identifies all other names.
-\end{definition}
-
-\begin{definition}\index{change of bound names}
-  A \emph{change of bound names} in a process $P$ is the replacement of a subterm $x(z).Q$ of $P$ by $x(w).Q\{w/z\}$ or the replacement of a subterm $(\nu z) Q$ of $P$ by $(\nu w)Q\{w/z\}$ where in each case $w$ does not occur in $Q$.
-\end{definition}
-
-\begin{definition}\index{$\alpha$ convertible}
-  Processes $P$ and $Q$ are \emph{$\alpha$ convertible} if $Q$ can be obtained from $P$ by a finite number of changes of bound names
-\end{definition}
-
-In the rest of the thesis, we assume that the bound names of the processes are different from their free names ad from the names of the substitutions.
-
-\begin{definition}\index{application of a substitution}
-  We can \emph{apply} a substitution $\sigma$ to a process $P$, and we write $P\sigma$. In order to apply $\sigma$ to $P$, we might first need to perform appropriate $\alpha$ conversions in order to avoid name captures and then we can actually replace every free names of $P$ with the mapping from $\sigma$. We define the \emph{application of a substitution} to a process in the following way:
-  \begin{center}
-    \begin{tabular}{lll}
-      \multicolumn{3}{l}{$P\sigma$ = match $P$ with}\\
-      &$|\; 0\; \rightarrow\; 0$&\\
-      &$|\; \pi.P\; \rightarrow\; \pi \sigma. P \sigma$\\
-      &$|\; P|Q\; \rightarrow\; P \sigma|Q \sigma$\\
-      &$|\; P+Q\; \rightarrow\; P \sigma+Q \sigma$&\\
-      &$|\; (\nu x) P\; \rightarrow\; (\nu x)P \sigma$&\\
-      &$|\; A(y_{1}, \cdots, y_{n})\; \rightarrow\; P\sigma$&if $A(y_{1}, \cdots, y_{n})=P$\\
+    \begin{tabular}{l}
+	$0\{b/a\}\; =\; 0$
+      \\\\
+	$(\overline{x}y.Q)\{b/a\}\; =\; \overline{x}\{b/a\}y\{b/a\}.Q\{b/a\}$
+      \\\\
+	$(x(y).Q)\{b/a\}\; =\; x\{b/a\}(y).Q\{b/a\}$ if $y\neq a$ and $y\neq b$
+      \\\\
+	$(x(a).Q)\{b/a\}\; =\; x\{b/a\}(a).Q$
+      \\\\
+	$(x(b).Q)\{b/a\}\; =\; x\{b/a\}(c).((Q\{c/b\})\{b/a\})$ where $c\notin n(Q)$
+      \\\\
+	$(\tau.Q)\{b/a\}\; =\; \tau.Q\{b/a\}$
+      \\\\
+	$(A(x_{1},\cdots, x_{n}))\{b/a\}=\left\{
+	  \begin{array}{ll}
+		A_{\{b/a\}}
+	      &
+		where\; A_{\{b/a\}}=q\{b/a\}\; if\; A\stackrel{def}{=}Q
+	    \\
+		A
+	      &
+		if\; a\notin fn(A)
+	  \end{array}\right.$
+      \\\\
+	$(Q+R)\{b/a\}\; =\; Q\{b/a\} + R\{b/a\}$
+      \\\\
+	$(Q|R)\{b/a\}\; =\; Q\{b/a\} | R\{b/a\}$
+      \\\\
+	$((\nu y)Q)\{b/a\}\; =\;(\nu y)Q\{b/a\}$ if $y\neq a$ and $y\neq b$
+      \\\\
+	$((\nu a)Q)\{b/a\}\; =\;(\nu a)Q$
+      \\\\
+	$((\nu b)Q)\{b/a\}\; =\;(\nu c)((Q\{c/b\})\{b/a\})$ where $c\notin n(Q)$
     \end{tabular}
   \end{center}
-  We define the application of a substitution to an action in the following way: 
-  \begin{center}
-    \begin{tabular}{ll}
-      \multicolumn{2}{l}{$\pi \sigma$ = match $\pi$ with}\\
-      &$|\; \overline{x}y\; \rightarrow\; \overline{x\sigma}y\sigma$\\
-      &$|\; x(z)\; \rightarrow\; x\sigma(z\sigma)$\\
-      &$|\; \tau\; \rightarrow\; \tau$\\
-    \end{tabular}
-  \end{center}
-  We regard a substitution as binding more tightly than a process operator.
 \end{definition}
-
-\begin{definition}\index{guarded occurrence}
-  We say that an occurrence of a process $Q$ in a process $P$ is \emph{guarded} if it is inside a prefix in $P$. Otherwise we call it \emph{unguarded}. 
-\end{definition}
-
 
 
 
