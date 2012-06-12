@@ -1,0 +1,929 @@
+
+The $\pi$ calculus is a mathematical model of processes whose interconnections change as they interact. The basic computational step is the transfer of a communications link between two processes. The idea that the names of the links belong to the same category as the transferred objects is one of the cornerstone of the calculus. The $\pi$ calculus allows channel names to be communicated along the channels themselves, and in this way it is able to describe concurrent computations whose network configuration may change during the computation.
+
+
+\section{syntax}
+We suppose that we have a countable set of names $\mathbb{N}$, ranged over by lower case letters $a,b, \cdots, z$. This names are used for communication channels and values. Furthermore we have a set of identifiers, ranged over by $A$. We represent the agents or processes by upper case letters $P,Q, \cdots $. A process can perform the following actions:
+\begin{center}
+  $\pi$ ::= $\overline{x}y$ | $x(z)$ | $\tau$ 
+\end{center}
+The process are defined by the following grammar:
+\begin{center}
+  \begin{tabular}{l}
+    $P,Q$ ::= $0$ | $\pi.P$ | $P|Q$ | $P+Q$ | $(\nu x) P$ | $A(y_{1}, \cdots, y_{n})$ 
+  \end{tabular}
+\end{center}
+and they have the following intuitive meaning:
+\begin{description}
+  \item[$0$] 
+    is the empty process, which cannot perform any actions
+  \item[$\pi.P$] 
+    is an action prefixing, this process can perform action $\pi$ e then behave like $P$, the action can be:
+    \begin{description}
+      \item[$\overline{x}y$] 
+	is an output action, this sends the name $y$ along the name $x$. We can think about $x$ as a channel or a port, and about $y$ as an output datum sent over the channel
+      \item[$x(z)$] 
+	is an input action, this receives a name along the name $x$. $z$ is a variable which stores the received data.
+      \item[$\tau$] 
+	is a silent or invisible action, this means that a process can evolve to $P$ without interaction with the environment 
+    \end{description}
+  \item[$P+Q$] 
+    is the sum, this process can enact either $P$ or $Q$
+  \item[$P|Q$] 
+    is the parallel composition, $P$ and $Q$ can execute concurrently and also syncronize with each other
+  \item[$(\nu z) P$] 
+    is the scope restriction. This process behave as $P$ but the name $z$ is local. This process cannot use the name $z$ to interact with other process but it can for communication within it.
+  \item[$A(y_{1}, \cdots, y_{n})$] 
+    is an identifier whose arity is $n$. Every identifier has a definition
+    \begin{center}
+      $A(x_{1}, \cdots, x_{n}) = P$
+    \end{center}
+    where the $x_{i}$ must be pairwise disjoint. The intuition is that if the $y_{i}$ replace the $x_{i}$ then $A(y_{1}, \cdots, y_{n})$ behave as $P$. 
+\end{description}
+
+To resolve ambiguity we can use parentheses and observe the conventions that prefixing and restriction bind more tightly than composition and prefixing binds more tightly than sum. 
+
+\begin{definition}\index{guarded}
+  We say that $P$ is \emph{guarded} in $Q$ is $P$ is a proper subterm of a prefix from in $Q$.
+\end{definition}
+
+\begin{definition} \index{binder} \index{bind} \index{name occurrence! bound} \index{scope}
+  We say that the input prefix $x(z).P$\emph{binds} $z$ in $P$ or is a \emph{binder} for $z$ in $P$. We also say that $P$ is the \emph{scope} of the binder and that any occurrence of $z$ in $P$ are \emph{bound} by the binder. The restriction operator $(\nu z)P$ is also a binder for $z$.
+\end{definition}
+
+\begin{definition} \index{$bn$}
+  $bn(P)$ is the set of names that have a bound occurrence in $P$ and is defined in the following way:
+  \begin{center}
+    \begin{tabular}{l}
+	    $bn(P)$ = match P with
+	  \\
+	    $\;\;\;\; |\; \pi.Q\; \rightarrow\; fn(Q)\cup $
+	  \\
+	    $\;\;\;\; \;\;\;\; \;\;\;\;$ match $\pi$ with 
+	  \\
+	    $\;\;\;\; \;\;\;\; \;\;\;\; \;\;\;\; \;\;\;\; |\; \overline{x}y\; \rightarrow\; \emptyset$
+	  \\
+	    $\;\;\;\; \;\;\;\; \;\;\;\; \;\;\;\; \;\;\;\; |\; x(y)\; \rightarrow\; \{y\}$
+	  \\
+	    $\;\;\;\; \;\;\;\; \;\;\;\; \;\;\;\; \;\;\;\; |\; \tau\; \rightarrow\; \emptyset $    
+	  \\
+	    $\;\;\;\; |\; 0\; \rightarrow\; \emptyset $    
+	  \\
+	    $\;\;\;\; |\; P|Q\; \rightarrow\; bn(P)\cup bn(Q)$
+	  \\
+	    $\;\;\;\; |\; P+Q\; \rightarrow\; bn(P)\cup bn(Q)$
+	  \\
+	    $\;\;\;\; |\; (\nu x)P\; \rightarrow\; bn(P)\cup\{x\}$
+	  \\
+	    $\;\;\;\; |\; A(y_{1}, \cdots, y_{n}) \; \rightarrow\; bn(def(A))$ 
+    \end{tabular}
+  \end{center}
+\end{definition}
+
+
+
+\begin{definition} \index{name occurrence! free}
+  We say that a name $x$ is \emph{free} in $P$ if $P$ contains a non bound occurrence of $x$. We write $fn(P)$ for the set of names with a free occurrence in $P$.  
+  \begin{center}
+    \begin{tabular}{l}
+	    $fn(P)$ = match P with
+	  \\
+	    $\;\;\;\; |\; \pi.Q\; \rightarrow\; fn(Q)\cup $
+	  \\
+	    $\;\;\;\; \;\;\;\; \;\;\;\;$ match $\pi$ with 
+	  \\
+	    $\;\;\;\; \;\;\;\; \;\;\;\; \;\;\;\; \;\;\;\; |\; \overline{x}y\; \rightarrow\; \{x,y\} $
+	  \\
+	    $\;\;\;\; \;\;\;\; \;\;\;\; \;\;\;\; \;\;\;\; |\; x(y)\; \rightarrow\; \{x\} $
+	  \\
+	    $\;\;\;\; \;\;\;\; \;\;\;\; \;\;\;\; \;\;\;\; |\; \tau\; \rightarrow\; \emptyset $    
+	  \\
+	    $\;\;\;\; |\; 0\; \rightarrow\; \emptyset $    
+	  \\
+	    $\;\;\;\; |\; P|Q\; \rightarrow\; fn(P)\cup fn(Q)$
+	  \\
+	    $\;\;\;\; |\; P+Q\; \rightarrow\; fn(P)\cup fn(Q)$
+	  \\
+	    $\;\;\;\; |\; (\nu x)P\; \rightarrow\; fn(P)$
+	  \\
+	    $\;\;\;\; |\; A(y_{1}, \cdots, y_{n}) \; \rightarrow\; fn(def(A))$ 
+    \end{tabular}
+  \end{center}
+\end{definition}
+
+
+\begin{definition} \index{n}
+  $n(P)$ which is the set of all names in $P$ and is defined in the following way:
+  \begin{center}
+    $n(P)\; =\; fn(P)\cup bn(P)$
+  \end{center}
+\end{definition}
+
+
+
+In a definition $A(x_{1}, \cdots, x_{n})=P$ we assume that $fn(P)\subseteq \{x_{1}, \cdots, x_{n}\}$. 
+
+\begin{definition}\index{substitution}
+  A \emph{substitution} is a function from names to names
+  \begin{center}
+    $\sigma: \mathbb{N}\rightarrow \mathbb{N}$
+  \end{center}
+  We write $\{x_{1}/y_{1}, \cdots, x_{n}/y_{n}\}$ for the substitution that maps $y_{i}$ to $x_{i}$ and that identifies all other names.
+\end{definition}
+
+\begin{definition}\index{change of bound names}
+  A \emph{change of bound names} in a process $P$ is the replacement of a subterm $x(z).Q$ of $P$ by $x(w).Q\{w/z\}$ or the replacement of a subterm $(\nu z) Q$ of $P$ by $(\nu w)Q\{w/z\}$ where in each case $w$ does not occur in $Q$.
+\end{definition}
+
+\begin{definition}\index{$\alpha$ convertible}
+  Processes $P$ and $Q$ are \emph{$\alpha$ convertible} if $Q$ can be obtained from $P$ by a finite number of changes of bound names
+\end{definition}
+
+In the rest of the thesis, we assume that the bound names of the processes are different from their free names ad from the names of the substitutions.
+
+\begin{definition}\index{application of a substitution}
+  We can \emph{apply} a substitution $\sigma$ to a process $P$, and we write $P\sigma$. In order to apply $\sigma$ to $P$, we might first need to perform appropriate $\alpha$ conversions in order to avoid name captures and then we can actually replace every free names of $P$ with the mapping from $\sigma$. We define the \emph{application of a substitution} to a process in the following way:
+  \begin{center}
+    \begin{tabular}{lll}
+      \multicolumn{3}{l}{$P\sigma$ = match $P$ with}\\
+      &$|\; 0\; \rightarrow\; 0$&\\
+      &$|\; \pi.P\; \rightarrow\; \pi \sigma. P \sigma$\\
+      &$|\; P|Q\; \rightarrow\; P \sigma|Q \sigma$\\
+      &$|\; P+Q\; \rightarrow\; P \sigma+Q \sigma$&\\
+      &$|\; (\nu x) P\; \rightarrow\; (\nu x)P \sigma$&\\
+      &$|\; A(y_{1}, \cdots, y_{n})\; \rightarrow\; P\sigma$&if $A(y_{1}, \cdots, y_{n})=P$\\
+    \end{tabular}
+  \end{center}
+  We define the application of a substitution to an action in the following way: 
+  \begin{center}
+    \begin{tabular}{ll}
+      \multicolumn{2}{l}{$\pi \sigma$ = match $\pi$ with}\\
+      &$|\; \overline{x}y\; \rightarrow\; \overline{x\sigma}y\sigma$\\
+      &$|\; x(z)\; \rightarrow\; x\sigma(z\sigma)$\\
+      &$|\; \tau\; \rightarrow\; \tau$\\
+    \end{tabular}
+  \end{center}
+  We regard a substitution as binding more tightly than a process operator.
+\end{definition}
+
+\begin{definition}\index{guarded occurrence}
+  We say that an occurrence of a process $Q$ in a process $P$ is \emph{guarded} if it is inside a prefix in $P$. Otherwise we call it \emph{unguarded}. 
+\end{definition}
+
+
+
+
+\section{structural congruence}
+
+Structural congruences are a set of equations defining equality and congruence relations on process. They can be used in combination with an SOS semantic for languages. In some cases structural congruences help simplifying the SOS rules: for example they can capture inherent properties of composition operators(e.g. commutativity, associativity and zero element). Also, in process calculi, structural congruences let processes interact even in case they are not adjacent in the syntax. There is a possible trade off between what to include in the structural congruence and what to include in the transition rules: for example in the case of the commutativity of the sum operator. It is worth noticing that in most process calculi every structurally congruent processes should never be distinguished and thus any semantic must assign them the same behaviour.
+
+\begin{definition}\index{context}
+  A \emph{context} $C[\cdot]$ is a process with a placeholder. If $C[\cdot]$ is a context and we replace the placeholder with $P$, than we obtain $C[P]$. In doing so, we make no $\alpha$ conversions.
+\end{definition}
+
+
+\begin{definition}\index{congruence}
+  A \emph{congruence} is a binary relation on processes such that:
+  \begin{itemize}
+    \item 
+      $S$ is an equivalence relation
+    \item 
+      $S$ is preserved by substitution in contexts: for each pair of processes $(P, Q)$ and for each context $C[\cdot]$
+      \begin{center}
+	$(P,Q)\in S\; \Rightarrow\; (C[P], C[Q])\in S$
+      \end{center}
+  \end{itemize}
+\end{definition}
+
+% \begin{definition}\label{congruenza strutturale}
+%   As stated in \cite{mousavireniers}, a \emph{structural congruence} is the minimal congruence on processes that satisify the following property:
+% \end{definition}
+
+\begin{definition}\index{structural congruence}
+  We define a \emph{structural congruence $\equiv$} as the smallest congruence on processes that satisfies the following axioms 
+  \begin{center}
+    \begin{tabular}{lll}
+      \hline\\
+	SC-ALP&$\begin{array}{c}P \stackrel{\alpha}{=} Q\\\overline{P\equiv Q}\end{array}$&$\alpha$ conversion
+      \\\\
+	\multicolumn{3}{l}{abelian monoid laws for sum:}
+      \\
+	SC-SUM-ASC& $M_{1}+(M_{2}+M_{3})\equiv (M_{1}+M_{2})+M_{3}$ &associativity
+      \\
+	SC-SUM-COM& $M_{1}+M_{2}\equiv M_{2}+M_{1}$ &commutativity
+      \\
+	SC-SUM-INC& $M+0\equiv M$&zero element
+      \\\\
+	\multicolumn{3}{l}{abelian monoid laws for parallel:}
+      \\
+	SC-COM-ASC& $P_{1}|(P_{2}|P_{3})\equiv (P_{1}|P_{2})|P_{3}$ &associativity
+      \\
+	SC-COM-COM& $P_{1}|P_{2}\equiv P_{2}|P_{1}$ &commutativity
+      \\
+	SC-COM-INC& $P|0\equiv P$&zero element
+      \\\\
+	\multicolumn{3}{l}{scope extension laws:}
+      \\
+	SC-RES& $(\nu z) (\nu w) P \equiv (\nu w) (\nu z) P$ &
+      \\
+	SC-RES-INC& $(\nu z) 0 \equiv 0$ &
+      \\
+	SC-RES-COM& $(\nu z) (P_{1}|P_{2}) \equiv P_{1}|(\nu z) P_{2}$ if $z\notin fn(P_{1})$&
+      \\
+	SC-RES-SUM& $(\nu z) (P_{1}+P_{2}) \equiv P_{1}+(\nu z) P_{2}$ if $z\notin fn(P_{1})$&
+      \\\\
+	\multicolumn{3}{l}{unfolding law:}
+      \\
+	SC-IDE&$A(\tilde{y})\equiv P\{\tilde{y}/\tilde{x}\}$&if $A(\tilde{x})\stackrel{def}{=}P$
+      \\\hline
+    \end{tabular}
+  \end{center}
+\end{definition}
+
+We can make some clarification on the axioms of the structural congruence:
+\begin{description}
+  \item[$unfolding$] 
+    this just helps replace an identifier by its definition, with the appropriate parameter instantiation. The alternative is to use an appropriate SOS rule: 
+    \begin{center}
+	  \bf{Cns}
+	  \begin{tabular}{c}
+	      $A(\tilde{x}) \stackrel{def}{=} P\; P\{\tilde{y}/\tilde{x}\} \xrightarrow{\alpha} P^{'}$
+	    \\\hline
+	      $A(\tilde{y}) \xrightarrow{\alpha} P^{'}$
+	  \end{tabular}
+    \end{center}
+  \item[$\alpha\; conversion$]
+    is the $\alpha$ conversion, i.e., the choice of bound names, it identifies agents like $x(y).\overline{z}y$ and $x(w).\overline{z}w$. In the semantic of pi calculus we can use the structural congruence with the rule SC-ALP or the SOS rule
+    \begin{center}
+      \begin{tabular}{c}
+	  $P\xrightarrow{\alpha}P^{'}\;\; P\stackrel{\alpha}{\equiv}Q$
+	\\\hline
+	  $Q \xrightarrow{\alpha} P^{'}$
+      \end{tabular}
+    \end{center}
+  \item[$abelian\; monoidal\; properties\; of\; some\; operators$]
+    We can deal with associativity and commutativity properties of sum and parallel composition by using SOS rules or by axiom of the structural congruence. For example the commutativity of the sum can be expressed by the following two rules:
+    \begin{center}
+      \begin{tabular}{cc}
+	\bf{Sum-L}
+	  \begin{tabular}{c}
+	    $P \xrightarrow{\alpha} P^{'}$\\
+	    \hline
+	    $P+Q \xrightarrow{\alpha} P^{'}$
+	  \end{tabular}
+	 &
+	 \bf{Sum-R}
+	   \begin{tabular}{c}
+	    $Q \xrightarrow{\alpha} Q^{'}$\\
+	    \hline
+	    $P+Q \xrightarrow{\alpha} Q^{'}$
+	   \end{tabular}
+      \end{tabular}
+    \end{center}
+  or by the following rule and axiom:
+    \begin{center}
+      \begin{tabular}{cc}
+	\bf{Sum}
+	  \begin{tabular}{c}
+	    $P \xrightarrow{\alpha} P^{'}$\\
+	    \hline
+	    $P+Q \xrightarrow{\alpha} P^{'}$
+	  \end{tabular}
+	 &
+	 \bf{SC-SUM}
+	   \begin{tabular}{c}
+	    $P+Q \equiv Q+P$
+	   \end{tabular}
+      \end{tabular}
+    \end{center}
+    and the rule $Str$
+  \item[$scope\; extension\; laws$]
+    We can use this scope extension laws or the rules $Opn$ and $Cls$ to deal with the scope extension.
+\end{description}
+
+\section{early semantic without structural congruence}
+
+The semantic of a $\pi$ calculus process is a labeled transition system such that:
+\begin{itemize}
+  \item 
+    the nodes are $\pi$ calculus process. The set of node is $\mathbb{P}$
+  \item
+    the actions are $\pi$ calculus actions plus the bound output $\overline{x}(y)$. The set of actions is $\mathbb{A}$, we use $\alpha$ to range over the set of actions.
+  \item
+    the transition relations is $\rightarrow\subseteq \mathbb{P}\times \mathbb{A}\times \mathbb{P}$
+\end{itemize}
+In the following section we present the early semantic without structural congruence and without $alpha$ conversion. We call this semantic early because in the rule $ECom$
+\begin{center}
+  \begin{tabular}{c}
+    $P \xrightarrow{xy} P^{'}\;\; Q\xrightarrow{\overline{x}y} Q^{'}$\\
+    \hline
+    $P|Q \xrightarrow{\tau} P^{'}|Q^{'}$
+  \end{tabular}
+\end{center}
+there is no substitution, instead the substitution occurres at an early point in the inference of this translation, namely during the inference of the input action. 
+
+%nella semantica early non serve il bound input. Se omettiamo lo scope extension nella congruenza strutturale e usiamo CLOSE allora il buond input serve.
+
+\begin{definition}\index{transition relation! early! without structural congruence}
+  The \emph{early transition relation} $\rightarrow\subseteq \mathbb{P}\times \mathbb{A} \times \mathbb{P}$ is the smallest relation induced by the following rules:
+
+  \begin{center}
+    \begin{tabular}{ll}  
+	  \bf{Out}
+	  \begin{tabular}{c}
+	      $\;\;$
+	    \\\hline
+	      $\overline{x}y.P \xrightarrow{\overline{x}y} P$
+	  \end{tabular}
+	&
+	  \bf{EInp}
+	  \begin{tabular}{c}
+	      $z\notin fn(P)$
+	    \\\hline
+	      $x(y).P \xrightarrow{xz} P\{z/y\}$
+	  \end{tabular}
+      \\\\
+	  \bf{Par-L}
+	  \begin{tabular}{c}
+	      $P \xrightarrow{\alpha} P^{'}\;\; bn(\alpha)\cap fn(Q)=\emptyset$
+	    \\\hline
+	      $P|Q \xrightarrow{\alpha} P^{'}|Q$
+	  \end{tabular}
+	&
+	  \bf{Par-R}
+	  \begin{tabular}{c}
+	      $Q \xrightarrow{\alpha} Q^{'}\;\; bn(\alpha)\cap fn(Q)=\emptyset$
+	    \\\hline
+	      $P|Q \xrightarrow{\alpha} P|Q^{'}$
+	  \end{tabular}
+      \\\\
+	  \bf{Sum-L}
+	  \begin{tabular}{c}
+	      $P \xrightarrow{\alpha} P^{'}$
+	    \\\hline
+	      $P+Q \xrightarrow{\alpha} P^{'}$
+	  \end{tabular}
+	&
+	  \bf{Sum-R}
+	  \begin{tabular}{c}
+	      $Q \xrightarrow{\alpha} Q^{'}$
+	    \\\hline
+	      $P+Q \xrightarrow{\alpha} Q^{'}$
+	    \end{tabular}
+      \\\\
+	  \bf{Tau}
+	  \begin{tabular}{c}
+	      $\;\;$
+	    \\\hline
+	      $\tau.P \xrightarrow{\tau} P$
+	  \end{tabular}
+	&
+	  \bf{Res}
+	  \begin{tabular}{c}
+	      $P \xrightarrow{\alpha} P^{'}\;\; z\notin n(\alpha)$
+	    \\\hline
+	      $(\nu z) P \xrightarrow{\alpha} (\nu z) P^{'}$
+	  \end{tabular}
+      \\\\
+	  \bf{EComR}
+	  \begin{tabular}{c}
+	      $P \xrightarrow{\overline{x}y} P^{'}\;\; Q\xrightarrow{xy} Q^{'}$
+	    \\\hline
+	      $P|Q \xrightarrow{\tau} P^{'}|Q^{'}$
+	  \end{tabular}
+	&
+	  \bf{EComL}
+	  \begin{tabular}{c}
+	      $P \xrightarrow{xy} P^{'}\;\; Q\xrightarrow{\overline{x}y} Q^{'}$
+	    \\\hline
+	      $P|Q \xrightarrow{\tau} P^{'}|Q^{'}$
+	  \end{tabular}
+      \\\\
+	    \bf{ClsLOut}
+	    \begin{tabular}{c}
+		$P \xrightarrow{\overline{x}(\nu z)} P^{'}$  $Q \xrightarrow{xz} Q^{'}$ $z\notin fn(Q)$
+	      \\\hline
+		$P|Q \xrightarrow{\tau} (\nu z)(P^{'}|Q^{'})$
+	    \end{tabular}
+	&
+	    \bf{ClsROut}
+	    \begin{tabular}{c}
+		$P \xrightarrow{xz} P^{'}$  $Q \xrightarrow{\overline{x}(z)} Q^{'}$ $z\notin fn(P)$
+	      \\\hline
+		$P|Q \xrightarrow{\tau} (\nu z)(P^{'}|Q^{'})$
+	    \end{tabular}
+      \\\\
+	    \bf{ClsLIn}
+	    \begin{tabular}{c}
+		$P \xrightarrow{\overline{x}z} P^{'}$  $Q \xrightarrow{x(z)} Q^{'}$ $z\notin fn(Q)$
+	      \\\hline
+		$P|Q \xrightarrow{\tau} (\nu z)(P^{'}|Q^{'})$
+	    \end{tabular}
+	&
+	    \bf{ClsRIn}
+	    \begin{tabular}{c}
+		$P \xrightarrow{x(\nu z)} P^{'}$  $Q \xrightarrow{\overline{x}z} Q^{'}$ $z\notin fn(P)$
+	      \\\hline
+		$P|Q \xrightarrow{\tau} (\nu z)(P^{'}|Q^{'})$
+	    \end{tabular}
+      \\\\
+	  \bf{Cns}
+	  \begin{tabular}{c}
+	      $A(\tilde{x}) \stackrel{def}{=} P\; P\{\tilde{y}/\tilde{x}\} \xrightarrow{\alpha} P^{'}$
+	    \\\hline
+	      $A(\tilde{y}) \xrightarrow{\alpha} P^{'}$
+	  \end{tabular}
+	&
+      \\\\
+	  \bf{OpnOut}
+	  \begin{tabular}{c}
+	      $P \;\xrightarrow{\overline{x}z} P^{'}\;\; z\neq x$
+	    \\\hline
+	      $(\nu z) P \;\xrightarrow{\overline{x}(z)} P^{'}$
+	  \end{tabular}
+	&
+	  \bf{OpnIn}
+	  \begin{tabular}{c}
+	      $P \;\xrightarrow{xz} P^{'}\;\; z\neq x$
+	    \\\hline
+	      $(\nu z) P \;\xrightarrow{x(z)} P^{'}\;\; z\neq x$
+	  \end{tabular}
+    \end{tabular}
+  \end{center}
+\end{definition}
+
+\begin{example}
+  We show now an example of the so called scope extrusion, in particular we prove that
+  \begin{center}
+    $a(x).P\; |\; (\nu b)\overline{a}b.Q\; \xrightarrow{\tau}\; (\nu b) (P\{b/x\}\; |\; Q)$
+  \end{center}
+  where we suppose that $b\notin fn(P)$. In this example the scope of $(\nu b)$ moves from the right hand component to the left hand.
+  \[
+    \inferrule* [left=CloseR] {
+	\inferrule* [left=Einp] {
+	  b\notin fn(P)
+	}{
+	  a(x).P\; \xrightarrow{ab} P\{b/x\}
+	}
+      \\
+	\inferrule* [left=Opn] {
+	    \inferrule* [left=Out]{
+	    }{
+	      \overline{a}b.Q\; \xrightarrow{\overline{a}b} Q
+	    }
+	  \\
+	    a\neq b
+	}{
+	  (\nu b)\overline{a}b.Q\; \xrightarrow{\overline{a}(b)} Q
+	}
+      \\
+	b\notin fn((\nu b)\overline{a}b.Q)
+    }{
+      a(x).P\; |\; (\nu b)\overline{a}b.Q\; \xrightarrow{\tau}\; (\nu b) (P\{b/x\}\; |\; Q)
+    }
+  \]
+
+  If $b \in fn(P)$ ?
+\end{example}
+
+\begin{example}
+    We want to prove now that:
+    \begin{center}
+      $((\nu b) a(x).P)\; |\; \overline{a}b.Q\; \xrightarrow{\tau}\; (\nu c) (P\{c/b\}\{b/x\}\; |\; Q)$
+    \end{center}
+%     \[
+% 	\inferrule* [left=ECloseL] {
+% 	    \inferrule* [left=Res] {
+% 	      \inferrule* [left=EInp] {
+% 	      }{
+% 		a(x).P\; \xrightarrow{a ?}\;  P\{\}
+% 	      }
+% 	    }{
+% 	      (\nu b) a(x).P\; \xrightarrow{a ?}\; (\nu b) P\{\}
+% 	    }
+% 	  \\
+% 	    \inferrule* [left=Out] {
+% 	    }{
+% 	      \overline{a}b.Q\; \xrightarrow{\overline{a}b}\; Q
+% 	    }
+% 	  \\
+% 	    b\notin fn(P)
+% 	}{
+% 	  ((\nu b) a(x).P)\; |\; \overline{a}b.Q\; \xrightarrow{\tau}\; (\nu c) (P\{c/b\}\{b/x\}\; |\; Q)
+% 	}
+%     \]
+\end{example}
+
+
+% \begin{example}
+%   Now we prove that
+%   \[
+%     \inferrule* [left=Com]{
+% 	\overline{a}x.c(x).0|b(x).0\;
+% 	  \xrightarrow{\overline{a}x}\;
+% 	      c(x).0|b(x).0
+%       \\
+% 	a(x).0|\overline{b}x.\overline{c}x.0\;
+% 	  \xrightarrow{ax}\;
+% 	    0|\overline{b}x.\overline{c}x.0
+%     }{
+%        (\overline{a}x.c(x).0|b(x).0)|(a(x).0|\overline{b}x.\overline{c}x.0)\; 
+%  	\xrightarrow{\tau}\; 
+%  	  (c(x).0|b(x).0)|(0|\overline{b}x.\overline{c}x.0)
+% %        (\overline{a}x.c(x).0|b(x).0)|(a(x).0|\overline{b}x.\overline{c}x.0)\; 
+% %  	\xrightarrow{\tau}\; 
+% %  	  (0|0)|(0|0)
+%     }
+%   \]
+%   
+% \end{example}
+
+
+
+\section{early semantic with structural congruence}
+
+\begin{definition}\index{transition relation! pi! early! with structural congruence}
+  The \emph{early transition relation with structural congruence} $\rightarrow\subseteq \mathbb{P}\times \mathbb{A} \times \mathbb{P}$ is the smallest relation induced by the following rules:
+
+  \begin{center}
+    \begin{tabular}{lll}
+	  \bf{Out}
+	  \begin{tabular}{c}
+	    \hline
+	    $\overline{x}y.P \xrightarrow{\overline{x}y} P$
+	  \end{tabular}
+	  &
+	  \bf{EInp}
+	  \begin{tabular}{c}
+	    \hline
+	    $x(z).P \xrightarrow{xy} P\{y/z\}$
+	  \end{tabular}
+	  &
+	  \bf{Par}
+	  \begin{tabular}{c}
+	    $P \xrightarrow{\alpha} P^{'}\;\; bn(\alpha)\cap fn(Q)=\emptyset$\\
+	    \hline
+	    $P|Q \xrightarrow{\alpha} P^{'}|Q$
+	  \end{tabular}
+      \\\\
+	  \bf{Sum}
+	  \begin{tabular}{c}
+	    $P \xrightarrow{\alpha} P^{'}$\\
+	    \hline
+	    $P+Q \xrightarrow{\alpha} P^{'}$
+	  \end{tabular}
+	  &
+	    \bf{ECom}
+	    \begin{tabular}{c}
+	      $P \xrightarrow{xy} P^{'}\;\; Q\xrightarrow{\overline{x}y} Q^{'}$\\
+	      \hline
+	      $P|Q \xrightarrow{\tau} P^{'}|Q^{'}$
+	    \end{tabular}
+	  &
+	  \bf{Res}
+	  \begin{tabular}{c}
+	    $P \xrightarrow{\alpha} P^{'}\;\; z\notin n(\alpha)$\\
+	    \hline
+	    $(\nu z) P \xrightarrow{\alpha} (\nu z) P^{'}$
+	  \end{tabular}
+      \\\\
+	  \bf{Tau}
+	  \begin{tabular}{c}
+	    \hline
+	    $\tau.P \xrightarrow{\tau} P$
+	  \end{tabular}
+	  &
+	  \bf{Opn}
+	  \begin{tabular}{c}
+	    $P \xrightarrow{\overline{x}z} P^{'}\;\; z\neq x$\\
+	    \hline
+	    $(\nu z) P \xrightarrow{\overline{x}(z)} P^{'}$
+	  \end{tabular}
+	  &
+	  \bf{Str}
+	  \begin{tabular}{c}
+	    $P\equiv P^{'}\;\; P\xrightarrow{\alpha} Q\;\; Q\equiv Q^{'}$\\
+	    \hline
+	    $P^{'} \xrightarrow{\alpha} Q^{'}$
+	  \end{tabular}
+    \end{tabular}
+  \end{center}
+\end{definition}
+
+\begin{example}
+  We prove now that
+  \begin{center}
+    $a(x).P\; |\; (\nu b)\overline{a}b.Q\; \xrightarrow{\tau} P\{b/x\}\; |\; Q$
+  \end{center}
+  This follows from
+  \[
+    a(x).P\; |\; (\nu b)\overline{a}b.Q\; \equiv\; (\nu b)(a(x).P\; |\; \overline{a}b.Q)
+  \]
+  and
+  \[
+    (\nu b)(P\{b/x\}\; |\; Q) \equiv (P\{b/x\}\; |\; Q)
+  \]
+  and 
+  \[
+    (\nu b)(a(x).P\; |\; \overline{a}b.Q) \xrightarrow{\tau} (\nu b)(P\{b/x\}\; |\; Q)
+  \]
+  with the rule $Str$. We can prove the last transition in the following way:
+  \[
+    \inferrule* [left=Res] {
+      \inferrule* [left=Com] {
+	  \inferrule* [left=EInp] {
+	  }{
+	    a(x).P\; \xrightarrow{ab}\; P\{b/x\}
+	  }
+	\\
+	  \inferrule* [left=Out] {
+	  }{
+	    \overline{a}b.Q\; \xrightarrow{\overline{a}b}\; Q
+	  }
+      }{
+	a(x).P\; |\; \overline{a}b.Q\; \xrightarrow{\tau}\; P\{b/x\}\; |\; Q
+      }
+    }{
+      (\nu b)(a(x).P\; |\; \overline{a}b.Q)\; \xrightarrow{\tau}\; (\nu b)(P\{b/x\}\; |\; Q)
+    }
+  \]
+
+\end{example}
+
+\begin{example}
+    We want to prove now that:
+    \begin{center}
+      $((\nu b) a(x).P)\; |\; \overline{a}b.Q\; \xrightarrow{\tau}\; (\nu c) (P\{c/b\}\{b/x\}\; |\; Q)$
+    \end{center}
+    where the name $c$ is not in the free names of $Q$. We can exploit the structural congruence and get that
+    \[
+      ((\nu b) a(x).P) | \overline{a}b.Q\; \equiv\; (\nu c) (a(x).(P\{c/b\}) | \overline{a}b.Q)     
+    \]
+    then we have
+    \[
+	\inferrule* [left=Res] {
+	  \inferrule* [left=Com]{
+	      \inferrule* [left=EInp]{
+		b\notin fn(P\{c/b\})
+	      }{
+		a(x).P\{c/b\}\; \xrightarrow{ab}\; P\{c/b\}\{b/x\}
+	      }
+	    \\
+	      \inferrule* [left=Out]{
+	      }{
+		\overline{a}b.Q\; \xrightarrow{\overline{a}b}\; Q
+	      }
+	  }{
+	      (a(x).(P\{c/b\}) | \overline{a}b.Q)\; \xrightarrow{\tau}\; (P\{c/b\}\{b/x\} | Q)
+	  }
+	}{
+	  (\nu c) (a(x).(P\{c/b\}) | \overline{a}b.Q)\; \xrightarrow{\tau}\; (\nu c) (P\{c/b\}\{b/x\} | Q)
+	}
+    \]
+    Now we just apply the rule $Str$ to prove the thesis.
+\end{example}
+
+
+\section{late semantic without structural congruence}
+\begin{definition}\index{transition relation! pi! late! without structural congruence}
+  The \emph{late transition relation without structural congruence} $\rightarrow\subseteq \mathbb{P}\times \mathbb{A} \times \mathbb{P}$ is the smallest relation induced by the following rules:
+  \begin{center}
+    \begin{tabular}{ll}
+	  \bf{Prf}
+	  \begin{tabular}{c}
+	    \hline
+	    $\alpha.P \xrightarrow{\alpha} P$
+	  \end{tabular}
+	&
+	  \bf{Res}
+	  \begin{tabular}{c}
+	    $P \xrightarrow{\alpha} P^{'}$ $z\notin n(\alpha)$
+	      \\\hline
+	    $(\nu z) P \xrightarrow{\alpha} (\nu z) P^{'}$
+	  \end{tabular}    
+      \\\\
+	  \bf{Sum-L}
+	  \begin{tabular}{c}
+	      $P \xrightarrow{\alpha} P^{'}$
+	    \\\hline
+	      $P+Q \xrightarrow{\alpha} P^{'}$
+	  \end{tabular}
+	&
+	  \bf{Sum-R}
+	  \begin{tabular}{c}
+	      $Q \xrightarrow{\alpha} Q^{'}$
+	    \\\hline
+	      $P+Q \xrightarrow{\alpha} Q^{'}$
+	  \end{tabular}
+      \\\\
+	  \bf{Par-L}
+	  \begin{tabular}{c}
+	      $P \xrightarrow{\alpha} P^{'}\;\; bn(\alpha)\cap fn(Q)=\emptyset$
+	    \\\hline
+	      $P|Q \xrightarrow{\alpha} P^{'}|Q$
+	  \end{tabular}
+	&
+	  \bf{Par-R}
+	  \begin{tabular}{c}
+	      $Q \xrightarrow{\alpha} Q^{'}\;\; bn(\alpha)\cap fn(Q)=\emptyset$
+	    \\\hline
+	      $P|Q \xrightarrow{\alpha} P|Q^{'}$
+	  \end{tabular}
+      \\\\
+	  \bf{LCom}
+	  \begin{tabular}{c}
+	      $P \xrightarrow{x(y)} P^{'}\;\; Q\xrightarrow{\overline{x}z} Q^{'}\;\; z\notin fn(P)$
+	    \\\hline
+	      $P|Q \xrightarrow{\tau} P^{'}\{z/y\}|Q^{'}$
+	  \end{tabular}	
+	&
+	  \bf{Cns}
+	  \begin{tabular}{c}
+	    $A(\tilde{x}) \stackrel{def}{=} P\; P\{\tilde{y}/\tilde{x}\} \xrightarrow{\alpha} P^{'}$
+	      \\\hline
+	    $A(\tilde{y}) \xrightarrow{\alpha} P^{'}$
+	  \end{tabular}
+      \\\\
+	  \bf{Opn}
+	  \begin{tabular}{c}
+	      $P \xrightarrow{\overline{x}z} P^{'}\;\; z\neq x$
+	    \\\hline
+	      $(\nu z) P \xrightarrow{\overline{x}(z)} P^{'}$
+	  \end{tabular}
+	&
+      \\\\
+	  \bf{CloseL}
+	  \begin{tabular}{c}
+	      $P\; \xrightarrow{\overline{x}(z)}\; P^{'}$  $Q \xrightarrow{xy} Q^{'}$ $z\notin fn(Q)$
+	    \\\hline
+	      $P|Q\; \xrightarrow{\tau}\; (\nu z)(P^{'}|\{z/y\}Q^{'})$
+	  \end{tabular}
+	&
+	  \bf{CloseR}
+	  \begin{tabular}{c}
+	      $P \xrightarrow{xz} P^{'}$  $Q \xrightarrow{\overline{x}(z)} Q^{'}$ $z\notin fn(P)$
+	    \\\hline
+	      $P|Q \xrightarrow{\tau} (\nu z)(P^{'}|Q^{'})$
+	  \end{tabular}
+    \end{tabular}
+  \end{center}
+\end{definition}
+
+
+
+\section{late semantic with structural congruence}
+\begin{definition}\index{transition relation! pi! late! with structural congruence}
+  The \emph{late transition relation with structural congruence} $\rightarrow\subseteq \mathbb{P}\times \mathbb{A} \times \mathbb{P}$ is the smallest relation induced by the following rules:
+  \begin{center}
+    \begin{tabular}{ll}
+	\bf{Prf}
+	\begin{tabular}{c}
+	  \hline
+	  $\alpha.P \xrightarrow{\alpha} P$
+	\end{tabular}
+      &
+	\bf{Sum}
+	\begin{tabular}{c}
+	    $P \xrightarrow{\alpha} P^{'}$
+	  \\\hline
+	    $P+Q \xrightarrow{\alpha} P^{'}$
+	\end{tabular}
+    \\\\
+	\bf{Par}
+	\begin{tabular}{c}
+	    $P \xrightarrow{\alpha} P^{'}\;\; bn(\alpha)\cap fn(Q)=\emptyset$
+	  \\\hline
+	    $P|Q \xrightarrow{\alpha} P^{'}|Q$
+	\end{tabular}
+      &
+	\bf{Res}
+	\begin{tabular}{c}
+	    $P \xrightarrow{\alpha} P^{'}$ $z\notin n(\alpha)$
+	  \\\hline
+	    $(\nu z) P \xrightarrow{\alpha} (\nu z) P^{'}$
+	\end{tabular}
+    \\\\    
+	\bf{LCom}
+	\begin{tabular}{c}
+	    $P \xrightarrow{x(y)} P^{'}\;\; Q\xrightarrow{\overline{x}z} Q^{'}$
+	  \\\hline
+	  $P|Q \xrightarrow{\tau} P^{'}\{z/y\}|Q^{'}$
+	\end{tabular}
+      &
+	\bf{Str}
+	\begin{tabular}{c}
+	    $P\equiv P^{'}\;\; P\xrightarrow{\alpha} Q\;\; Q\equiv Q^{'}$
+	  \\\hline
+	    $P^{'} \xrightarrow{\alpha} Q^{'}$
+	\end{tabular}
+    \\\\
+	\bf{Opn}
+	\begin{tabular}{c}
+	    $P \xrightarrow{\overline{x}z} P^{'}\;\; z\neq x$
+	  \\\hline
+	    $(\nu z) P \xrightarrow{\overline{x}(z)} P^{'}$
+	\end{tabular}
+      &
+    \end{tabular}
+  \end{center}
+\end{definition}
+
+
+\begin{example}
+  We prove now that
+  \begin{center}
+    $a(x).P\; |\; (\nu b)\overline{a}b.Q\; \xrightarrow{\tau} P\{b/x\}\; |\; Q$
+  \end{center}
+  This follows from
+  \[
+    a(x).P\; |\; (\nu b)\overline{a}b.Q\; \equiv\; (\nu b)(a(x).P\; |\; \overline{a}b.Q)
+  \]
+  and
+  \[
+    (\nu b)(P\{b/x\}\; |\; Q) \equiv (P\{b/x\}\; |\; Q)
+  \]
+  and 
+  \[
+    (\nu b)(a(x).P\; |\; \overline{a}b.Q) \xrightarrow{\tau} (\nu b)(P\{b/x\}\; |\; Q)
+  \]
+  with the rule $Str$. We can prove the last transition in the following way:
+  \[
+    \inferrule* [left=Res] {
+      \inferrule* [left=LCom] {
+	  \inferrule* [left=Inp] {
+	  }{
+	    a(x).P\; \xrightarrow{ax}\; P
+	  }
+	\\
+	  \inferrule* [left=Out] {
+	  }{
+	    \overline{a}b.Q\; \xrightarrow{\overline{a}b}\; Q
+	  }
+      }{
+	a(x).P\; |\; \overline{a}b.Q\; \xrightarrow{\tau}\; P\{b/x\}\; |\; Q
+      }
+    }{
+      (\nu b)(a(x).P\; |\; \overline{a}b.Q)\; \xrightarrow{\tau}\; (\nu b)(P\{b/x\}\; |\; Q)
+    }
+  \]
+
+\end{example}
+
+\begin{example}
+    We want to prove now that:
+    \begin{center}
+      $((\nu b) a(x).P)\; |\; \overline{a}b.Q\; \xrightarrow{\tau}\; (\nu c) (P\{c/b\}\{b/x\}\; |\; Q)$
+    \end{center}
+    where the name $c$ is not in the free names of $Q$. We can exploit the structural congruence and get that
+    \[
+      ((\nu b) a(x).P) | \overline{a}b.Q\; \equiv\; (\nu c) (a(x).(P\{c/b\}) | \overline{a}b.Q)     
+    \]
+    then we have
+    \[
+	\inferrule* [left=Res] {
+	  \inferrule* [left=LCom]{
+	      \inferrule* [left=Inp]{
+		b\notin fn(P\{c/b\})
+	      }{
+		a(x).P\{c/b\}\; \xrightarrow{ax}\; P\{c/b\}
+	      }
+	    \\
+	      \inferrule* [left=Out]{
+	      }{
+		\overline{a}b.Q\; \xrightarrow{\overline{a}b}\; Q
+	      }
+	  }{
+	      (a(x).(P\{c/b\}) | \overline{a}b.Q)\; \xrightarrow{\tau}\; (P\{c/b\}\{b/x\} | Q)
+	  }
+	}{
+	  (\nu c) (a(x).(P\{c/b\}) | \overline{a}b.Q)\; \xrightarrow{\tau}\; (\nu c) (P\{c/b\}\{b/x\} | Q)
+	}
+    \]
+    Now we just apply the rule $Str$ to prove the thesis.
+\end{example}
+
+
+
+
+
+\section{altre semantiche?}
+
+\begin{itemize}
+  \item 
+    possiamo definire un sistema di transizione non sui processi ma sulle classi di equivalenza di processi modulo una qualche equivalenza, ad esempio la congruenza strutturale?
+  \item
+    possiamo usare delle epsilon transizioni al posto della congruenza strutturale, nel senso di usare lts con epsilon transizioni come semantica intermedia e poi prendere lts delle epsilon chiusure come semantica. Ad esempio 
+    \begin{center}
+      \begin{tabular}{c}
+	  \\\hline
+	    $P+(Q+R)\; \stackrel{\epsilon}{\rightarrow}\; (P+Q)+R$
+	  \\
+	\end{tabular}
+    \end{center}
+  \item
+    denotazionale
+\end{itemize}
+
+\section{behavioural semantic}
+Metterci una semantica osservazionale (bisimulazione early e open) ed un po' di proprieta' algebriche (congruenza).
+

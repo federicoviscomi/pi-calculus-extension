@@ -1,0 +1,304 @@
+
+\section{syntax}
+
+As we did whit multi $\pi$ calculus, we suppose that we have a countable set of names $\mathbb{N}$, ranged over by lower case letters $a,b, \cdots, z$. This names are used for communication channels and values. Furthermore we have a set of identifiers, ranged over by $A$. We represent the agents or processes by upper case letters $P,Q, \cdots $. A multi $\pi$ process, in addiction to the same actions of a $\pi$ process, can perform also a strong prefix:
+\begin{center}
+  $\pi$ ::= $\overline{x}y$ | $x(z)$ | $\underline{x(y)}$ | $\underline{\overline{x}y}$ |$\tau$ 
+\end{center}
+The process are defined, just as original $\pi$ calculus, by the following grammar:
+\begin{center}
+  \begin{tabular}{l}
+    $P,Q$ ::= $0$ | $\pi.P$ | $P|Q$ | $P+Q$ | $(\nu x) P$ | $A(y_{1}, \cdots, y_{n})$
+  \end{tabular}
+\end{center}
+and they have the same intuitive meaning as for the $\pi$ calculus. The strong prefix input allows a process to make an atomic sequence of actions, so that more than one process can synchronize on this sequence. 
+
+We have to extend the following definition to deal with the strong prefix:
+\begin{center}
+  \begin{tabular}{ll}
+	$bn(\underline{x(y)})\; =\; \{y\}$
+      &
+	$fn(\underline{x(y)})\; =\; \{x\}$
+    \\
+	$bn(\underline{\overline{x}y})\; =\; \emptyset$
+      &
+	$fn(\underline{\overline{x}y})\; =\; \{x,y\}$
+    \\
+  \end{tabular}
+\end{center}
+
+
+\section{early operational semantic with structural congruence}
+
+The semantic of a multi $\pi$ process is labeled transition system such that
+\begin{itemize}
+  \item 
+    the nodes are multi $\pi$ calculus process. The set of node is $\mathbb{P}_{m}$
+  \item
+    the actions are multi $\pi$ calculus actions plus two new kind of action:
+    \begin{center}
+      \begin{tabular}{ll}
+	  strong input 
+	&
+	  strong output
+      \\
+	  $\underline{xy}$
+	&
+	  $\underline{\overline{x}y}$
+      \end{tabular}
+    \end{center}
+    The set of actions is $\mathbb{A}_{m}$, we use $\alpha, \alpha_{1}, \alpha_{2},\cdots $ to range over the set of actions, we use $\sigma, \sigma_{1}, \sigma_{2}, \cdots $ to range over the set $\mathbb{A}_{m}^{+} \cup \{\tau\}$. 
+  \item
+    the transition relations is $\rightarrow\subseteq \mathbb{P}_{m}\times (\mathbb{A}_{m}^{+} \cup \{\tau\})\times \mathbb{P}_{m}$
+\end{itemize}
+
+In this case, a label can be a sequence of prefixes, whether in the original $\pi$ calculus a label can be only a prefix. We use the symbol $\cdot$ to denote the concatenation operator.
+
+\begin{definition}\index{transition relation! multipi! early! with structural congruence}
+  The \emph{early transition relation with structural congruence} is the smallest relation induced by the following rules:
+  \begin{center}
+    \begin{tabular}{ll}
+	  $\inferrule* [left=\bf{Out}]{  
+	  }{
+	    \overline{x}y.P \;\xrightarrow{\overline{x}y} P
+	  }$
+	&
+	  $\inferrule* [left=\bf{EInp}]{
+	    z\notin fn(P)
+	  }{
+	    x(y).P \;\xrightarrow{xz} P\{z/y\}
+	  }$
+      \\\\
+	  $\inferrule* [left=\bf{SOut}]{	      
+	  }{
+	    \underline{\overline{x}y}.P \;\xrightarrow{\underline{\overline{x}y}} P
+	  }$
+	&
+      \\\\
+	  $\inferrule* [left=\bf{Tau}]{ 
+	  }{
+	    \tau.P \;\xrightarrow{\tau} P
+	  }$
+	&
+	  $\inferrule* [left=\bf{SInp}]{
+	  }{
+	    \underline{x(y)}.P \;\xrightarrow{\underline{xz}} P\{z/y\}
+	  }$
+      \\\\
+	  $\inferrule* [left=\bf{Sum}]{
+	    P \;\xrightarrow{\sigma} P^{'}
+	  }{
+	    P+Q \;\xrightarrow{\sigma} P^{'}
+	  }$
+	&
+	$\inferrule* [left=\bf{Str}]{
+	    P\equiv P^{'}
+	  \\
+	    P^{'}\; \;\xrightarrow{\alpha}\; Q^{'}
+	  \\
+	    Q\equiv Q^{'}
+	}{
+	    P\; \;\xrightarrow{\alpha}\; Q
+	}$
+      \\\\
+	  $\inferrule* [left=\bf{Par}]{
+	    P \;\xrightarrow{\sigma} P^{'}\;\; bn(\sigma)\cap fn(Q)=\emptyset
+	  }{
+	    P|Q \;\xrightarrow{\sigma} P^{'}|Q
+	  }$
+	&
+	  $\inferrule* [left=\bf{Com}]{
+	      P \;\xrightarrow{\sigma_{1}} P^{'}
+	    \\
+	      Q\;\xrightarrow{\sigma_{2}} Q^{'}
+	    \\
+	      Sync(\sigma_{1}, \sigma_{2}, \sigma_{3})
+	  }{
+	    P|Q \;\xrightarrow{\sigma_{3}} P^{'}|Q^{'}
+	  }$
+      \\\\
+	  $\inferrule* [left=\bf{Res}]{
+	    P \;\xrightarrow{\sigma} P^{'}\;\; z\notin n(\alpha)
+	  }{
+	    (\nu) z P \;\xrightarrow{\sigma} (\nu) z P^{'}
+	  }$
+	&
+	  $\inferrule* [left=\bf{Seq}]{
+	    P \;\xrightarrow{\underline{\alpha}} P^{'}\;\; P^{'} \;\xrightarrow{\sigma} P^{''}
+	  }{
+
+	  }$
+	  \bf{Seq}
+	  \begin{tabular}{c}
+	      $$
+	    \\\hline
+	      $P \;\xrightarrow{\alpha \cdot \sigma} P^{''}$
+	  \end{tabular}
+      \\
+    \end{tabular}
+  \end{center}
+\end{definition}
+
+
+In this semantic we cannot have
+\[
+  \underline{x(a)}.\overline{a}z.P\; \xrightarrow{xb\cdot \overline{a}z}\; P\{b/a\}
+\]
+nor
+\[
+  \underline{x(a)}.\underline{\overline{a}z}.P\; \xrightarrow{xb\cdot \overline{a}z}\; P\{b/a\}
+\]
+but we have
+\begin{center}
+  $
+    \inferrule* [left=Seq]{
+	\inferrule* [left=SOut]{
+	}{
+	  \underline{\overline{b}z}.P\{b/a\}\; \xrightarrow{\underline{\overline{b}z}}\; P\{b/a\}
+	}
+      \\
+	\inferrule* [left=SInp]{
+	}{
+	  \underline{x(a)}.\underline{\overline{a}z}.P\; \xrightarrow{\underline{xb}}\; (\underline{\overline{a}z}.P)\{b/a\}
+	}
+    }{
+      \underline{x(a)}.\underline{\overline{a}z}.P\; \xrightarrow{xb\cdot \overline{b}z}\; P\{b/a\}
+    }
+  $
+\end{center}
+
+
+\begin{definition}\index{sync! multipi! early}
+  We define the synchronization relation in the following way:
+  \begin{center}
+    \begin{tabular}{ccc}
+	  $\inferrule* [left=Com1L]{
+	   }{
+	    Sync(xy,\overline{x}y,\tau)
+	  }$
+	&
+	  $\inferrule* [left=Com2L]{
+	   }{
+	    Sync(xy\cdot \sigma,\overline{x}y,\sigma)
+	  }$	  
+	&
+	  $\inferrule* [left=Com3L]{
+	    Sync(\sigma_{1},\sigma_{2},\sigma_{3})
+	   }{
+	    Sync(xy\cdot \sigma_{1},\overline{x}y\cdot \sigma_{2},\sigma_{3})
+	  }$
+      \\\\
+	  $\inferrule* [left=Com1R]{
+	   }{
+	    Sync(\overline{x}y,xy,\tau)
+	  }$
+	&
+	  $\inferrule* [left=Com2R]{
+	   }{
+	    Sync(\overline{x}y\cdot \sigma,xy,\sigma)
+	  }$	  
+	&
+	  $\inferrule* [left=Com3R]{
+	    Sync(\sigma_{1},\sigma_{2},\sigma_{3})
+	   }{
+	    Sync(\overline{x}y\cdot \sigma_{1},xy\cdot \sigma_{2},\sigma_{3})
+	  }$
+      \\
+    \end{tabular}
+  \end{center}
+\end{definition}
+
+NON FUNZIONA!!
+
+
+\section{late operational semantic with structural congruence}
+
+\begin{definition}\index{transition relation! multipi! late! with structural congruence}
+  The \emph{late transition relation with structural congruence} is the smallest relation induced by the following rules:
+  \begin{center}
+    \begin{tabular}{ll}
+ 	  \bf{Pref}
+ 	  \begin{tabular}{c}
+ 	      $\alpha\; not\; a\; strong\; prefix$
+ 	    \\\hline
+ 	      $\alpha.P \;\xrightarrow{\alpha} P$
+ 	  \end{tabular}
+	&
+	  \bf{Par}
+	  \begin{tabular}{c}
+	      $P \;\xrightarrow{\sigma} P^{'}\;\; bn(\sigma)\cap fn(Q)=\emptyset$
+	    \\\hline
+	      $P|Q \;\xrightarrow{\sigma} P^{'}|Q$
+	  \end{tabular}
+      \\\\
+	  \bf{SOut}
+	  \begin{tabular}{c}
+	      $P \;\xrightarrow{\sigma} P^{'}\;\; \sigma\neq \tau$
+	    \\\hline
+	      $\underline{\overline{x}y}.P \;\xrightarrow{\overline{x}y \cdot \sigma} P^{'}$
+	  \end{tabular}
+	&
+	  $\inferrule* [left=\bf{LComSeq1}]{
+	      P \;\xrightarrow{x(y)}\; P^{'}
+	    \\
+	      Q\;\xrightarrow{\overline{x}z\cdot \sigma} Q^{'}
+	    \\
+	      z\notin fn(P)
+	  }{
+	    P|Q \;\xrightarrow{\sigma} P^{'}\{z/y\}|Q^{'}
+	  }$
+      \\\\
+	  \bf{Sum}
+	  \begin{tabular}{c}
+	      $P \;\xrightarrow{\sigma} P^{'}$
+	    \\\hline
+	      $P+Q \;\xrightarrow{\sigma} P^{'}$
+	  \end{tabular}
+	&
+	$\inferrule* [left=\bf{Str}]{
+	    P\equiv P^{'}
+	  \\
+	    P^{'}\; \;\xrightarrow{\alpha}\; Q^{'}
+	  \\
+	    Q\equiv Q^{'}
+	}{
+	    P\; \;\xrightarrow{\alpha}\; Q
+	}$
+      \\\\
+	  \bf{Res}
+	  \begin{tabular}{c}
+	      $P \;\xrightarrow{\sigma} P^{'}\;\; z\notin n(\alpha)$
+	    \\\hline
+	      $(\nu) z P \;\xrightarrow{\sigma} (\nu) z P^{'}$
+	  \end{tabular}
+	&
+	  $\inferrule* [left=\bf{LComSng}]{
+	      P \;\xrightarrow{x(y)} P^{'}
+	    \\
+	      Q\;\xrightarrow{\overline{x}z} Q^{'}
+	    \\
+	      z\notin fn(P)
+	  }{
+	    P|Q \;\xrightarrow{\tau} P^{'}\{z/y\}|Q^{'}
+	  }$
+      \\\\
+	  \bf{SInp}
+	  \begin{tabular}{c}
+	      $P \;\xrightarrow{\sigma} P^{'}\;\; \sigma\neq \tau$
+	    \\\hline
+	      $\underline{x(y)}.P \;\xrightarrow{x(y) \cdot \sigma} P^{'}$
+	  \end{tabular}
+	&
+	  $\inferrule* [left=\bf{LComSeq2}]{
+	      P \;\xrightarrow{\overline{x}z}\; P^{'}
+	    \\
+	      Q\;\xrightarrow{x(y)\cdot \sigma}\; Q^{'}
+	    \\
+	      z\notin fn(P)
+	  }{
+	    P|Q \;\xrightarrow{\sigma\{z/y\}}\; P^{'}|Q^{'}\{z/y\}
+	  }$
+      \\
+    \end{tabular}
+  \end{center}
+\end{definition}

@@ -1,0 +1,92 @@
+\documentclass[14pt, a4paper, draft]{book}
+
+
+\usepackage[latin1]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{a4wide}
+\usepackage{makeidx}
+\usepackage{multicol}
+\usepackage{amsthm}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{algorithm2e}
+\usepackage{vmargin}
+\usepackage[pdftex]{graphicx}
+%\usepackage{synttree}
+\usepackage{tikz}
+\usetikzlibrary{automata,positioning}
+\usepackage{proof}
+\usepackage{mathpartir}
+
+
+\newcommand{\openrigthchapter}[1]{\chapter{#1}}
+\newcommand{\HRule} {\rule{\linewidth}{0.5mm}}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+
+
+%\newenvironment{proof}[1][Proof]{\begin{trivlist}
+%\item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
+\newenvironment{abstract}{
+  \cleardoublepage  \begin{center}  \end{center}
+}{\vfill \null}
+\newenvironment{definition}[1][Definition]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
+\newenvironment{example}[1][Example]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
+\newenvironment{remark}[1][Remark]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
+
+%\newcommand{\qed}{\nobreak \ifvmode \relax \else
+%      \ifdim\lastskip<1.5em \hskip-\lastskip
+%      \hskip1.5em plus0em minus0.5em \fi \nobreak
+%      \vrule height0.75em width0.5em depth0.25em\fi}
+
+
+\title{Multi Pi Calculus\\[4mm]\small{boh}}
+
+\author{Federico Viscomi}
+
+\makeindex
+
+\begin{document}
+
+\pagestyle{empty}
+
+\include{titlepage2}
+\include{abstract}
+
+\tableofcontents
+
+%\input{ringraziamenti}
+
+\openrigthchapter{Multi ccs}
+\input{multiccs}
+
+\openrigthchapter{$\Pi$ calculus}
+\input{picalcolo}
+
+\openrigthchapter{Multi $\pi$ calculus solo output}
+\input{multipi1solooutput}
+
+\openrigthchapter{Multi $\pi$ calculus solo input}
+\input{multipi1soloinput}
+
+\openrigthchapter{Multi $\pi$ calculus input e output}
+\input{multipi1inputeoutput}
+
+% \openrigthchapter{Multi $\pi$ calculus versione 3}
+% \input{multipi3}
+
+
+%\openrigthchapter{Multi $\pi$ calculus 2}
+%\input{multipi2}
+
+\printindex
+
+\input{bibiografia}
+
+\end{document}

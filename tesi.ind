@@ -1,0 +1,48 @@
+\begin{theindex}
+
+  \item $\alpha$ convertible, 11
+  \item $bn$, 10
+
+  \indexspace
+
+  \item application of a substitution, 11
+
+  \indexspace
+
+  \item bind, 10
+  \item binder, 10
+
+  \indexspace
+
+  \item change of bound names, 10
+  \item congruence, 11
+  \item context, 11
+
+  \indexspace
+
+  \item guarded, 10
+  \item guarded occurrence, 11
+
+  \indexspace
+
+  \item n, 10
+  \item name occurrence
+    \subitem  bound, 10
+    \subitem  free, 10
+
+  \indexspace
+
+  \item scope, 10
+  \item structural congruence, 11
+  \item substitution, 10
+  \item sync
+    \subitem  multipi
+      \subsubitem  early, 24
+
+  \indexspace
+
+  \item transition relation
+    \subitem  early
+      \subsubitem  without structural congruence, 13
+
+\end{theindex}
