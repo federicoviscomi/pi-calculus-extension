@@ -1,0 +1,11 @@
+*.aux
+*.tex~
+*.backup
+*.aux
+*.bbl
+*.blg
+*.idx
+*.ilg
+*.ind
+*.log
+*.toc
