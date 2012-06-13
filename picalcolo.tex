@@ -936,7 +936,53 @@ Vanno bene le due regole Out e Einp che elenchi in sezione 2.3. NON HO CAPITO. d
 
 
 \section{behavioural semantic}
-%Metterci una semantica osservazionale (bisimulazione early e open) ed un po’ di proprietà algebriche (congruenza).
+
+\begin{definition}\index{congruence! strong}
+  We say that two agents $P$ and $Q$ are \emph{strongly congruent}, written $P\sim Q$ if
+  \begin{center}
+    $P\sigma \dot{\sim} Q\sigma$ for all substitution $\sigma$    
+  \end{center}
+\end{definition}
+
+We define a bisimulation for the early and the late semantic with structural congruence, for clarity when referring to the early semantic we index the transition with $ _{E}$. In the following we will use the phrase $bn(\alpha)$ is fresh in a definition to mean that the name in $bn(\alpha)$, if any, is different from any free name occurring in any of the agents in the definition.
+\begin{definition}\index{bisimulation! strong! early! with early semantic}
+  A \emph{strong early bisimulation with early semantic} is a symmetric binary relation $\mathbb{R}$ on agents satisfying the following: $P\mathbb{R} Q$ and $P\; \xrightarrow{\alpha}_{E}\; P^{'}$ where $bn(\alpha)$ is fresh implies that
+  \begin{center}
+    $\exists Q^{'}: Q\xrightarrow{\alpha}Q^{'}\; \wedge\; P^{'}\mathbb{R}Q^{'}$
+  \end{center}
+  $P$ and $Q$ are strongly early bisimilar, written $P\; \dot{\sim}_{E}\; Q$, if they are related by an early bisimulation.
+\end{definition}
+
+\begin{definition}\index{bisimulation! strong! early! with late semantic}
+  A \emph{strong early bisimulation with late semantic} is a symmetric binary relation $\mathbb{R}$ on agents satisfying the following: $P\mathbb{R} Q$ and $P\; \xrightarrow{\alpha}\; P^{'}$ where $bn(\alpha)$ is fresh implies that
+  \begin{itemize}
+    \item
+      if $\alpha=a(x)$ then $\forall u\; \exists Q^{'}:\;\; Q\xrightarrow{a(x)}Q^{'}\; \wedge\; P^{'}\{u/x\}\mathbb{R}Q^{'}\{u/x\}$
+    \item
+      if $\alpha$ is not an input then $\exists Q^{'}:\;\; Q\xrightarrow{\alpha}Q^{'}\; \wedge\; P^{'}\mathbb{R}Q^{'}$
+  \end{itemize}
+\end{definition}
+
+Early bisimulation is preserved by all operators except input prefix.
+
+\begin{definition}\index{congruence! early}
+  The \emph{early congruence} $\sim_{E}$ is defined by
+  \begin{center}
+    $P\sim_{E} Q$ is $\forall \sigma\; P\sigma \dot{\sim}_{E} Q\sigma$
+  \end{center}
+  where $\sigma$ is a substitution.
+\end{definition}
+
+The early congruence is the largest congruence in $\dot{\sim}_{E}$. 
+
+In the following definition we consider a subcalculus without restriction. 
+\begin{definition}\index{bisimulation! strong! open! early}
+  A \emph{strong open bisimulation} is a symmetric binary relation $\mathbb{R}$ on agents satisfying the following for all substitutions $\sigma$: $P\mathbb{R} Q$ and $P\sigma\; \xrightarrow{\alpha}\; P^{'}$ where $bn(\alpha)$ is fresh implies that
+  \begin{center}
+    $\exists Q^{'}:\;\; Q\sigma\xrightarrow{\alpha}Q^{'}\; \wedge\; P^{'}\mathbb{R}Q^{'}$
+  \end{center}
+  $P$ and $Q$ are strongly open bisimilar, written $P\; \dot{\sim}_{O}\; Q$ if they are related by an open bisimulation.
+\end{definition}
 
 
 
