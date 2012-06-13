@@ -17,9 +17,9 @@ Multi $\pi$ calculus is a conservative extension of the $\pi$ calculus in the se
 We have to extend the following definition to deal with the strong prefix:
 \begin{center}
   \begin{tabular}{ll}
-	$bn(\underline{\overline{x}y})\; =\; \emptyset$
+	$B(\underline{\overline{x}y}.Q, I)\; =\; B(Q,I)$
       &
-	$fn(\underline{\overline{x}y})\; =\; \{x,y\}$
+	$F(\underline{\overline{x}y}.Q, I)\; =\; \{x,\overline{x},y,\overline{y}\}\cup F(Q, I)$
     \\
   \end{tabular}
 \end{center}
