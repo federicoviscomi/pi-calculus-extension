@@ -250,6 +250,7 @@ We can make some clarification on the axioms of the structural congruence:
   \item[$\alpha\; conversion$]
     is the $\alpha$ conversion, i.e., the choice of bound names, it identifies agents like $x(y).\overline{z}y$ and $x(w).\overline{z}w$. In the semantic of pi calculus we can use the structural congruence with the rule SC-ALP or the SOS rule
     \begin{center}
+      \bf{Alpha}
       \begin{tabular}{c}
 	  $P\xrightarrow{\alpha}P^{'}\;\; P\stackrel{\alpha}{\equiv}Q$
 	\\\hline
@@ -311,6 +312,7 @@ The semantic of a $\pi$ calculus process is a labeled transition system such tha
       \item unbound output $\overline{x}y$
       \item the silent action $\tau$
       \item bound output $\overline{x}(y)$
+      \item serve anche il bound input? non sono sicuro dell'utilita' delle regole CloseLIn, CloseRIn e OpenIn
     \end{itemize}
     The set of actions is $\mathbb{A}$, we use $\alpha$ to range over the set of actions.
   \item
@@ -430,7 +432,7 @@ there is no substitution, instead the substitution occurres at an early point in
 	&
 	    \bf{ClsRIn}
 	    \begin{tabular}{c}
-		$P \xrightarrow{x(\nu z)} P^{'}$  
+		$P \xrightarrow{x(z)} P^{'}$  
 		$Q \xrightarrow{\overline{x}z} Q^{'}$ 
 		$z\notin fn(P)$
 	      \\\hline
@@ -471,7 +473,6 @@ there is no substitution, instead the substitution occurres at an early point in
   \[
     \inferrule* [left=CloseR] {
 	\inferrule* [left=Einp] {
-	  b\notin fn(P)
 	}{
 	  a(x).P\; \xrightarrow{ab} P\{b/x\}
 	}
@@ -493,7 +494,6 @@ there is no substitution, instead the substitution occurres at an early point in
     }
   \]
 
-  If $b \in fn(P)$ ?
 \end{example}
 
 \begin{example}
@@ -501,27 +501,29 @@ there is no substitution, instead the substitution occurres at an early point in
     \begin{center}
       $((\nu b) a(x).P)\; |\; \overline{a}b.Q\; \xrightarrow{\tau}\; (\nu c) (P\{c/b\}\{b/x\}\; |\; Q)$
     \end{center}
-%     \[
-% 	\inferrule* [left=ECloseL] {
-% 	    \inferrule* [left=Res] {
-% 	      \inferrule* [left=EInp] {
-% 	      }{
-% 		a(x).P\; \xrightarrow{a ?}\;  P\{\}
-% 	      }
-% 	    }{
-% 	      (\nu b) a(x).P\; \xrightarrow{a ?}\; (\nu b) P\{\}
-% 	    }
-% 	  \\
-% 	    \inferrule* [left=Out] {
-% 	    }{
-% 	      \overline{a}b.Q\; \xrightarrow{\overline{a}b}\; Q
-% 	    }
-% 	  \\
-% 	    b\notin fn(P)
-% 	}{
-% 	  ((\nu b) a(x).P)\; |\; \overline{a}b.Q\; \xrightarrow{\tau}\; (\nu c) (P\{c/b\}\{b/x\}\; |\; Q)
-% 	}
-%     \]
+    where $c\notin n(P)$
+%      \[
+%  	\inferrule* [left=ECloseL] {
+%  	    \inferrule* [left=Res] {
+%  	      \inferrule* [left=EInp] {
+%  	      }{
+%  		a(x).P\; \xrightarrow{a ?}\;  P\{\}
+%  	      }
+%  	    }{
+%  	      (\nu b) a(x).P\; \xrightarrow{a ?}\; (\nu b) P\{\}
+%  	    }
+%  	  \\
+%  	    \inferrule* [left=Out] {
+%  	    }{
+%  	      \overline{a}b.Q\; \xrightarrow{\overline{a}b}\; Q
+%  	    }
+%  	  \\
+%  	    b\notin fn(P)
+%  	}{
+%  	  ((\nu b) a(x).P)\; |\; \overline{a}b.Q\; \xrightarrow{\tau}\; (\nu c) (P\{c/b\}\{b/x\}\; |\; Q)
+%  	}
+%      \]
+  come faccio? devo aggiungere la regola $\bf{Alpha}$?
 \end{example}
 
 
