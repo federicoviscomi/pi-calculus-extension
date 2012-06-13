@@ -326,7 +326,7 @@ In the following section we present the early semantic without structural congru
 \end{center}
 there is no substitution, instead the substitution occurres at an early point in the inference of this translation, namely during the inference of the input action. 
 
-
+ 
 \begin{definition}\index{transition relation! early! without structural congruence}
   The \emph{early transition relation} $\rightarrow\subseteq \mathbb{P}\times \mathbb{A} \times \mathbb{P}$ is the smallest relation induced by the following rules:
 
@@ -694,6 +694,9 @@ there is no substitution, instead the substitution occurres at an early point in
 \end{example}
 
 
+
+Vanno bene le due regole Out e Einp che elenchi in sezione 2.3. NON HO CAPITO. devo usare le regole Out ed EInp della sezione 2.3 nella sezione 2.5?
+
 \section{late semantic without structural congruence}
 \begin{definition}\index{transition relation! pi! late! without structural congruence}
   The \emph{late transition relation without structural congruence} $\rightarrow\subseteq \mathbb{P}\times \mathbb{A} \times \mathbb{P}$ is the smallest relation induced by the following rules:
@@ -748,12 +751,12 @@ there is no substitution, instead the substitution occurres at an early point in
 	      $P|Q \xrightarrow{\tau} P^{'}\{z/y\}|Q^{'}$
 	  \end{tabular}	
 	&
-	  \bf{Cns}
+	  \bf{RCom}
 	  \begin{tabular}{c}
-	    $A(\tilde{x}) \stackrel{def}{=} P\; P\{\tilde{y}/\tilde{x}\} \xrightarrow{\alpha} P^{'}$
-	      \\\hline
-	    $A(\tilde{y}) \xrightarrow{\alpha} P^{'}$
-	  \end{tabular}
+	      $P \xrightarrow{\overline{x}z} P^{'}\;\; Q\xrightarrow{x(y)} Q^{'}\;\; z\notin fn(P)$
+	    \\\hline
+	      $P|Q \xrightarrow{\tau} P^{'}|Q^{'}\{z/y\}$
+	  \end{tabular}	
       \\\\
 	  \bf{Opn}
 	  \begin{tabular}{c}
@@ -770,9 +773,9 @@ there is no substitution, instead the substitution occurres at an early point in
       \\\\
 	  \bf{CloseL}
 	  \begin{tabular}{c}
-	      $P\; \xrightarrow{\overline{x}(z)}\; P^{'}$  $Q \xrightarrow{xy} Q^{'}$ $z\notin fn(Q)$
+	      $P\; \xrightarrow{\overline{x}(z)}\; P^{'}$  $Q \xrightarrow{xz} Q^{'}$ $z\notin fn(Q)$
 	    \\\hline
-	      $P|Q\; \xrightarrow{\tau}\; (\nu z)(P^{'}|\{z/y\}Q^{'})$
+	      $P|Q\; \xrightarrow{\tau}\; (\nu z)(P^{'}|Q^{'})$
 	  \end{tabular}
 	&
 	  \bf{CloseR}
@@ -786,6 +789,13 @@ there is no substitution, instead the substitution occurres at an early point in
 	  \begin{tabular}{c}
 	    \hline
 	      $\tau.P \xrightarrow{\tau} P$
+	  \end{tabular}
+	&
+	  \bf{Cns}
+	  \begin{tabular}{c}
+	    $A(\tilde{x}) \stackrel{def}{=} P\; P\{\tilde{y}/\tilde{x}\} \xrightarrow{\alpha} P^{'}$
+	      \\\hline
+	    $A(\tilde{y}) \xrightarrow{\alpha} P^{'}$
 	  \end{tabular}
     \end{tabular}
   \end{center}
@@ -926,5 +936,7 @@ there is no substitution, instead the substitution occurres at an early point in
 
 
 \section{behavioural semantic}
-%Metterci una semantica osservazionale (bisimulazione early e open) ed un po' di proprieta' algebriche (congruenza).
+%Metterci una semantica osservazionale (bisimulazione early e open) ed un po’ di proprietà algebriche (congruenza).
+
+
 
