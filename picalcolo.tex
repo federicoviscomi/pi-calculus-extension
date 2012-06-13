@@ -44,7 +44,7 @@ and they have the following intuitive meaning:
 To resolve ambiguity we can use parentheses and observe the conventions that prefixing and restriction bind more tightly than composition and prefixing binds more tightly than sum. 
 
 \begin{definition} \index{binder} \index{bind} \index{name occurrence! bound} \index{scope}
-  We say that the input prefix $x(z).P$\emph{binds} $z$ in $P$ or is a \emph{binder} for $z$ in $P$. We also say that $P$ is the \emph{scope} of the binder and that any occurrence of $z$ in $P$ are \emph{bound} by the binder. The restriction operator $(\nu z)P$ and the is also a binder for $z$. The definition of an identifier $A(x_{1}, \cdots, x_{n}) = P$ is also a binder, specifically the names $x_{1}, \cdots, x_{n}$ are bound in the process $P$.
+  We say that the input prefix $x(z).P$ \emph{binds} $z$ in $P$ or is a \emph{binder} for $z$ in $P$. We also say that $P$ is the \emph{scope} of the binder and that any occurrence of $z$ in $P$ are \emph{bound} by the binder. There are two other binders: the restriction operator $(\nu z)P$ is a binder for $z$ in $P$ and the definition of an identifier $A(x_{1}, \cdots, x_{n}) = P$ is a binder, specifically the names $x_{1}, \cdots, x_{n}$ are bound in the process $P$.
 \end{definition}
 
 \begin{definition} \index{$bn$}
@@ -55,13 +55,13 @@ To resolve ambiguity we can use parentheses and observe the conventions that pre
       \\\\
 	$B(\overline{x}y.Q, I)\; =\; B(Q, I)$
       \\\\
-	$B(x(y).Q, I)\; =\; \{y\}\cup B(Q, I)$
+	$B(x(y).Q, I)\; =\; \{y,\overline{y}\}\cup B(Q, I)$
       \\\\
 	$B(\tau.Q, I)\; =\; B(Q, I)$
       \\\\
 	$B(A(x_{1},\cdots, x_{n}), I)=\left\{
 	  \begin{array}{ll}
-		\{x_{1},\cdots, x_{n}\}\cup B(Q, I\cup \{A\})
+		\{x_{1},\overline{x_{1}},\cdots, x_{n},\overline{x_{n}}\}\cup B(Q, I\cup \{A\})
 	      &
 		if\; A\stackrel{def}{=}Q\; and\; A\notin I
 	    \\
@@ -74,7 +74,7 @@ To resolve ambiguity we can use parentheses and observe the conventions that pre
       \\\\
 	$B(Q|R,I)\; =\; B(Q,I)\cup B(R,I)$
       \\\\
-	$B((\nu a)Q, I)\; =\; \{a, \overline{a}\}\cup B(Q, I)$
+	$B((\nu x)Q, I)\; =\; \{x, \overline{x}\}\cup B(Q, I)$
     \end{tabular}
   \end{center}
 \end{definition}
@@ -87,9 +87,9 @@ To resolve ambiguity we can use parentheses and observe the conventions that pre
     \begin{tabular}{l}
 	$F(0, I)\; =\; \emptyset$
       \\\\
-	$F(\overline{x}y.Q, I)\; =\; \{x,y\}\cup F(Q, I)$
+	$F(\overline{x}y.Q, I)\; =\; \{x,\overline{x},y,\overline{y}\}\cup F(Q, I)$
       \\\\
-	$F(x(y).Q, I)\; =\; (\{x\}\cup F(Q, I))-\{y,\overline{y}\}$
+	$F(x(y).Q, I)\; =\; \{x,\overline{x}\}\cup (F(Q, I)-\{y,\overline{y}\})$
       \\\\
 	$F(\tau.Q, I)\; =\; F(Q, I)$
       \\\\
@@ -108,7 +108,7 @@ To resolve ambiguity we can use parentheses and observe the conventions that pre
       \\\\
 	$F(Q|R,I)\; =\; F(Q,I)\cup F(R,I)$
       \\\\
-	$F((\nu a)Q, I)\; =\; F(Q, I)-\{a, \overline{a}\}$
+	$F((\nu x)Q, I)\; =\; F(Q, I)-\{x,\overline{x}\}$
     \end{tabular}
   \end{center}
 \end{definition}
@@ -698,15 +698,18 @@ there is no substitution, instead the substitution occurres at an early point in
 Vanno bene le due regole Out e Einp che elenchi in sezione 2.3. NON HO CAPITO. devo usare le regole Out ed EInp della sezione 2.3 nella sezione 2.5?
 
 \section{late semantic without structural congruence}
+
 \begin{definition}\index{transition relation! pi! late! without structural congruence}
   The \emph{late transition relation without structural congruence} $\rightarrow\subseteq \mathbb{P}\times \mathbb{A} \times \mathbb{P}$ is the smallest relation induced by the following rules:
   \begin{center}
     \begin{tabular}{ll}
 	  \bf{LInp}
 	  \begin{tabular}{c}
-	    $z\notin fn(P)$
+% 	    $z\notin fn(P)$
+	    ?
 	    \\\hline
-	    $x(z).P \xrightarrow{xz} P$
+	    ?
+% 	    $x(z).P \xrightarrow{xz} P$
 	  \end{tabular}
 	&
 	  \bf{Res}
@@ -804,6 +807,14 @@ Vanno bene le due regole Out e Einp che elenchi in sezione 2.3. NON HO CAPITO. d
 
 
 \section{late semantic with structural congruence}
+In this case the set of actions $\mathbb{A}$ contains
+\begin{itemize}
+      \item bound input $x(y)$
+      \item unbound output $\overline{x}y$
+      \item the silent action $\tau$
+      \item bound output $\overline{x}(y)$
+\end{itemize}
+
 \begin{definition}\index{transition relation! pi! late! with structural congruence}
   The \emph{late transition relation with structural congruence} $\rightarrow\subseteq \mathbb{P}\times \mathbb{A} \times \mathbb{P}$ is the smallest relation induced by the following rules:
   \begin{center}
