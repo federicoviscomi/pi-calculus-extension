@@ -178,56 +178,18 @@ Bologna, \\Mura A. Zamboni, 7,
 
 
 \begin{abstract}
-Multi-CCS extends conservatively CCS with an operator of strong 
-prefixing able to model atomic sequences of actions as well as multiparty synchronization.
-We equip this calculus with an interleaving semantics, which makes use of a limited 
-structural congruence in order to ensure that parallel composition be associative.
-Unfortunately, this semantics is not compositional, as it is not a congruence for parallel composition:
-in $p \para q$, an atomic sequence performed by a process $p$ can sense, to some extent, 
-the degree of concurrency of the parallel component $q$. Step bisimilarity, however, turns out to be too discriminating:
-there are interleaving bisimilar processes, that no parallel context can tell apart, that are not step bisimilar.
-Then, linear-step bisimilarity is introduced 
-and proved to be the coarsest congruence contained in interleaving bisimilarity. 
-A finite sound and complete axiomatization of linear-step bisimilarity is presented for finite Multi-CCS
-processes.
+Multi-CCS extends conservatively CCS with an operator of strong prefixing able to model atomic sequences of actions as well as multiparty synchronization. We equip this calculus with an interleaving semantics, which makes use of a limited  structural congruence in order to ensure that parallel composition be associative. Unfortunately, this semantics is not compositional, as it is not a congruence for parallel composition: in $p \para q$, an atomic sequence performed by a process $p$ can sense, to some extent, the degree of concurrency of the parallel component $q$. Step bisimilarity, however, turns out to be too discriminating: there are interleaving bisimilar processes, that no parallel context can tell apart, that are not step bisimilar. Then, linear-step bisimilarity is introduced  and proved to be the coarsest congruence contained in interleaving bisimilarity. A finite sound and complete axiomatization of linear-step bisimilarity is presented for finite Multi-CCS processes.
 \end{abstract}
 
 \section{Introduction}
 
-CCS \cite{Mil89}, even if Turing-complete, is not expressive enough to model some useful
-behaviour. For instance, it does not support multiway synchronization, nor atomic transactions.
-In this line, it can be proved \cite{LR81,LV10} that a classic solution to the famous dining philosophers
-problem \cite{Dij71} that assumes atomicity in the acquisition of the forks (or equivalently, that requires
-a three-way synchronization among one philosopher and the two forks), cannot be provided in CCS.
+CCS \cite{Mil89}, even if Turing-complete, is not expressive enough to model some useful behaviour. For instance, it does not support multiway synchronization, nor atomic transactions. In this line, it can be proved \cite{LR81,LV10} that a classic solution to the famous dining philosophers problem \cite{Dij71} that assumes atomicity in the acquisition of the forks (or equivalently, that requires a three-way synchronization among one philosopher and the two forks), cannot be provided in CCS.
 
-Multi-CCS is a conservative extension to CCS to allow for the description of transactional behaviour,
-as well as multiparty synchronization expressed by means of an atomic sequence of binary CCS synchronizations.
-Syntactically, this is obtained by adding one prefixing operator $\underline\mu.p$, called {\em strong prefixing} 
-(in opposition to normal prefixing $\mu.p$):  in a process $\underline{\mu}.p$, action $\mu$ is the first one 
-of a transaction that continues with $p$, provided that $p$ can complete the transaction. 
-Therefore, for instance, $\underline{a}.b.p \deriv{ab} p$, i.e., the resulting
-transition system is labeled on sequences of actions. There is also a generalization of the 
-operational rule for communication
-that takes care of the synchronization of two sequences: if $p \deriv{\sigma_1} p'$ and $q \deriv{\sigma_2} q'$, then
-$p \para q \deriv{\sigma} p' \para q'$, where sequence $\sigma$ has been obtained by an interleaving (with possible synchronizations)
-of $\sigma_1$ and $\sigma_2$ where at least one synchronization has taken place. Sequence $\sigma$ can be 
-used for a possible synchronization with an additional process $r$: since $p \para q \deriv{\sigma} p' \para q'$,
-if $r \deriv{\sigma'} r'$, then $(p \para q) \para r \deriv{\sigma''} (p' \para q') \para r'$, hence representing a form of
-ternary synchronization, realized by means of an atomic sequence of binary synchronizations. In general,
-any form of multiway synchronization can be represented.
+Multi-CCS is a conservative extension to CCS to allow for the description of transactional behaviour, as well as multiparty synchronization expressed by means of an atomic sequence of binary CCS synchronizations. Syntactically, this is obtained by adding one prefixing operator $\underline\mu.p$, called {\em strong prefixing}  (in opposition to normal prefixing $\mu.p$): in a process $\underline{\mu}.p$, action $\mu$ is the first one  of a transaction that continues with $p$, provided that $p$ can complete the transaction.  Therefore, for instance, $\underline{a}.b.p \deriv{ab} p$, i.e., the resulting transition system is labeled on sequences of actions. There is also a generalization of the  operational rule for communication that takes care of the synchronization of two sequences: if $p \deriv{\sigma_1} p'$ and $q \deriv{\sigma_2} q'$, then $p \para q \deriv{\sigma} p' \para q'$, where sequence $\sigma$ has been obtained by an interleaving (with possible synchronizations) of $\sigma_1$ and $\sigma_2$ where at least one synchronization has taken place. Sequence $\sigma$ can be used for a possible synchronization with an additional process $r$: since $p \para q \deriv{\sigma} p' \para q'$, if $r \deriv{\sigma'} r'$, then $(p \para q) \para r \deriv{\sigma''} (p' \para q') \para r'$, hence representing a form of ternary synchronization, realized by means of an atomic sequence of binary synchronizations. In general, any form of multiway synchronization can be represented.
 
-Strong prefixing was introduced in \cite{GMM,GM90}. The calculus presented there was named A$^2$CCS.
-It differs from Multi-CCS for two important features. First, parallel composition is associative for Multi-CCS
-thanks to the introduction of a structural congruence $\equiv$ induced by a minimal set of equations. Second,
-the synchronization discipline on pairs of sequences is more liberal in Multi-CCS (it simply requires that at least
-one synchronization takes place) and less verbose (as intermediate occurrences of $\tau$ are dissolved, so
-that labels can be only of two types: either $\tau$ or a non-empty sequence of visibile actions).
+Strong prefixing was introduced in \cite{GMM,GM90}. The calculus presented there was named A$^2$CCS. It differs from Multi-CCS for two important features. First, parallel composition is associative for Multi-CCS thanks to the introduction of a structural congruence $\equiv$ induced by a minimal set of equations. Second, the synchronization discipline on pairs of sequences is more liberal in Multi-CCS (it simply requires that at least one synchronization takes place) and less verbose (as intermediate occurrences of $\tau$ are dissolved, so that labels can be only of two types: either $\tau$ or a non-empty sequence of visibile actions).
 
-Multi-CCS is very expressive and many well-known synchronization problems are easily solvable, e.g., 
-dining philosophers \cite{Dij71}, concurrent readers and writers \cite{CHP71}, 
-Patil's cigarettes' smokers \cite{Pat71}, etc.. 
-In \cite{GV10a}, it is also shown that
-such a calculus is expressive enough to represent all finite Place/Transition Petri nets. 
+Multi-CCS is very expressive and many well-known synchronization problems are easily solvable, e.g., dining philosophers \cite{Dij71}, concurrent readers and writers \cite{CHP71}, Patil's cigarettes' smokers \cite{Pat71}, etc.. In \cite{GV10a}, it is also shown that such a calculus is expressive enough to represent all finite Place/Transition Petri nets. 
 
 In this paper, we investigate the behavioural semantics for Multi-CCS. Interleaving bisimilarity 
 enjoys some expected algebraic laws but it is not compositional, as it is not a congruence for parallel 
@@ -569,7 +531,7 @@ lts for $DP$, depicted in Figure \ref{ltsdining}.
 \begin{figure}[t]
 \centering
 % \includegraphics[width=106mm]{philinter}
-\input{philinter}
+%\input{philinter}
 \caption{The labeled transition system for $DP$.}
 \label{ltsdining}
 \end{figure}

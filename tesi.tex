@@ -6,9 +6,10 @@
 \usepackage{a4wide}
 \usepackage{makeidx}
 \usepackage{multicol}
-\usepackage{amsthm}
+\usepackage{amsfonts}
 \usepackage{amsmath}
 \usepackage{amssymb}
+\usepackage{amsthm}
 \usepackage{algorithm2e}
 \usepackage{vmargin}
 \usepackage[pdftex]{graphicx}
@@ -17,6 +18,19 @@
 \usetikzlibrary{automata,positioning}
 \usepackage{proof}
 \usepackage{mathpartir}
+
+\usepackage{prooftree}
+\usepackage{epsfig}
+\usepackage{latexsym}
+\usepackage{graphicx}
+\usepackage{color}
+\usepackage{url}
+\usepackage{stmaryrd}
+\usepackage{pgf,pgfarrows,pgfnodes,pgfautomata,pgfheaps,pgfshade}
+
+
+
+
 
 
 \newcommand{\openrigthchapter}[1]{\chapter{#1}}
@@ -46,6 +60,229 @@
 %      \vrule height0.75em width0.5em depth0.25em\fi}
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\newtheorem{exercise}{Exercise}
+
+
+
+
+
+
+
+
+
+
+
+
+\newcommand{\post}[1]{\mbox{$#1^{\bullet}$}}
+\newcommand{\pre}[1]{\mbox{$^{\bullet}#1$}}
+\newcommand{\postr}[1]{#1^{\circ}}
+\newcommand{\prer}[1]{\mbox{$^{\circ}#1$}}
+
+%\newcommand{\deriv}[1]{{\mbox{${\:\stackrel{#1}{\rightarrow}\:}$}}}
+\newcommand{\hide}{/}
+%\newcommand{\restr}{\backslash}
+%\newcommand{\fine}{\hfill{$\rule{2mm}{2mm}$}}
+%\newcommand{\proof}{\noindent{\em Proof.}\ \  }
+
+\newcommand{\lv}[1]{\Lambda_{#1}}
+\newcommand{\hv}[1]{\mathcal{ H}_{#1}}
+\newcommand{\lvtrace}{\stackrel{\Lambda}{\approx}_{tr}}
+\newcommand{\lvbis}{\stackrel{\Lambda}{\approx}_{bis}}
+
+\newcommand{\redStr}[1]{\color{red}#1\color{black}\ }
+\newcommand{\angbr}[1]{\langle #1 \rangle}
+\renewcommand{\labelitemi}{$\bullet$}
+\renewcommand{\labelitemii}{$\bullet$}
+\renewcommand{\labelitemiii}{$\bullet$}
+
+\newtheorem{adefinizione}{Definition}[section]
+\newtheorem{afact}[adefinizione]{Fact}
+\newtheorem{alemma}[adefinizione]{Lemma}
+\newtheorem{teorema}[adefinizione]{Theorem}
+\newtheorem{corollario}[adefinizione]{Corollary}
+\newtheorem{proposizione}[adefinizione]{Proposition}
+\newtheorem{esempio}[adefinizione]{Example}
+
+\newcommand{\mmuo}[1] {\underline{ \overline{ #1 } } }
+\newcommand{\ouno}[2]{ \mmuo{ #1 } \mmang{ #2}  }
+\newcommand{\mmo}[1] {\overline{ #1 } } 
+\newcommand{\ozero}[2]{ \mmo{ #1 } \mmang{ #2}  }
+\newcommand{\mmang}[1]{ \langle { #1 } \rangle }
+
+\newcommand{\mmu}[1] {\underline{ #1 } }
+\newcommand{\iuno}[2]{ \mmu{ #1 } ( { #2 } )  }
+\newcommand{\izero}[2]{ { #1 } ( { #2 } )  }
+\newcommand{\parallelo}{ \; \, \big| \, \; }
+\newcommand{\bang}{!}
+\newcommand{\new}[1]{ \nu {#1}  }
+\newcommand{\parallelobig}{\quad \Big| \quad }
+\newcommand{\dueduepuntiuguale}{ \quad ::= \quad }
+\newcommand{\buco}[2]{\begin{figure}[!hbp]\makebox[\textwidth]{\framebox[#1]{\rule{0pt}{#2}}}\end{figure}}
+\newcommand{\barb}{\downarrow}
+\newcommand{\nbarb}{\downarrow \hspace{-9pt} \smallsetminus \;}
+\newcommand{\ramencoding}[1]{ { \langle \spazio \big[ \;  { #1 }  \; \big] \spazio \rangle}}
+\newcommand{\mdef}{ \triangleq }
+\newcommand{\mydef}{\mdef}
+\newcommand{\myto}{\;\rightarrow\;}
+\newcommand{\myslowto}{\;\mapsto\;}
+\newcommand{\myprioto}{\;\twoheadrightarrow\;}
+\newcommand{\nmyprioto}{\myprioto\mspace{-24mu}\raisebox{0pt}[0pt][0pt]{\text{\raisebox{1.4pt}{\tiny /}}}\;\;\;}
+
+
+%\newcommand{\proof}{{\it Proof: }}
+\newcommand{\linib}{\mbox{$\sqsubset$}}
+\newcommand{\ginib}{\mbox{$\sqsupset$}}
+\newcommand{\leqinib}{\mbox{$\sqsubseteq$}}
+\newcommand{\geqinib}{\mbox{$\sqsupseteq$}}
+\newcommand{\emlim}{EL}
+\newcommand{\fine}{{\mbox{ }\nolinebreak\hfill{$\Box$}}}
+%\newcommand{\post}[1]{#1^{\bullet}}
+%\newcommand{\pre}[1]{{^{\bullet}#1}}
+\newcommand{\inib}[1]{{^{\circ}#1}}
+\newcommand{\test}[1]{\widehat{#1}}
+\newcommand{\init}{*}
+
+\newcommand{\postn}[2]{#1^{\bullet_{#2}}}
+\newcommand{\pren}[2]{{^{\bullet_{#2}}#1}}
+%\newcommand{\testn}[2]{\whidehat_{#2}{#1}}
+
+% macro causal semantics
+\newcommand{\Max}[1]{Max(#1)}
+\newcommand{\Min}[1]{Min(#1)}
+\newcommand{\ctop}{\mbox{${\cal F}$}}
+\newcommand{\ptoc}{\mbox{${\cal G}$}}
+
+% macro sem picalcolo
+\newcommand{\Conc}{\mbox{$Conc$}}
+\newcommand{\dec}{\mbox{$dec$}}
+\newcommand{\sost}[2]{\mbox{$\{#1/#2\}$}}
+\newcommand{\sostd}[4]{\mbox{$\{#1/#2,#3/#4\}$}}
+\newcommand{\deriv}[1]{{\mbox{${\:\stackrel{#1}{\longrightarrow}\:}$}}}
+\newcommand{\sderiv}[1]{{\mbox{${\:\stackrel{#1}{\rightarrow}\:}$}}}
+\newcommand{\Deriv}[1]{{\mbox{${\:\stackrel{#1}{\Longrightarrow}\:}$}}}
+\newcommand{\derivas}[1]{{\mbox{${\:\stackrel{#1}{\longrightarrow_s}\:}$}}}
+\newcommand{\derivls}[1]{{\mbox{${\:\stackrel{#1}{\longrightarrow_{ls}}\:}$}}}
+%\newcommand{\derivstar}[1]{{\mbox{${\:\stackrel{#1}{\longrightarrow^*}\:}$}}}
+\newcommand{\derivstar}[1]{{\mbox{${\:\stackrel{#1}{\longrightarrow}\!\phantom{}^*\:}$}}}
+\newcommand{\nonderiv}[1]{{\mbox{${\:\not\stackrel{#1}{\longrightarrow}\:}$}}}
+\newcommand{\nonderivas}[1]{{\mbox{${\:\not\stackrel{#1}{\longrightarrow_{s}}\:}$}}}
+\newcommand{\nonderivls}[1]{{\mbox{${\:\not\stackrel{#1}{\longrightarrow_{ls}}\:}$}}}
+\newcommand{\Nderiv}[1]{{\mbox{${\:\stackrel{#1}{\nrightarrow}\:}$}}}
+\newcommand{\nderiv}[1]{\nrightarrow}
+\newcommand{\cderiv}[1]{{\mbox{${\:\stackrel{#1}{-\!-\!\!\!\longrightarrow}\:}$}}}
+\newcommand{\eqdef}{{\mbox{${\stackrel{def}{=}}$}}}
+\newcommand{\spazio}{\hspace{2.4em}}
+\newcommand{\bigfrac}[2]{
+\renewcommand{\arraystretch}{1.5}
+\begin{array}{c}#1\\
+\hline
+#2
+\end{array}}
+\newcommand{\restr}[1]{\mbox{$({\bf\nu} #1)$}}
+\newcommand{\para}{\mbox{$\,|\,$}}
+\newcommand{\recx}[1]{\mbox{rec$\, X.#1$}}
+\newcommand{\parti}{\mbox{\raisebox{.4ex}{$\wp$}}}
+%\newcommand{\minus}{\stackrel
+%{\raisebox{-.1cm}[.1cm][.1cm]{.}}{\raisebox{-.01cm}[.1cm][.1cm]{-}}}
+\newcommand{\minus}{\stackrel{\cdot}{-}}
+\newcommand{\myequiv}{\stackrel{\rm def}{=}}
+\newcommand{\nil}{\mbox{\bf 0}}
+\newcommand{\1}{\mbox{\bf 1}}
+\newcommand{\alphaconv}{\equiv_{\alpha}}
+
+\renewcommand{\mid}{\;\;\big|\;\;}
+
+\newcommand{\encoding}[2]{\ensuremath{\llbracket #2 \rrbracket^{#1}}}
+\newcommand{\undef}{\mbox{$\bot$}}
+\newcommand{\rec}[2]{\mbox{rec}\, #1.#2}
+
+% \def\bbbn{{\rm I\!N}}
+\newcommand{\nat}{{\mathbb N}}
+\newcommand{\Net}{\mathit{Net}}
+\newcommand{\Reach}{\mathit{Reach}}
+\newcommand{\TS}{\mathit{TS}}
+\newcommand{\fin}{\mathit{fin}}
+\newcommand{\dom}{\mathit{dom}}
+\newcommand{\IMG}{\mathit{IMG}}
+\newcommand{\SMG}{\mathit{SMG}}
+\newcommand{\fork}{\mathit{fork}}
+\newcommand{\Act}{\mathit{Act}}
+\newcommand{\MSync}{\mathit{MSync}}
+\newcommand{\GSync}{\mathit{GSync}}
+\newcommand{\Sync}{\mathit{Sync}}
+\newcommand{\Int}{\mathit{Int}}
+
+\newcommand{\A}[1]{\textcolor{red}{#1}}
+\newcommand{\inet}[1]{\ensuremath{INet(#1)}}
+
+\newcommand{\LL}[1]{\mbox{\em{#1}}}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 \title{Multi Pi Calculus\\[4mm]\small{boh}}
 
 \author{Federico Viscomi}
@@ -64,7 +301,7 @@
 %\input{ringraziamenti}
 
 \openrigthchapter{Multi ccs}
-%\input{multiccs}
+\input{visc1}
 
 \openrigthchapter{$\Pi$ calculus}
 \input{picalcolo}

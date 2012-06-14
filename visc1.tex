@@ -2,32 +2,17 @@
 
 
 \abstract*{
-We present Multi-CCS, an extension to CCS obtained by introducing one additional operator of 
-prefixing $\underline\mu.p$, called {\em strong prefixing}
-(in opposition to normal prefixing $\mu.p$), with the capability of expressing transactions and, together with 
-parallel composition, also multi-party synchronization.
+  We present Multi-CCS, an extension to CCS obtained by introducing one additional operator of prefixing $\underline\mu.p$, called {\em strong prefixing} (in opposition to normal prefixing $\mu.p$), with the capability of expressing transactions and, together with parallel composition, also multi-party synchronization.
 }
 
 \abstract{
-We present Multi-CCS, an extension to CCS obtained by introducing one additional operator of 
-prefixing $\underline\mu.p$, called {\em strong prefixing}
-(in opposition to normal prefixing $\mu.p$), with the capability of expressing transactions and, together with 
-parallel composition, also multi-party synchronization.
+  We present Multi-CCS, an extension to CCS obtained by introducing one additional operator of prefixing $\underline\mu.p$, called {\em strong prefixing} (in opposition to normal prefixing $\mu.p$), with the capability of expressing transactions and, together with  parallel composition, also multi-party synchronization.
 }
 
 
 \section{Lack of Expressiveness of CCS}
 
-As we have seen in Section \ref{CCS-turing}, CCS is a Turing-complete formalism, i.e., it has the 
-ability to compute all the computable functions. 
-Therefore, one may think that it is able to solve any kind of problems. 
-Unfortunately this is not the case: Turing-completeness is not enough to ensure the solvability 
-of all the problems in concurrency theory. For instance, it is well-known that a classic
-solution to the famous dining philosophers
-problem \cite{Dij71} (see below for details)  that assumes atomicity in the acquisition of the forks (or, equivalently,
-that requires a three-way synchronization among one philosopher and the two forks), 
-cannot be provided  in CCS. An extension to CCS able to solve, among others, also this problem 
-is the subject of this chapter.
+  As we have seen in Section \ref{CCS-turing}, CCS is a Turing-complete formalism, i.e., it has the ability to compute all the computable functions. Therefore, one may think that it is able to solve any kind of problems. Unfortunately this is not the case: Turing-completeness is not enough to ensure the solvability of all the problems in concurrency theory. For instance, it is well-known that a classic solution to the famous dining philosophers problem \cite{Dij71} (see below for details)  that assumes atomicity in the acquisition of the forks (or, equivalently, that requires a three-way synchronization among one philosopher and the two forks), cannot be provided  in CCS. An extension to CCS able to solve, among others, also this problem is the subject of this chapter.
 
 %This important observation spurs an obvious question: when a formalism for concurrency is {\em complete}? 
 %And with respect to what? Unfortunately, we still miss a definitive answer to this philosophical question.
@@ -35,96 +20,80 @@ is the subject of this chapter.
 %unveil some aspects of this problem.
 
 \subsection{Dining philosophers}
-This famous problem, proposed by Dijkstra in \cite{Dij71}, is defined as follows.
-Five philosophers sit at a round table, with a private plate, and each of the five forks is shared by two neighbors.
-Philosophers can think and eat; in order to eat, a philosopher has to acquire both forks that he shares with his neighbors,
-starting from the fork at his left and then the one at his right. 
-All philosophers should behave the same, so the problem is intrinsically symmetric.
+  This famous problem, proposed by Dijkstra in \cite{Dij71}, is defined as follows. Five philosophers sit at a round table, with a private plate, and each of the five forks is shared by two neighbors. Philosophers can think and eat; in order to eat, a philosopher has to acquire both forks that he shares with his neighbors, starting from the fork at his left and then the one at his right. All philosophers should behave the same, so the problem is intrinsically symmetric.
 
-A tentative solution in CCS to this problem can be given as follows, where for simplicity sake we consider
-the subproblem with two philosophers only.
-The forks can be defined by the constants $F_i$: 
-\begin{eqnarray*}
-F_i \eqdef  \overline{up_i}.\overline{dn_i}.F_i \; \;  \mbox{   for  }i = 0, 1  
-\end{eqnarray*}
-The two philosophers can be described as 
-\begin{eqnarray*}
-P_i \eqdef think.P_i +  up_i.up_{i+1}.eat.dn_i.dn_{i+1}.P_i  \; \;  \mbox{   for  }i = 0, 1 
-\end{eqnarray*}
-where $i+1$ is computed modulo $2$. 
-The whole system is 
-\begin{eqnarray*}
-DP \;  \eqdef \;  \restr{L}(((P_0\para P_1) \para F_0) \para F_1) 
-\end{eqnarray*}
-where $L = \{up_0, up_1, dn_0, dn_1\}$. 
+  A tentative solution in CCS to this problem can be given as follows, where for simplicity sake we consider the subproblem with two philosophers only. vThe forks can be defined by the constants $F_i$: 
+  \begin{eqnarray*}
+    F_i \eqdef  \overline{up_i}.\overline{dn_i}.F_i \; \;  \mbox{   for  }i = 0, 1  
+  \end{eqnarray*}
+  The two philosophers can be described as 
+  \begin{eqnarray*}
+    P_i \eqdef think.P_i +  up_i.up_{i+1}.eat.dn_i.dn_{i+1}.P_i  \; \;  \mbox{   for  }i = 0, 1 
+  \end{eqnarray*}
+  where $i+1$ is computed modulo $2$. 
+  The whole system is 
+  \begin{eqnarray*}
+    DP \;  \eqdef \;  \restr{L}(((P_0\para P_1) \para F_0) \para F_1) 
+  \end{eqnarray*}
+  where $L = \{up_0, up_1, dn_0, dn_1\}$. 
 
-Clearly this na\"ive solution would cause a deadlock exactly when the two philosophers take the fork at their left at the same time 
-and are waiting for the fork at their right. This is illustrated in Figure \ref{dp-dead-lts}, where the state $DP_d$ is a deadlock:
+  Clearly this na\"ive solution would cause a deadlock exactly when the two philosophers take the fork at their left at the same time and are waiting for the fork at their right. This is illustrated in Figure \ref{dp-dead-lts}, where the state $DP_d$ is a deadlock:
 
- $\begin{array}{llllllll}
-DP_d  & \eqdef  & \restr{L}(((P'_0\para P'_1) \para F'_0) \para F'_1) \\
-P'_i & \eqdef &  up_{i+1}.eat.dn_i.dn_{i+1}.P_i  \; \;  \mbox{   for  }i = 0, 1\\
-F'_i & \eqdef & \overline{dn_i}.F_i \; \;  \mbox{   for  }i = 0, 1 
- \end{array}$\\
-(You may also check this with $CWB$ for the original five philosophers case). 
+  $\begin{array}{llllllll}
+      DP_d  & \eqdef  & \restr{L}(((P'_0\para P'_1) \para F'_0) \para F'_1) 
+    \\
+      P'_i & \eqdef &  up_{i+1}.eat.dn_i.dn_{i+1}.P_i  \; \;  \mbox{   for  }i = 0, 1
+    \\
+      F'_i & \eqdef & \overline{dn_i}.F_i \; \;  \mbox{   for  }i = 0, 1
+    \\
+ \end{array}$
+  (You may also check this with $CWB$ for the original five philosophers case). 
 
-\begin{figure}[t]
-\centering
-\input{CH-06/ccs-lts-dp-tex}
-\caption{The two dining philosophers in CCS -- with deadlock.}
-\label{dp-dead-lts}
-\end{figure}
+  \begin{figure}[t]
+    \centering
+    %
+    \caption{The two dining philosophers in CCS -- with deadlock.}
+    \label{dp-dead-lts}
+  \end{figure}
 
 
-A well-known solution to this problem is to break the symmetry by inverting the order of
-acquisition of the forks for the last philosopher. In our restricted case with two philosophers only, we have that
-\begin{eqnarray*}
-P''_0 \eqdef think.P''_0 +  up_0.up_1.eat.dn_0.dn_1.P''_0  \\
-P''_1 \eqdef think.P''_1 +  up_0.up_1.eat.dn_1.dn_0.P''_1 
-\end{eqnarray*}
-and the whole system is now
-\begin{eqnarray*}
-DP' \;  \eqdef \;  \restr{L}(((P''_0\para P''_1) \para F_0) \para F_1) 
-\end{eqnarray*}
-whose lts is depicted in Figure \ref{dp-asym-lts}.
-This solution works correctly (i.e., no deadlock is introduced), but it is not compliant to the specification that requires that all philosophers
-are defined in the same way.
+  A well-known solution to this problem is to break the symmetry by inverting the order of acquisition of the forks for the last philosopher. In our restricted case with two philosophers only, we have that
+  \begin{eqnarray*}
+      P''_0 \eqdef think.P''_0 +  up_0.up_1.eat.dn_0.dn_1.P''_0  
+    \\
+      P''_1 \eqdef think.P''_1 +  up_0.up_1.eat.dn_1.dn_0.P''_1 
+  \end{eqnarray*}
+  and the whole system is now
+  \begin{eqnarray*}
+    DP' \;  \eqdef \;  \restr{L}(((P''_0\para P''_1) \para F_0) \para F_1) 
+  \end{eqnarray*}
+  whose lts is depicted in Figure \ref{dp-asym-lts}. This solution works correctly (i.e., no deadlock is introduced), but it is not compliant to the specification that requires that all philosophers are defined in the same way.
 
-\begin{figure}[t]
-\centering
-\input{CH-06/ccs-asym-dp-tex}
-\caption{The deadlock-free asymmetric solution of the two dining philosophers problem.}
-\label{dp-asym-lts}
-\end{figure}
+  \begin{figure}[t]
+    \centering
+    %\input{CH-06/ccs-asym-dp-tex}
+    \caption{The deadlock-free asymmetric solution of the two dining philosophers problem.}
+    \label{dp-asym-lts}
+  \end{figure}
 
-A simple, well-known solution is to force atomicity on the acquisition of the two forks so that either both are taken or none. 
-This requirement can be approximately satisified in CCS as follows:
-\begin{eqnarray*}
-P_i''' \eqdef think.P_i''' +  up_i.(dn_i.P_i''' + up_{i+1}.eat.dn_i.dn_{i+1}.P_i''')  \; \;  \mbox{   for  }i = 0, 1 
-\end{eqnarray*}
-where, in case the second fork in unavailable, the philosopher may put down the first fork and return to its initial state. 
-However, the new system
-\begin{eqnarray*}
-DP'' \;  \eqdef \;  \restr{L}(((P_0'''\para P_1''') \para F_0) \para F_1) 
-\end{eqnarray*}
-whose lts is depicted in Figure \ref{dp-live-lts-tex}, even if deadlock-free, may now diverge:
-the two philosophers
-may be engaged in a neverending livelock because the long operation of acquisition of the two forks may always fail.
+  A simple, well-known solution is to force atomicity on the acquisition of the two forks so that either both are taken or none. This requirement can be approximately satisified in CCS as follows:
+  \begin{eqnarray*}
+    P_i''' \eqdef think.P_i''' +  up_i.(dn_i.P_i''' + up_{i+1}.eat.dn_i.dn_{i+1}.P_i''')  \; \;  \mbox{   for  }i = 0, 1 
+  \end{eqnarray*}
+  where, in case the second fork in unavailable, the philosopher may put down the first fork and return to its initial state. However, the new system
+  \begin{eqnarray*}
+    DP'' \;  \eqdef \;  \restr{L}(((P_0'''\para P_1''') \para F_0) \para F_1) 
+  \end{eqnarray*}
+  whose lts is depicted in Figure \ref{dp-live-lts-tex}, even if deadlock-free, may now diverge: the two philosophers may be engaged in a neverending livelock because the long operation of acquisition of the two forks may always fail.
 
-\begin{figure}[t]
-\centering
-\input{CH-06/ccs-live-dp-tex}
-\caption{The symmetric solution of the two dining philosophers problem -- with livelock.}
-\label{dp-live-lts-tex}
-\end{figure}
+  \begin{figure}[t]
+    \centering
+    %\input{CH-06/ccs-live-dp-tex}
+    \caption{The symmetric solution of the two dining philosophers problem -- with livelock.}
+    \label{dp-live-lts-tex}
+  \end{figure}
 
-Unfortunately, a solution that implements correctly the atomic acquisition of the two forks
-cannot be programmed in CCS because it lacks any construct for atomicity that would also
-enable a multiway synchronization between one philosopher and the two forks. 
-Indeed, Francez and Rodeh proposed in \cite{FR80} a distributed, symmetric, deterministic solution to the dining philosophers problem in 
-CSP \cite{Hoa85} by exploiting its  multiway synchronization capability. Moreover, Lehmann and Rabin demonstrated that such a solution 
-does not exist in a language with only binary synchronization such as CCS \cite{LR81}. Hence, if we want to solve this problem
-in CCS, we have to extend its capabilities somehow.
+Unfortunately, a solution that implements correctly the atomic acquisition of the two forks cannot be programmed in CCS because it lacks any construct for atomicity that would also enable a multiway synchronization between one philosopher and the two forks.  Indeed, Francez and Rodeh proposed in \cite{FR80} a distributed, symmetric, deterministic solution to the dining philosophers problem in  CSP \cite{Hoa85} by exploiting its  multiway synchronization capability. Moreover, Lehmann and Rabin demonstrated that such a solution  does not exist in a language with only binary synchronization such as CCS \cite{LR81}. Hence, if we want to solve this problem in CCS, we have to extend its capabilities somehow.
 
 %We claim that the dining philosophers problem can be solved in a symmetric way -- without introducing 
 %deadlocks or livelocks --
@@ -182,7 +151,7 @@ The lts for $P_i$ is depicted in Figure \ref{ltsphil}.
 \begin{figure}[t]
 \centering
 % \includegraphics[width=106mm]{philinter}
-\input{./CH-06/phil-solo-tex}
+%\input{./CH-06/phil-solo-tex}
 \caption{The labeled transition system for $P_i$.}
 \label{ltsphil}
 \end{figure}
@@ -197,57 +166,44 @@ with the action $c$ of the other parallel component, hence atomicity is really e
 
 \begin{figure}[t]
 \centering
-\input{./CH-06/abc-tex}
+%\input{./CH-06/abc-tex}
 \caption{Two labeled transition systems.}
 \label{abc-atomic}
 \end{figure}
 
-\subsection{Multiparty and Transactional Synchronization}
+    \subsection{Multiparty and Transactional Synchronization}
 
-Rule (Com) of Table \ref{plain-ccs} must be extended as now transitions are labeled on sequences of actions.
-The new rule is\\
+      Rule (Com) of Table \ref{plain-ccs} must be extended as now transitions are labeled on sequences of actions. The new rule is\\
+      $\begin{array}{lcllcl}
+	  \mbox{(S-Com)}  
+	& 
+	  \bigfrac{p\deriv{\sigma_1} p'\spazio q\deriv{\sigma_2}q'}{p\para q \deriv{\sigma}p'\para q'} 
+	& 
+	  \Sync(\sigma_1,  \sigma_2, \sigma) \\
+      \end{array}$\\
 
-$\begin{array}{lcllcl}
-\mbox{(S-Com)}  & \bigfrac{p\deriv{\sigma_1} p'\spazio q\deriv{\sigma_2}q'}{p
-\para q \deriv{\sigma}p'\para q'} & \Sync(\sigma_1,  \sigma_2, \sigma) \\
-\end{array}$\\
+      \noindent
+      which has a side-condition on the possible synchronizability of sequences $\sigma_1$ and $\sigma_2$, whose result may be $\sigma$.
 
-\noindent
-which has a side-condition on the possible synchronizability of sequences $\sigma_1$ and $\sigma_2$,
-whose result may be $\sigma$.
+      When should $\Sync(\sigma_1, \sigma_2, \sigma)$ hold? As (S-Com) is a generalization of (Com), we should require that at least one synchronization takes place. Hence, if we assume that, e.g., $ \sigma_2$ is composed of a single action, then that action, say $\alpha$, must be synchronized with an occurrence of action $\overline{\alpha}$ in $\sigma_1 = \sigma' \overline{\alpha} \sigma''$. The resulting $\sigma$ is just $\sigma' \sigma''$ if at least one of the two is non-empty, otherwise (if $\sigma_1 = \overline{\alpha}$) the result is $\tau$. Note that when the resulting $\sigma$ is not $\tau$, then it can be used for further synchronization with some additional parallel components, hence allowing for multiparty synchronization.
 
-When should $\Sync(\sigma_1, \sigma_2, \sigma)$ hold? As (S-Com) is a generalization of (Com), 
-we should require that at least one synchronization takes place. Hence, if we assume
-that, e.g., $ \sigma_2$ is composed of a single action, then that action, say $\alpha$, must be synchronized
-with an occurrence of action $\overline{\alpha}$ in $\sigma_1 = \sigma' \overline{\alpha} \sigma''$.
-The resulting $\sigma$ is just $\sigma' \sigma''$ 
-if at least one of the two is non-empty, otherwise
-(if $\sigma_1 = \overline{\alpha}$) the result is $\tau$. Note that when the resulting $\sigma$ is not $\tau$,
-then it can be used for further synchronization with some additional parallel components, hence allowing for
-multiparty synchronization.
+      \begin{example}
+	\label{multi-sync-phil}{\bf (Dining Philosophers with multiparty synchronization)}
+	Continuing Example \ref{true-phil}, we can now define the complete two dining philosophers system $DP$ as follows:
+	\begin{eqnarray*}
+	  DP \;  \eqdef \;  \restr{L}(((P_0\para P_1) \para F_0) \para F_1) 
+	\end{eqnarray*}
+	where $L = \{up_0, up_1, dn_0, dn_1\}$. The operational semantics generates a finite-state  lts for $DP$, depicted in Figure \ref{ltsdining}. Here we want to show how the multiparty synchronization of a philosopher with the two forks takes place. The transition 
+	\[
+	  DP \deriv{\tau}  \restr{L}(((P'_0\para P_1) \para F'_0) \para F'_1) 
+	\]
+	where $P'_i = eat.\underline{dn_i}.dn_{i+1}.P_i$ and $F'_i = \overline{dn_i}.F_i$, can be proved as follows:
+	\begin{center}
 
-\begin{example}\label{multi-sync-phil}{\bf (Dining Philosophers with multiparty synchronization)}
-Continuing Example \ref{true-phil}, we can now define the complete two dining philosophers system $DP$
-as follows:
-\begin{eqnarray*}
-DP \;  \eqdef \;  \restr{L}(((P_0\para P_1) \para F_0) \para F_1) 
-\end{eqnarray*}
-where $L = \{up_0, up_1, dn_0, dn_1\}$. The operational semantics generates a finite-state 
-lts for $DP$, depicted in Figure \ref{ltsdining}. Here we want to show how the 
-multiparty synchronization of a philosopher with the two forks takes place.
-The transition 
-\[
-DP \deriv{\tau}  \restr{L}(((P'_0\para P_1) \para F'_0) \para F'_1) 
-\]
-where $P'_i = eat.\underline{dn_i}.dn_{i+1}.P_i$ and $F'_i = \overline{dn_i}.F_i$,
-can be proved as follows:
-
-
-
-\begin{center}
-
-% \begin{sideways}
-% \begin{minipage}{12cm}
+	  % \begin{sideways}
+	  % \begin{minipage}{12cm}
+	  non riesco a compilare il codice seguente:
+\begin{verbatim}
 \begin{prooftree}
                     \AxiomC{}
 %
@@ -303,71 +259,75 @@ can be proved as follows:
 %   \RightLabel{$DP \;  \eqdef \;  \restr{L}(((p_0\para p_1) \para f_0) \para f_1)$}
   \UnaryInfC{$DP \deriv{\tau}  \restr{L}(((P'_0\para P_1) \para F'_0) \para F'_1)$}
 \end{prooftree}
-% \end{minipage}
-% \end{sideways}
-\fine
-\end{center}
+\end{verbatim}
 
-\end{example}
+	% \end{minipage}
+	% \end{sideways}
+	\fine
+	\end{center}
 
-
-\begin{figure}[t]
-\centering
-% \includegraphics[width=106mm]{philinter}
-\input{./CH-06/philinter-tex}
-\caption{The labeled transition system for $DP$.}
-\label{ltsdining}
-\end{figure}
-
-\begin{exercise}\label{multi-sync-exer}
-Consider $p = \underline{a}.b.p'$,
-$q = \overline{b}.q'$ and $r = \overline{a}.r'$ and the whole system $P = \restr{a,b}((p \para q) \para r)$. Show
-that $P \deriv{\tau} \restr{a,b}((p' \para q') \para r')$, so the three processes 
-have synchronized in one single atomic transaction.
-\fine
-\end{exercise}
+      \end{example}
 
 
-In general, $\Sync(\sigma_1, \sigma_2, \sigma)$ holds
-if $\sigma$ is obtained from an interleaving (possibly with synchronizations) of $\sigma_1$ and $\sigma_2$, 
-where at least one synchronization has taken place. 
-Relation $\Sync$ is defined by the inductive rules of Table~\ref{b-sync}, which make use of the auxiliary
-relation $\Int$, which is just as $\Sync$ without requiring that at least one synchronization occurs.\footnote{In the definition 
-of $\Sync$ and $\Int$, with abuse of notation, we let $\sigma_1$ and $\sigma_2$ range over $\mathcal{A} \cup \{\epsilon\}$.}
+      \begin{figure}[t]
+	\centering
+	% \includegraphics[width=106mm]{philinter}
+	%\input{./CH-06/philinter-tex}
+	\caption{The labeled transition system for $DP$.}
+	\label{ltsdining}
+      \end{figure}
+
+      \begin{exercise}\label{multi-sync-exer}
+	Consider $p = \underline{a}.b.p'$, $q = \overline{b}.q'$ and $r = \overline{a}.r'$ and the whole system $P = \restr{a,b}((p \para q) \para r)$. Show that $P \deriv{\tau} \restr{a,b}((p' \para q') \para r')$, so the three processes have synchronized in one single atomic transaction.
+      \fine
+      \end{exercise}
 
 
+      In general, $\Sync(\sigma_1, \sigma_2, \sigma)$ holds if $\sigma$ is obtained from an interleaving (possibly with synchronizations) of $\sigma_1$ and $\sigma_2$, where at least one synchronization has taken place. Relation $\Sync$ is defined by the inductive rules of Table~\ref{b-sync}, which make use of the auxiliary relation $\Int$, which is just as $\Sync$ without requiring that at least one synchronization occurs.\footnote{In the definition of $\Sync$ and $\Int$, with abuse of notation, we let $\sigma_1$ and $\sigma_2$ range over $\mathcal{A} \cup \{\epsilon\}$.}
 
-\begin{table}
-\hrulefill\\[-.5cm]
-\begin{center}
-$\begin{array}{lclcl}
-\Sync(\alpha, \overline{\alpha}, \tau) &  
-\bigfrac{\Int(\sigma_1, \sigma_2, \sigma)}{\Sync(\alpha\sigma_1, \overline{\alpha}\sigma_2, \sigma)} &
- \bigfrac{\Sync(\sigma_1, \sigma_2, \tau)}{\Sync(\alpha\sigma_1, \sigma_2, \alpha)} \\
-\bigfrac{\Sync(\sigma_1, \sigma_2, \tau)}{\Sync(\sigma_1, \alpha\sigma_2, \alpha)} &
-\bigfrac{\Sync(\sigma_1, \sigma_2, \sigma) \quad \sigma \neq \tau}{\Sync(\alpha\sigma_1, \sigma_2, \alpha\sigma)} &
- \bigfrac{\Sync(\sigma_1, \sigma_2, \sigma) \quad \sigma \neq \tau}{\Sync(\sigma_1, \alpha\sigma_2, \alpha\sigma)} \\
-\end{array}$\\
+      \begin{table}
+	\hrulefill\\[-.5cm]
+	\begin{center}
+	  $\begin{array}{lclcl}
+		\Sync(\alpha, \overline{\alpha}, \tau) 
+	      &  
+		\bigfrac{\Int(\sigma_1, \sigma_2, \sigma)}{\Sync(\alpha\sigma_1, \overline{\alpha}\sigma_2, \sigma)} 
+	      &
+		\bigfrac{\Sync(\sigma_1, \sigma_2, \tau)}{\Sync(\alpha\sigma_1, \sigma_2, \alpha)} 
+	    \\
+		\bigfrac{\Sync(\sigma_1, \sigma_2, \tau)}{\Sync(\sigma_1, \alpha\sigma_2, \alpha)} 
+	      &
+		\bigfrac{\Sync(\sigma_1, \sigma_2, \sigma) \quad \sigma \neq \tau}{\Sync(\alpha\sigma_1, \sigma_2, \alpha\sigma)} 
+	      &
+		\bigfrac{\Sync(\sigma_1, \sigma_2, \sigma) \quad \sigma \neq \tau}{\Sync(\sigma_1, \alpha\sigma_2, \alpha\sigma)} 
+	    \\
+	  \end{array}$
+	\\\hrulefill%\\[-.4cm]
+	  $\begin{array}{lllll}
+		\Int(\alpha, \overline{\alpha}, \tau) 
+	      &  
+		\; \; \Int(\alpha, \epsilon, \alpha) 
+	      &
+		\; \;\Int(\epsilon, \alpha, \alpha) 
+	      & 
+		\bigfrac{\Int(\sigma_1, \sigma_2, \sigma)}{\Int(\alpha\sigma_1, \overline{\alpha}\sigma_2, \sigma)} 
+	    \\
+	  \end{array}$
 
-\hrulefill%\\[-.4cm]
+	  $\begin{array}{lclcl}
+	      \bigfrac{\Int(\sigma_1, \sigma_2, \tau)}{\Int(\alpha\sigma_1, \sigma_2, \alpha)} 
+	    & 
+	      \; \;  \bigfrac{\Int(\sigma_1, \sigma_2, \sigma) \quad \sigma \neq \tau}{\Int(\alpha\sigma_1, \sigma_2, \alpha\sigma)} 
+	    & 
+	      \; \; \bigfrac{\Int(\sigma_1, \sigma_2, \tau)}{\Int(\sigma_1, \alpha\sigma_2, \alpha)} 
+	    &
+	      \; \; \bigfrac{\Int(\sigma_1, \sigma_2, \sigma) \quad \sigma \neq \tau}{\Int(\sigma_1, \alpha\sigma_2, \alpha\sigma)} \\
+	  \end{array}$
+	\end{center}
 
-$\begin{array}{lllll}
-\Int(\alpha, \overline{\alpha}, \tau) &  \; \; \Int(\alpha, \epsilon, \alpha) &
-\; \;\Int(\epsilon, \alpha, \alpha) & \bigfrac{\Int(\sigma_1, \sigma_2, \sigma)}{\Int(\alpha\sigma_1, \overline{\alpha}\sigma_2, \sigma)} \\
-\end{array}$
-
-$\begin{array}{lclcl}
- \bigfrac{\Int(\sigma_1, \sigma_2, \tau)}{\Int(\alpha\sigma_1, \sigma_2, \alpha)} & 
-\; \;  \bigfrac{\Int(\sigma_1, \sigma_2, \sigma) \quad \sigma \neq \tau}{\Int(\alpha\sigma_1, \sigma_2, \alpha\sigma)} & 
-\; \; \bigfrac{\Int(\sigma_1, \sigma_2, \tau)}{\Int(\sigma_1, \alpha\sigma_2, \alpha)} &
-\; \; \bigfrac{\Int(\sigma_1, \sigma_2, \sigma) \quad \sigma \neq \tau}{\Int(\sigma_1, \alpha\sigma_2, \alpha\sigma)} \\
-\end{array}$
-
-\end{center}
-
-\hrulefill%\\[-.4cm]
-\caption{Synchronization relation $\Sync$ and interleaving relation $\Int$.}\label{b-sync}
-\end{table}
+	\hrulefill%\\[-.4cm]
+	\caption{Synchronization relation $\Sync$ and interleaving relation $\Int$.}\label{b-sync}
+      \end{table}
 
 
 \begin{exercise}
@@ -578,6 +538,7 @@ seen that  $(p \para q) \para r \deriv{\tau} (p' \para q') \para r'$ as follows:
 \begin{center}
 % \begin{sideways}
 % \begin{minipage}{12cm}
+\begin{verbatim}
 \begin{prooftree}
                     \AxiomC{}
 %
@@ -610,6 +571,9 @@ seen that  $(p \para q) \para r \deriv{\tau} (p' \para q') \para r'$ as follows:
                 
 
 \end{prooftree}
+
+\end{verbatim}
+
 % \end{minipage}
 % \end{sideways}
 \end{center}
@@ -976,7 +940,7 @@ can be provided in Multi-CCS as $\restr{c}((a + \overline{c}) \para (b + \underl
 
 \begin{figure}
 \centering
-\input{CH-06/step-dining-tex}
+%\input{CH-06/step-dining-tex}
 \caption{The step labeled transition system for $DP$. 
 }
 \label{stepdining}
