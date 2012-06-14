@@ -302,7 +302,7 @@ with the action $c$ of the other parallel component, hence atomicity is really e
 		\bigfrac{\Sync(\sigma_1, \sigma_2, \sigma) \quad \sigma \neq \tau}{\Sync(\sigma_1, \alpha\sigma_2, \alpha\sigma)} 
 	    \\
 	  \end{array}$
-	\\\hrulefill%\\[-.4cm]
+	\\\hrulefill\\
 	  $\begin{array}{lllll}
 		\Int(\alpha, \overline{\alpha}, \tau) 
 	      &  
@@ -312,7 +312,7 @@ with the action $c$ of the other parallel component, hence atomicity is really e
 	      & 
 		\bigfrac{\Int(\sigma_1, \sigma_2, \sigma)}{\Int(\alpha\sigma_1, \overline{\alpha}\sigma_2, \sigma)} 
 	    \\
-	  \end{array}$
+	  \end{array}$\\
 
 	  $\begin{array}{lclcl}
 	      \bigfrac{\Int(\sigma_1, \sigma_2, \tau)}{\Int(\alpha\sigma_1, \sigma_2, \alpha)} 
@@ -330,17 +330,95 @@ with the action $c$ of the other parallel component, hence atomicity is really e
       \end{table}
 
 
-\begin{exercise}
-Chek which of the following hold:\\
-
-$\begin{array}{lllllllll}
-(1) & \Sync(\epsilon, a, a) & (2) & \Sync(ab, \bar{a}, b) & (3) & \Sync(a\tau, \bar{a}, \tau) \\
-(4) & \Sync(a\bar{b}, bc, ac) & (5) & \Sync(a, \tau, a) & (6) & \Sync(ab, \overline{a}c, bc)\\
-(7) & \Sync(a\bar{b}, \bar{a}b, \tau) & (8) & \Sync(a \bar{b}, cb, ca) & (9) & \Sync(a \bar{b}, cb, ca\tau)\\
-\end{array}$\\[-.4cm]
-
-\fine
-\end{exercise}
+      \begin{exercise}
+	Chek which of the following hold:\\
+	$\begin{array}{lllllllll}
+	      (1) 
+	    & 
+	      \Sync(\epsilon, a, a) 
+	    & 
+	      (2) 
+	    & 
+	      \Sync(ab, \bar{a}, b) 
+	    & 
+	      (3) 
+	    & 
+	      \Sync(a\tau, \bar{a}, \tau) 
+	  \\
+	      (4) 
+	    & 
+	      \Sync(a\bar{b}, bc, ac) 
+	    & 
+	      (5) 
+	    & 
+	      \Sync(a, \tau, a) 
+	    & 
+	      (6) 
+	    & 
+	      \Sync(ab, \overline{a}c, bc)
+	  \\
+	      (7) 
+	    & 
+	      \Sync(a\bar{b}, \bar{a}b, \tau) 
+	    & 
+	      (8) 
+	    & 
+	      \Sync(a \bar{b}, cb, ca) 
+	    & 
+	      (9) 
+	    & 
+	      \Sync(a \bar{b}, cb, ca\tau)
+	  \\
+	\end{array}$\\[-.4cm]
+	\fine
+      \end{exercise}
+      	$\begin{array}{lll}
+	    \Sync(\epsilon, a, a) no
+	  & 
+	      \inferrule{
+		\inferrule{
+		}{
+		  \Int(b,\epsilon,b)
+		}
+	      }{
+		\Sync(ab, \bar{a}, b)
+	      }
+	  &
+	    \inferrule{
+	      \inferrule{
+	      }{
+		\Int(\tau, \epsilon, \tau) 
+	      }
+	    }{
+	      \Sync(a\tau, \bar{a}, \tau) 
+	    }
+	  \\\\
+	    \inferrule{
+		\inferrule{
+		  \inferrule{
+		  }{
+		    \Int(\epsilon, c, c) 
+		  }
+		}{
+		  \Sync(\bar{b}, bc, c) 
+		}
+	      \\
+		c\neq \tau
+	    }{
+	      \Sync(a\bar{b}, bc, ac) 
+	    }
+	  &
+	      \Sync(a, \tau, a) 
+	  &
+	      \Sync(ab, \overline{a}c, bc)
+	  \\\\
+	      \Sync(a\bar{b}, \bar{a}b, \tau) 
+	  &
+	      \Sync(a \bar{b}, cb, ca) 
+	  &
+	      \Sync(a \bar{b}, cb, ca\tau)
+	  \\
+	\end{array}$
 
 \begin{exercise}
 Prove that the following hold:
