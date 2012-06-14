@@ -143,3 +143,139 @@ In this case, a label can be a sequence of prefixes, whether in the original $\p
   \end{center}
 \end{definition}
 
+
+\subsection{Another attemp to late operational semantic with structural congruence}
+
+\begin{definition}\index{transition relation! multipi! late! with structural congruence}
+  The \emph{late transition relation with structural congruence} is the smallest relation induced by the following rules:
+  \begin{center}
+    \begin{tabular}{ll}
+ 	  \bf{Pref}
+ 	  \begin{tabular}{c}
+ 	      $\alpha\; not\; a\; strong\; prefix$
+ 	    \\\hline
+ 	      $\alpha.P \;\xrightarrow{\alpha} P$
+ 	  \end{tabular}
+	&
+	  \bf{Par}
+	  \begin{tabular}{c}
+	      $P \;\xrightarrow{\sigma} P^{'}\;\; bn(\sigma)\cap fn(Q)=\emptyset$
+	    \\\hline
+	      $P|Q \;\xrightarrow{\sigma} P^{'}|Q$
+	  \end{tabular}
+      \\\\
+	  \bf{SOut}
+	  \begin{tabular}{c}
+	      $P \;\xrightarrow{\sigma} P^{'}\;\; \sigma\neq \tau$
+	    \\\hline
+	      $\underline{\overline{x}y}.P \;\xrightarrow{\overline{x}y \cdot \sigma} P^{'}$
+	  \end{tabular}
+	&
+	  $\inferrule* [left=\bf{LCom}]{
+	      P \;\xrightarrow{\sigma_{1}}\; P^{'}
+	    \\
+	      Q\;\xrightarrow{\sigma_{2}} Q^{'}
+	    \\
+	      Sync(\sigma_{1}, \sigma_{2}, \sigma_{3}, \delta_{1}, \delta_{2})
+	  }{
+	    P|Q \;\xrightarrow{\sigma_{3}} P^{'}\delta_{1}|Q^{'}\delta_{2}
+	  }$
+      \\\\
+	  \bf{Sum}
+	  \begin{tabular}{c}
+	      $P \;\xrightarrow{\sigma} P^{'}$
+	    \\\hline
+	      $P+Q \;\xrightarrow{\sigma} P^{'}$
+	  \end{tabular}
+	&
+	$\inferrule* [left=\bf{Str}]{
+	    P\equiv P^{'}
+	  \\
+	    P^{'}\; \;\xrightarrow{\alpha}\; Q^{'}
+	  \\
+	    Q\equiv Q^{'}
+	}{
+	    P\; \;\xrightarrow{\alpha}\; Q
+	}$
+      \\\\
+	  \bf{Res}
+	  \begin{tabular}{c}
+	      $P \;\xrightarrow{\sigma} P^{'}\;\; z\notin n(\alpha)$
+	    \\\hline
+	      $(\nu z) P \;\xrightarrow{\sigma} (\nu z) P^{'}$
+	  \end{tabular}
+	&
+      \\\\
+	  \bf{SInp}
+	  \begin{tabular}{c}
+	      $P \;\xrightarrow{\sigma} P^{'}\;\; \sigma\neq \tau$
+	    \\\hline
+	      $\underline{x(y)}.P \;\xrightarrow{x(y) \cdot \sigma} P^{'}$
+	  \end{tabular}
+	&
+      \\
+    \end{tabular}
+  \end{center}
+\end{definition}
+
+where the relation $Sync$ is defined in the following way:
+\begin{center}
+  \begin{tabular}{ll}
+	$\inferrule* [left=S1]{
+	}{
+	  Sync(x(y),\overline{x}z,\tau,\{z/y\},\{\})
+	}$
+      &
+	$\inferrule* [left=S2]{
+	}{
+	  Sync(x(y),\overline{x}z\cdot \sigma,\sigma,\{z/y\},\{\})
+	}$
+    \\\\  
+	$\inferrule* [left=S3]{
+	}{
+	  Sync(\overline{x}z,x(y)\cdot \sigma,\sigma\{z/y\},\{\},\{z/y\})
+	}$	
+      &
+	$\inferrule* [left=S4]{
+	  Sync(\sigma_{1}, \sigma_{2}\{z/y\}, \sigma_{3}, \delta_{1}, \delta_{2})
+	}{
+	  Sync(\overline{x}z\cdot\sigma_{1},x(y)\cdot \sigma_{2}, \sigma_{3}, \delta_{1}, \{z/y\}\delta_{2})
+	}$		
+    \\\\
+	$\inferrule* [left=I1]{
+	  Sync(\sigma_{1}, \sigma_{2}, \tau, \delta_{1}, \delta_{2})
+	}{
+	  Sync(\alpha \cdot \sigma_{1}, \sigma_{2}, \alpha, \delta_{1}, \delta_{2})
+	}$		
+      &
+	$\inferrule* [left=I2]{
+	  Sync(\sigma_{1}, \sigma_{2}, \sigma_{3}, \delta_{1}, \delta_{2})
+	}{
+	  Sync(\alpha \cdot \sigma_{1}, \sigma_{2}, \alpha \cdot \sigma_{3}, \delta_{1}, \delta_{2})
+	}$			
+    \\
+  \end{tabular}
+\end{center}
+
+
+\begin{example}
+  We want to prove that:
+  \[
+    \underline{\overline{a}x}.\overline{a}x.0|\underline{a(y)}.a(z).0\; \xrightarrow{\tau} 0|0
+  \]
+\end{example}
+
+
+\begin{example}
+  We want to prove that:
+  \[
+    (\underline{\overline{a}x}.\overline{b}x.0|\underline{b(y)}.\overline{a}(z).0)|\underline{a}(x).a(z).0\; \xrightarrow{\tau} (0|0)|0
+  \]
+\end{example}
+
+
+\subsection{Step semantic}
+%verificare se è una congruenza per il parallelo (come mi auguro sia).
+
+
+
