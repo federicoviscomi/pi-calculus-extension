@@ -1,0 +1,1312 @@
+\documentclass{llncs}
+
+
+\usepackage{epsfig}
+\usepackage{latexsym}
+\usepackage{graphicx}
+\usepackage{color}
+\usepackage{url}
+\usepackage{stmaryrd}
+\usepackage{pgf,pgfarrows,pgfnodes,pgfautomata,pgfheaps,pgfshade}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+%\usepackage{harvard}
+%\bibliographystyle{alpha}
+%\textheight = 20.8cm
+%\textwidth = 12.5cm
+\usepackage{tikz}
+
+\newcommand{\post}[1]{\mbox{$#1^{\bullet}$}}
+\newcommand{\pre}[1]{\mbox{$^{\bullet}#1$}}
+\newcommand{\postr}[1]{#1^{\circ}}
+\newcommand{\prer}[1]{\mbox{$^{\circ}#1$}}
+
+%\newcommand{\deriv}[1]{{\mbox{${\:\stackrel{#1}{\rightarrow}\:}$}}}
+\newcommand{\hide}{/}
+%\newcommand{\restr}{\backslash}
+%\newcommand{\fine}{\hfill{$\rule{2mm}{2mm}$}}
+%\newcommand{\proof}{\noindent{\em Proof.}\ \  }
+
+\newcommand{\lv}[1]{\Lambda_{#1}}
+\newcommand{\hv}[1]{\mathcal{ H}_{#1}}
+\newcommand{\lvtrace}{\stackrel{\Lambda}{\approx}_{tr}}
+\newcommand{\lvbis}{\stackrel{\Lambda}{\approx}_{bis}}
+
+\newcommand{\redStr}[1]{\color{red}#1\color{black}\ }
+\newcommand{\angbr}[1]{\langle #1 \rangle}
+\renewcommand{\labelitemi}{$\bullet$}
+\renewcommand{\labelitemii}{$\bullet$}
+\renewcommand{\labelitemiii}{$\bullet$}
+
+\newtheorem{adefinizione}{Definition}[section]
+\newtheorem{afact}[adefinizione]{Fact}
+\newtheorem{alemma}[adefinizione]{Lemma}
+\newtheorem{teorema}[adefinizione]{Theorem}
+\newtheorem{corollario}[adefinizione]{Corollary}
+\newtheorem{proposizione}[adefinizione]{Proposition}
+\newtheorem{esempio}[adefinizione]{Example}
+
+\newcommand{\mmuo}[1] {\underline{ \overline{ #1 } } }
+\newcommand{\ouno}[2]{ \mmuo{ #1 } \mmang{ #2}  }
+\newcommand{\mmo}[1] {\overline{ #1 } } 
+\newcommand{\ozero}[2]{ \mmo{ #1 } \mmang{ #2}  }
+\newcommand{\mmang}[1]{ \langle { #1 } \rangle }
+
+\newcommand{\mmu}[1] {\underline{ #1 } }
+\newcommand{\iuno}[2]{ \mmu{ #1 } ( { #2 } )  }
+\newcommand{\izero}[2]{ { #1 } ( { #2 } )  }
+\newcommand{\parallelo}{ \; \, \big| \, \; }
+\newcommand{\bang}{!}
+\newcommand{\new}[1]{ \nu {#1}  }
+\newcommand{\parallelobig}{\quad \Big| \quad }
+\newcommand{\dueduepuntiuguale}{ \quad ::= \quad }
+\newcommand{\buco}[2]{\begin{figure}[!hbp]\makebox[\textwidth]{\framebox[#1]{\rule{0pt}{#2}}}\end{figure}}
+\newcommand{\barb}{\downarrow}
+\newcommand{\nbarb}{\downarrow \hspace{-9pt} \smallsetminus \;}
+\newcommand{\ramencoding}[1]{ { \langle \spazio \big[ \;  { #1 }  \; \big] \spazio \rangle}}
+\newcommand{\mdef}{ \triangleq }
+\newcommand{\mydef}{\mdef}
+\newcommand{\myto}{\;\rightarrow\;}
+\newcommand{\myslowto}{\;\mapsto\;}
+\newcommand{\myprioto}{\;\twoheadrightarrow\;}
+\newcommand{\nmyprioto}{\myprioto\mspace{-24mu}\raisebox{0pt}[0pt][0pt]{\text{\raisebox{1.4pt}{\tiny /}}}\;\;\;}
+
+
+%\newcommand{\proof}{{\it Proof: }}
+\newcommand{\linib}{\mbox{$\sqsubset$}}
+\newcommand{\ginib}{\mbox{$\sqsupset$}}
+\newcommand{\leqinib}{\mbox{$\sqsubseteq$}}
+\newcommand{\geqinib}{\mbox{$\sqsupseteq$}}
+\newcommand{\emlim}{EL}
+\newcommand{\fine}{{\mbox{ }\nolinebreak\hfill{$\Box$}}}
+%\newcommand{\post}[1]{#1^{\bullet}}
+%\newcommand{\pre}[1]{{^{\bullet}#1}}
+\newcommand{\inib}[1]{{^{\circ}#1}}
+\newcommand{\test}[1]{\widehat{#1}}
+\newcommand{\init}{*}
+
+\newcommand{\postn}[2]{#1^{\bullet_{#2}}}
+\newcommand{\pren}[2]{{^{\bullet_{#2}}#1}}
+%\newcommand{\testn}[2]{\whidehat_{#2}{#1}}
+
+% macro causal semantics
+\newcommand{\Max}[1]{Max(#1)}
+\newcommand{\Min}[1]{Min(#1)}
+\newcommand{\ctop}{\mbox{${\cal F}$}}
+\newcommand{\ptoc}{\mbox{${\cal G}$}}
+
+% macro sem picalcolo
+\newcommand{\Conc}{\mbox{$Conc$}}
+\newcommand{\dec}{\mbox{$dec$}}
+\newcommand{\sost}[2]{\mbox{$\{#1/#2\}$}}
+\newcommand{\sostd}[4]{\mbox{$\{#1/#2,#3/#4\}$}}
+\newcommand{\deriv}[1]{{\mbox{${\:\stackrel{#1}{\longrightarrow}\:}$}}}
+\newcommand{\sderiv}[1]{{\mbox{${\:\stackrel{#1}{\rightarrow}\:}$}}}
+\newcommand{\Deriv}[1]{{\mbox{${\:\stackrel{#1}{\Longrightarrow}\:}$}}}
+\newcommand{\derivas}[1]{{\mbox{${\:\stackrel{#1}{\longrightarrow_s}\:}$}}}
+\newcommand{\derivls}[1]{{\mbox{${\:\stackrel{#1}{\longrightarrow_{ls}}\:}$}}}
+%\newcommand{\derivstar}[1]{{\mbox{${\:\stackrel{#1}{\longrightarrow^*}\:}$}}}
+\newcommand{\derivstar}[1]{{\mbox{${\:\stackrel{#1}{\longrightarrow}\!\phantom{}^*\:}$}}}
+\newcommand{\nonderiv}[1]{{\mbox{${\:\not\stackrel{#1}{\longrightarrow}\:}$}}}
+\newcommand{\nonderivas}[1]{{\mbox{${\:\not\stackrel{#1}{\longrightarrow_{s}}\:}$}}}
+\newcommand{\nonderivls}[1]{{\mbox{${\:\not\stackrel{#1}{\longrightarrow_{ls}}\:}$}}}
+\newcommand{\Nderiv}[1]{{\mbox{${\:\stackrel{#1}{\nrightarrow}\:}$}}}
+\newcommand{\nderiv}[1]{\nrightarrow}
+\newcommand{\cderiv}[1]{{\mbox{${\:\stackrel{#1}{-\!-\!\!\!\longrightarrow}\:}$}}}
+\newcommand{\eqdef}{{\mbox{${\stackrel{def}{=}}$}}}
+\newcommand{\spazio}{\hspace{2.4em}}
+\newcommand{\bigfrac}[2]{
+\renewcommand{\arraystretch}{1.5}
+\begin{array}{c}#1\\
+\hline
+#2
+\end{array}}
+\newcommand{\restr}[1]{\mbox{$({\bf\nu} #1)$}}
+\newcommand{\para}{\mbox{$\,|\,$}}
+\newcommand{\recx}[1]{\mbox{rec$\, X.#1$}}
+\newcommand{\parti}{\mbox{\raisebox{.4ex}{$\wp$}}}
+%\newcommand{\minus}{\stackrel
+%{\raisebox{-.1cm}[.1cm][.1cm]{.}}{\raisebox{-.01cm}[.1cm][.1cm]{-}}}
+\newcommand{\minus}{\stackrel{\cdot}{-}}
+\newcommand{\myequiv}{\stackrel{\rm def}{=}}
+\newcommand{\nil}{\mbox{\bf 0}}
+\newcommand{\1}{\mbox{\bf 1}}
+\newcommand{\alphaconv}{\equiv_{\alpha}}
+
+\renewcommand{\mid}{\;\;\big|\;\;}
+
+\newcommand{\encoding}[2]{\ensuremath{\llbracket #2 \rrbracket^{#1}}}
+\newcommand{\undef}{\mbox{$\bot$}}
+\newcommand{\rec}[2]{\mbox{rec}\, #1.#2}
+
+% \def\bbbn{{\rm I\!N}}
+\newcommand{\nat}{{\mathbb N}}
+\newcommand{\Net}{\mathit{Net}}
+\newcommand{\Reach}{\mathit{Reach}}
+\newcommand{\TS}{\mathit{TS}}
+\newcommand{\fin}{\mathit{fin}}
+\newcommand{\dom}{\mathit{dom}}
+\newcommand{\IMG}{\mathit{IMG}}
+\newcommand{\SMG}{\mathit{SMG}}
+\newcommand{\fork}{\mathit{fork}}
+\newcommand{\Act}{\mathit{Act}}
+\newcommand{\MSync}{\mathit{MSync}}
+\newcommand{\GSync}{\mathit{GSync}}
+\newcommand{\Sync}{\mathit{Sync}}
+\newcommand{\Int}{\mathit{Int}}
+
+\newcommand{\A}[1]{\textcolor{red}{#1}}
+\newcommand{\inet}[1]{\ensuremath{INet(#1)}}
+
+\newcommand{\LL}[1]{\mbox{\em{#1}}}
+
+
+
+\begin{document}
+
+
+\title{A Fully-Abstract Semantics for Atomicity}
+\author{Roberto Gorrieri\\
+\institute{Dipartimento di Scienze dell'Informazione, Universit\`a di
+Bologna, \\Mura A. Zamboni, 7,
+40127 Bologna, Italy}
+\email{gorrieri@cs.unibo.it}
+}
+
+
+\maketitle
+
+
+\begin{abstract}
+Multi-CCS extends conservatively CCS with an operator of strong 
+prefixing able to model atomic sequences of actions as well as multiparty synchronization.
+We equip this calculus with an interleaving semantics, which makes use of a limited 
+structural congruence in order to ensure that parallel composition be associative.
+Unfortunately, this semantics is not compositional, as it is not a congruence for parallel composition:
+in $p \para q$, an atomic sequence performed by a process $p$ can sense, to some extent, 
+the degree of concurrency of the parallel component $q$. Step bisimilarity, however, turns out to be too discriminating:
+there are interleaving bisimilar processes, that no parallel context can tell apart, that are not step bisimilar.
+Then, linear-step bisimilarity is introduced 
+and proved to be the coarsest congruence contained in interleaving bisimilarity. 
+A finite sound and complete axiomatization of linear-step bisimilarity is presented for finite Multi-CCS
+processes.
+\end{abstract}
+
+\section{Introduction}
+
+CCS \cite{Mil89}, even if Turing-complete, is not expressive enough to model some useful
+behaviour. For instance, it does not support multiway synchronization, nor atomic transactions.
+In this line, it can be proved \cite{LR81,LV10} that a classic solution to the famous dining philosophers
+problem \cite{Dij71} that assumes atomicity in the acquisition of the forks (or equivalently, that requires
+a three-way synchronization among one philosopher and the two forks), cannot be provided in CCS.
+
+Multi-CCS is a conservative extension to CCS to allow for the description of transactional behaviour,
+as well as multiparty synchronization expressed by means of an atomic sequence of binary CCS synchronizations.
+Syntactically, this is obtained by adding one prefixing operator $\underline\mu.p$, called {\em strong prefixing} 
+(in opposition to normal prefixing $\mu.p$):  in a process $\underline{\mu}.p$, action $\mu$ is the first one 
+of a transaction that continues with $p$, provided that $p$ can complete the transaction. 
+Therefore, for instance, $\underline{a}.b.p \deriv{ab} p$, i.e., the resulting
+transition system is labeled on sequences of actions. There is also a generalization of the 
+operational rule for communication
+that takes care of the synchronization of two sequences: if $p \deriv{\sigma_1} p'$ and $q \deriv{\sigma_2} q'$, then
+$p \para q \deriv{\sigma} p' \para q'$, where sequence $\sigma$ has been obtained by an interleaving (with possible synchronizations)
+of $\sigma_1$ and $\sigma_2$ where at least one synchronization has taken place. Sequence $\sigma$ can be 
+used for a possible synchronization with an additional process $r$: since $p \para q \deriv{\sigma} p' \para q'$,
+if $r \deriv{\sigma'} r'$, then $(p \para q) \para r \deriv{\sigma''} (p' \para q') \para r'$, hence representing a form of
+ternary synchronization, realized by means of an atomic sequence of binary synchronizations. In general,
+any form of multiway synchronization can be represented.
+
+Strong prefixing was introduced in \cite{GMM,GM90}. The calculus presented there was named A$^2$CCS.
+It differs from Multi-CCS for two important features. First, parallel composition is associative for Multi-CCS
+thanks to the introduction of a structural congruence $\equiv$ induced by a minimal set of equations. Second,
+the synchronization discipline on pairs of sequences is more liberal in Multi-CCS (it simply requires that at least
+one synchronization takes place) and less verbose (as intermediate occurrences of $\tau$ are dissolved, so
+that labels can be only of two types: either $\tau$ or a non-empty sequence of visibile actions).
+
+Multi-CCS is very expressive and many well-known synchronization problems are easily solvable, e.g., 
+dining philosophers \cite{Dij71}, concurrent readers and writers \cite{CHP71}, 
+Patil's cigarettes' smokers \cite{Pat71}, etc.. 
+In \cite{GV10a}, it is also shown that
+such a calculus is expressive enough to represent all finite Place/Transition Petri nets. 
+
+In this paper, we investigate the behavioural semantics for Multi-CCS. Interleaving bisimilarity 
+enjoys some expected algebraic laws but it is not compositional, as it is not a congruence for parallel 
+composition. The problem is due to the fact that interleaving bisimilar processes may be distinguished 
+by a parallel component able to perform an atomic sequence. For instance, 
+consider process $p = \overline{a}.\overline{a}.\nil$ and process $q = \overline{a}.\nil \para \overline{a}.\nil$.
+Clearly, $p$ is bisimilar to $q$, written $p \sim q$. However, if we consider a context $\mathcal{C}[-] =  - \para \underline{a}.\underline{a}.c.\nil$, we get
+that $\mathcal{C}[p] \not\sim \mathcal{C}[q]$, because the latter can perform $c$, i.e., 
+$\mathcal{C}[q] \deriv{c} (\nil \para \nil) \para \nil$, 
+while $\mathcal{C}[p]$ cannot. The reason for this
+difference is that the process $\underline{a}.\underline{a}.c.\nil$ can react with a number of concurrently active components
+equal to the length of the trace it can perform. Hence, a congruence semantics 
+for parallel composition may need to distinguish $p$ and $q$ on the basis of their different degree of parallelism.
+
+Therefore, one may define a step transition system where transitions are labeled by multisets of
+concurrently executable sequences. Step bisimilarity would distinguish 
+$p = \overline{a}.\overline{a}.\nil$ and $q = \overline{a}.\nil \para \overline{a}.\nil$, as only $q$ can perform a
+step $\{\overline{a}, \overline{a}\}$.
+However, step bisimilarity is not fully abstract: it is possible to find processes $p$ and $q$ 
+such that for all  $r$, $p \para r \sim q \para r$, but $p \not\sim_{step} q$. 
+Simply take $p = (a \para a) + \underline{a}.a.\nil$
+and $q = a.a.\nil + \underline{a}.a.\nil$. 
+In other words, step
+bisimilarity is not the coarsest congruence contained in interleaving bisimilarity.
+
+This example suggests that the contents of a step $\{a, a\}$ 
+which is testable by a parallel component is its possible atomic linearisation $aa$. Hence, it seems that
+the coarsest congruence should not observe steps, rather linearisation of steps. Following
+this intuition, we define a novel semantics, called {\em linear-step} semantics and prove to be the coarsest
+congruence contained in interleaving bisimilarity.
+Moreover, contrary to non-interleaving equivalences, linear-step bisimilarity
+can be axiomatized. For finite Multi-CCS we present a finite sound and complete axiomatization.
+
+The paper is organized as follows. Section 2 presents the syntax of Multi-CCS. Section 3 reports
+the interleaving semantics and its algebraic properties. Section 4 introduces the step semantics
+for Multi-CCS and discusses that, albeit a congruence, it is not fully asbtract. Section 5
+proposes the novel linear-step semantics
+and proves that it is the coarsest congruence. Section 6 is devoted to the finite axiomatization.
+Some concluding remarks are reported in Section 7.
+
+\section{Multi-CCS: Syntax}
+
+We assume the reader familiar with CCS \cite{Mil89,Mil99}.
+We assume to have a denumerable set ${\mathcal L}$ of channel names, its complementary 
+set  $\overline{\mathcal L}$ of co-names, the set  ${\mathcal L}\cup\overline{\mathcal L}$ (ranged over by $\alpha, \beta, \ldots$)
+of visible actions and the set of all actions $Act = {\mathcal L} \cup \overline{\mathcal L} \cup\{\tau\}$,
+such that $\tau\not\in{\mathcal L}\cup\overline{\mathcal L}$, ranged over by $\mu$.
+
+The process terms are generated by the following grammar:
+
+\[p ::= \nil \mid \mu.p \mid  \underline{\mu}.p \mid p+p \mid  p\para p \mid \restr{a}p \mid C \]
+
+Term $\nil$ is the terminated process, $\mu.p$ is a normally prefixed process where action $\mu$ (that
+can be either an input $a$, an output  $\bar{a}$ or a silent move $\tau$) is first performed and then $p$ is ready, 
+$ \underline{\mu}.p$ is a  strongly prefixed process where $\mu$ is the first action of a transaction 
+that continues with $p$
+(provided that $p$ can complete the transaction).
+With $p + p'$ we denote the process obtained by the alternative composition of 
+$p$ and $p'$.
+Term $p \para p'$ is the parallel composition of $p$ and $p'$, $\restr{a}p$ is process $p$ where the (input) name $a$ is made private (restriction),
+and $C$ is a process constant, equipped with a defining equation $C \eqdef p$.
+
+We denote with ${\mathcal P}$ the set of {\em processes}, containing those terms which are, 
+w.r.t. process constants,
+closed  and {\em guarded}  (for any defining equation $C \eqdef p$,
+any occurrence of a constant in $p$ is  within a {\em normally prefixed} subprocess $\mu.p'$ of $p$). 
+${\mathcal P}$ will be ranged over by $p, q, r$, possibly indexed.  
+
+
+
+\section{Interleaving Semantics}
+
+The  operational semantics for Multi-CCS is given by the labelled 
+transition system $({\mathcal P},{\mathcal A}, \deriv{ })$, where the states are the processes
+in ${\mathcal P}$, ${\mathcal A} = (\mathcal{L} \cup \overline{\mathcal L})^+ \cup \{\tau\}$
+is the set of labels (ranged over by $\sigma$, possibly indexed),
+and $\deriv{ } \subseteq {\mathcal P}\times{\mathcal A}\times{\mathcal P}$ is the minimal 
+transition relation generated by the rules listed in Table~\ref{int-rules}. 
+
+
+Let us comment only the non-standard rules.
+Rule (S-Pref$_3$) is responsible for the creation of
+transitions labeled by non-empty sequences of actions: in order for $\underline{\alpha}.p$ to make a move, it is
+necessary that $p$ can perform a transition, i.e., the rest of the transaction. Hence, if $p \deriv{\sigma} p'$ then 
+$\underline{\alpha}.p \deriv{\alpha\sigma} p'$. Note that $\underline \mu.\nil$ 
+cannot perform any action, as $\nil$ is stuck. Usually, if a transition is labeled by 
+$\sigma = \alpha_1 \ldots \alpha_{n-1} \alpha_n$, then all the
+actions $\alpha_1 \ldots \alpha_{n-1}$ are due to strong prefixes, while $\alpha_n$ to a
+normal prefix (or $\alpha_n$ is the last strong prefix before a $\tau$).
+Rules (S-Pref$_1$) and (S-Pref$_2$) ensures that $\tau$'s are never added in a sequence $\sigma$, hence ensuring that
+in a transition $p \deriv{\sigma} p'$ either $\sigma = \tau$ or $\sigma$ is composed only of visible actions,
+i.e., $\sigma$ ranges over ${\mathcal A} = (\mathcal{L} \cup \overline{\mathcal L})^+ \cup \{\tau\}$.
+
+
+\begin{table}[t]
+{\renewcommand{\arraystretch}{2.8}
+\hrulefill\\[-.8cm]
+
+%{\renewcommand{\arraystretch}{2.8}
+\begin{center}
+$\begin{array}{lcllcl}
+\mbox{(Pref)}  & \mu.p\deriv{\mu}p & & \; \; \;
+%\mbox{(S-Pref)}  & \bigfrac{p\deriv{\sigma}p'}{\underline{\mu}.p\deriv{\sigma'}p'} & \Conc(\mu, \sigma, \sigma') \\
+\mbox{(S-Pref$_1$)}  & \bigfrac{p\deriv{\sigma}p'}{\underline{\tau}.p\deriv{\sigma}p'} &  \\
+\mbox{(S-Pref$_2$)}  & \bigfrac{p\deriv{\tau}p'}{\underline{\alpha}.p\deriv{\alpha}p'} & & \; \; \;
+\mbox{(S-Pref$_3$)}  & \bigfrac{p\deriv{\sigma}p' \quad \sigma \neq \tau}{\underline{\alpha}.p\deriv{\alpha\sigma}p'} & \\
+\mbox{(Cong)} & \bigfrac{p \equiv p' \deriv{\sigma}q' \equiv q}{p\deriv{\sigma}q}  & & \; \; \;
+\mbox{(Sum$_1$)}  & \bigfrac{p\deriv{\sigma}p'}{p+q\deriv{\sigma}p'}  \\
+\mbox{(Par$_1$)}  & \bigfrac{p\deriv{\sigma}p'}{p\para q\deriv{\sigma}p'\para q} & & \; \; \;
+\mbox{(S-Res)}  & \bigfrac{p\deriv{\sigma}p'}{\restr{a}p\deriv{\sigma}
+\restr{a}p'} & a, \bar{a} \not\in n(\sigma) \\
+%\mbox{(Cong)} & \bigfrac{p \equiv p' \deriv{\sigma}q' \equiv q}{p\deriv{\sigma}q}  & & \; \; \;
+\end{array}$
+$\begin{array}{lcllcl}
+\mbox{(S-Com)}  & \bigfrac{p\deriv{\sigma_1} p'\spazio q\deriv{\sigma_2}q'}{p
+\para q \deriv{\sigma}p'\para q'} & \Sync(\sigma_1,  \sigma_2, \sigma) \\
+\end{array}$
+
+\hrulefill
+\end{center}}
+\caption{Operational semantics (symmetric rules for (Sum$_1$) and (Par$_1$) omitted)}\label{int-rules}
+\end{table}
+
+
+
+%\begin{table}
+%\hrulefill\\[-.5cm]
+%\begin{center}
+%$\begin{array}{lclcl}
+%\Conc(\mu, \tau, \mu) \; \; &  \; \; 
+%\Conc(\tau, \sigma, \sigma) \; \; & \; \; 
+% \bigfrac{\mu \neq \tau \neq \sigma}{\Conc(\mu, \sigma, \mu\sigma)} \\
+%\end{array}$
+
+%\end{center}
+
+%\hrulefill%\\[-.4cm]
+%\caption{Concatenation relation $\Conc$.}\label{conc}
+%\end{table}
+
+
+\begin{table}[t]
+{\renewcommand{\arraystretch}{1.2}
+\hrulefill\\[-.6cm]
+\normalsize{
+
+%{\renewcommand{\arraystretch}{2.8}
+\begin{center}
+
+\hrulefill
+
+$\begin{array}{llrclllrrl}
+{\bf S1} &\; \; &\; \;  (p \para q) \para r & = & p \para (q \para r) \\
+{\bf S2} &\; \; &\; \; p \para q & = & q \para p \\
+{\bf S3} &\; \; &\; \; A & = & q & \quad \mbox{ if $A \eqdef q$}\\
+{\bf S4} &\; \; &\; \; \restr{a} (p \para q)  & = & p \para \restr{a}q &  \quad \mbox{ if $a$ not free in $p$}\\
+{\bf S5} &\; \; &\; \; \restr{a} p & = &  \restr{b} (p\sost{b}{a}) & \quad \mbox{ if $b$ does not occur in $p$}\\
+\end{array}$
+
+
+\hrulefill
+
+\end{center}}
+}
+\caption{Axioms generating the structural congruence $\equiv$.}\label{structural}
+\end{table}
+
+
+
+
+\begin{table}
+\hrulefill\\[-.5cm]
+\begin{center}
+$\begin{array}{lclcl}
+\Sync(\alpha, \overline{\alpha}, \tau) &  
+\bigfrac{\Int(\sigma_1, \sigma_2, \sigma)}{\Sync(\alpha\sigma_1, \overline{\alpha}\sigma_2, \sigma)} &
+% \bigfrac{\Sync(\sigma_1, \sigma_2, \sigma) \; \; \Conc(\mu, \sigma, \sigma')}{\Sync(\mu\sigma_1, \sigma_2, \sigma')} &
+% \bigfrac{\Sync(\sigma_1, \sigma_2, \sigma) \; \; \Conc(\mu, \sigma, \sigma')}{\Sync(\sigma_1, \mu\sigma_2, \sigma')} \\
+ \bigfrac{\Sync(\sigma_1, \sigma_2, \tau)}{\Sync(\alpha\sigma_1, \sigma_2, \alpha)} \\
+\bigfrac{\Sync(\sigma_1, \sigma_2, \tau)}{\Sync(\sigma_1, \alpha\sigma_2, \alpha)} &
+\bigfrac{\Sync(\sigma_1, \sigma_2, \sigma) \quad \sigma \neq \tau}{\Sync(\alpha\sigma_1, \sigma_2, \alpha\sigma)} &
+ \bigfrac{\Sync(\sigma_1, \sigma_2, \sigma) \quad \sigma \neq \tau}{\Sync(\sigma_1, \alpha\sigma_2, \alpha\sigma)} \\
+\end{array}$\\
+
+\hrulefill%\\[-.4cm]
+
+$\begin{array}{lllll}
+\Int(\alpha, \overline{\alpha}, \tau) \; \; &  \; \; \Int(\alpha, \epsilon, \alpha) \; \; &
+\; \;\Int(\epsilon, \alpha, \alpha) \; \; & \; \; \bigfrac{\Int(\sigma_1, \sigma_2, \sigma)}{\Int(\alpha\sigma_1, \overline{\alpha}\sigma_2, \sigma)} \\
+\end{array}$
+
+$\begin{array}{lclcl}
+% \bigfrac{\Int(\sigma_1, \sigma_2, \sigma) \; \; \Conc(\mu, \sigma, \sigma')}{\Int(\mu\sigma_1, \sigma_2, \sigma')} \; \; & \; \; 
+% \bigfrac{\Int(\sigma_1, \sigma_2, \sigma) \; \; \Conc(\mu, \sigma, \sigma')}{\Int(\sigma_1, \mu\sigma_2, \sigma')} \\
+ \bigfrac{\Int(\sigma_1, \sigma_2, \tau)}{\Int(\alpha\sigma_1, \sigma_2, \alpha)} & 
+\; \; \bigfrac{\Int(\sigma_1, \sigma_2, \tau)}{\Int(\sigma_1, \alpha\sigma_2, \alpha)} &
+\; \;  \bigfrac{\Int(\sigma_1, \sigma_2, \sigma) \quad \sigma \neq \tau}{\Int(\alpha\sigma_1, \sigma_2, \alpha\sigma)} & 
+\; \; \bigfrac{\Int(\sigma_1, \sigma_2, \sigma) \quad \sigma \neq \tau}{\Int(\sigma_1, \alpha\sigma_2, \alpha\sigma)} \\
+\end{array}$
+
+\end{center}
+
+\hrulefill%\\[-.4cm]
+\caption{Synchronization relation $\Sync$ and interleaving relation $\Int$.}\label{b-sync}
+\end{table}
+
+Rule (S-Com) has a side-condition on the possible synchronizability of sequences $\sigma_1$ and $\sigma_2$,
+whose result may be $\sigma$. 
+$\Sync(\sigma_1, \sigma_2, \sigma)$ holds
+if $\sigma$ is obtained from an interleaving (possibly with synchronizations) of $\sigma_1$ and $\sigma_2$, 
+where at least one synchronization has taken place. 
+Relation $\Sync$ is defined by the inductive rules of Table~\ref{b-sync}, which make use of the auxiliary
+relation $\Int$, which is just as $\Sync$ without requiring that at least one synchronization occurs.\footnote{In the definition 
+of $\Sync$ and $\Int$, with abuse of notation, we let $\sigma$ range over $\mathcal{A} \cup \{\epsilon\}$, the empty sequence.}
+Note that when the resulting $\sigma$ is not $\tau$,
+then it can be used for further synchronization with some additional parallel components, hence allowing for
+multiparty synchronization.
+
+Rule (S-Res) is slightly different, as it requires that no action in $\sigma$ can be $a$ or $\bar{a}$.
+With $n(\sigma)$ we denote the set of all actions occurring in $\sigma$.
+
+There is one further new rule, called  (Cong), which makes use of a structural congruence $\equiv$,
+that is needed to overcome a shortcoming of parallel composition: without rule (Cong), parallel
+composition is not associative.
+The structural congruence $\equiv$ on process terms is  induced by the 
+five axioms (S1-S5) in Table \ref{structural}.
+
+
+%$
+%(p \para q) \para r \; = \; p \para (q \para r)
+%$
+
+%$
+%\restr{a} (p \para q) = \restr{a}p \para q \; \; \mbox{ if $a$ is not free in $q$}.
+%p \para q \; = \; q \para p
+%$
+
+%$
+%\restr{a} (p \para q) = p \para \restr{a}q \; \; \mbox{ if $a$ is not free in $p$}.
+%$
+
+%$
+%\restr{a} p =  \restr{b} (p\sost{b}{a}) \; \; \mbox{ if $b$ does not occur in $p$}.
+%$
+
+\noindent
+The first equation is for associativity of the parallel operator; the second law is for commutativity of parallel composition.
+The third equation explains why we have no explicit operational rule for handling constants: the transitions derivable from $A$
+are those transitions derivable from the structurally congruent term $p$, if $A \eqdef p$. 
+The fourth law allows for enlargement of the scope of restriction;
+the last equation is the so-called law of {\em alpha-conversion}, which makes use of syntactic substitution. 
+The intuition is that, with this structural congruence, all the parallel components are to be considered 
+as in a bunch where they can freely interact independently of their actual association or ordering.
+Indeed, rule (Cong) enlarges the set of transitions derivable from $p$, as the following four examples show. 
+
+\begin{example}\label{multi-synch}{\bf (Multi-party synchronization)} Assume that three processes want to synchronize. 
+This can be easily expressed in Multi-CCS by means of a transaction. E.g., consider $p = \underline{a}.a.p'$,
+$q = \bar{a}.q'$ and $r = \bar{a}.r'$ and the whole system $P = \restr{a}((p \para q) \para r)$. It is easy to see
+that $P \deriv{\tau} \restr{a}((p' \para q') \para r')$ (and this can be proved in two ways), so the three processes 
+have synchronized in one single atomic transition.
+It is interesting to observe that $P' = \restr{a}(p \para (q \para r))$ could not
+perform the multiway synchronization if  rule (Cong) were not allowed.
+\fine
+\end{example}
+
+\begin{example}\label{comm-needed}
+In order to see that also the commutativity axiom may be useful, consider process $p = 
+ (\underline{a}.c.0 | b.0) | (\overline{a}.0 | \underline{\overline{b}}.\overline{c}.0)$. Such a process
+ can do a four-way synchronization $\tau$ to $q = (\nil \para \nil) \para (\nil \para \nil)$, because $p' = 
+ (\underline{a}.c.0 | \overline{a}.0) | (b.0 | \underline{\overline{b}}.\overline{c}.0)$, which is structurally congruent to $p$,
+ can perform $\tau$ reaching $q$.
+Without rule (Cong), process $p$ could not perform such a multiway synchronization.
+\fine
+\end{example}
+
+\begin{example}
+Consider $Q = p_1 \para \restr{a}(p_2 \para p_3)$, where $p_1 = \underline{b}.c.p'_1$, $p_2 = \overline{b}.p'_2$ 
+and $p_3 = \overline{c}.p'_3$. Without rule (Cong), the three-way synchronization $Q \deriv{\tau} Q''$, 
+where $Q'' =  p'_1 \para \restr{a}(p'_2 \para p'_3)$, could not take place. However, by taking a new name $d$
+not occurring free in $Q$, we can prove that
+$Q$ is structurally congruent to $Q' = \restr{d}((p_1 \para p_2\sost{d}{a}) p_3\sost{d}{a})$, because
+of scope enlargement and alpha-conversion, and $Q' \deriv{\tau} Q''' \equiv Q''$, where $Q''' = 
+\restr{d}((p'_1 \para p'_2\sost{d}{a}) p'_3\sost{d}{a})$.
+\fine
+\end{example}
+
+\begin{example}
+Consider $R = \underline{a}.c.0 | A$, where $A \eqdef \overline{a}.0 \para \overline{c}.0$. Without rule (Cong) 
+(and axiom (S3) of Table \ref{structural}),
+it is not possible to derive $R \deriv{\tau} 0 \para (0 \para 0)$. 
+\fine
+\end{example}
+
+\begin{example}\label{guarded-rec}{\bf (Guardedness)} 
+We assume that each process constant in a defining equation occurs
+inside a normally prefixed subprocess $\mu.q$. This will prevent infinitely branching sequential processes.
+E.g, consider the non legal process $A  \eqdef  \underline{a}.A + b.\nil$.
+According to the operational rules, $A$ has infinitely many transitions leading to $\nil$, each of the form $a^nb$, for 
+$n = 0, 1, ...$. 
+In fact, under guardedness, the set of terms generated by 
+\[ p ::= \nil \mid  \mu.p \mid  \underline{\mu}.p \mid p+p  \mid  C\]
+defines, up to isomorphism, the set of transition systems labeled on ${\mathcal A} = 
+(\mathcal{L} \cup \overline{\mathcal L})^+ \cup \{\tau\}$ with finitely many states and transitions.
+\fine
+\end{example}
+
+
+\begin{example}\label{ex-dining}
+{\bf(Dining Philosophers)} This famous problem, defined by Dijkstra in \cite{Dij71}, can be solved in Multi-CCS.
+Five philosophers sit at a round table, with a private plate and where each of the five forks is shared by two neighbors.
+Philosophers can think and eat; in order to eat, a philosopher has to acquire both forks that he shares with his neighbors,
+starting from the fork at his left and then the one at his right. All philosophers behave the same, so the problem is intrinsically symmetric.
+Clearly a na\"ive solution would cause deadlock exactly when all five philosophers take the fork at their left at the same time 
+and are waiting for the fork at their right.
+A simple solution is to force atomicity on the acquisition of the two forks so that either both are taken or none. 
+In order to have a small model, we consider the case of two philosophers only.
+The forks can be defined by the constants $fork_i$: 
+\begin{eqnarray*}
+fork_i \eqdef  \overline{up_i}.\overline{dn_i}.fork_i \; \;  \mbox{   for  }i = 0, 1 
+\end{eqnarray*}
+The two philosophers can be described as 
+\begin{eqnarray*}
+phil_i \eqdef think.phil_i + \underline{up_i}.up_{i+1}.eat.\underline{dn_i}.dn_{i+1}.phil_i  \; \;  \mbox{   for  }i = 0, 1 
+\end{eqnarray*}
+where $i+1$ is computed modulo $2$ and  the atomic sequence $up_i up_{i+1}$ ensures the atomic 
+acquisition of the two forks. For simplicity,
+we assume also that the release of the two forks is atomic, but this is not necessary for correctness.
+The whole system is  
+\begin{eqnarray*}
+DP \;  \eqdef \;  \restr{L}(phil_0\para phil_1 \para fork_0 \para fork_1) 
+\end{eqnarray*}
+where $L = \{up_0, up_1, dn_0, dn_1\}$. 
+Note that the operational semantics generates a finite-state 
+lts for $DP$, depicted in Figure \ref{ltsdining}. 
+\fine
+\end{example}
+
+
+\begin{figure}[t]
+\centering
+% \includegraphics[width=106mm]{philinter}
+\input{philinter}
+\caption{The labeled transition system for $DP$.}
+\label{ltsdining}
+\end{figure}
+
+
+
+
+\subsection{Properties of the semantics}
+
+Two terms $p$ and $q$ are {\em interleaving bisimilar}, written
+$p\sim q$, if there exists a strong bisimulation \cite{Mil89} $R$ such that $(p,q)\in R$.
+Interleaving bisimulation equivalence enjoys some expected algebraic properties. 
+
+\begin{proposition}\label{prop2}
+Let $p, q, r \in {\mathcal P}$ be processes. Then the following holds:\\
+
+$\begin{array}{llll}
+(1) & (p + q) + r \; \sim \; p + (q +r)  &
+(2) & p + q\; \sim \; q + p  \\
+(3) & p + \nil \; \sim \;  p  &
+(4) & p + p \; \sim \; p \\
+(5) & p \para (q \para r) \; \sim \; (p \para q) \para r  &
+(6) & p \para q\; \sim \; q \para p \\
+(7) & p \para \nil \; \sim \;  p &
+(8) & \restr{x}(p \para q) \; \sim \;  p \para \restr{x}q \mbox{  if } x \not\in fn(p) \\
+(9) & \restr{x}\restr{y}p \; \sim \;  \restr{y}\restr{x}p &
+(10) & \restr{x}p \; \sim \;  \restr{y} (p\sost{y}{x}) \mbox{  if } y \not\in fn(p) \\
+(11) & \restr{x} \nil \; \sim \; \nil\\
+\end{array}$
+
+\proof 
+The proof is standard.
+\fine
+\end{proposition}
+
+\begin{corollary}\label{cong>int}
+$p \equiv q$ implies $p \sim q$.
+
+\proof Because of (5), (6), (8) and (10) of Proposition \ref{prop2}.
+\fine
+\end{corollary}
+
+A few properties of strong prefixing are as follows:
+
+\begin{proposition}\label{prop}
+Let $p, q \in {\mathcal P}$ be processes. Then the following hold:\\
+
+$\begin{array}{lllllr}
+(1) & \underline\mu.(p + q)  \; \sim \;   \underline\mu.p +  \underline\mu.q & \; \;
+(2) &  \underline\mu.\nil  \; \sim \;   \nil &\\
+(3) &  \underline\tau.p   \; \sim \;  p  &  \; \;
+(4) &  \underline\mu.\tau.p   \; \sim \;  \mu.p \\
+\end{array}
+$\\[-.8cm]
+
+\fine
+\end{proposition}
+
+
+Interleaving bisimulation is a congruence for almost all the operators of Multi-CCS, in particular for strong prefixing.
+
+\begin{proposition}
+If $p \sim q$, then the following hold:
+\begin{enumerate}
+\item  $\mu.p \sim \mu.q \quad$ for all $\mu \in Act$,
+\item $\underline{\mu}.p \sim \underline{\mu}.q \quad$ for all $\mu \in Act$
+\item $p + r \sim q + r \quad $ for all  $r \in \mathcal{P}$,
+\item $\restr{a}p \sim \restr{a}q \quad$ for all $a \in \mathcal{L}$.
+\end{enumerate}
+
+\proof
+Standard.
+\fine
+\end{proposition}
+
+Unfortunately, $\sim$ is not a congruence for parallel composition, as the following example shows.
+
+\begin{example}\label{sim-no-cong}{\bf (No congruence for parallel composition)}
+Consider process $p = \overline{a}.\overline{a}.\nil$ and process $q = \overline{a}.\nil \para \overline{a}.\nil$.
+Clearly, $p \sim q$. However, if we consider a context $\mathcal{C}[-] =  - \para \underline{a}.\underline{a}.c.\nil$, we get
+that $\mathcal{C}[p] \not\sim \mathcal{C}[q]$, because the latter can perform $c$, i.e., 
+$\mathcal{C}[q] \deriv{c} (\nil \para \nil) \para \nil$, 
+while $\mathcal{C}[p]$ cannot. The reason for this
+difference is that the process $\underline{a}.\underline{a}.c.\nil$ can react with a number of concurrently active components
+equal to the length of the trace it can perform. Hence, a congruence semantics 
+for parallel composition must distinguish $p$ and $q$ on the basis of their different degree of parallelism.
+\fine
+\end{example}
+
+
+
+
+\section{Step Semantics}
+
+
+Multi-CCS can be equipped with a step semantics, i.e., a semantics where each transition is 
+labeled by a (multi-)set of 
+sequences that concurrent subprocesses can perform at the same time. This equivalence was originally introduced 
+over Petri nets \cite{NT84} and for a process algebra in \cite{Mil85}.
+
+The  step operational semantics for Multi-CCS is given by the lts 
+$({\mathcal P},{\mathcal B}, \derivas{ })$, where the states are the processes
+in ${\mathcal P}$, ${\mathcal B} = {\mathcal M}_{fin}({\mathcal A})$ 
+is the set of labels (ranged over by $M$),
+and $\derivas{ } \subseteq {\mathcal P}\times{\mathcal B}\times{\mathcal P}$ is the minimal 
+transition relation generated by the rules listed in Table~\ref{step-rules}. 
+Note that rules (S-Pref$_1^s$), (S-Pref$_2^s$) and (S-Pref$_3^s$) assume that the transition in the premise 
+is sequential, i.e., composed of one single sequence. Moreover, it can be proved that in rule (Sum$_1^s$),
+the derivable label $M$ is always a singleton. Note also that rule (S-Com$^s$)
+uses an additional auxiliary relation $\MSync$, defined in Table~\ref{Msync}, where $\oplus$ denotes multiset union.
+The intuition behind the definition of rule (S-Com$^s$) and $\MSync$ is that, whenever two parallel processes 
+$p$ and $q$ perform steps $M_1$ and $M_2$, then we can put all the sequences together -- $M_1 \oplus M_2$ --
+and see if $\MSync(M_1 \oplus M_2, \overline{M})$ holds. The resulting $\overline{M}$ may be just 
+$M_1 \oplus M_2$ (hence no synchronization takes place), according to axiom $\MSync(M, M)$, 
+or the $M'$ we obtain from the application of the rule:
+select two sequences $\sigma_1$ and $\sigma_2$ from $M_1 \oplus M_2$, synchronize them producing $\sigma$,
+then recursively apply $\MSync$ to $M_1 \oplus M_2 \setminus \{\sigma_1, \sigma_2\} \cup \{\sigma\}$ to obtain $M'$.
+This procedure of synchronizing sequences may go on until pairs of synchronizable sequences can be found, 
+but may also stop at any moment due to the axiom $\MSync(M, M)$.
+
+
+
+\begin{table}[t]
+\hrulefill\\[-.6cm]
+
+{\renewcommand{\arraystretch}{2.5}
+\begin{center}
+$\begin{array}{lcllllcl}
+\mbox{(Pref$^s$)}  & \mu.p\derivas{\{\mu\}}p & \qquad &
+\mbox{(S-Pref$_1^s$)}  & \bigfrac{p\derivas{\{\sigma\}}p'}{\underline{\tau}.p\derivas{\{\sigma\}}p'} & \\
+\mbox{(S-pref$_2^s$)}  & \bigfrac{p\derivas{\{\tau\}}p'}{\underline{\alpha}.p\derivas{\{\alpha\}}p'} & \qquad &
+\mbox{(S-Pref$_3^s$)}  & \bigfrac{p\derivas{\{\sigma\}}p' \quad \sigma \neq \tau}{\underline{\alpha}.p\derivas{\{\alpha\sigma\}}p'} & \\
+\mbox{(Sum$_1^s$)}  & \bigfrac{p\derivas{M}p'}{p+q\derivas{M}p'} & \qquad &
+%\mbox{(Sum$_2^s$)}  & \bigfrac{q\derivas{M}q'}{p+q\derivas{M}q'}  & \\
+\mbox{(Con$^s$)} & \bigfrac{p\derivas{M}p'}{C \derivas{M}p'}& C \eqdef p &  \\
+%\mbox{(Par$_2^s$)}  & \bigfrac{q\derivas{M}q'}{p\para q\derivas{M}p\para q'} &  \\
+\mbox{(Par$_1^s$)}  & \bigfrac{p\derivas{M}p'}{p\para q\derivas{M}p'\para q} & \qquad &
+\mbox{(Res$^s$)}  & \bigfrac{p\derivas{M}p'}{\restr{a}p\derivas{M}
+\restr{a}p'} & \forall \sigma \in M\, \; a, \bar{a} \not\in n(\sigma)\;  &\\
+\end{array}$
+
+$\begin{array}{lcllcl}
+\mbox{(S-Com$^s$)}  & \bigfrac{p\derivas{M_1} p'\spazio q\derivas{M_2}q'}{p
+\para q \deriv{M}p'\para q'} & \MSync(M_1 \oplus M_2, M) &\\
+\end{array}$
+
+\hrulefill
+\end{center}}
+\caption{Step operational semantics (symmetric rules for (Sum$_1^s$) and (Par$_1^s$) omitted).}\label{step-rules}
+\end{table}
+
+
+\begin{table}[t]
+\hrulefill\\[-.4cm]
+\begin{center}
+
+$\begin{array}{lcr}
+\MSync(M, M) & \qquad \quad & \bigfrac{\Sync(\sigma_1, \sigma_2, \sigma) \; \;  \; \MSync(M\oplus\{\sigma\}, M')}
+{\MSync(M \oplus \{\sigma_1, \sigma_2\}, M' )}  
+\end{array}$
+
+\end{center}
+\hrulefill
+\caption{Step synchronization relation}\label{Msync}
+\end{table}
+
+
+
+It is interesting to observe that these step operational rules do not make use of structural congruence $\equiv$. The same
+operational effect of rule (Cong) is here ensured by relation $\MSync$ that allows for multiple synchronization of concurrently
+active subprocesses. 
+
+\begin{lemma}\label{step>int}
+Let $p, q \in {\mathcal P}$ be processes. Then the following hold:
+\begin{enumerate}
+\item If $p \derivas{\{\sigma\}} q$, then $p \deriv{\sigma} q$.
+\item If $p \deriv{\sigma} q$, then $\exists q' \equiv q$ such that $p \derivas{\{\sigma\}} q'$.
+\end{enumerate}
+
+\proof The proof of (1) is by induction on the proof of $p \derivas{\{\sigma\}} q$. In the case of rule (S-Com$^s$),
+the actual proof of relation $\MSync$ tells in which order the parallel subcomponents are to be arranged by means of the structural congruence.
+
+The proof of (2) is by induction on the proof of $p \deriv{\sigma} q$. We cannot prove the
+stronger result $p \derivas{\{\sigma\}} q$, because of the free use of structural congruence; e.g., 
+$\mu.(p \para (q \para r)) \deriv{\mu} ((p \para q) \para r)$ (due to (Cong)), 
+while $\mu.(p \para (q \para r))$ cannot reach $((p \para q) \para r)$ in the step transition system.
+\fine
+\end{lemma}
+
+We call {\em step equivalence}, denoted $\sim_{step}$, the bisimulation equivalence on the step transition 
+system of Multi-CCS. The following obvious fact follows.
+
+\begin{lemma}\label{cong>step}
+Let $p, q \in {\mathcal P}$ be processes. If $p \equiv q$ then $p  \sim_{step} q$.
+
+\proof One has to show that for each equation $p = q$ generating $\equiv$, we have that $p  \sim_{step} q$.
+The only non-trivial case is for associativity $(p \para q) \para r \; = \; p \para (q \para r)$
+where one has to prove the following auxiliary lemma: if $p  \derivas{M_1} p'$, $q  \derivas{M_2} q'$
+and $r \derivas{M_3} r'$, then for all $M, M'$ such that $\Sync(M_1 \oplus M_2, M')$ and $\Sync(M' \oplus M_2, M)$,
+there exists $N$ such that $\Sync(N_2 \oplus M_3, N)$ and $\Sync(M_1 \oplus N, M)$. The thesis of this lemma follows by observing that such $M$ can be obtained as $\Sync(M_1 \oplus M_2 \oplus M_3, M)$.
+\fine
+\end{lemma}
+
+\begin{proposition}\label{step->int}
+For any pair of processes $p, q \in \mathcal{P}$, if $p \sim_{step} q$ then $p \sim q$.
+
+\proof
+Let $R$ be a step bisimulation (i.e., a bisimulation over the step lts) such that $(p, q) \in R$.
+Then, $\equiv \circ \, R \, \circ \equiv$ is an interleaving bisimulation containing the pair $(p, q)$ (where $\circ$ is the operation of relation composition). To prove this, we can resort to 
+Lemma \ref{step>int} and Lemma \ref{cong>step}.
+\fine
+\end{proposition}
+
+
+
+\begin{theorem}\label{cong-step}{\bf (Congruence)}
+If $p \sim_{step} q$, then the following hold:
+\begin{enumerate}
+\item  $\mu.p \sim_{step} \mu.q \quad$ for all $\mu \in Act$,
+\item $\underline{\mu}.p \sim_{step} \underline{\mu}.q \quad$ for all $\mu \in Act$
+\item $p + r \sim_{step} q + r \quad $ for all  $r \in \mathcal{P}$,
+\item $p \para r \sim_{step} q \para r \quad  $ for all  $r \in \mathcal{P}$,
+\item $\restr{a}p \sim_{step} \restr{a}q \quad$ for all $a \in \mathcal{L}$.
+\end{enumerate}
+
+\proof
+Standard.
+\fine
+\end{theorem}
+
+Theorem \ref{cong-step}(4) and Proposition \ref{step->int} ensure that 
+for any pair of processes $p, q \in \mathcal{P}$, if $p \sim_{step} q$ then,  for all  $r \in \mathcal{P}$, $p \para r \sim q \para r$.
+One may wonder if the reverse hold, i.e., if for all  $r \in \mathcal{P}$, $p \para r \sim q \para r$ can we conclude that 
+$p \sim_{step} q$? If this is the case, we can say that step equivalence is the coarsest congruence contained in
+interleaving bisimulation. The answer to this question is negative, as the following examples show.
+
+\begin{example}\label{no-tau-coarsest}
+Take processes $p = \tau.\tau.\nil$ and $q = \tau \para \tau$.
+It is not difficult to see that for all  $r \in \mathcal{P}$, $p \para r \sim q \para r$; 
+however, $p \not\sim_{step} q$ 
+as only the latter can perform the step $\{\tau, \tau\}$. 
+\fine
+\end{example}
+
+\begin{example}\label{no-coarsest}
+Take $p = (a \para a) + \underline{a}.a.\nil$
+and $q = a.a.\nil + \underline{a}.a.\nil$. It is easy to see that $p \not\sim_{step} q$, even if
+for all  $r \in \mathcal{P}$, $p \para r \sim q \para r$.
+\fine
+\end{example}
+
+
+\section{Coarsest Congruence: Linear-step bisimilarity}
+
+We may wonder which is the coarsest (i.e., as abstract as possible) 
+congruence contained in interleaving bisimulation. We observed above that step bisimilarity, albeit a congruence,
+is not the coarsest one, as it distinguishes processes that no parallel context can tell apart.
+Exemple \ref{no-coarsest} suggests that the contents of a step $\{a, a\}$ 
+which is testable by a parallel component is its possible atomic linearisation $aa$. Hence, it seems that
+the coarsest congruence should not observe steps, rather linearisation of steps.
+Example \ref{no-tau-coarsest} also suggests that the coarsest congruence should not be able
+to observe multiple occurrences of concurrent $\tau$'s. This requirement is rather intuitive: 
+if some activity is unobservable, 
+we cannot say how many concurrent internal activities it is composed of.
+
+
+\begin{table}[t]
+{\renewcommand{\arraystretch}{2.8}
+\hrulefill\\[-.4cm]
+
+%{\renewcommand{\arraystretch}{2.8}
+\begin{center}
+$\begin{array}{lcllcl}
+\mbox{(Pref$^{ls}$)}  & \mu.p\derivls{\mu}p & & \; \; \;
+\mbox{(S-Pref$^{ls}_1$)}  & \bigfrac{p\derivls{\sigma}p'}{\underline{\tau}.p\derivls{\sigma}p'} & \\
+\mbox{(S-Pref$^{ls}_2$)}  & \bigfrac{p\derivls{\tau}p'}{\underline{\alpha}.p\derivls{\alpha}p'} & & \; \; \;
+\mbox{(S-Pref$^{ls}_3$)}  & \bigfrac{p\derivls{\sigma}p' \quad \sigma \neq \tau}{\underline{\alpha}.p\derivls{\alpha\sigma}p'} & \\
+\mbox{(Sum$^{ls}_1$)}  & \bigfrac{p\derivls{\sigma}p'}{p+q\derivls{\sigma}p'} &  & \; \; \;
+\mbox{(Cons$^{ls}$)} & \bigfrac{p\derivls{\sigma}p'}{C\derivls{\sigma}p'}& C \eqdef p  \\
+\mbox{(Par$^{ls}_1$)}  & \bigfrac{p\derivls{\sigma}p'}{p\para q\derivls{\sigma}p'\para q} & & \; \; \;
+\mbox{(S-Res$^{ls}$)}  & \bigfrac{p\derivls{\sigma}p'}{\restr{a}p\derivls{\sigma}
+\restr{a}p'} & a, \bar{a} \not\in n(\sigma) \\
+\end{array}$
+
+$\begin{array}{lcllcl}
+\mbox{(S-Com$^{ls}$)}  & \bigfrac{p\derivls{\sigma_1} p'\spazio q\derivls{\sigma_2}q'}{p
+\para q \derivls{\sigma}p'\para q'} & AInt(\sigma_1,  \sigma_2, \sigma) \\ 
+\end{array}$
+
+\hrulefill
+\end{center}}
+\caption{Operational semantics (symmetric rules for (Sum$^{ls}_1$) and (Par$^{ls}_1$) omitted)}\label{linear-rules}
+\end{table}
+
+
+\begin{table}[t]
+\hrulefill\\[-.5cm]
+\begin{center}
+
+$\begin{array}{lllll}
+AInt(\tau, \sigma, \sigma) &  \; \; AInt(\sigma, \tau, \sigma) &
+& \bigfrac{\sigma_1 \neq \tau \quad \sigma_2 \neq \tau \quad \Int(\sigma_1, \sigma_2, \sigma)}{AInt(\sigma_1, \sigma_2, \sigma)} \\
+\end{array}$
+
+\end{center}
+
+\hrulefill%\\[-.4cm]
+\caption{Abstract interleaving relation}\label{c-sync}
+\end{table}
+
+
+We define a third operational semantics for Multi-CCS. The  linear-step operational semantics
+is given by the lts 
+$({\mathcal P},{\mathcal A}, \derivls{ })$, where 
+and $\derivls{ } \subseteq {\mathcal P}\times{\mathcal A}\times{\mathcal P}$ is the minimal 
+transition relation generated by the rules listed in Table~\ref{linear-rules}. 
+Note also that rule (S-Com$^{ls}$)
+uses an additional auxiliary relation $AInt$, defined in Table~\ref{c-sync},
+which is an extension of relation $\Int$ of Table \ref{b-sync} to consider also the case
+in which the arguments may be $\tau$. Note that if $AInt(\sigma_1, \sigma_2, \sigma)$ holds,
+then $\sigma$ is either $\tau$ or a sequence composed only of observable actions.
+Observe that the only real difference between the interleaving semantics and the linear-step semantics is 
+that $AInt(\sigma_1, \sigma_2, \sigma)$ allows for the free interleaving of $\sigma_1$ and $\sigma_2$,
+while $\Sync(\sigma_1, \sigma_2, \sigma)$ holds only if at least one synchronization takes place.
+Therefore, $a \para a \derivls{aa} \nil \para \nil$, while $a \para a \nonderiv{aa}$. This extra possibility
+is also compensating the omission of rule (Cong), as already observed for the step semantics.
+
+
+\begin{lemma}\label{int-lin-step}
+Let $p, q \in {\mathcal P}$.  
+If $p \deriv{\sigma} q$, then $\exists q' \equiv q$ such that $p \derivls{\sigma} q'$.
+\fine
+%\proof By induction on the proof of transition $p \deriv{\sigma} p'$.
+\end{lemma}
+
+Ordinary bisimulation equivalence on the linear-step transition system is
+ called {\em linear step equivalence} and denoted with $\sim_{ls}$. Of course,
+ the structural congruence $\equiv$ is a finer equivalence relation.
+ 
+\begin{lemma}\label{cong>lin}
+Let $p, q \in {\mathcal P}$ be processes. If $p \equiv q$ then $p  \sim_{ls} q$.
+\fine
+\end{lemma}
+
+Linear step bisimilarity $\sim_{ls}$ is indeed finer than interleaving bisimilarity $\sim$ because 
+of Lemma \ref{int-lin-step} and Lemma \ref{cong>lin}. The reverse implication does not hold:
+for instance, $(a.\nil \para b.\nil) \sim a.b.\nil + b.a.\nil$ but the two are not linear-step bisimilar as only
+$(a.\nil \para b.\nil)$
+can perform the atomic sequence $ab$.
+
+Moreover, linear-step bisimilarity $\sim_{ls}$ is coarser than step bisimilarity $\sim_{step}$. 
+This can be proved by showing that if $p \derivls{\sigma} p'$ then %either $p \derivas{\{\sigma\}} p'$ or
+$p \derivas{M} p'$, where $\sigma$ is the result of the interleaving (according to relation $AInt$)
+of all the sequences in $M$. Hence, If $p \not\sim_{ls} q$ then there is a pair of reachable states $p'$ and $q'$
+and a sequence $\sigma$ such that $p' \derivls{\sigma} p''$ while $q'$ cannot perform $\sigma$; as a consequence,
+this means that $p' \derivas{M} p''$ with $\sigma$ as the result of the linearisation of the sequences in $M$, while
+$q'$ cannot perform $M$, i.e., $p \not\sim_{step}q$.
+%The proof of this fact can be done by induction on the proof of $p \derivls{\sigma} p'$.
+The reverse implication does not hold: for instance, the two processes $p$ and $q$ discussed in Exercise \ref{no-coarsest}
+are linear-step bisimilar, but not step bisimilar, as only $p$ can perform a transition labeled by $\{a, a\}$.
+These observations justify the following:
+
+\begin{proposition}\label{comparison}
+$p \equiv q \Rightarrow p \sim_{step} q  \Rightarrow p \sim_{ls} q  \Rightarrow p \sim q$.
+\fine
+\end{proposition}
+
+ 
+ 
+One can prove that 
+$\sim_{ls}$ is a congruence for Multi-CCS. 
+
+
+\begin{theorem}\label{cong-lin-step}
+If $p \sim_{ls} q$, then the following hold:
+\begin{enumerate}
+\item  $\mu.p \sim_{ls} \mu.q \quad$ for all $\mu \in Act$,
+\item $\underline{\mu}.p \sim_{ls} \underline{\mu}.q \quad$ for all $\mu \in Act$
+\item $p + r \sim_{ls} q + r \quad $ for all  $r \in \mathcal{P}$,
+\item $p \para r \sim_{ls} q \para r \quad  $ for all  $r \in \mathcal{P}$,
+\item $\restr{a}p \sim_{ls} \restr{a}q \quad$ for all $a \in \mathcal{L}$.
+\end{enumerate}
+
+\proof
+Standard.
+\fine
+\end{theorem}
+
+
+We are now ready to state the coarsest congruence theorem. We first need an auxiliary lemma.
+
+\begin{lemma}\label{tau-tau-int}
+If $p \derivls{\tau} p'$, then $p \Deriv{\tau} p'$.
+
+\proof
+By induction on the proof of $p \derivls{\tau} p'$. The only non-trivial case is when $p = p_1 \para p_2$
+and $p_1 \para p_2 \derivls{\tau}p'_1 \para p'_2$ because 
+$p_1 \derivls{\sigma_1} p'_1$, $p_2 \derivls{\sigma_2} p'_2$ and $AInt(\sigma_1,  \sigma_2, \tau)$.
+By definition of relation $AInt$, the result may be $\tau$ only if either $\sigma_1 = \sigma_2 = \tau$
+or $\sigma_1 \neq \tau \neq \sigma_2$ and $\Int(\sigma_1, \sigma_2, \tau)$. In the former case,
+by induction we know that $p_1 \Deriv{\tau} p'_1$ and $p_2 \Deriv{\tau} p'_2$, hence by rule 
+(Par$_1$) and (Par$_2$) we have $p_1 \para p_2 \Deriv{\tau}p'_1 \para p_2 \Deriv{\tau}p'_1 \para p'_2$, as required.
+In the latter case,  $\Int(\sigma_1, \sigma_2, \tau)$ can be derived only if at least one synchronization takes place,
+hence also $\Sync(\sigma_1, \sigma_2, \tau)$ holds. Now, by rule (S-Com) we have 
+$p_1 \para p_2 \deriv{\tau} p'_1 \para p'_2$, as required.
+\fine
+\end{lemma}
+
+\begin{theorem}\label{coarsest-cong-step} {\bf (Coarsest congruence)}
+Assume that $fn(p) \cup fn(q) \neq \mathcal{L} \cup \overline{\mathcal{L}}$. Then, $p \sim_{ls} q$ if and only if,  
+for all  $r \in \mathcal{P}$, $p \para r \sim q \para r$.
+
+\proof
+The implication from left to right is due to the fact that $\sim_{ls}$ is a congruence for parallel composition 
+(by Theorem \ref{cong-lin-step}(4))
+and is also finer than interleaving bisimilarity (by Proposition \ref{comparison}). 
+The implication from right to left is proved by contradiction:
+assuming that $p \not\sim_{ls} q$, we prove that there exists $r$ such that $p \para r \not\sim q \para r$.
+As $p \not\sim_{ls} q$, there exist $p_i, q_i, i = 1, \ldots n (n \geq 0)$ such that 
+$p \derivls{\sigma_1} p_1 \derivls{\sigma_2} p_2 \ldots \derivls{\sigma_n} p_n$ and 
+$q \derivls{\sigma_1} q_1 \derivls{\sigma_2} q_2 \ldots \derivls{\sigma_n} q_n$, but $p_n \derivls{\gamma} p_{n+1}$ 
+and $q_n \nonderivls{\gamma}$. If $\gamma = \tau$, then by Lemma \ref{tau-tau-int}, we have that
+$p_n \Deriv{\tau} p_{n+1}$, while by Lemma \ref{int-lin-step} we have that $q_n \nonderiv{\tau}$.
+As a consequence, $p \not\sim q$ and so for, e.g., $r = \nil$, we have that  $p \para r \not \sim q \para r$.
+If instead $\gamma = \alpha_1 \ldots \alpha_n$ for $n > 0$, let $r = \underline{\overline{\alpha_1}}. \ldots .\underline{\overline{\alpha_n}}.d.\nil$,
+where $d$ is an action not occurring in $fn(p) \cup fn(q)$.
+It is the case that $p_n \para r \deriv{d} p_{n+1} \para \nil$, while $q_n \para r \nonderiv{d}$. Hence, 
+$p \para r \not\sim q \para r$.
+\fine
+\end{theorem}
+
+
+\section{Axiomatization}
+
+With the help of the auxiliary operators of left-merge $- \lfloor -$ and communication-merge 
+$- \Vert -$ of ACP \cite{BK84}, we can provide
+a finite, sound and complete axiomatization to linear-step bisimilarity over finite Multi-CCS processes.
+The operational SOS rules for these two operators are as follows:
+
+\begin{center}
+$\begin{array}{lcllcl}
+\mbox{(Left)}  & \bigfrac{p\derivls{\sigma}p'}{p\lfloor q\derivls{\sigma}p' \para q} & \qquad & 
+\mbox{(S-Merge)}  & \bigfrac{p\derivls{\sigma_1} p'\spazio q\derivls{\sigma_2}q'}{p \Vert q \derivls{\sigma}p' \para q'}  & AInt(\sigma_1,  \sigma_2, \sigma) \\
+\end{array}$
+\end{center}
+
+
+It is possible to prove that $\sim_{ls}$ is preserved by the left merge and the communication merge. 
+So, it is a congruence not only for the operators of finite Multi-CCS,
+but also for these auxiliary operators. Hence, it can be axiomatized.
+
+The axioms for the operators of choice, strong prefixing and restriction are reported in
+Table \ref{axiom-multi-+}. These reflect the intuition that the normal forms for finite Multi-CCS are terms of the form
+$\Sigma_{i\in I}\sigma_i.p_i$, where each $p_i$ is a normal form and $\sigma_i$ is either $\tau$ or a sequence of visible actions;
+to be more precise, with $\sigma_i.p_i$ we actually mean $\tau.p_i$ if $\sigma = \tau$, or 
+$\underline{\alpha}_1. \ldots .\underline{\alpha}_{n-1}.\alpha_n.p_i$ if $\sigma = \alpha_1 \ldots \alpha_n$.
+
+
+\begin{table}[t]
+{\renewcommand{\arraystretch}{1.2}
+\hrulefill\\[-.6cm]
+\normalsize{
+
+%{\renewcommand{\arraystretch}{2.8}
+\begin{center}
+$\begin{array}{lrlllllllll}
+{\bf A1}  &\; \;  x + (y + z) & = & (x + y) + z & \; \; {\bf A2}  &\; \;  x + y & = & y + x\\
+{\bf A3}  &\; \;  x + \nil & = & x & \; \; {\bf A4}  &\; \;  x + x & = & x\\
+\end{array}$
+
+\hrulefill
+
+$\begin{array}{lrlllrlllllcl}
+{\bf P1}  &\; \;  \underline{\mu}.\nil & = & \nil & \quad \;\;{\bf P2}  &\; \;  \underline{\tau}.x & = &  x\\
+{\bf P3}  &\; \;  \underline{\mu}.\tau.x & = & \mu.x & \quad \; \; {\bf P4}  &\; \;  \underline{\mu}.(x + y) & = & \underline{\mu}.x + \underline{\mu}.y\\
+\end{array}$
+
+\hrulefill
+
+$\begin{array}{llrcl}
+{\bf R1} &\; \; &\; \;  \restr{a}\nil & = & \nil\\
+{\bf R2} &\; \;  \mbox{if $\mu \not\in \{a, \bar{a}\}$} &\; \; \restr{a}\mu.x & = & \mu.\restr{a}x\\
+{\bf R3} &\; \;  \mbox{if $\mu \in \{a, \bar{a}\}$} &\; \; \restr{a}\mu.x & = & \nil \\
+{\bf R4} &\; \;  \mbox{if $\mu \not\in \{a, \bar{a}\}$} &\; \; \restr{a}\underline{\mu}.x & = & \underline{\mu}.\restr{a}x\\
+{\bf R5} &\; \;  \mbox{if $\mu \in \{a, \bar{a}\}$} &\; \; \restr{a}\underline{\mu}.x & = & \nil \\
+{\bf R6} &\; \; &\; \; \restr{a}(x + y) & = & \restr{a}x + \restr{a}y\\
+\end{array}$
+
+\hrulefill
+
+\end{center}}
+}
+\caption{Axioms for choice, strong prefixing and restriction.}\label{axiom-multi-+}
+\end{table}
+
+
+The axiomatization of the parallel composition operator is given by axiom {\bf Par} of 
+Table \ref{axiom-multi-aux}, together with the axioms
+{\bf L1-L4} for left merge and {\bf C1-C9} for communication merge. Let  $\mathcal{MSB}$ be the set of axioms reported in Table \ref{axiom-multi-+} and Table \ref{axiom-multi-aux}.
+It is possible to prove that the equational theory $\mathcal{MSB}$ is a sound and complete {\em finite} axiomatization 
+of $\sim_{ls}$.
+
+\begin{theorem}{\bf (Soundness)}\label{soundness}
+If $\mathcal{MSB} \vdash p = q$, then $p \sim_{ls} q$.
+
+\proof Because all the axioms in Tables \ref{axiom-multi-+} 
+and \ref{axiom-multi-aux} are sound for $\sim_{ls}$. 
+\fine
+\end{theorem}
+
+About completeness, we first prove the statement for normal forms. 
+
+\begin{proposition}\label{compl-nf}
+Let $p$, $q$ be normal forms. If $p \sim_{ls} q$, then $\mathcal{MSB} \vdash p = q$.
+
+\proof By induction on the sum of depths\footnote{The depth of $p$ is the maximal number of nested 
+prefixes in its syntax.} of $p$ and $q$.
+\fine
+\end{proposition}
+
+In order to prove completeness for any pair of equivalent processes, we first need to
+show that any process can be reduced to normal form.
+
+\begin{lemma}\label{aux-lemma}
+If $p$ and $q$ are normal forms, then the following hold:
+\begin{itemize}
+\item
+there exists a normal form $r$ such that $\mathcal{MSB} \vdash \underline{\mu}.p =  r$.
+\item 
+there exists a normal form $r$ such that $\mathcal{MSB} \vdash \restr{a}p =  r$.
+\item 
+there exists a normal form $r$ such that $\mathcal{MSB} \vdash p \para q = r$.
+\end{itemize}
+
+\proof By induction on the sum of depths of $p$ and $q$.
+\fine
+\end{lemma}
+
+\begin{proposition}\label{prop-reduc}
+For any process $p$ there exists a normal form $q$ such that $\mathcal{MSB} \vdash p = q$.
+
+\proof By structural induction on $p$, using Lemma \ref{aux-lemma}.
+\fine
+\end{proposition}
+
+\begin{theorem}{\bf (Completeness)}
+If $p \sim_{ls} q$, then $\mathcal{MSB} \vdash p = q$.
+
+\proof First, by Proposition \ref{prop-reduc}, we have normal forms $p'$ and $q'$ such that  
+$\mathcal{MSB} \vdash p = p'$ and $\mathcal{MSB} \vdash q = q'$. By Theorem \ref{soundness}, 
+$p \sim_{ls} p'$ and $q \sim_{ls} q'$, hence, by transitivity, also $p' \sim_{ls} q'$.
+By Proposition \ref{compl-nf}, we get that $\mathcal{MSB} \vdash p' = q'$ and so, by transitivity,
+also $\mathcal{MSB} \vdash p = q$.
+\fine
+\end{theorem}
+
+
+
+
+\begin{table}[t]
+{\renewcommand{\arraystretch}{1.2}
+\hrulefill\\[-.6cm]
+\normalsize{
+
+%{\renewcommand{\arraystretch}{2.8}
+\begin{center}
+
+$\begin{array}{llllll}
+{\bf Par} &\; \;   x \para y \; = \;  x \lfloor y \; + \; y \lfloor x \; + \; x \Vert y\\
+\end{array}$
+
+
+\hrulefill
+
+$\begin{array}{llrclllrrl}
+{\bf L1} &\; \; &\; \;  \nil \lfloor y & = & \nil & \quad
+{\bf L2} &\; \; &\; \; (\mu.x) \lfloor y & = & \mu.(x \para y)\\
+{\bf L3} &\; \; &\; \; (\underline{\mu}.x) \lfloor y & = & \underline{\mu}.(x \lfloor y) & \quad
+{\bf L4} &\; \; &\; \; (x + y) \lfloor z & = & x \lfloor z \; + \; y \lfloor z\\
+\end{array}$
+
+\hrulefill
+
+$\begin{array}{llrclllllrrlllllll}
+{\bf C1} &\; \; &\; \;  x \Vert y & = & y \Vert x & \quad
+{\bf C2} &\; \; &\; \;  \nil \Vert y & = & \nil & \quad 
+{\bf C3} &\; \; &\; \; (x + y) \Vert z & = & x \Vert z \; + \; y \Vert z\\
+\end{array}$
+$\begin{array}{llrcl}
+{\bf C4} &\; \;  \mbox{if $\mu_1 = \overline{\mu_2}$} &\; \; (\mu_1.x) \Vert (\mu_2.y) & = & \tau.(x \para y) + \underline{\mu}_1.(\mu_2.y \lfloor x) + \underline{\mu}_2.(\mu_1.x \lfloor y)\\
+{\bf C5} &\; \;  \mbox{if $\mu_1 \neq \overline{\mu_2}$} &\; \; (\mu_1.x) \Vert (\mu_2.y) & = & \underline{\mu}_1.(\mu_2.y \lfloor x) + \underline{\mu}_2.(\mu_1.x \lfloor y)\\
+{\bf C6} &\; \;  \mbox{if $\mu_1 = \overline{\mu_2}$} &\; \; (\underline{\mu}_1.x) \Vert (\mu_2.y) & = & (x \lfloor y) + \underline{\mu}_1.(x \Vert \mu_2.y) + \underline{\mu}_2.(\underline{\mu}_1.x \lfloor y)\\
+{\bf C7} &\; \;  \mbox{if $\mu_1 \neq \overline{\mu_2}$} &\; \; (\underline{\mu}_1.x) \Vert (\mu_2.y) & = &\underline{\mu}_1.(x \Vert \mu_2.y) + \underline{\mu}_2.(\underline{\mu}_1.x \lfloor y)\\
+{\bf C8} &\; \;  \mbox{if $\mu_1 = \overline{\mu_2}$} &\; \; (\underline{\mu}_1.x) \Vert (\underline{\mu}_2.y) & = & (x \Vert y) + 
+\underline{\mu}_1.(x \Vert \underline{\mu}_2.y) + \underline{\mu}_2.(\underline{\mu}_1.x \Vert y)\\
+{\bf C9} &\; \;  \mbox{if $\mu_1 \neq \overline{\mu_2}$} &\; \; (\underline{\mu}_1.x) \Vert (\underline{\mu}_2.y) & = &\underline{\mu}_1.(x \Vert \underline{\mu}_2.y) + \underline{\mu}_2.(\underline{\mu}_1.x \Vert y)\\
+
+\end{array}$
+
+\hrulefill
+
+\end{center}}
+}
+\caption{Axioms for the auxiliary operators}\label{axiom-multi-aux}
+\end{table}
+
+
+
+\section{Conclusion}
+
+We have studied the problem of finding the correct semantics for atomicity. To this aim, we
+have chosen a simple operator for atomicity (strong prefixing) and a discipline of interaction
+among atomic behaviors (relation $\Sync$), yielding Multi-CCS. 
+Then, we have identified the intuitively correct model for Multi-CCS:  the interleaving model 
+identifies all the actual (i.e., physical) atomic transitions of processes. However,
+we have seen that interleaving bisimulation is not a congruence for parallel composition.
+Hence, it turns out to be necessary to enrich the model with additional transitions. The first attempt
+has been to model steps of interleaving transitions; the resulting step bisimilarity is a congruence,
+but not the coarsest congruence. To this aim, a linear-step transitions system has been defined 
+whose transitions are labeled with linearisation of steps. Linear-step bisimilarity, which is a new behavioural semantics,
+turns out to be the coarsest congruence contained in interleaving bisimilarity.
+
+Linear-step bisimilarity is interesting also because, although finer than interleaving bisimilarity, it is still
+equipped with an axiomatization in interleaving style, i .e., with an expansion theorem. 
+This is not the case, for instance, for step
+bisimilarity, for which no axiomatization is available. 
+
+We conjecture that linear step bisimilarity can be a very appropriate bisimu-lation-based 
+behavioural equivalence also for calculi with joint input, such as those in \cite{FG96,LV10}, as Multi-CCS subsumes such
+a kind of synchronization pattern. For instance, the joint input construct $[a_1, \ldots a_{n-1}, a_n].p$ of \cite{LV10}
+can be easily encoded in Multi-CCS as $\underline{a_1}. \ldots \underline{a_{n-1}}.a_n.p$.
+
+
+\section*{Acknowledgment}
+
+The first author would like to thank Massimo Morara for useful comments and suggestions.
+
+
+
+\begin{thebibliography}{11}
+
+\bibitem{BK84}
+J.A.~Bergstra, J.W.~Klop,
+\newblock ``Process Algebra for Synchronous Communication'',
+\newblock {\em Information and Control} 60:109-137, 1984.
+
+
+\bibitem{CHP71}
+P. Courtois, F. Heymans, D. Parnas,
+\newblock ``Concurrent control with Readers and Writers'',
+\newblock {\em Communications of the ACM} 14(10):667-668, 1971.
+
+\bibitem{Dij71}
+E.W. Dijkstra, ``Hierarchical ordering of sequential processes'',
+\newblock {\em Acta Informatica} 1(2):115-138, 1971.
+
+\bibitem{FG96}
+C. Fournet, G. Gonthier,
+\newblock `The reflexive CHAM and the join-calculus'', in 
+Procs POPL'96, pages 372Ð 385, ACM Press, 1996.
+
+\bibitem{GM90} 
+R. Gorrieri, U. Montanari, ``Towards Hierarchical Specification of Systems:
+A Proof System for Strong Prefixing'',
+{\em Int. Journal of Foundations of Computer Science},
+1(3):277-293, 1990.
+
+\bibitem{GMM}
+R.~Gorrieri, S.~Marchetti, U.~Montanari,
+\newblock ``A$^2$CCS: Atomic Actions for CCS'',
+\newblock {\em Theoretical Computer Science} 72(2-3): 203-223, 1990.
+
+\bibitem{GV10a}
+R. Gorrieri, C. Versari,
+``A Process Calculus for Expressing Finite Place/Transition Petri Nets'',
+in Procs. EXPRESS'10, EPTCS, 2010. DOI 10.4204/EPTCS.41.6,
+available at arXiv:1011.6433v1.
+
+\bibitem{Hoare}
+C.A.R. Hoare,
+\newblock {\it Communicating Sequential Processes}
+\newblock Prentice-Hall, 1985.
+
+\bibitem{LR81}
+D.J. Lehmann. M.l O. Rabin.,
+\newblock ``On the advantages of free choice: 
+A symmetric and fully distributed solution to the dining philosophers problem'',
+\newblock In Procs. POPL'81, pages 133-138,  ACM Press, 1981. 
+
+\bibitem{LV10}
+C.~Laneve, A.~Vitale,
+\newblock ``The Expressive Power of Synchronizations'',
+\newblock  in Procs LICS'10, pages 382-391, IEEE-CS Press, 2010.
+
+\bibitem{Mil85}
+G. J. Milne,
+\newblock  ``Circal and the Representation of Communication, Concurrency, and Time'',
+\newblock {\em ACM Trans. Program. Lang. Syst.} 7(2): 270-298, 1985.
+
+\bibitem{Mil89} R. Milner. {\it Communication and Concurrency},
+Prentice-Hall, 1989.
+
+\bibitem{Mil89b} R. Milner.
+\newblock A Complete Axiomatisation for Observational Congruence of Finite-State Behaviors.
+\newblock {\em Inf. Comput.}  81(2): 227-247, 1989.
+
+\bibitem{Mil99} R. Milner. {\it Communicating and mobile systems: the
+$\pi$-calculus},
+Cambridge University Press, 1999.
+
+\bibitem{NT84}
+M. Nielsen and P. S. Thiagarajan,
+\newblock  ``Degrees of Non-Determinism and Concurrency: A Petri Net View'',
+\newblock in Procs. of the Fourth Conference on Foundations of Software Technology and Theoretical Computer Science (FSTTCS'84),
+Lecture Notes in Computer Science vol. 181, Springer, Berlin, pp. 89-117, 1984.
+
+\bibitem{Pat71}
+S. Patil
+\newblock ``Limitations and Capabilities of Dijkstra's Semaphore 
+Primitives for Coordination Among Processes'',
+\newblock Computation Structures Group Memo 57, Project MAC, MIT, 1971.
+
+\bibitem{Pet81}
+J.L. Peterson,
+\newblock {\em Petri Net Theory and the Modeling of Systems}, Prentice-Hall, 1981.
+
+
+\bibitem{VBG09}
+C. Versari, N. Busi, R. Gorrieri.
+\newblock An expressiveness study of priority in process calculi. 
+\newblock {\em Mathematical Structures in Computer Science} 19(6): 1161-1189, 2009.
+
+\end{thebibliography}
+
+
+
+\end{document}
+
+
+
