@@ -1,5 +1,5 @@
 
-\section{syntax}
+\section{Syntax}
 As we did whit $\pi$ calculus, we suppose that we have a countable set of names $\mathbb{N}$, ranged over by lower case letters $a,b, \cdots, z$. This names are used for communication channels and values. Furthermore we have a set of identifiers, ranged over by $A$. We represent the agents or processes by upper case letters $P,Q, \cdots $. A multi $\pi$ process, in addiction to the same actions of a $\pi$ process, can perform also a strong prefix output:
 \begin{center}
   $\pi$ ::= $\overline{x}y$ | $x(z)$ | $\underline{\overline{x}y}$ | $\tau$ 
@@ -25,8 +25,8 @@ We have to extend the following definition to deal with the strong prefix:
 \end{center}
 
 
-\section{operational semantic}
-\subsection{early operational semantic with structural congruence}
+\section{Operational semantic}
+\subsection{Early operational semantic with structural congruence}
 
 The semantic of a multi $\pi$ process is labeled transition system such that
 \begin{itemize}
@@ -361,7 +361,7 @@ In the following examples we omit sometimes the rule $Str$.
 
 
 
-\subsection{late operational semantic with structural congruence}
+\subsection{Late operational semantic with structural congruence}
 % Definisci le regole late per Multi-pi. In questo caso credo sia indispensabile la restrizione sintattica che ti suggerivo(solo input nello strong prefixing e sincronizzazione solo con la prima), mentre mi pare che nel caso early dovrebbe funzionare anche il caso generale con Sync. 
 
 
@@ -438,4 +438,4 @@ In the following examples we omit sometimes the rule $Str$.
 \end{definition}
 
 
-\subsection{behavioural semantic}
+

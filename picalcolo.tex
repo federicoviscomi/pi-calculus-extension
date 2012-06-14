@@ -2,7 +2,7 @@
 The $\pi$ calculus is a mathematical model of processes whose interconnections change as they interact. The basic computational step is the transfer of a communications link between two processes. The idea that the names of the links belong to the same category as the transferred objects is one of the cornerstone of the calculus. The $\pi$ calculus allows channel names to be communicated along the channels themselves, and in this way it is able to describe concurrent computations whose network configuration may change during the computation.
 
 
-\section{syntax}
+\section{Syntax}
 We suppose that we have a countable set of names $\mathbb{N}$, ranged over by lower case letters $a,b, \cdots, z$. This names are used for communication channels and values. Furthermore we have a set of identifiers, ranged over by $A$. We represent the agents or processes by upper case letters $P,Q, \cdots $. A process can perform the following actions:
 \begin{center}
   $\pi$ ::= $\overline{x}y$ | $x(z)$ | $\tau$ 
@@ -168,7 +168,7 @@ In a definition $A(x_{1}, \cdots, x_{n})=P$ we assume that $fn(P)\subseteq \{x_{
 
 
 
-\section{structural congruence}
+\section{Structural congruence}
 
 Structural congruences are a set of equations defining equality and congruence relations on process. They can be used in combination with an SOS semantic for languages. In some cases structural congruences help simplifying the SOS rules: for example they can capture inherent properties of composition operators(e.g. commutativity, associativity and zero element). Also, in process calculi, structural congruences let processes interact even in case they are not adjacent in the syntax. There is a possible trade off between what to include in the structural congruence and what to include in the transition rules: for example in the case of the commutativity of the sum operator. It is worth noticing that in most process calculi every structurally congruent processes should never be distinguished and thus any semantic must assign them the same behaviour.
 
@@ -297,8 +297,8 @@ We can make some clarification on the axioms of the structural congruence:
     We can use this scope extension laws or the rules $Opn$ and $Cls$ to deal with the scope extension.
 \end{description}
 
-\section{operational semantic}
-\subsection{early semantic without structural congruence}
+\section{Operational semantic}
+\subsection{Early semantic without structural congruence}
 
 % L’idea è che nella early quello che ricevi (cioe’ z) è un valore e come tale non ha vincoli rispetto ai free name esistenti, mentre nella late z sarebbe un place holder e quindi devi tenerlo distinto da tutti gli altri nomi free (onde evitare che quando andrai a fare la sostituzione in comunicazione, tu non vada a legare altri nomi che non hanno partecipato alla comunicazione). 
 
@@ -553,7 +553,7 @@ there is no substitution, instead the substitution occurres at an early point in
 
 
 
-\subsection{early semantic with structural congruence}
+\subsection{Early semantic with structural congruence}
 
 \begin{definition}\index{transition relation! pi! early! with structural congruence}
   The \emph{early transition relation with structural congruence} $\rightarrow\subseteq \mathbb{P}\times \mathbb{A} \times \mathbb{P}$ is the smallest relation induced by the following rules:
@@ -697,7 +697,7 @@ there is no substitution, instead the substitution occurres at an early point in
 \end{example}
 
 
-\subsection{late semantic without structural congruence}
+\subsection{Late semantic without structural congruence}
 
 \begin{definition}\index{transition relation! pi! late! without structural congruence}
   The \emph{late transition relation without structural congruence} $\rightarrow\subseteq \mathbb{P}\times \mathbb{A} \times \mathbb{P}$ is the smallest relation induced by the following rules:
@@ -806,7 +806,7 @@ there is no substitution, instead the substitution occurres at an early point in
 
 
 
-\subsection{late semantic with structural congruence}
+\subsection{Late semantic with structural congruence}
 In this case the set of actions $\mathbb{A}$ contains
 \begin{itemize}
       \item bound input $x(y)$
@@ -946,7 +946,7 @@ In this case the set of actions $\mathbb{A}$ contains
 \end{example}
 
 
-\subsection{behavioural semantic}
+\subsection{Behavioural semantic}
 
 \begin{definition}\index{congruence! strong}
   We say that two agents $P$ and $Q$ are \emph{strongly congruent}, written $P\sim Q$ if
