@@ -221,37 +221,70 @@ In this case, a label can be a sequence of prefixes, whether in the original $\p
 where the relation $Sync$ is defined in the following way:
 \begin{center}
   \begin{tabular}{ll}
-	$\inferrule* [left=S1]{
+	$\inferrule* [left=S1L]{
 	}{
 	  Sync(x(y),\overline{x}z,\tau,\{z/y\},\{\})
 	}$
       &
-	$\inferrule* [left=S2]{
+	$\inferrule* [left=S1R]{
+	}{
+	  Sync(\overline{x}z, x(y), \tau, \{\}, \{z/y\})
+	}$
+    \\\\
+	$\inferrule* [left=S2L]{
 	}{
 	  Sync(x(y),\overline{x}z\cdot \sigma,\sigma,\{z/y\},\{\})
 	}$
+      &
+	$\inferrule* [left=S2R]{
+	}{
+	  Sync(\overline{x}z\cdot \sigma, x(y), \sigma, \{\}, \{z/y\})
+	}$
     \\\\  
-	$\inferrule* [left=S3]{
+	$\inferrule* [left=S3L]{
+	}{
+	  Sync(x(y)\cdot \sigma, \overline{x}z, \sigma\{z/y\}, \{z/y\}, \{\})
+	}$	
+      &
+	$\inferrule* [left=S3R]{
 	}{
 	  Sync(\overline{x}z,x(y)\cdot \sigma,\sigma\{z/y\},\{\},\{z/y\})
 	}$	
+    \\\\
+	$\inferrule* [left=S4L]{
+	  Sync(\sigma_{1}, \sigma_{2}\{z/y\}, \sigma_{3}, \delta_{1}, \delta_{2})
+	}{
+	  Sync(x(y)\cdot \sigma_{1}, \overline{x}z\cdot\sigma_{2}, \sigma_{3}, \{z/y\}\delta_{1}, \delta_{2})
+	}$		
       &
-	$\inferrule* [left=S4]{
+	$\inferrule* [left=S4R]{
 	  Sync(\sigma_{1}, \sigma_{2}\{z/y\}, \sigma_{3}, \delta_{1}, \delta_{2})
 	}{
 	  Sync(\overline{x}z\cdot\sigma_{1},x(y)\cdot \sigma_{2}, \sigma_{3}, \delta_{1}, \{z/y\}\delta_{2})
 	}$		
     \\\\
-	$\inferrule* [left=I1]{
+	$\inferrule* [left=I1L]{
 	  Sync(\sigma_{1}, \sigma_{2}, \tau, \delta_{1}, \delta_{2})
 	}{
 	  Sync(\alpha \cdot \sigma_{1}, \sigma_{2}, \alpha, \delta_{1}, \delta_{2})
 	}$		
       &
-	$\inferrule* [left=I2]{
+	$\inferrule* [left=I1R]{
+	  Sync(\sigma_{1}, \sigma_{2}, \tau, \delta_{1}, \delta_{2})
+	}{
+	  Sync(\sigma_{1}, \alpha \cdot \sigma_{2}, \alpha, \delta_{1}, \delta_{2})
+	}$		
+    \\\\
+	$\inferrule* [left=I2L]{
 	  Sync(\sigma_{1}, \sigma_{2}, \sigma_{3}, \delta_{1}, \delta_{2})
 	}{
 	  Sync(\alpha \cdot \sigma_{1}, \sigma_{2}, \alpha \cdot \sigma_{3}, \delta_{1}, \delta_{2})
+	}$			
+      &
+	$\inferrule* [left=I2R]{
+	  Sync(\sigma_{1}, \sigma_{2}, \sigma_{3}, \delta_{1}, \delta_{2})
+	}{
+	  Sync(\sigma_{1}, \alpha \cdot \sigma_{2}, \alpha \cdot \sigma_{3}, \delta_{1}, \delta_{2})
 	}$			
     \\
   \end{tabular}
