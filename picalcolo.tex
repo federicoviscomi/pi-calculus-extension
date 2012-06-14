@@ -297,7 +297,8 @@ We can make some clarification on the axioms of the structural congruence:
     We can use this scope extension laws or the rules $Opn$ and $Cls$ to deal with the scope extension.
 \end{description}
 
-\section{early semantic without structural congruence}
+\section{operational semantic}
+\subsection{early semantic without structural congruence}
 
 % L’idea è che nella early quello che ricevi (cioe’ z) è un valore e come tale non ha vincoli rispetto ai free name esistenti, mentre nella late z sarebbe un place holder e quindi devi tenerlo distinto da tutti gli altri nomi free (onde evitare che quando andrai a fare la sostituzione in comunicazione, tu non vada a legare altri nomi che non hanno partecipato alla comunicazione). 
 
@@ -552,7 +553,7 @@ there is no substitution, instead the substitution occurres at an early point in
 
 
 
-\section{early semantic with structural congruence}
+\subsection{early semantic with structural congruence}
 
 \begin{definition}\index{transition relation! pi! early! with structural congruence}
   The \emph{early transition relation with structural congruence} $\rightarrow\subseteq \mathbb{P}\times \mathbb{A} \times \mathbb{P}$ is the smallest relation induced by the following rules:
@@ -696,7 +697,7 @@ there is no substitution, instead the substitution occurres at an early point in
 \end{example}
 
 
-\section{late semantic without structural congruence}
+\subsection{late semantic without structural congruence}
 
 \begin{definition}\index{transition relation! pi! late! without structural congruence}
   The \emph{late transition relation without structural congruence} $\rightarrow\subseteq \mathbb{P}\times \mathbb{A} \times \mathbb{P}$ is the smallest relation induced by the following rules:
@@ -805,7 +806,7 @@ there is no substitution, instead the substitution occurres at an early point in
 
 
 
-\section{late semantic with structural congruence}
+\subsection{late semantic with structural congruence}
 In this case the set of actions $\mathbb{A}$ contains
 \begin{itemize}
       \item bound input $x(y)$
@@ -945,7 +946,7 @@ In this case the set of actions $\mathbb{A}$ contains
 \end{example}
 
 
-\section{behavioural semantic}
+\subsection{behavioural semantic}
 
 \begin{definition}\index{congruence! strong}
   We say that two agents $P$ and $Q$ are \emph{strongly congruent}, written $P\sim Q$ if
