@@ -408,20 +408,51 @@ with the action $c$ of the other parallel component, hence atomicity is really e
 	      \Sync(a\bar{b}, bc, ac) 
 	    }
 	  &
-	      \Sync(a, \tau, a) 
+	      \Sync(a, \tau, a) no
 	  &
+	    \inferrule{
+	      \inferrule{
+		\inferrule{
+		}{
+		  \Int(\epsilon, c, c)
+		}
+	      }{
+		\Int(b, c, bc)
+	      }
+	    }{
 	      \Sync(ab, \overline{a}c, bc)
+	    }
 	  \\\\
+	    \inferrule{
+	      \inferrule{
+	      }{
+		\Int(\bar{b}, b, \tau) 
+	      }
+	    }{
 	      \Sync(a\bar{b}, \bar{a}b, \tau) 
+	    }
 	  &
+	    \inferrule{
+		\inferrule{
+		  \inferrule{
+		  }{
+		    \Sync(\bar{b}, b, \tau) 
+		  }
+		}{
+		  \Sync(a \bar{b}, b, a) 
+		}
+	      \\
+		a\neq \tau
+	    }{
 	      \Sync(a \bar{b}, cb, ca) 
+	    }
 	  &
 	      \Sync(a \bar{b}, cb, ca\tau)
 	  \\
 	\end{array}$
 
-\begin{exercise}
-Prove that the following hold:
+      \begin{exercise}
+	Prove that the following hold:
 
 $\begin{array}{lllllllll}
 (1) & \Sync(aa, \bar{a}\bar{a}, \tau) & (2) & \Sync(aa, \bar{a}\bar{a}, a\overline{a}) & (3) & \Sync(aa, \bar{a}\bar{a}, \overline{a}a)  \\
