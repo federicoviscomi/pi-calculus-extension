@@ -218,7 +218,7 @@ In this case, a label can be a sequence of prefixes, whether in the original $\p
   \end{center}
 \end{definition}
 
-where the relation $Sync$ is defined in the following way:
+In what follows, the names $\delta, \delta_{1}, \delta_{2}$ represents substitutions, they can also be empty; the names $\sigma, \sigma_{1}, \sigma_{2}, \sigma_{3}$ are non empty sequences of actions. The relation $Sync$ is defined in the following way:
 \begin{center}
   \begin{tabular}{ll}
 	$\inferrule* [left=S1L]{
@@ -286,6 +286,26 @@ where the relation $Sync$ is defined in the following way:
 	}{
 	  Sync(\sigma_{1}, \alpha \cdot \sigma_{2}, \alpha \cdot \sigma_{3}, \delta_{1}, \delta_{2})
 	}$			
+    \\\\
+	$\inferrule* [left=I3L]{
+	}{
+	  Sync(\alpha, \sigma, \alpha \cdot \sigma, \delta_{1}, \delta_{2})
+	}$			
+      &
+	$\inferrule* [left=I3R]{
+	}{
+	  Sync(\sigma, \alpha, \alpha \cdot \sigma, \delta_{1}, \delta_{2})
+	}$
+    \\\\
+	$\inferrule* [left=I3L]{
+	}{
+	  Sync(\epsilon, \sigma, \sigma, \delta_{1}, \delta_{2})
+	}$			
+      &
+	$\inferrule* [left=I3R]{
+	}{
+	  Sync(\sigma, \epsilon, \sigma, \delta_{1}, \delta_{2})
+	}$
     \\
   \end{tabular}
 \end{center}
@@ -294,16 +314,164 @@ where the relation $Sync$ is defined in the following way:
 \begin{example}
   We want to prove that:
   \[
-    \underline{\overline{a}x}.\overline{a}x.0|\underline{a(y)}.a(z).0\; \xrightarrow{\tau} 0|0
+    \underline{\overline{a}x}.\overline{a}y.P|\underline{a(w)}.a(z).Q\; \xrightarrow{\tau} P|Q\{x/w\}\{y/z\}
   \]
+  We start first noticing that
+  \[
+    \inferrule* [left=S4R]{
+      \inferrule* [left=S1R]{
+      }{
+	Sync(\overline{a} y, a(z)\{x/w\}, \tau, \{\}, \{y/z\})
+      }
+    }{
+      Sync(\overline{a}x \cdot \overline{a} y, a(w) \cdot a(z), \tau, \{\}, \{x/w\}\{y/z\})
+    }
+  \]
+  and that 
+  \begin{center}
+    \begin{tabular}{ll}
+	  $
+	    \inferrule* [left=SOut]{
+	      \inferrule* [left=Pref]{
+	      }{
+		\overline{a}y.P\; \xrightarrow{\overline{a} y}\; P
+	      }
+	    }{
+	      \underline{\overline{a}x}.\overline{a}y.P\; \xrightarrow{\overline{a}x \cdot \overline{a} y}\; P
+	    }
+	  $  
+	&
+	  $
+	    \inferrule* [left=SInp]{
+	      \inferrule* [left=Pref]{
+	      }{
+		a(z).Q\; \xrightarrow{a(z)} Q
+	      }
+	    }{
+	      \underline{a(w)}.a(z).Q\; \xrightarrow{a(w)\cdot a(z)} Q
+	    }
+	  $
+    \end{tabular}
+  \end{center}
+  and in the end we just need to apply the rule $\bf{LCom}$
 \end{example}
 
 
 \begin{example}
-  We want to prove that:
-  \[
-    (\underline{\overline{a}x}.\overline{b}x.0|\underline{b(y)}.\overline{a}(z).0)|\underline{a}(x).a(z).0\; \xrightarrow{\tau} (0|0)|0
-  \]
+\begin{equation*}
+  \begin{fitch}
+    \fa (\underline{\overline{a}f}.\overline{b}g.P
+	|\underline{a(w)}.a(z).Q)
+	|\underline{b(y)}.\overline{a}h.R\; 
+	  \xrightarrow{\tau} 
+	    (P|Q\{f/w\})\{h/z\}|R\{g/y\}
+      & 
+	LCom        
+    \\
+    \fa \fa \underline{\overline{a}f}.\overline{b}g.P
+	    |\underline{a(w)}.a(z).Q
+	      \xrightarrow{\overline{b}g\cdot a(z)} 
+		P |Q\{f/w\}
+      &  
+	LCom
+    \\
+    \fa \fa \fa \underline{\overline{a}f}.\overline{b}g.P
+		  \xrightarrow{\overline{a}f\cdot \overline{b}g} 
+		    P
+      &  
+	SOut
+    \\    
+    \fa \fa \fa \fa \overline{b}g.P
+		      \xrightarrow{\overline{b}g} 
+			P
+      &  
+      Pref
+    \\    
+
+    \fa \fa \fa \underline{a(w)}.a(z).Q
+		  \xrightarrow{a(w)\cdot a(z)} 
+		    Q
+      &  
+	SInp
+    \\
+    \fa \fa \fa \fa a(z).Q
+		      \xrightarrow{a(z)} 
+			Q
+      &  
+	Pref
+    \\
+
+    \fa \fa \fa Sync(\overline{a}f\cdot \overline{b}g, a(w)\cdot a(z),\overline{b}g \cdot a(z), \{\}, \{f/w\})
+      &  
+	S4R
+    \\
+    \fa \fa \fa \fa Sync(\overline{b}g, a(z)\{f/w\},\overline{b}g \cdot a(z), \{\}, \{\})
+      &  
+	I3L
+    \\
+    \fa \fa \fa \fa \fa Sync(\epsilon, a(z), a(z), \{\}, \{\})
+      &  
+	I4R
+    \\
+    \fa \fa \underline{b(y)}.\overline{a}h.R\; 
+	      \xrightarrow{b(y)\cdot \overline{a}h}
+		R
+      &  
+	SInp
+    \\
+    \fa \fa \fa \overline{a}h.R\; 
+		  \xrightarrow{\overline{a}h}
+		    R
+      &
+	Pref
+    \\
+    \fa \fa Sync(\overline{b}g\cdot a(z), b(y)\cdot \overline{a}h, \tau, \{h/z\}, \{g/y\})
+      &  
+	S4R
+    \\
+    \fa \fa \fa Sync(a(z), \overline{a}h, \tau, \{h/z\}, \{g/y\})
+      &  
+	S1L
+    \\
+  \end{fitch}
+\end{equation*}
+\end{example}
+
+
+\begin{example}
+\begin{equation*}
+  \begin{fitch}
+    \fa \underline{x(a)}.\overline{a}z.P
+	|\overline{x}b.Q\; 
+	  \xrightarrow{\overline{b}z} 
+	    P\{b/a\}|Q
+      &
+	LCom   
+    \\
+    \fa \fa \underline{x(a)}.\overline{a}z.P
+	      \xrightarrow{x(a)\cdot \overline{a}z} 
+		P
+      &  
+	SInp
+    \\
+    \fa \fa \fa \overline{a}z.P
+	      \xrightarrow{\overline{a}z} 
+		P
+      &  
+	Inp
+    \\
+    \fa \fa \overline{x}b.Q\; 
+	      \xrightarrow{\overline{x}b} 
+		Q
+      &  
+	Pref
+    \\    
+    \fa \fa Sync(x(a)\cdot \overline{a}z,\overline{x}b,\overline{b}z,\{b/a\},\{\})
+      &  
+	S3L
+    \\
+  \end{fitch}
+\end{equation*}
 \end{example}
 
 
