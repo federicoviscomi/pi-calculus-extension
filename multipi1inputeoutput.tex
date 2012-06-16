@@ -205,14 +205,12 @@ In this case, a label can be a sequence of prefixes, whether in the original $\p
 	      $(\nu z) P \;\xrightarrow{\sigma} (\nu z) P^{'}$
 	  \end{tabular}
 	&
-      \\\\
 	  \bf{SInp}
 	  \begin{tabular}{c}
 	      $P \;\xrightarrow{\sigma} P^{'}\;\; \sigma\neq \tau$
 	    \\\hline
 	      $\underline{x(y)}.P \;\xrightarrow{x(y) \cdot \sigma} P^{'}$
 	  \end{tabular}
-	&
       \\
     \end{tabular}
   \end{center}
@@ -309,6 +307,191 @@ In what follows, the names $\delta, \delta_{1}, \delta_{2}$ represents substitut
     \\
   \end{tabular}
 \end{center}
+
+
+
+ALTERNATIVA $\sigma, \sigma_{1}, \sigma_{2}, \sigma_{3}$ sono sequenze di azioni anche eventualmente vuote
+\begin{center}
+  \begin{tabular}{ll}
+	$\inferrule* [left=S1L]{
+	}{
+	  Sync(x(y),\overline{x}z,\tau,\{z/y\},\{\})
+	}$
+      &
+	$\inferrule* [left=S1R]{
+	}{
+	  Sync(\overline{x}z, x(y), \tau, \{\}, \{z/y\})
+	}$
+    \\\\
+	$\inferrule* [left=S2L]{
+	  Int(\sigma_{1}\{z/y\}, \sigma_{2}, \sigma_{3}, \delta_{1}, \delta_{2})
+	}{
+	  Sync(x(y)\cdot\sigma_{1}, \overline{x}z\cdot \sigma_{2}, \sigma_{3}, \{z/y\}\delta_{1}, \delta_{2})
+	}$
+      &
+	$\inferrule* [left=S2R]{
+	  Int(\sigma_{1}, \sigma_{2}\{z/y\}, \sigma_{3}, \delta_{1}, \delta_{2})
+	}{
+	  Sync(\overline{x}z\cdot\sigma_{1}, x(y)\cdot \sigma_{2}, \sigma_{3}, \delta_{1}, \{z/y\}\delta_{2})
+	}$
+    \\\\  
+	$\inferrule* [left=S3In]{
+	  Sync(\sigma_{1}, \sigma_{2}, \tau, , )
+	}{
+	  Sync(x(y)\cdot \sigma_{1}, \sigma_{2}, x(y), , )
+	}$	
+      &
+	$\inferrule* [left=S3Out]{
+	  Sync(\sigma_{1}, \sigma_{2}, \tau, , )
+	}{
+	  Sync(\overline{x}y\cdot \sigma_{1}, \sigma_{2}, \overline{x}y, , )
+	}$	
+    \\\\
+	$\inferrule* [left=S4In]{
+	  Sync(\sigma_{1}, \sigma_{2}, \tau, , )
+	}{
+	  Sync(\sigma_{1}, x(y)\cdot\sigma_{2}, x(y), , )
+	}$		
+      &
+	$\inferrule* [left=S4Out]{
+	  Sync(\sigma_{1}, \sigma_{2}, \tau, , )
+	}{
+	  Sync(\sigma_{1}, \overline{x}z\cdot\sigma_{2}, \overline{x}z, , )
+	}$		
+    \\\\
+	$\inferrule* [left=S5In]{
+	    Sync(\sigma_{1}, \sigma_{2}, \sigma_{3}, , )
+	  \\
+	    \sigma_{3}\neq\tau
+	}{
+	  Sync(x(y)\cdot\sigma_{1}, \sigma_{2}, x(y)\sigma_{3}, , )
+	}$		
+      &
+	$\inferrule* [left=S5Out]{
+	    Sync(\sigma_{1}, \sigma_{2}, \sigma_{3}, , )
+	  \\
+	    \sigma_{3}\neq\tau
+	}{
+	  Sync(\overline{x}z\cdot\sigma_{1}, \sigma_{2}, \overline{x}z\sigma_{3}, , )
+	}$		
+    \\\\
+	$\inferrule* [left=S6In]{
+	    Sync(\sigma_{1}, \sigma_{2}, \sigma_{3}, , )
+	  \\
+	    \sigma_{3}\neq\tau
+	}{
+	  Sync(\sigma_{1}, x(y)\cdot\sigma_{2}, x(y)\cdot\sigma_{3}, , )
+	}$		
+      &
+	$\inferrule* [left=S6Out]{
+	    Sync(\sigma_{1}, \sigma_{2}, \sigma_{3}, , )
+	  \\
+	    \sigma_{3}\neq\tau
+	}{
+	  Sync(\sigma_{1}, \overline{x}z\cdot\sigma_{2}, \overline{x}z\cdot\sigma_{3}, , )
+	}$		
+    \\\\
+	$\inferrule* [left=I1L]{
+	}{
+	  Int(x(y), \overline{x}y, \tau, \delta_{1}, \delta_{2})
+	}$		
+      &
+	$\inferrule* [left=I1R]{
+	}{
+	  Int(\overline{x}y, x(y), \tau, \delta_{1}, \delta_{2})
+	}$		
+    \\\\
+	$\inferrule* [left=I2In]{
+	}{
+	  Int(x(y), \epsilon, x(y), , )
+	}$			
+      &
+	$\inferrule* [left=I2Out]{
+	}{
+	  Int(\overline{x}y, \epsilon, \overline{x}y, , )
+	}$			
+    \\\\
+	$\inferrule* [left=I3In]{
+	}{
+	  Int(\epsilon, x(y), x(y), , )
+	}$			
+      &
+	$\inferrule* [left=I3Out]{
+	}{
+	  Int(\epsilon, \overline{x}z, \overline{x}z, , )
+	}$
+    \\\\
+	$\inferrule* [left=I4L]{
+	  Int(\sigma_{1}, \sigma_{2}, \sigma_{3}, , )
+	}{
+	  Int(x(y)\cdot\sigma_{1}, \overline{x}z\cdot \sigma_{2}, \sigma_{3}, , )
+	}$			
+      &
+	$\inferrule* [left=I4R]{
+	  Int(\sigma_{1}, \sigma_{2}, \sigma_{3}, , )
+	}{
+	  Int(\overline{x}z\cdot\sigma_{1}, x(y)\cdot \sigma_{2}, \sigma_{3}, , )
+	}$
+    \\\\
+	$\inferrule* [left=I5In]{
+	  Int(\sigma_{1}, \sigma_{2}, \tau, , )
+	}{
+	  Int(x(y)\cdot\sigma_{1}, \sigma_{2}, x(y), , )
+	}$			
+      &
+	$\inferrule* [left=I5Out]{
+	  Int(\sigma_{1}, \sigma_{2}, \tau, , )
+	}{
+	  Int(\overline{x}z\cdot\sigma_{1}, \sigma_{2}, \overline{x}z, , )
+	}$
+    \\\\
+	$\inferrule* [left=I6In]{
+	    Int(\sigma_{1}, \sigma_{2}, \sigma_{3}, , )
+	  \\
+	    \sigma_{3}\neq\tau
+	}{
+	  Int(x(y)\cdot\sigma_{1}, \sigma_{2}, x(y)\sigma_{3}, , )
+	}$			
+      &
+	$\inferrule* [left=I6Out]{
+	    Int(\sigma_{1}, \sigma_{2}, \sigma_{3}, , )
+	  \\
+	    \sigma_{3}\neq\tau
+	}{
+	  Int(\overline{x}z\cdot\sigma_{1}, \sigma_{2}, \overline{x}z\sigma_{3}, , )
+	}$
+    \\\\
+	$\inferrule* [left=I7Out]{
+	  Int(\sigma_{1}, \sigma_{2}, \tau, , )
+	}{
+	  Int(\sigma_{1}, \overline{x}z\cdot \sigma_{2}, \overline{x}z, , )
+	}$			
+      &
+	$\inferrule* [left=I7In]{
+	  Int(\sigma_{1}, \sigma_{2}, \tau, , )
+	}{
+	  Int(\sigma_{1}, x(y)\cdot \sigma_{2}, x(y), , )
+	}$
+    \\\\
+	$\inferrule* [left=I8In]{
+	    Int(\sigma_{1}, \sigma_{2}, \sigma_{3}, , )
+	  \\
+	    \sigma_{3}\neq\tau
+	}{
+	  Int(\sigma_{1}, x(y)\cdot \sigma_{2}, x(y)\cdot\sigma_{3}, , )
+	}$
+      &
+	$\inferrule* [left=I8Out]{
+	    Int(\sigma_{1}, \sigma_{2}, \sigma_{3}, , )
+	  \\
+	    \sigma_{3}\neq\tau
+	}{
+	  Int(\sigma_{1}, \overline{x}z\cdot \sigma_{2}, \overline{x}z\cdot\sigma_{3}, , )
+	}$			
+    \\
+  \end{tabular}
+\end{center}
+
 
 
 \begin{example}

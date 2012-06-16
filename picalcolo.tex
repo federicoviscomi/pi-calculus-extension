@@ -38,7 +38,7 @@ and they have the following intuitive meaning:
     \begin{center}
       $A(x_{1}, \cdots, x_{n}) = P$
     \end{center}
-    where the $x_{i}$ must be pairwise disjoint. The intuition is that if the $y_{i}$ replace the $x_{i}$ then $A(y_{1}, \cdots, y_{n})$ behave as $P$. 
+    where the $x_{i}$ must be pairwise disjoint. The intuition is that if the $y_{i}$ replace the $x_{i}$ then $A(y_{1}, \cdots, y_{n})$ behave as $P\{y_{1}/x_{1}\} \cdots \{y_{n}/x_{n}\}$. 
 \end{description}
 
 To resolve ambiguity we can use parentheses and observe the conventions that prefixing and restriction bind more tightly than composition and prefixing binds more tightly than sum. 
@@ -125,9 +125,8 @@ To resolve ambiguity we can use parentheses and observe the conventions that pre
 
 In a definition $A(x_{1}, \cdots, x_{n})=P$ we assume that $fn(P)\subseteq \{x_{1}, \cdots, x_{n}\}$. 
 
-
 \begin{definition}\index{syntactic substitution}
-  $P\{b/a\}$ is the syntactic substitution of name $b$ for a different name $a$ inside a $\pi$ calculus process, and it consist in replacing every free occurrences of $a$ with $b$. If $b$ is a bound name in $P$, in order to avoid name capture we perform an appropriate $\alpha$ conversion. $P\{b/a\}$ is defined as follows:
+  $P\{b/a\}$ is the syntactic substitution of name $b$ for a different name $a$ inside a $\pi$ calculus process, and it consists in replacing every free occurrences of $a$ with $b$. If $b$ is a bound name in $P$, in order to avoid name capture we perform an appropriate $\alpha$ conversion. $P\{b/a\}$ is defined as follows:
   \begin{center}
     \begin{tabular}{l}
 	$0\{b/a\}\; =\; 0$
@@ -146,7 +145,7 @@ In a definition $A(x_{1}, \cdots, x_{n})=P$ we assume that $fn(P)\subseteq \{x_{
 	  \begin{array}{ll}
 		A_{\{b/a\}}
 	      &
-		where\; A_{\{b/a\}}=q\{b/a\}\; if\; A\stackrel{def}{=}Q
+		where\; A_{\{b/a\}}=Q\{b/a\}\; if\; A\stackrel{def}{=}Q
 	    \\
 		A
 	      &
@@ -161,7 +160,9 @@ In a definition $A(x_{1}, \cdots, x_{n})=P$ we assume that $fn(P)\subseteq \{x_{
       \\\\
 	$((\nu a)Q)\{b/a\}\; =\;(\nu a)Q$
       \\\\
-	$((\nu b)Q)\{b/a\}\; =\;(\nu c)((Q\{c/b\})\{b/a\})$ where $c\notin n(Q)$
+	$((\nu b)Q)\{b/a\}\; =\;(\nu c)((Q\{c/b\})\{b/a\})$ where $c\notin n(Q)$ if $a\in fn(Q)$ 
+      \\\\
+	$((\nu b)Q)\{b/a\}\; =\;(\nu b)Q$ if $a\notin fn(Q)$
     \end{tabular}
   \end{center}
 \end{definition}
@@ -171,6 +172,15 @@ In a definition $A(x_{1}, \cdots, x_{n})=P$ we assume that $fn(P)\subseteq \{x_{
 \section{Structural congruence}
 
 Structural congruences are a set of equations defining equality and congruence relations on process. They can be used in combination with an SOS semantic for languages. In some cases structural congruences help simplifying the SOS rules: for example they can capture inherent properties of composition operators(e.g. commutativity, associativity and zero element). Also, in process calculi, structural congruences let processes interact even in case they are not adjacent in the syntax. There is a possible trade off between what to include in the structural congruence and what to include in the transition rules: for example in the case of the commutativity of the sum operator. It is worth noticing that in most process calculi every structurally congruent processes should never be distinguished and thus any semantic must assign them the same behaviour.
+
+\begin{definition}
+  A \emph{change of bound names} in a process $P$ is the replacement of a subterm $x(z).Q$ of $P$ by $x(w).Q\{w/z\}$ or the replacement of a subterm $(\nu z)Q$ of $P$ by $(\nu w)Q\{w/z\}$ where in each case $w$ does not occur in $Q$.
+\end{definition}
+
+\begin{definition}
+  Processes $P$ and $Q$ are \emph{$\alpha$ convertible} if $Q$ can be obtained from $P$ by a finite number of changes of bound names. If $P$ and $Q$ are $\alpha$ convertible we write $P\stackrel{\alpha}{=}Q$
+\end{definition}
+
 
 \begin{definition}\index{context}
   A \emph{context} $C[\cdot]$ is a process with a placeholder. If $C[\cdot]$ is a context and we replace the placeholder with $P$, than we obtain $C[P]$. In doing so, we make no $\alpha$ conversions.
@@ -248,15 +258,9 @@ We can make some clarification on the axioms of the structural congruence:
 	  \end{tabular}
     \end{center}
   \item[$\alpha\; conversion$]
-    is the $\alpha$ conversion, i.e., the choice of bound names, it identifies agents like $x(y).\overline{z}y$ and $x(w).\overline{z}w$. In the semantic of pi calculus we can use the structural congruence with the rule SC-ALP or the SOS rule
-    \begin{center}
-      \bf{Alpha}
-      \begin{tabular}{c}
-	  $P\xrightarrow{\alpha}P^{'}\;\; P\stackrel{\alpha}{\equiv}Q$
-	\\\hline
-	  $Q \xrightarrow{\alpha} P^{'}$
-      \end{tabular}
-    \end{center}
+    is the $\alpha$ conversion, i.e., the choice of bound names, it identifies agents like $x(y).\overline{z}y$ and $x(w).\overline{z}w$. In the semantic of pi calculus we can use the structural congruence with the rule SC-ALP or the we can embed the $\alpha$ conversion in the SOS rules. 
+    In the early case the rule for input takes care of $\alpha$ conversion, whether in the late case the rule for communication is in charge for $\alpha$ conversion.
+    But this works only for one binder: the input prefix. 
   \item[$abelian\; monoidal\; properties\; of\; some\; operators$]
     We can deal with associativity and commutativity properties of sum and parallel composition by using SOS rules or by axiom of the structural congruence. For example the commutativity of the sum can be expressed by the following two rules:
     \begin{center}
@@ -313,7 +317,6 @@ The semantic of a $\pi$ calculus process is a labeled transition system such tha
       \item unbound output $\overline{x}y$
       \item the silent action $\tau$
       \item bound output $\overline{x}(y)$
-      \item serve anche il bound input? non sono sicuro dell'utilita' delle regole CloseLIn, CloseRIn e OpenIn
     \end{itemize}
     The set of actions is $\mathbb{A}$, we use $\alpha$ to range over the set of actions.
   \item
@@ -329,7 +332,6 @@ In the following section we present the early semantic without structural congru
 \end{center}
 there is no substitution, instead the substitution occurres at an early point in the inference of this translation, namely during the inference of the input action. 
 
- 
 \begin{definition}\index{transition relation! early! without structural congruence}
   The \emph{early transition relation} $\rightarrow\subseteq \mathbb{P}\times \mathbb{A} \times \mathbb{P}$ is the smallest relation induced by the following rules:
 
@@ -404,7 +406,7 @@ there is no substitution, instead the substitution occurres at an early point in
 	      $P|Q \xrightarrow{\tau} P^{'}|Q^{'}$
 	  \end{tabular}
       \\\\
-	    \bf{ClsLOut}
+	    \bf{ClsL}
 	    \begin{tabular}{c}
 		$P \xrightarrow{\overline{x}(z)} P^{'}$  
 		$Q \xrightarrow{xz} Q^{'}$ 
@@ -413,28 +415,10 @@ there is no substitution, instead the substitution occurres at an early point in
 		$P|Q \xrightarrow{\tau} (\nu z)(P^{'}|Q^{'})$
 	    \end{tabular}
 	&
-	    \bf{ClsROut}
+	    \bf{ClsR}
 	    \begin{tabular}{c}
 		$P \xrightarrow{xz} P^{'}$  
 		$Q \xrightarrow{\overline{x}(z)} Q^{'}$ 
-		$z\notin fn(P)$
-	      \\\hline
-		$P|Q \xrightarrow{\tau} (\nu z)(P^{'}|Q^{'})$
-	    \end{tabular}
-      \\\\
-	    \bf{ClsLIn}
-	    \begin{tabular}{c}
-		$P \xrightarrow{\overline{x}z} P^{'}$  
-		$Q \xrightarrow{x(z)} Q^{'}$ 
-		$z\notin fn(Q)$
-	      \\\hline
-		$P|Q \xrightarrow{\tau} (\nu z)(P^{'}|Q^{'})$
-	    \end{tabular}
-	&
-	    \bf{ClsRIn}
-	    \begin{tabular}{c}
-		$P \xrightarrow{x(z)} P^{'}$  
-		$Q \xrightarrow{\overline{x}z} Q^{'}$ 
 		$z\notin fn(P)$
 	      \\\hline
 		$P|Q \xrightarrow{\tau} (\nu z)(P^{'}|Q^{'})$
@@ -447,20 +431,13 @@ there is no substitution, instead the substitution occurres at an early point in
 	      $A(\tilde{y}) \xrightarrow{\alpha} P^{'}$
 	  \end{tabular}
 	&
-      \\\\
-	  \bf{OpnOut}
+	  \bf{Opn}
 	  \begin{tabular}{c}
 	      $P \;\xrightarrow{\overline{x}z} P^{'}\;\; z\neq x$
 	    \\\hline
 	      $(\nu z) P \;\xrightarrow{\overline{x}(z)} P^{'}$
 	  \end{tabular}
-	&
-	  \bf{OpnIn}
-	  \begin{tabular}{c}
-	      $P \;\xrightarrow{xz} P^{'}\;\; z\neq x$
-	    \\\hline
-	      $(\nu z) P \;\xrightarrow{x(z)} P^{'}\;\; z\neq x$
-	  \end{tabular}
+      \\
     \end{tabular}
   \end{center}
 \end{definition}
@@ -496,6 +473,7 @@ there is no substitution, instead the substitution occurres at an early point in
   \]
 
 \end{example}
+
 
 \begin{example}
     We want to prove now that:
@@ -623,20 +601,18 @@ there is no substitution, instead the substitution occurres at an early point in
   \end{center}
 \end{definition}
 
+
 \begin{example}
   We prove now that
   \begin{center}
-    $a(x).P\; |\; (\nu b)\overline{a}b.Q\; \xrightarrow{\tau} P\{b/x\}\; |\; Q$
+    $a(x).P\; |\; (\nu b)\overline{a}b.Q\; \xrightarrow{\tau}\; (\nu b)(P\{b/x\}\; |\; Q)$
   \end{center}
+  where $b\notin fn(P)$.
   This follows from
   \[
     a(x).P\; |\; (\nu b)\overline{a}b.Q\; \equiv\; (\nu b)(a(x).P\; |\; \overline{a}b.Q)
   \]
   and
-  \[
-    (\nu b)(P\{b/x\}\; |\; Q) \equiv (P\{b/x\}\; |\; Q)
-  \]
-  and 
   \[
     (\nu b)(a(x).P\; |\; \overline{a}b.Q) \xrightarrow{\tau} (\nu b)(P\{b/x\}\; |\; Q)
   \]
@@ -677,7 +653,6 @@ there is no substitution, instead the substitution occurres at an early point in
 	\inferrule* [left=Res] {
 	  \inferrule* [left=Com]{
 	      \inferrule* [left=EInp]{
-		b\notin fn(P\{c/b\})
 	      }{
 		a(x).P\{c/b\}\; \xrightarrow{ab}\; P\{c/b\}\{b/x\}
 	      }
@@ -699,17 +674,27 @@ there is no substitution, instead the substitution occurres at an early point in
 
 \subsection{Late semantic without structural congruence}
 
+
+
+
+In this case the set of actions $\mathbb{A}$ contains
+\begin{itemize}
+      \item bound input $x(y)$
+      \item unbound output $\overline{x}y$
+      \item the silent action $\tau$
+      \item bound output $\overline{x}(y)$
+\end{itemize}
+
+
 \begin{definition}\index{transition relation! pi! late! without structural congruence}
   The \emph{late transition relation without structural congruence} $\rightarrow\subseteq \mathbb{P}\times \mathbb{A} \times \mathbb{P}$ is the smallest relation induced by the following rules:
   \begin{center}
     \begin{tabular}{ll}
 	  \bf{LInp}
 	  \begin{tabular}{c}
-% 	    $z\notin fn(P)$
-	    ?
+ 	    $z\notin fn(P)$
 	    \\\hline
-	    ?
-% 	    $x(z).P \xrightarrow{xz} P$
+ 	    $x(y).P \xrightarrow{xz} P\{z/y\}$
 	  \end{tabular}
 	&
 	  \bf{Res}
@@ -749,14 +734,14 @@ there is no substitution, instead the substitution occurres at an early point in
       \\\\
 	  \bf{LCom}
 	  \begin{tabular}{c}
-	      $P \xrightarrow{x(y)} P^{'}\;\; Q\xrightarrow{\overline{x}z} Q^{'}\;\; z\notin fn(P)$
+	      $P \xrightarrow{x(y)} P^{'}\;\; Q\xrightarrow{\overline{x}z} Q^{'}$
 	    \\\hline
 	      $P|Q \xrightarrow{\tau} P^{'}\{z/y\}|Q^{'}$
 	  \end{tabular}	
 	&
 	  \bf{RCom}
 	  \begin{tabular}{c}
-	      $P \xrightarrow{\overline{x}z} P^{'}\;\; Q\xrightarrow{x(y)} Q^{'}\;\; z\notin fn(P)$
+	      $P \xrightarrow{\overline{x}z} P^{'}\;\; Q\xrightarrow{x(y)} Q^{'}$
 	    \\\hline
 	      $P|Q \xrightarrow{\tau} P^{'}|Q^{'}\{z/y\}$
 	  \end{tabular}	
@@ -807,13 +792,6 @@ there is no substitution, instead the substitution occurres at an early point in
 
 
 \subsection{Late semantic with structural congruence}
-In this case the set of actions $\mathbb{A}$ contains
-\begin{itemize}
-      \item bound input $x(y)$
-      \item unbound output $\overline{x}y$
-      \item the silent action $\tau$
-      \item bound output $\overline{x}(y)$
-\end{itemize}
 
 \begin{definition}\index{transition relation! pi! late! with structural congruence}
   The \emph{late transition relation with structural congruence} $\rightarrow\subseteq \mathbb{P}\times \mathbb{A} \times \mathbb{P}$ is the smallest relation induced by the following rules:
@@ -877,34 +855,33 @@ In this case the set of actions $\mathbb{A}$ contains
   \begin{center}
     $a(x).P\; |\; (\nu b)\overline{a}b.Q\; \xrightarrow{\tau} P\{b/x\}\; |\; Q$
   \end{center}
-  This follows from
+  where $b\notin fn(P)$. This follows from
   \[
     a(x).P\; |\; (\nu b)\overline{a}b.Q\; \equiv\; (\nu b)(a(x).P\; |\; \overline{a}b.Q)
   \]
   and
-  \[
-    (\nu b)(P\{b/x\}\; |\; Q) \equiv (P\{b/x\}\; |\; Q)
-  \]
-  and 
   \[
     (\nu b)(a(x).P\; |\; \overline{a}b.Q) \xrightarrow{\tau} (\nu b)(P\{b/x\}\; |\; Q)
   \]
   with the rule $Str$. We can prove the last transition in the following way:
   \[
     \inferrule* [left=Res] {
-      \inferrule* [left=LCom] {
-	  \inferrule* [left=Inp] {
-	  }{
-	    a(x).P\; \xrightarrow{ax}\; P
-	  }
-	\\
-	  \inferrule* [left=Out] {
-	  }{
-	    \overline{a}b.Q\; \xrightarrow{\overline{a}b}\; Q
-	  }
-      }{
-	a(x).P\; |\; \overline{a}b.Q\; \xrightarrow{\tau}\; P\{b/x\}\; |\; Q
-      }
+	\inferrule* [left=LCom] {
+	    \inferrule* [left=LInp] {
+	      b\notin fn(P)
+	    }{
+	      a(x).P\; \xrightarrow{ab}\; P\{b/x\}
+	    }
+	  \\
+	    \inferrule* [left=Out] {
+	    }{
+	      \overline{a}b.Q\; \xrightarrow{\overline{a}b}\; Q
+	    }
+	}{
+	  a(x).P\; |\; \overline{a}b.Q\; \xrightarrow{\tau}\; P\{b/x\}\; |\; Q
+	}
+      \\
+	b\notin n(\tau)
     }{
       (\nu b)(a(x).P\; |\; \overline{a}b.Q)\; \xrightarrow{\tau}\; (\nu b)(P\{b/x\}\; |\; Q)
     }
@@ -917,27 +894,29 @@ In this case the set of actions $\mathbb{A}$ contains
     \begin{center}
       $((\nu b) a(x).P)\; |\; \overline{a}b.Q\; \xrightarrow{\tau}\; (\nu c) (P\{c/b\}\{b/x\}\; |\; Q)$
     \end{center}
-    where the name $c$ is not in the free names of $Q$. We can exploit the structural congruence and get that
+    where the name $c$ is not in the free names of $Q$ and is not in the names of $P$. We can exploit the structural congruence and get that
     \[
       ((\nu b) a(x).P) | \overline{a}b.Q\; \equiv\; (\nu c) (a(x).(P\{c/b\}) | \overline{a}b.Q)     
     \]
     then we have
     \[
 	\inferrule* [left=Res] {
-	  \inferrule* [left=LCom]{
-	      \inferrule* [left=Inp]{
-		b\notin fn(P\{c/b\})
-	      }{
-		a(x).P\{c/b\}\; \xrightarrow{ax}\; P\{c/b\}
-	      }
-	    \\
-	      \inferrule* [left=Out]{
-	      }{
-		\overline{a}b.Q\; \xrightarrow{\overline{a}b}\; Q
-	      }
-	  }{
+	    \inferrule* [left=LCom]{
+		\inferrule* [left=LInp]{
+		  b\notin fn(P\{c/b\})
+		}{
+		  a(x).P\{c/b\}\; \xrightarrow{ab}\; P\{c/b\}\{b/x\}
+		}
+	      \\
+		\inferrule* [left=Out]{
+		}{
+		  \overline{a}b.Q\; \xrightarrow{\overline{a}b}\; Q
+		}
+	    }{
 	      (a(x).(P\{c/b\}) | \overline{a}b.Q)\; \xrightarrow{\tau}\; (P\{c/b\}\{b/x\} | Q)
-	  }
+	    }
+	  \\
+	    c\notin n(\tau)
 	}{
 	  (\nu c) (a(x).(P\{c/b\}) | \overline{a}b.Q)\; \xrightarrow{\tau}\; (\nu c) (P\{c/b\}\{b/x\} | Q)
 	}
@@ -946,7 +925,9 @@ In this case the set of actions $\mathbb{A}$ contains
 \end{example}
 
 
-\subsection{Behavioural semantic}
+\section{Bisimilarity and Congruence}
+
+We present here some behavioural equivalences and some of their properties.
 
 \begin{definition}\index{congruence! strong}
   We say that two agents $P$ and $Q$ are \emph{strongly congruent}, written $P\sim Q$ if
@@ -979,7 +960,7 @@ Early bisimulation is preserved by all operators except input prefix.
 \begin{definition}\index{congruence! early}
   The \emph{early congruence} $\sim_{E}$ is defined by
   \begin{center}
-    $P\sim_{E} Q$ is $\forall \sigma\; P\sigma \dot{\sim}_{E} Q\sigma$
+    $P\sim_{E} Q$ if $\forall \sigma\; P\sigma \dot{\sim}_{E} Q\sigma$
   \end{center}
   where $\sigma$ is a substitution.
 \end{definition}
