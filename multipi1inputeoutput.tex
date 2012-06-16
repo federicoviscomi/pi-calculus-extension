@@ -122,12 +122,13 @@ In this case, a label can be a sequence of prefixes, whether in the original $\p
 	    P|Q \;\xrightarrow{\tau} P^{'}\{z/y\}|Q^{'}
 	  }$
       \\\\
-	  \bf{SInp}
-	  \begin{tabular}{c}
-	      $P \;\xrightarrow{\sigma} P^{'}\;\; \sigma\neq \tau$
-	    \\\hline
-	      $\underline{x(y)}.P \;\xrightarrow{x(y) \cdot \sigma} P^{'}$
-	  \end{tabular}
+	  $\inferrule* [left=\bf{SInp}]{
+	      P \;\xrightarrow{\sigma}\; P^{'}
+	    \\
+	      \sigma\neq \tau
+	  }{
+	    \underline{x(y)}.P \;\xrightarrow{x(y) \cdot \sigma} P^{'}
+	  }$
 	&
 	  $\inferrule* [left=\bf{LComSeq2}]{
 	      P \;\xrightarrow{\overline{x}z}\; P^{'}
