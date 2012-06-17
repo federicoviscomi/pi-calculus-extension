@@ -1,6 +1,7 @@
 
 The $\pi$ calculus is a mathematical model of processes whose interconnections change as they interact. The basic computational step is the transfer of a communications link between two processes. The idea that the names of the links belong to the same category as the transferred objects is one of the cornerstone of the calculus. The $\pi$ calculus allows channel names to be communicated along the channels themselves, and in this way it is able to describe concurrent computations whose network configuration may change during the computation.
 
+A coverage of $\pi$ calculus is on \ref{parrow}, \ref{sangiorgiwalker} and \ref{milner}
 
 \section{Syntax}
 We suppose that we have a countable set of names $\mathbb{N}$, ranged over by lower case letters $a,b, \cdots, z$. This names are used for communication channels and values. Furthermore we have a set of identifiers, ranged over by $A$. We represent the agents or processes by upper case letters $P,Q, \cdots $. A process can perform the following actions:
@@ -930,7 +931,66 @@ In this case the set of actions $\mathbb{A}$ contains
 
 \section{Bisimilarity and Congruence}
 
-We present here some behavioural equivalences and some of their properties.
+We present here some behavioural equivalences and some of their properties. 
+
+\subsection{Bisimilarity}
+In the following we will use the phrase $bn(\alpha)$ is fresh in a definition to mean that the name in $bn(\alpha)$, if any, is different from any free name occurring in any of the agents in the definition. In this subsection the transition relation is given by the late semantic with structural congruence.
+
+\begin{definition}
+  A \emph{strong (late) bisimulation} is a symmetric binary relation $\mathbb{R}$ on agents satisfying the following: $P\mathbb{R} Q$ and $P\; \xrightarrow{\alpha}_{E}\; P^{'}$ where $bn(\alpha)$ is fresh implies that
+  \begin{itemize}
+    \item
+      if $\alpha=a(x)$ then $\exists Q^{'}: Q\xrightarrow{a(x)}Q^{'}\; \wedge\; \forall u:\; P^{'}\{u/x\}\mathbb{R}Q^{'}\{u/x\}$
+    \item
+      if $\alpha$ is not an input the $\exists Q^{'}: Q\xrightarrow{\alpha}Q^{'}\; \wedge\; P^{'}\mathbb{R}Q^{'}$
+  \end{itemize}
+  $P$ and $Q$ are strongly bisimilar, written $P\; \dot{\sim}\; Q$, if they are related by a bisimulation. 
+\end{definition}
+
+The union of all bisimulation $\dot{\sim}$ is a bisimulation. If two process are structurally congruent then because of the rule $Str$ they are also strong bisimilar.
+
+\begin{example}
+  Two strongly bisimilar processes are the following:
+  \[
+    a(x).0|\overline{b}x.0\; \dot{\sim}\; a(x).\overline{b}x.0 + \overline{b}x.a(x).0
+  \]
+  If we apply the substitution $\{a/b\}$ to each process then they are not strongly bisimilar anymore because $(a(x).0|\overline{b}x.0)\{a/b\}$ is $a(x).0|\overline{a}x.0$ and this process can perform an invisible action whether $(a(x).\overline{b}x.0 + \overline{b}x.a(x).0)\{a/b\}$ cannot. This shows that strong bisimulation is not closed under substitution.
+\end{example}
+
+\begin{proposition}
+  If $P \dot{\sim} Q$ and $\sigma$ is injective then $P\sigma \dot{\sim} Q\sigma$
+%   \begin{proof}
+%     We have to establish that transitions are preserved by injective substitution, i.e., that for injective $\sigma$ 
+%     \[
+%       P\xrightarrow{\alpha}P^{'}\; \Rightarrow\; P\sigma\xrightarrow{\alpha\sigma}P^{'}\sigma
+%     \]
+%     by induction on the inference of $P\xrightarrow{\alpha}P^{'}$. For this purpose we consider the late semantic with structural congruence:
+%     %The last rule of a derivation of $P\xrightarrow{\alpha}P^{'}$ can be:
+%     \begin{description}
+%       \item[$Pref$] 		
+% 	An application of the rule pref let us prove that $\alpha\sigma.P\sigma\xrightarrow{\alpha\sigma}P\sigma$
+%       \item[$Str$]
+% 	The premises of the rule tell us that: $P\xrightarrow{\alpha}Q$, $P^{'}\equiv P$ and $Q\equiv Q^{'}$. We apply the inductive hypothesis to the first premise and get $P\sigma\xrightarrow{\alpha\sigma}Q\sigma$. From the other two premises we get that $P^{'}\sigma\equiv P\sigma$ and $Q\sigma\equiv Q^{'}\sigma$. We should prove this separately. So applying the rule $Str$ we get the result $P^{'}\sigma\xrightarrow{\alpha\sigma}Q^{'}\sigma$.
+%       \item[$Sum$]
+% 	
+%       \item[$Par$]
+%       \item[$Com$]
+%       \item[$Res$]
+%       \item[$Opn$]
+%     \end{description}
+%   \end{proof}
+\end{proposition}
+
+\begin{proposition}
+  $\dot{\sim}$ is an equivalence
+\end{proposition}
+
+\begin{proposition}
+  $\dot{\sim}$ is preserved by all operators except input prefix
+\end{proposition}
+
+
+\subsection{Congruence}
 
 \begin{definition}\index{congruence! strong}
   We say that two agents $P$ and $Q$ are \emph{strongly congruent}, written $P\sim Q$ if
@@ -939,7 +999,13 @@ We present here some behavioural equivalences and some of their properties.
   \end{center}
 \end{definition}
 
-We define a bisimulation for the early and the late semantic with structural congruence, for clarity when referring to the early semantic we index the transition with $ _{E}$. In the following we will use the phrase $bn(\alpha)$ is fresh in a definition to mean that the name in $bn(\alpha)$, if any, is different from any free name occurring in any of the agents in the definition.
+\begin{proposition}
+  Strong congruence is the largest congruence in bisimilarity.
+\end{proposition}
+
+\subsection{Variants of Bisimilarity}
+
+We define a bisimulation for the early semantic with structural congruence, for clarity when referring to the early semantic we index the transition with $ _{E}$. 
 \begin{definition}\index{bisimulation! strong! early! with early semantic}
   A \emph{strong early bisimulation with early semantic} is a symmetric binary relation $\mathbb{R}$ on agents satisfying the following: $P\mathbb{R} Q$ and $P\; \xrightarrow{\alpha}_{E}\; P^{'}$ where $bn(\alpha)$ is fresh implies that
   \begin{center}
@@ -958,7 +1024,10 @@ We define a bisimulation for the early and the late semantic with structural con
   \end{itemize}
 \end{definition}
 
-Early bisimulation is preserved by all operators except input prefix.
+\begin{proposition}
+  Early bisimilarity is preserved by all operators except input prefix. 
+\end{proposition}
+
 
 \begin{definition}\index{congruence! early}
   The \emph{early congruence} $\sim_{E}$ is defined by
@@ -968,7 +1037,9 @@ Early bisimulation is preserved by all operators except input prefix.
   where $\sigma$ is a substitution.
 \end{definition}
 
-The early congruence is the largest congruence in $\dot{\sim}_{E}$. 
+\begin{proposition}
+  The early congruence is the largest congruence in $\dot{\sim}_{E}$.  
+\end{proposition}
 
 In the following definition we consider a subcalculus without restriction. 
 \begin{definition}\index{bisimulation! strong! open! early}
@@ -978,6 +1049,10 @@ In the following definition we consider a subcalculus without restriction.
   \end{center}
   $P$ and $Q$ are strongly open bisimilar, written $P\; \dot{\sim}_{O}\; Q$ if they are related by an open bisimulation.
 \end{definition}
+
+\begin{proposition}
+  strong open bisimulation is also a late bisimulation, is closed under substitution, is an equivalence and a congruence
+\end{proposition}
 
 
 
