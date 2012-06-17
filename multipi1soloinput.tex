@@ -41,9 +41,10 @@ The semantic of a multi $\pi$ process is labeled transition system such that
 In this case, a label can be a sequence of prefixes, whether in the original $\pi$ calculus a label can be only a prefix. We use the symbol $\cdot$ to denote the concatenation operator.
 
 \begin{definition}\index{transition relation! multipi! input only! early! with structural congruence}
-  The \emph{early transition relation with structural congruence} is the smallest relation induced by the following rules:
-  \begin{center}
+  The \emph{early transition relation with structural congruence} is the smallest relation induced by the rules in table \ref{multipisoloinputearlywith}.
+  \begin{table}
     \begin{tabular}{ll}
+	  \hline\\
 	  $\inferrule* [left=\bf{Out}]{
 	  }{
 	    \overline{x}y.P \;\xrightarrow{\overline{x}y} P
@@ -109,9 +110,11 @@ In this case, a label can be a sequence of prefixes, whether in the original $\p
 	    (\nu) z P \;\xrightarrow{\sigma} (\nu) z P^{'}
 	  }$
 	&
-      \\\\
+      \\\hline
     \end{tabular}
-  \end{center}
+    \caption{Multi $\pi$ early semantic with structural congruence}
+    \label{multipisoloinputearlywith}
+  \end{table}
 \end{definition}
 \begin{definition}
   We define the synchronization relation in the following way:
@@ -444,9 +447,10 @@ whether the semantic for $\underline{x(a)}.\overline{a}z.P$ is supposed to be
 % % Definisci le regole late per Multi-pi. In questo caso credo sia indispensabile la restrizione sintattica che ti suggerivo(solo input nello strong prefixing e sincronizzazione solo con la prima), mentre mi pare che nel caso early dovrebbe funzionare anche il caso generale con Sync. 
 
 \begin{definition}\index{transition relation! multipi! input only! late! with structural congruence}
-  The \emph{late transition relation with structural congruence} is the smallest relation induced by the following rules:
-  \begin{center}
+  The \emph{late transition relation with structural congruence} is the smallest relation induced by the rules in table \ref{multipisoloinputlateywith}.
+  \begin{table}
     \begin{tabular}{ll}
+	\hline\\
      	  $\inferrule* [left=\bf{Pref}]{
 	    \alpha\; not\; a\; strong\; prefix
 	  }{
@@ -513,8 +517,10 @@ whether the semantic for $\underline{x(a)}.\overline{a}z.P$ is supposed to be
 	  }{
 	    P|Q \;\xrightarrow{\sigma} P^{'}|Q
 	  }$
-      \\\\
+      \\\hline
     \end{tabular}
-  \end{center}
+    \caption{Multi $\pi$ late semantic with structural congruence}
+    \label{multipisoloinputlateywith}
+  \end{table}
 \end{definition}
 

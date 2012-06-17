@@ -1,7 +1,7 @@
 
 The $\pi$ calculus is a mathematical model of processes whose interconnections change as they interact. The basic computational step is the transfer of a communications link between two processes. The idea that the names of the links belong to the same category as the transferred objects is one of the cornerstone of the calculus. The $\pi$ calculus allows channel names to be communicated along the channels themselves, and in this way it is able to describe concurrent computations whose network configuration may change during the computation.
 
-A coverage of $\pi$ calculus is on \ref{parrow}, \ref{sangiorgiwalker} and \ref{milner}
+A coverage of $\pi$ calculus is on \cite{parrow}, \cite{sangiorgiwalker} and \cite{milner}
 
 \section{Syntax}
 We suppose that we have a countable set of names $\mathbb{N}$, ranged over by lower case letters $a,b, \cdots, z$. This names are used for communication channels and values. Furthermore we have a set of identifiers, ranged over by $A$. We represent the agents or processes by upper case letters $P,Q, \cdots $. A process can perform the following actions:
@@ -49,10 +49,10 @@ To resolve ambiguity we can use parentheses and observe the conventions that pre
 \end{definition}
 
 \begin{definition} \index{$bn$}
-  $bn(P)$ is the set of names that have a bound occurrence in $P$ and is defined as $B(P, \emptyset)$, where $B(P, I)$, with $I$ a set of process constants, is defined in table \ref{B}
+  $bn(P)$ is the set of names that have a bound occurrence in $P$ and is defined as $B(P, \emptyset)$, where $B(P, I)$, with $I$ a set of process constants, is defined in table \ref{table:B}
 \end{definition}
 
-  \begin{table}[t]\label{B}
+  \begin{table}
     \begin{tabular}{ll}
       \hline\\
 	$B(0, I)\; =\; \emptyset$&$B(Q+R,I)\; =\; B(Q,I)\cup B(R,I)$
@@ -75,7 +75,9 @@ To resolve ambiguity we can use parentheses and observe the conventions that pre
 		if\; A\in I
 	  \end{array}\right.$}
       \\\hline
-    \end{tabular}\caption{Bound occurrences}
+    \end{tabular}
+    \caption{Bound occurrences}
+    \label{table:B}
   \end{table}
 
 
@@ -84,7 +86,7 @@ To resolve ambiguity we can use parentheses and observe the conventions that pre
   We say that a name $x$ is \emph{free} in $P$ if $P$ contains a non bound occurrence of $x$. We write $fn(P)$ for the set of names with a free occurrence in $P$. $fn(P)$ is defined as $fn(P,\emptyset)$ where $fn(P, I)$, with $I$ a set of process constants, is defined in table \ref{F}
 \end{definition}
 
-  \begin{table}\label{F}
+  \begin{table}
     \begin{tabular}{ll}
       \hline\\
 	$F(0, I)\; =\; \emptyset$&$F(Q+R,I)\; =\; F(Q,I)\cup F(R,I)$
@@ -108,7 +110,9 @@ To resolve ambiguity we can use parentheses and observe the conventions that pre
 	  \end{array}\right.$
 	}
       \\\hline
-    \end{tabular}\caption{Free occurrences}
+    \end{tabular}
+    \caption{Free occurrences}
+    \label{F}
   \end{table}
 
 
@@ -128,7 +132,7 @@ In a definition $A(x_{1}, \cdots, x_{n})=P$ we assume that $fn(P)\subseteq \{x_{
   $P\{b/a\}$ is the syntactic substitution of name $b$ for a different name $a$ inside a $\pi$ calculus process, and it consists in replacing every free occurrences of $a$ with $b$. If $b$ is a bound name in $P$, in order to avoid name capture we perform an appropriate $\alpha$ conversion. $P\{b/a\}$ is defined in table \ref{syntacticsubstitution}
 \end{definition}
 
-  \begin{table}\label{syntacticsubstitution}
+  \begin{table}
     \begin{tabular}{l}
       \hline\\
 	$0\{b/a\}\; =\; 0$
@@ -166,7 +170,9 @@ In a definition $A(x_{1}, \cdots, x_{n})=P$ we assume that $fn(P)\subseteq \{x_{
       \\\\
 	$((\nu b)Q)\{b/a\}\; =\;(\nu b)Q$ if $a\notin fn(Q)$
       \\\hline
-    \end{tabular}\caption{Syntatic substitution}
+    \end{tabular}
+    \caption{Syntatic substitution}
+    \label{syntacticsubstitution}
   \end{table}
 
 
@@ -209,7 +215,7 @@ Structural congruences are a set of equations defining equality and congruence r
 
 \begin{definition}\index{structural congruence}
   We define a \emph{structural congruence $\equiv$} as the smallest congruence on processes that satisfies the axioms in table \ref{structuralcongrunce}
-  \begin{table}\label{structuralcongrunce}
+  \begin{table}
     \begin{tabular}{lll}
       \hline\\
 	SC-ALP&$\begin{array}{c}P \stackrel{\alpha}{=} Q\\\overline{P\equiv Q}\end{array}$&$\alpha$ conversion
@@ -244,7 +250,9 @@ Structural congruences are a set of equations defining equality and congruence r
       \\
 	SC-IDE&$A(\tilde{y})\equiv P\{\tilde{y}/\tilde{x}\}$&if $A(\tilde{x})\stackrel{def}{=}P$
       \\\hline
-    \end{tabular}\caption{Structural congruence axioms}
+    \end{tabular}
+    \caption{Structural congruence axioms}
+    \label{structuralcongrunce}
   \end{table}
 \end{definition}
 
@@ -338,7 +346,7 @@ there is no substitution, instead the substitution occurres at an early point in
 \begin{definition}\index{transition relation! early! without structural congruence}
   The \emph{early transition relation} $\rightarrow\subseteq \mathbb{P}\times \mathbb{A} \times \mathbb{P}$ is the smallest relation induced by the rules in table \ref{transitionrelationearlywithoutstructuralcongruence}.
 
-  \begin{table}\label{transitionrelationearlywithoutstructuralcongruence}
+  \begin{table}
     \begin{tabular}{ll}  
       \hline\\
 	  \bf{Out}
@@ -442,7 +450,9 @@ there is no substitution, instead the substitution occurres at an early point in
 	      $(\nu z) P \;\xrightarrow{\overline{x}(z)} P^{'}$
 	  \end{tabular}
       \\\hline
-    \end{tabular}\caption{Early transition relation without structural congruence}
+    \end{tabular}
+    \caption{Early transition relation without structural congruence}
+    \label{transitionrelationearlywithoutstructuralcongruence}
   \end{table}
 \end{definition}
 
@@ -538,10 +548,11 @@ there is no substitution, instead the substitution occurres at an early point in
 \subsection{Early semantic with structural congruence}
 
 \begin{definition}\index{transition relation! pi! early! with structural congruence}
-  The \emph{early transition relation with structural congruence} $\rightarrow\subseteq \mathbb{P}\times \mathbb{A} \times \mathbb{P}$ is the smallest relation induced by the following rules:
+  The \emph{early transition relation with structural congruence} $\rightarrow\subseteq \mathbb{P}\times \mathbb{A} \times \mathbb{P}$ is the smallest relation induced by the rules in table \ref{earlysemanticwithstructuralcongruence}.
 
-  \begin{center}
+  \begin{table}
     \begin{tabular}{lll}
+      \hline\\
 	  \bf{Out}
 	  \begin{tabular}{c}
 	    \hline
@@ -601,8 +612,11 @@ there is no substitution, instead the substitution occurres at an early point in
 	    \hline
 	    $P^{'} \xrightarrow{\alpha} Q^{'}$
 	  \end{tabular}
+      \\\hline
     \end{tabular}
-  \end{center}
+    \caption{Early semantic with structural congruence}
+    \label{earlysemanticwithstructuralcongruence}
+  \end{table}
 \end{definition}
 
 
@@ -691,9 +705,10 @@ In this case the set of actions $\mathbb{A}$ contains
 
 
 \begin{definition}\index{transition relation! pi! late! without structural congruence}
-  The \emph{late transition relation without structural congruence} $\rightarrow\subseteq \mathbb{P}\times \mathbb{A} \times \mathbb{P}$ is the smallest relation induced by the following rules:
-  \begin{center}
+  The \emph{late transition relation without structural congruence} $\rightarrow\subseteq \mathbb{P}\times \mathbb{A} \times \mathbb{P}$ is the smallest relation induced by the rules in table \ref{transitionrelationpilatewithoutstructuralcongruence}.
+  \begin{table}
     \begin{tabular}{ll}
+      \hline\\
 	  \bf{LInp}
 	  \begin{tabular}{c}
  	    $z\notin fn(P)$
@@ -789,8 +804,11 @@ In this case the set of actions $\mathbb{A}$ contains
 	      \\\hline
 	    $A(\tilde{y}) \xrightarrow{\alpha} P^{'}$
 	  \end{tabular}
+      \\\hline
     \end{tabular}
-  \end{center}
+    \caption{Late semantic without structural congruence}
+    \label{transitionrelationpilatewithoutstructuralcongruence}
+  \end{table}
 \end{definition}
 
 
@@ -798,9 +816,10 @@ In this case the set of actions $\mathbb{A}$ contains
 \subsection{Late semantic with structural congruence}
 
 \begin{definition}\index{transition relation! pi! late! with structural congruence}
-  The \emph{late transition relation with structural congruence} $\rightarrow\subseteq \mathbb{P}\times \mathbb{A} \times \mathbb{P}$ is the smallest relation induced by the following rules:
-  \begin{center}
+  The \emph{late transition relation with structural congruence} $\rightarrow\subseteq \mathbb{P}\times \mathbb{A} \times \mathbb{P}$ is the smallest relation induced by the rules in table \ref{latewith}.
+  \begin{table}
     \begin{tabular}{ll}
+	\hline\\
 	\bf{Prf}
 	\begin{tabular}{c}
 	  \hline
@@ -849,8 +868,11 @@ In this case the set of actions $\mathbb{A}$ contains
 	    $(\nu z) P \xrightarrow{\overline{x}(z)} P^{'}$
 	\end{tabular}
       &
+    \\\hline
     \end{tabular}
-  \end{center}
+    \caption{Late semantic with structural congruence}
+    \label{latewith}
+  \end{table}
 \end{definition}
 
 
@@ -954,6 +976,11 @@ The union of all bisimulation $\dot{\sim}$ is a bisimulation. If two process are
   \[
     a(x).0|\overline{b}x.0\; \dot{\sim}\; a(x).\overline{b}x.0 + \overline{b}x.a(x).0
   \]
+  and the bisimulation(without showing the simmetric part) is  the following:
+  \[
+    \{(a(x).0|\overline{b}x.0, a(x).\overline{b}x.0 + \overline{b}x.a(x).0),(a(x).0|0,a(x).0), (0|0,0|0)\} \cup \{(0|\overline{b}x.0,\overline{b}x.0)|x\in \mathbb{N}\} 
+  \]
+
   If we apply the substitution $\{a/b\}$ to each process then they are not strongly bisimilar anymore because $(a(x).0|\overline{b}x.0)\{a/b\}$ is $a(x).0|\overline{a}x.0$ and this process can perform an invisible action whether $(a(x).\overline{b}x.0 + \overline{b}x.a(x).0)\{a/b\}$ cannot. This shows that strong bisimulation is not closed under substitution.
 \end{example}
 

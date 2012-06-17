@@ -41,9 +41,10 @@ The semantic of a multi $\pi$ process is labeled transition system such that
 In this case, a label can be a sequence of prefixes, whether in the original $\pi$ calculus a label can be only a prefix. We use the symbol $\cdot$ to denote the concatenation operator.
 
 \begin{definition}\index{transition relation! multipi! output only! early! with structural congruence}
-  The \emph{early transition relation without structural congruence} is the smallest relation induced by the following rules:
-  \begin{center}
+  The \emph{early transition relation without structural congruence} is the smallest relation induced by the rules in table \ref{multipiearlywith}
+  \begin{table}
     \begin{tabular}{ll}
+      \hline\\
 	  $\inferrule* [left=\bf{Out}]{
 	  }{
 	    \overline{x}y.P \;\xrightarrow{\overline{x}y} P
@@ -108,9 +109,11 @@ In this case, a label can be a sequence of prefixes, whether in the original $\p
 	  }{
 	    P|Q\; \xrightarrow{\sigma}\; P^{'}|Q^{'}
 	  }$
-      \\\\
+      \\\hline
     \end{tabular}
-  \end{center}
+    \caption{Multi $\pi$ early semantic with structural congruence}
+    \label{multipiearlywith}
+  \end{table}
 \end{definition}
 
 
@@ -365,10 +368,11 @@ In the following examples we omit sometimes the rule $Str$.
 
 
 \begin{definition}\index{transition relation! multipi! output only! late! with structural congruence}
-  The \emph{late transition relation with structural congruence} is the smallest relation induced by the following rules:
-  \begin{center}
+  The \emph{late transition relation with structural congruence} is the smallest relation induced by the rules in table \ref{multipilatewith}.
+  \begin{table}
     \begin{tabular}{ll}
-	  $\inferrule* [left=\bf{Pref}]{
+	  \hline\\
+	    $\inferrule* [left=\bf{Pref}]{
 	    \alpha\; not\; a\; strong\; prefix
 	  }{
 	    \alpha.P \;\xrightarrow{\alpha} P
@@ -431,9 +435,11 @@ In the following examples we omit sometimes the rule $Str$.
 	  }{
 	    P|Q \;\xrightarrow{\tau} P^{'}\{z/y\}|Q^{'}
 	  }$
-      \\
+      \\\hline
     \end{tabular}
-  \end{center}
+    \caption{Multi$\pi$ late semantic with structural congruence}
+    \label{multipilatewith}
+  \end{table}
 \end{definition}
 
 
