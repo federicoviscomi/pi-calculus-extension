@@ -1,23 +1,19 @@
-\chapter{Multi-CCS}\label{multi-ccs}
-
-
-\abstract*{
-  We present Multi-CCS, an extension to CCS obtained by introducing one additional operator of prefixing $\underline\mu.p$, called {\em strong prefixing} (in opposition to normal prefixing $\mu.p$), with the capability of expressing transactions and, together with parallel composition, also multi-party synchronization.
-}
-
-\abstract{
-  We present Multi-CCS, an extension to CCS obtained by introducing one additional operator of prefixing $\underline\mu.p$, called {\em strong prefixing} (in opposition to normal prefixing $\mu.p$), with the capability of expressing transactions and, together with  parallel composition, also multi-party synchronization.
-}
+% \chapter{Multi-CCS}\label{multi-ccs}
+% 
+% 
+% \abstract*{
+%   We present Multi-CCS, an extension to CCS obtained by introducing one additional operator of prefixing $\underline\mu.p$, called {\em strong prefixing} (in opposition to normal prefixing $\mu.p$), with the capability of expressing transactions and, together with parallel composition, also multi-party synchronization.
+% }
+% 
+% \abstract{
+%   We present Multi-CCS, an extension to CCS obtained by introducing one additional operator of prefixing $\underline\mu.p$, called {\em strong prefixing} (in opposition to normal prefixing $\mu.p$), with the capability of expressing transactions and, together with  parallel composition, also multi-party synchronization.
+% }
 
 
 \section{Lack of Expressiveness of CCS}
 
-  As we have seen in Section \ref{CCS-turing}, CCS is a Turing-complete formalism, i.e., it has the ability to compute all the computable functions. Therefore, one may think that it is able to solve any kind of problems. Unfortunately this is not the case: Turing-completeness is not enough to ensure the solvability of all the problems in concurrency theory. For instance, it is well-known that a classic solution to the famous dining philosophers problem \cite{Dij71} (see below for details)  that assumes atomicity in the acquisition of the forks (or, equivalently, that requires a three-way synchronization among one philosopher and the two forks), cannot be provided  in CCS. An extension to CCS able to solve, among others, also this problem is the subject of this chapter.
+  CCS is a Turing-complete formalism, i.e., it has the ability to compute all the computable functions. Therefore, one may think that it is able to solve any kind of problems. Unfortunately this is not the case: Turing-completeness is not enough to ensure the solvability of all the problems in concurrency theory. For instance, it is well-known that a classic solution to the famous dining philosophers problem \cite{Dij71} (see below for details)  that assumes atomicity in the acquisition of the forks (or, equivalently, that requires a three-way synchronization among one philosopher and the two forks), cannot be provided  in CCS. An extension to CCS able to solve, among others, also this problem is the subject of this chapter.
 
-%This important observation spurs an obvious question: when a formalism for concurrency is {\em complete}? 
-%And with respect to what? Unfortunately, we still miss a definitive answer to this philosophical question.
-%even if recent research is trying to
-%unveil some aspects of this problem.
 
 \subsection{Dining philosophers}
   This famous problem, proposed by Dijkstra in \cite{Dij71}, is defined as follows. Five philosophers sit at a round table, with a private plate, and each of the five forks is shared by two neighbors. Philosophers can think and eat; in order to eat, a philosopher has to acquire both forks that he shares with his neighbors, starting from the fork at his left and then the one at his right. All philosophers should behave the same, so the problem is intrinsically symmetric.

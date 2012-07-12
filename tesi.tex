@@ -37,75 +37,6 @@
 
 \newcommand{\openrigthchapter}[1]{\chapter{#1}}
 \newcommand{\HRule} {\rule{\linewidth}{0.5mm}}
-
-\newtheorem{theorem}{Theorem}[section]
-\newtheorem{lemma}[theorem]{Lemma}
-\newtheorem{proposition}[theorem]{Proposition}
-\newtheorem{corollary}[theorem]{Corollary}
-
-
-%\newenvironment{proof}[1][Proof]{\begin{trivlist}
-%\item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
-\newenvironment{abstract}{
-  \cleardoublepage  \begin{center}  \end{center}
-}{\vfill \null}
-\newenvironment{definition}[1][Definition]{\begin{trivlist}
-\item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
-\newenvironment{example}[1][Example]{\begin{trivlist}
-\item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
-\newenvironment{remark}[1][Remark]{\begin{trivlist}
-\item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
-
-%\newcommand{\qed}{\nobreak \ifvmode \relax \else
-%      \ifdim\lastskip<1.5em \hskip-\lastskip
-%      \hskip1.5em plus0em minus0.5em \fi \nobreak
-%      \vrule height0.75em width0.5em depth0.25em\fi}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-\newtheorem{exercise}{Exercise}
-
-
-
-
-
-
-
-
-
-
-
-
 \newcommand{\post}[1]{\mbox{$#1^{\bullet}$}}
 \newcommand{\pre}[1]{\mbox{$^{\bullet}#1$}}
 \newcommand{\postr}[1]{#1^{\circ}}
@@ -121,20 +52,6 @@
 \newcommand{\hv}[1]{\mathcal{ H}_{#1}}
 \newcommand{\lvtrace}{\stackrel{\Lambda}{\approx}_{tr}}
 \newcommand{\lvbis}{\stackrel{\Lambda}{\approx}_{bis}}
-
-\newcommand{\redStr}[1]{\color{red}#1\color{black}\ }
-\newcommand{\angbr}[1]{\langle #1 \rangle}
-\renewcommand{\labelitemi}{$\bullet$}
-\renewcommand{\labelitemii}{$\bullet$}
-\renewcommand{\labelitemiii}{$\bullet$}
-
-\newtheorem{adefinizione}{Definition}[section]
-\newtheorem{afact}[adefinizione]{Fact}
-\newtheorem{alemma}[adefinizione]{Lemma}
-\newtheorem{teorema}[adefinizione]{Theorem}
-\newtheorem{corollario}[adefinizione]{Corollary}
-\newtheorem{proposizione}[adefinizione]{Proposition}
-\newtheorem{esempio}[adefinizione]{Example}
 
 \newcommand{\mmuo}[1] {\underline{ \overline{ #1 } } }
 \newcommand{\ouno}[2]{ \mmuo{ #1 } \mmang{ #2}  }
@@ -251,38 +168,49 @@
 \newcommand{\LL}[1]{\mbox{\em{#1}}}
 
 
+\newcommand{\redStr}[1]{\color{red}#1\color{black}\ }
+\newcommand{\angbr}[1]{\langle #1 \rangle}
+\renewcommand{\labelitemi}{$\bullet$}
+\renewcommand{\labelitemii}{$\bullet$}
+\renewcommand{\labelitemiii}{$\bullet$}
 
 
 
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{definition}{Definition}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{exercise}{Exercise}
+\newtheorem{adefinizione}{Definition}[section]
+\newtheorem{afact}[adefinizione]{Fact}
+\newtheorem{alemma}[adefinizione]{Lemma}
+\newtheorem{teorema}[adefinizione]{Theorem}
+\newtheorem{corollario}[adefinizione]{Corollary}
+\newtheorem{proposizione}[adefinizione]{Proposition}
+\newtheorem{esempio}[adefinizione]{Example}
 
 
+%\newenvironment{proof}[1][Proof]{\begin{trivlist}
+%\item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
+\newenvironment{abstract}{
+  \cleardoublepage  \begin{center}  \end{center}
+}{\vfill \null}
+% \newenvironment{definition}[1][Definition]{
+%   \begin{trivlist}
+%   \item[\hskip \labelsep {\bfseries #1}]
+% }{
+%   \end{trivlist}
+% }
+\newenvironment{example}[1][Example]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
+\newenvironment{remark}[1][Remark]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+%\newcommand{\qed}{\nobreak \ifvmode \relax \else
+%      \ifdim\lastskip<1.5em \hskip-\lastskip
+%      \hskip1.5em plus0em minus0.5em \fi \nobreak
+%      \vrule height0.75em width0.5em depth0.25em\fi}
 
 
 \title{Multi Pi Calculus\\[4mm]\small{boh}}
