@@ -177,145 +177,8 @@ In a definition $A(x_{1}, \cdots, x_{n})=P$ we assume that $fn(P)\subseteq \{x_{
 
 
 
-
-\section{Structural congruence}
-
-Structural congruences are a set of equations defining equality and congruence relations on process. They can be used in combination with an SOS semantic for languages. In some cases structural congruences help simplifying the SOS rules: for example they can capture inherent properties of composition operators(e.g. commutativity, associativity and zero element). Also, in process calculi, structural congruences let processes interact even in case they are not adjacent in the syntax. There is a possible trade off between what to include in the structural congruence and what to include in the transition rules: for example in the case of the commutativity of the sum operator. It is worth noticing that in most process calculi every structurally congruent processes should never be distinguished and thus any semantic must assign them the same behaviour.
-
-\begin{definition}
-  A \emph{change of bound names} in a process $P$ is the replacement of a subterm $x(z).Q$ of $P$ by $x(w).Q\{w/z\}$ or the replacement of a subterm $(\nu z)Q$ of $P$ by $(\nu w)Q\{w/z\}$ where in each case $w$ does not occur in $Q$.
-\end{definition}
-
-\begin{definition}
-  Processes $P$ and $Q$ are \emph{$\alpha$ convertible} if $Q$ can be obtained from $P$ by a finite number of changes of bound names. If $P$ and $Q$ are $\alpha$ convertible we write $P\stackrel{\alpha}{=}Q$
-\end{definition}
-
-
-\begin{definition}\index{context}
-  A \emph{context} $C[\cdot]$ is a process with a placeholder. If $C[\cdot]$ is a context and we replace the placeholder with $P$, than we obtain $C[P]$. In doing so, we make no $\alpha$ conversions.
-\end{definition}
-
-
-\begin{definition}\index{congruence}
-  A \emph{congruence} is a binary relation on processes such that:
-  \begin{itemize}
-    \item 
-      $S$ is an equivalence relation
-    \item 
-      $S$ is preserved by substitution in contexts: for each pair of processes $(P, Q)$ and for each context $C[\cdot]$
-      \begin{center}
-	$(P,Q)\in S\; \Rightarrow\; (C[P], C[Q])\in S$
-      \end{center}
-  \end{itemize}
-\end{definition}
-
-% \begin{definition}\label{congruenza strutturale}
-%   As stated in \cite{mousavireniers}, a \emph{structural congruence} is the minimal congruence on processes that satisify the following property:
-% \end{definition}
-
-\begin{definition}\index{structural congruence}
-  We define a \emph{structural congruence $\equiv$} as the smallest congruence on processes that satisfies the axioms in table \ref{structuralcongrunce}
-  \begin{table}
-    \begin{tabular}{lll}
-      \hline\\
-	SC-ALP&$\begin{array}{c}P \stackrel{\alpha}{=} Q\\\overline{P\equiv Q}\end{array}$&$\alpha$ conversion
-      \\\\
-	\multicolumn{3}{l}{abelian monoid laws for sum:}
-      \\
-	SC-SUM-ASC& $M_{1}+(M_{2}+M_{3})\equiv (M_{1}+M_{2})+M_{3}$ &associativity
-      \\
-	SC-SUM-COM& $M_{1}+M_{2}\equiv M_{2}+M_{1}$ &commutativity
-      \\
-	SC-SUM-INC& $M+0\equiv M$&zero element
-      \\\\
-	\multicolumn{3}{l}{abelian monoid laws for parallel:}
-      \\
-	SC-COM-ASC& $P_{1}|(P_{2}|P_{3})\equiv (P_{1}|P_{2})|P_{3}$ &associativity
-      \\
-	SC-COM-COM& $P_{1}|P_{2}\equiv P_{2}|P_{1}$ &commutativity
-      \\
-	SC-COM-INC& $P|0\equiv P$&zero element
-      \\\\
-	\multicolumn{3}{l}{scope extension laws:}
-      \\
-	SC-RES& $(\nu z) (\nu w) P \equiv (\nu w) (\nu z) P$ &
-      \\
-	SC-RES-INC& $(\nu z) 0 \equiv 0$ &
-      \\
-	SC-RES-COM& $(\nu z) (P_{1}|P_{2}) \equiv P_{1}|(\nu z) P_{2}$ if $z\notin fn(P_{1})$&
-      \\
-	SC-RES-SUM& $(\nu z) (P_{1}+P_{2}) \equiv P_{1}+(\nu z) P_{2}$ if $z\notin fn(P_{1})$&
-      \\\\
-	\multicolumn{3}{l}{unfolding law:}
-      \\
-	SC-IDE&$A(\tilde{y})\equiv P\{\tilde{y}/\tilde{x}\}$&if $A(\tilde{x})\stackrel{def}{=}P$
-      \\\hline
-    \end{tabular}
-    \caption{Structural congruence axioms}
-    \label{structuralcongrunce}
-  \end{table}
-\end{definition}
-
-We can make some clarification on the axioms of the structural congruence:
-\begin{description}
-  \item[$unfolding$] 
-    this just helps replace an identifier by its definition, with the appropriate parameter instantiation. The alternative is to use an appropriate SOS rule: 
-    \begin{center}
-	  \bf{Cns}
-	  \begin{tabular}{c}
-	      $A(\tilde{x}) \stackrel{def}{=} P\; P\{\tilde{y}/\tilde{x}\} \xrightarrow{\alpha} P^{'}$
-	    \\\hline
-	      $A(\tilde{y}) \xrightarrow{\alpha} P^{'}$
-	  \end{tabular}
-    \end{center}
-  \item[$\alpha\; conversion$]
-    is the $\alpha$ conversion, i.e., the choice of bound names, it identifies agents like $x(y).\overline{z}y$ and $x(w).\overline{z}w$. In the semantic of pi calculus we can use the structural congruence with the rule SC-ALP or the we can embed the $\alpha$ conversion in the SOS rules. 
-    In the early case the rule for input takes care of $\alpha$ conversion, whether in the late case the rule for communication is in charge for $\alpha$ conversion.
-    But this works only for one binder: the input prefix. 
-  \item[$abelian\; monoidal\; properties\; of\; some\; operators$]
-    We can deal with associativity and commutativity properties of sum and parallel composition by using SOS rules or by axiom of the structural congruence. For example the commutativity of the sum can be expressed by the following two rules:
-    \begin{center}
-      \begin{tabular}{cc}
-	\bf{Sum-L}
-	  \begin{tabular}{c}
-	    $P \xrightarrow{\alpha} P^{'}$\\
-	    \hline
-	    $P+Q \xrightarrow{\alpha} P^{'}$
-	  \end{tabular}
-	 &
-	 \bf{Sum-R}
-	   \begin{tabular}{c}
-	    $Q \xrightarrow{\alpha} Q^{'}$\\
-	    \hline
-	    $P+Q \xrightarrow{\alpha} Q^{'}$
-	   \end{tabular}
-      \end{tabular}
-    \end{center}
-  or by the following rule and axiom:
-    \begin{center}
-      \begin{tabular}{cc}
-	\bf{Sum}
-	  \begin{tabular}{c}
-	    $P \xrightarrow{\alpha} P^{'}$\\
-	    \hline
-	    $P+Q \xrightarrow{\alpha} P^{'}$
-	  \end{tabular}
-	 &
-	 \bf{SC-SUM}
-	   \begin{tabular}{c}
-	    $P+Q \equiv Q+P$
-	   \end{tabular}
-      \end{tabular}
-    \end{center}
-    and the rule $Str$
-  \item[$scope\; extension\; laws$]
-    We can use this scope extension laws or the rules $Opn$ and $Cls$ to deal with the scope extension.
-\end{description}
-
-\section{Operational semantic}
-\subsection{Early semantic without structural congruence}
-
-
+\section{Operational Semantic(without structural congruence)}
+\subsection{Early operational semantic(without structural congruence)}
 The semantic of a $\pi$ calculus process is a labeled transition system such that:
 \begin{itemize}
   \item 
@@ -544,6 +407,270 @@ there is no substitution, instead the substitution occurres at an early point in
 
 
 
+
+
+
+\subsection{Late operational semantic(without structural congruence)}
+
+
+In this case the set of actions $\mathbb{A}$ contains
+\begin{itemize}
+      \item bound input $x(y)$
+      \item unbound output $\overline{x}y$
+      \item the silent action $\tau$
+      \item bound output $\overline{x}(y)$
+\end{itemize}
+
+
+\begin{definition}\index{transition relation! pi! late! without structural congruence}
+  The \emph{late transition relation without structural congruence} $\rightarrow\subseteq \mathbb{P}\times \mathbb{A} \times \mathbb{P}$ is the smallest relation induced by the rules in table \ref{transitionrelationpilatewithoutstructuralcongruence}.
+  \begin{table}
+    \begin{tabular}{ll}
+      \hline\\
+	  \bf{LInp}
+	  \begin{tabular}{c}
+ 	    $z\notin fn(P)$
+	    \\\hline
+ 	    $x(y).P \xrightarrow{x(z)} P\{z/y\}$
+	  \end{tabular}
+	&
+	  \bf{Res}
+	  \begin{tabular}{c}
+	    $P \xrightarrow{\alpha} P^{'}$ $z\notin n(\alpha)$
+	      \\\hline
+	    $(\nu z) P \xrightarrow{\alpha} (\nu z) P^{'}$
+	  \end{tabular}    
+      \\\\
+	  \bf{Sum-L}
+	  \begin{tabular}{c}
+	      $P \xrightarrow{\alpha} P^{'}$
+	    \\\hline
+	      $P+Q \xrightarrow{\alpha} P^{'}$
+	  \end{tabular}
+	&
+	  \bf{Sum-R}
+	  \begin{tabular}{c}
+	      $Q \xrightarrow{\alpha} Q^{'}$
+	    \\\hline
+	      $P+Q \xrightarrow{\alpha} Q^{'}$
+	  \end{tabular}
+      \\\\
+	  \bf{Par-L}
+	  \begin{tabular}{c}
+	      $P \xrightarrow{\alpha} P^{'}\;\; bn(\alpha)\cap fn(Q)=\emptyset$
+	    \\\hline
+	      $P|Q \xrightarrow{\alpha} P^{'}|Q$
+	  \end{tabular}
+	&
+	  \bf{Par-R}
+	  \begin{tabular}{c}
+	      $Q \xrightarrow{\alpha} Q^{'}\;\; bn(\alpha)\cap fn(Q)=\emptyset$
+	    \\\hline
+	      $P|Q \xrightarrow{\alpha} P|Q^{'}$
+	  \end{tabular}
+      \\\\
+	  \bf{LCom}
+	  \begin{tabular}{c}
+	      $P \xrightarrow{x(y)} P^{'}\;\; Q\xrightarrow{\overline{x}(z)} Q^{'}$
+	    \\\hline
+	      $P|Q \xrightarrow{\tau} P^{'}\{z/y\}|Q^{'}$
+	  \end{tabular}	
+	&
+	  \bf{RCom}
+	  \begin{tabular}{c}
+	      $P \xrightarrow{\overline{x}(z)} P^{'}\;\; Q\xrightarrow{x(y)} Q^{'}$
+	    \\\hline
+	      $P|Q \xrightarrow{\tau} P^{'}|Q^{'}\{z/y\}$
+	  \end{tabular}	
+      \\\\
+	  \bf{Opn}
+	  \begin{tabular}{c}
+	      $P \xrightarrow{\overline{x}z} P^{'}\;\; z\neq x$
+	    \\\hline
+	      $(\nu z) P \xrightarrow{\overline{x}(z)} P^{'}$
+	  \end{tabular}
+	&
+	  \bf{Out}
+	  \begin{tabular}{c}
+	    \hline
+	    $\overline{x}y.P \xrightarrow{\overline{x}y} P$
+	  \end{tabular}
+      \\\\
+	  \bf{CloseL}
+	  \begin{tabular}{c}
+	      $P\; \xrightarrow{\overline{x}(z)}\; P^{'}$  $Q \xrightarrow{xz} Q^{'}$ $z\notin fn(Q)$
+	    \\\hline
+	      $P|Q\; \xrightarrow{\tau}\; (\nu z)(P^{'}|Q^{'})$
+	  \end{tabular}
+	&
+	  \bf{CloseR}
+	  \begin{tabular}{c}
+	      $P \xrightarrow{xz} P^{'}$  $Q \xrightarrow{\overline{x}(z)} Q^{'}$ $z\notin fn(P)$
+	    \\\hline
+	      $P|Q \xrightarrow{\tau} (\nu z)(P^{'}|Q^{'})$
+	  \end{tabular}
+      \\\\
+	  \bf{Tau}
+	  \begin{tabular}{c}
+	    \hline
+	      $\tau.P \xrightarrow{\tau} P$
+	  \end{tabular}
+	&
+	  \bf{Cns}
+	  \begin{tabular}{c}
+	    $A(\tilde{x}) \stackrel{def}{=} P\; P\{\tilde{y}/\tilde{x}\} \xrightarrow{\alpha} P^{'}$
+	      \\\hline
+	    $A(\tilde{y}) \xrightarrow{\alpha} P^{'}$
+	  \end{tabular}
+      \\\hline
+    \end{tabular}
+    \caption{Late semantic without structural congruence}
+    \label{transitionrelationpilatewithoutstructuralcongruence}
+  \end{table}
+\end{definition}
+
+
+
+
+
+\section{Structural congruence}
+
+Structural congruences are a set of equations defining equality and congruence relations on process. They can be used in combination with an SOS semantic for languages. In some cases structural congruences help simplifying the SOS rules: for example they can capture inherent properties of composition operators(e.g. commutativity, associativity and zero element). Also, in process calculi, structural congruences let processes interact even in case they are not adjacent in the syntax. There is a possible trade off between what to include in the structural congruence and what to include in the transition rules: for example in the case of the commutativity of the sum operator. It is worth noticing that in most process calculi every structurally congruent processes should never be distinguished and thus any semantic must assign them the same behaviour.
+
+\begin{definition}
+  A \emph{change of bound names} in a process $P$ is the replacement of a subterm $x(z).Q$ of $P$ by $x(w).Q\{w/z\}$ or the replacement of a subterm $(\nu z)Q$ of $P$ by $(\nu w)Q\{w/z\}$ where in each case $w$ does not occur in $Q$.
+\end{definition}
+
+\begin{definition}
+  Processes $P$ and $Q$ are \emph{$\alpha$ convertible} if $Q$ can be obtained from $P$ by a finite number of changes of bound names. If $P$ and $Q$ are $\alpha$ convertible we write $P\stackrel{\alpha}{=}Q$
+\end{definition}
+
+
+\begin{definition}\index{context}
+  A \emph{context} $C[\cdot]$ is a process with a placeholder. If $C[\cdot]$ is a context and we replace the placeholder with $P$, than we obtain $C[P]$. In doing so, we make no $\alpha$ conversions.
+\end{definition}
+
+
+\begin{definition}\index{congruence}
+  A \emph{congruence} is a binary relation on processes such that:
+  \begin{itemize}
+    \item 
+      $S$ is an equivalence relation
+    \item 
+      $S$ is preserved by substitution in contexts: for each pair of processes $(P, Q)$ and for each context $C[\cdot]$
+      \begin{center}
+	$(P,Q)\in S\; \Rightarrow\; (C[P], C[Q])\in S$
+      \end{center}
+  \end{itemize}
+\end{definition}
+
+% \begin{definition}\label{congruenza strutturale}
+%   As stated in \cite{mousavireniers}, a \emph{structural congruence} is the minimal congruence on processes that satisify the following property:
+% \end{definition}
+
+\begin{definition}\index{structural congruence}
+  We define a \emph{structural congruence $\equiv$} as the smallest congruence on processes that satisfies the axioms in table \ref{structuralcongrunce}
+  \begin{table}
+    \begin{tabular}{lll}
+      \hline\\
+	SC-ALP&$\begin{array}{c}P \stackrel{\alpha}{=} Q\\\overline{P\equiv Q}\end{array}$&$\alpha$ conversion
+      \\\\
+	\multicolumn{3}{l}{abelian monoid laws for sum:}
+      \\
+	SC-SUM-ASC& $M_{1}+(M_{2}+M_{3})\equiv (M_{1}+M_{2})+M_{3}$ &associativity
+      \\
+	SC-SUM-COM& $M_{1}+M_{2}\equiv M_{2}+M_{1}$ &commutativity
+      \\
+	SC-SUM-INC& $M+0\equiv M$&zero element
+      \\\\
+	\multicolumn{3}{l}{abelian monoid laws for parallel:}
+      \\
+	SC-COM-ASC& $P_{1}|(P_{2}|P_{3})\equiv (P_{1}|P_{2})|P_{3}$ &associativity
+      \\
+	SC-COM-COM& $P_{1}|P_{2}\equiv P_{2}|P_{1}$ &commutativity
+      \\
+	SC-COM-INC& $P|0\equiv P$&zero element
+      \\\\
+	\multicolumn{3}{l}{scope extension laws:}
+      \\
+	SC-RES& $(\nu z) (\nu w) P \equiv (\nu w) (\nu z) P$ &
+      \\
+	SC-RES-INC& $(\nu z) 0 \equiv 0$ &
+      \\
+	SC-RES-COM& $(\nu z) (P_{1}|P_{2}) \equiv P_{1}|(\nu z) P_{2}$ if $z\notin fn(P_{1})$&
+      \\
+	SC-RES-SUM& $(\nu z) (P_{1}+P_{2}) \equiv P_{1}+(\nu z) P_{2}$ if $z\notin fn(P_{1})$&
+      \\\\
+	\multicolumn{3}{l}{unfolding law:}
+      \\
+	SC-IDE&$A(\tilde{y})\equiv P\{\tilde{y}/\tilde{x}\}$&if $A(\tilde{x})\stackrel{def}{=}P$
+      \\\hline
+    \end{tabular}
+    \caption{Structural congruence axioms}
+    \label{structuralcongrunce}
+  \end{table}
+\end{definition}
+
+We can make some clarification on the axioms of the structural congruence:
+\begin{description}
+  \item[$unfolding$] 
+    this just helps replace an identifier by its definition, with the appropriate parameter instantiation. The alternative is to use an appropriate SOS rule: 
+    \begin{center}
+	  \bf{Cns}
+	  \begin{tabular}{c}
+	      $A(\tilde{x}) \stackrel{def}{=} P\; P\{\tilde{y}/\tilde{x}\} \xrightarrow{\alpha} P^{'}$
+	    \\\hline
+	      $A(\tilde{y}) \xrightarrow{\alpha} P^{'}$
+	  \end{tabular}
+    \end{center}
+  \item[$\alpha\; conversion$]
+    is the $\alpha$ conversion, i.e., the choice of bound names, it identifies agents like $x(y).\overline{z}y$ and $x(w).\overline{z}w$. In the semantic of pi calculus we can use the structural congruence with the rule SC-ALP or the we can embed the $\alpha$ conversion in the SOS rules. 
+    In the early case the rule for input takes care of $\alpha$ conversion, whether in the late case the rule for communication is in charge for $\alpha$ conversion.
+    But this works only for one binder: the input prefix. 
+  \item[$abelian\; monoidal\; properties\; of\; some\; operators$]
+    We can deal with associativity and commutativity properties of sum and parallel composition by using SOS rules or by axiom of the structural congruence. For example the commutativity of the sum can be expressed by the following two rules:
+    \begin{center}
+      \begin{tabular}{cc}
+	\bf{Sum-L}
+	  \begin{tabular}{c}
+	    $P \xrightarrow{\alpha} P^{'}$\\
+	    \hline
+	    $P+Q \xrightarrow{\alpha} P^{'}$
+	  \end{tabular}
+	 &
+	 \bf{Sum-R}
+	   \begin{tabular}{c}
+	    $Q \xrightarrow{\alpha} Q^{'}$\\
+	    \hline
+	    $P+Q \xrightarrow{\alpha} Q^{'}$
+	   \end{tabular}
+      \end{tabular}
+    \end{center}
+  or by the following rule and axiom:
+    \begin{center}
+      \begin{tabular}{cc}
+	\bf{Sum}
+	  \begin{tabular}{c}
+	    $P \xrightarrow{\alpha} P^{'}$\\
+	    \hline
+	    $P+Q \xrightarrow{\alpha} P^{'}$
+	  \end{tabular}
+	 &
+	 \bf{SC-SUM}
+	   \begin{tabular}{c}
+	    $P+Q \equiv Q+P$
+	   \end{tabular}
+      \end{tabular}
+    \end{center}
+    and the rule $Str$
+  \item[$scope\; extension\; laws$]
+    We can use this scope extension laws or the rules $Opn$ and $Cls$ to deal with the scope extension.
+\end{description}
+
+
+
+\section{Operational semantic with structural congruence}
+
 \subsection{Early semantic with structural congruence}
 
 \begin{definition}\index{transition relation! pi! early! with structural congruence}
@@ -687,129 +814,6 @@ there is no substitution, instead the substitution occurres at an early point in
     \]
     Now we just apply the rule $Str$ to prove the thesis.
 \end{example}
-
-
-\subsection{Late semantic without structural congruence}
-
-
-
-
-In this case the set of actions $\mathbb{A}$ contains
-\begin{itemize}
-      \item bound input $x(y)$
-      \item unbound output $\overline{x}y$
-      \item the silent action $\tau$
-      \item bound output $\overline{x}(y)$
-\end{itemize}
-
-
-\begin{definition}\index{transition relation! pi! late! without structural congruence}
-  The \emph{late transition relation without structural congruence} $\rightarrow\subseteq \mathbb{P}\times \mathbb{A} \times \mathbb{P}$ is the smallest relation induced by the rules in table \ref{transitionrelationpilatewithoutstructuralcongruence}.
-  \begin{table}
-    \begin{tabular}{ll}
-      \hline\\
-	  \bf{LInp}
-	  \begin{tabular}{c}
- 	    $z\notin fn(P)$
-	    \\\hline
- 	    $x(y).P \xrightarrow{x(z)} P\{z/y\}$
-	  \end{tabular}
-	&
-	  \bf{Res}
-	  \begin{tabular}{c}
-	    $P \xrightarrow{\alpha} P^{'}$ $z\notin n(\alpha)$
-	      \\\hline
-	    $(\nu z) P \xrightarrow{\alpha} (\nu z) P^{'}$
-	  \end{tabular}    
-      \\\\
-	  \bf{Sum-L}
-	  \begin{tabular}{c}
-	      $P \xrightarrow{\alpha} P^{'}$
-	    \\\hline
-	      $P+Q \xrightarrow{\alpha} P^{'}$
-	  \end{tabular}
-	&
-	  \bf{Sum-R}
-	  \begin{tabular}{c}
-	      $Q \xrightarrow{\alpha} Q^{'}$
-	    \\\hline
-	      $P+Q \xrightarrow{\alpha} Q^{'}$
-	  \end{tabular}
-      \\\\
-	  \bf{Par-L}
-	  \begin{tabular}{c}
-	      $P \xrightarrow{\alpha} P^{'}\;\; bn(\alpha)\cap fn(Q)=\emptyset$
-	    \\\hline
-	      $P|Q \xrightarrow{\alpha} P^{'}|Q$
-	  \end{tabular}
-	&
-	  \bf{Par-R}
-	  \begin{tabular}{c}
-	      $Q \xrightarrow{\alpha} Q^{'}\;\; bn(\alpha)\cap fn(Q)=\emptyset$
-	    \\\hline
-	      $P|Q \xrightarrow{\alpha} P|Q^{'}$
-	  \end{tabular}
-      \\\\
-	  \bf{LCom}
-	  \begin{tabular}{c}
-	      $P \xrightarrow{x(y)} P^{'}\;\; Q\xrightarrow{\overline{x}(z)} Q^{'}$
-	    \\\hline
-	      $P|Q \xrightarrow{\tau} P^{'}\{z/y\}|Q^{'}$
-	  \end{tabular}	
-	&
-	  \bf{RCom}
-	  \begin{tabular}{c}
-	      $P \xrightarrow{\overline{x}(z)} P^{'}\;\; Q\xrightarrow{x(y)} Q^{'}$
-	    \\\hline
-	      $P|Q \xrightarrow{\tau} P^{'}|Q^{'}\{z/y\}$
-	  \end{tabular}	
-      \\\\
-	  \bf{Opn}
-	  \begin{tabular}{c}
-	      $P \xrightarrow{\overline{x}z} P^{'}\;\; z\neq x$
-	    \\\hline
-	      $(\nu z) P \xrightarrow{\overline{x}(z)} P^{'}$
-	  \end{tabular}
-	&
-	  \bf{Out}
-	  \begin{tabular}{c}
-	    \hline
-	    $\overline{x}y.P \xrightarrow{\overline{x}y} P$
-	  \end{tabular}
-      \\\\
-	  \bf{CloseL}
-	  \begin{tabular}{c}
-	      $P\; \xrightarrow{\overline{x}(z)}\; P^{'}$  $Q \xrightarrow{xz} Q^{'}$ $z\notin fn(Q)$
-	    \\\hline
-	      $P|Q\; \xrightarrow{\tau}\; (\nu z)(P^{'}|Q^{'})$
-	  \end{tabular}
-	&
-	  \bf{CloseR}
-	  \begin{tabular}{c}
-	      $P \xrightarrow{xz} P^{'}$  $Q \xrightarrow{\overline{x}(z)} Q^{'}$ $z\notin fn(P)$
-	    \\\hline
-	      $P|Q \xrightarrow{\tau} (\nu z)(P^{'}|Q^{'})$
-	  \end{tabular}
-      \\\\
-	  \bf{Tau}
-	  \begin{tabular}{c}
-	    \hline
-	      $\tau.P \xrightarrow{\tau} P$
-	  \end{tabular}
-	&
-	  \bf{Cns}
-	  \begin{tabular}{c}
-	    $A(\tilde{x}) \stackrel{def}{=} P\; P\{\tilde{y}/\tilde{x}\} \xrightarrow{\alpha} P^{'}$
-	      \\\hline
-	    $A(\tilde{y}) \xrightarrow{\alpha} P^{'}$
-	  \end{tabular}
-      \\\hline
-    \end{tabular}
-    \caption{Late semantic without structural congruence}
-    \label{transitionrelationpilatewithoutstructuralcongruence}
-  \end{table}
-\end{definition}
-
 
 
 \subsection{Late semantic with structural congruence}
