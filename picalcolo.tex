@@ -4,6 +4,7 @@ The $\pi$ calculus is a mathematical model of processes whose interconnections c
 A coverage of $\pi$ calculus is on \cite{parrow}, \cite{sangiorgiwalker} and \cite{milner}
 
 \section{Syntax}
+
 We suppose that we have a countable set of names $\mathbb{N}$, ranged over by lower case letters $a,b, \cdots, z$. This names are used for communication channels and values. Furthermore we have a set of identifiers, ranged over by $A$. We represent the agents or processes by upper case letters $P,Q, \cdots $. A process can perform the following actions:
 \begin{center}
   $\pi$ ::= $\overline{x}y$ | $x(z)$ | $\tau$ 
@@ -203,7 +204,7 @@ In the following section we present the early semantic without structural congru
     $P|Q \xrightarrow{\tau} P^{'}|Q^{'}$
   \end{tabular}
 \end{center}
-there is no substitution, instead the substitution occurres at an early point in the inference of this translation, namely during the inference of the input action. 
+there is no substitution, instead the substitution occurs at an early point in the inference of this translation, namely during the inference of the input action. 
 
 \begin{definition}\index{transition relation! early! without structural congruence}
   The \emph{early transition relation} $\rightarrow\subseteq \mathbb{P}\times \mathbb{A} \times \mathbb{P}$ is the smallest relation induced by the rules in table \ref{transitionrelationearlywithoutstructuralcongruence}.
@@ -224,46 +225,46 @@ there is no substitution, instead the substitution occurres at an early point in
 	      $x(y).P \xrightarrow{xz} P\{z/y\}$
 	  \end{tabular}
       \\\\
-	  \bf{Par-L}
+	  \bf{ParL}
 	  \begin{tabular}{c}
 	      $P \xrightarrow{\alpha} P^{'}\;\; bn(\alpha)\cap fn(Q)=\emptyset$
 	    \\\hline
 	      $P|Q \xrightarrow{\alpha} P^{'}|Q$
 	  \end{tabular}
 	&
-	  \bf{Par-R}
+	  \bf{ParR}
 	  \begin{tabular}{c}
 	      $Q \xrightarrow{\alpha} Q^{'}\;\; bn(\alpha)\cap fn(Q)=\emptyset$
 	    \\\hline
 	      $P|Q \xrightarrow{\alpha} P|Q^{'}$
 	  \end{tabular}
       \\\\
-	  \bf{Sum-L}
+	  \bf{SumL}
 	  \begin{tabular}{c}
 	      $P \xrightarrow{\alpha} P^{'}$
 	    \\\hline
 	      $P+Q \xrightarrow{\alpha} P^{'}$
 	  \end{tabular}
 	&
-	  \bf{Sum-R}
+	  \bf{SumR}
 	  \begin{tabular}{c}
 	      $Q \xrightarrow{\alpha} Q^{'}$
 	    \\\hline
 	      $P+Q \xrightarrow{\alpha} Q^{'}$
 	    \end{tabular}
       \\\\
-	  \bf{Tau}
-	  \begin{tabular}{c}
-	      $\;\;$
-	    \\\hline
-	      $\tau.P \xrightarrow{\tau} P$
-	  \end{tabular}
-	&
 	  \bf{Res}
 	  \begin{tabular}{c}
 	      $P \xrightarrow{\alpha} P^{'}\;\; z\notin n(\alpha)$
 	    \\\hline
 	      $(\nu z) P \xrightarrow{\alpha} (\nu z) P^{'}$
+	  \end{tabular}
+	&
+	  \bf{ResAlp}
+	  \begin{tabular}{c}
+	      $(\nu w)P\{w/z\} \xrightarrow{xz} P^{'}\;\; w\notin n(P)$
+	    \\\hline
+	      $(\nu z) P \xrightarrow{xz} P^{'}$
 	  \end{tabular}
       \\\\
 	  \bf{EComR}
@@ -311,6 +312,14 @@ there is no substitution, instead the substitution occurres at an early point in
 	    \\\hline
 	      $(\nu z) P \;\xrightarrow{\overline{x}(z)} P^{'}$
 	  \end{tabular}
+      \\\\
+	  \bf{Tau}
+	  \begin{tabular}{c}
+	      $\;\;$
+	    \\\hline
+	      $\tau.P \xrightarrow{\tau} P$
+	  \end{tabular}
+	&
       \\\hline
     \end{tabular}
     \caption{Early transition relation without structural congruence}
@@ -354,31 +363,54 @@ there is no substitution, instead the substitution occurres at an early point in
 \begin{example}
     We want to prove now that:
     \begin{center}
-      $((\nu b) a(x).P)\; |\; \overline{a}b.Q\; \xrightarrow{\tau}\; (\nu c) (P\{c/b\}\{b/x\}\; |\; Q)$
+      $((\nu b) a(x).P)\; |\; \overline{a}b.Q\; 
+	\xrightarrow{\tau}\; 
+	((\nu c) (P\{c/b\}\{b/x\})) | Q$
     \end{center}
-    where $c\notin n(P)$
-%      \[
-%  	\inferrule* [left=ECloseL] {
-%  	    \inferrule* [left=Res] {
-%  	      \inferrule* [left=EInp] {
-%  	      }{
-%  		a(x).P\; \xrightarrow{a ?}\;  P\{\}
-%  	      }
-%  	    }{
-%  	      (\nu b) a(x).P\; \xrightarrow{a ?}\; (\nu b) P\{\}
-%  	    }
-%  	  \\
-%  	    \inferrule* [left=Out] {
-%  	    }{
-%  	      \overline{a}b.Q\; \xrightarrow{\overline{a}b}\; Q
-%  	    }
-%  	  \\
-%  	    b\notin fn(P)
-%  	}{
-%  	  ((\nu b) a(x).P)\; |\; \overline{a}b.Q\; \xrightarrow{\tau}\; (\nu c) (P\{c/b\}\{b/x\}\; |\; Q)
-%  	}
-%      \]
-  come faccio? devo aggiungere la regola $\bf{Alpha}$?
+    where $b\notin bn(P)$
+    \[
+	    \inferrule* [left=ResAlp] {
+		\inferrule* [left=Res] {
+		    \inferrule* [left=EInp]{
+		    }{
+		      (a(x).P)\{c/b\}\;
+			\xrightarrow{ab}\;
+			  P\{c/b\}\{b/x\}
+		    }
+		  \\
+		    c\notin n(a(b))
+		}{
+		  (\nu c)((a(x).P)\{c/b\})\;
+		    \xrightarrow{ab}\;
+		      (\nu c)(P\{c/b\}\{b/x\})
+		}
+	      \\
+		b\notin n((a(x).P)\{c/b\})
+	    }{
+	      (\nu b) a(x).P\; 
+		\xrightarrow{ab}\; 
+		  (\nu c) P\{c/b\}\{b/x\}
+	    }
+    \]
+
+      \[
+  	\inferrule* [left=EComL] {
+  	      (\nu b) a(x).P\; 
+		\xrightarrow{ab}\; 
+		  (\nu c) P\{c/b\}\{b/x\}
+  	  \\
+  	    \inferrule* [left=EOut] {
+  	    }{
+  	      \overline{a}b.Q\; 
+		\xrightarrow{\overline{a}b}\; 
+		  Q
+  	    }
+  	}{
+	  ((\nu b) a(x).P)\; |\; \overline{a}b.Q\; 
+	    \xrightarrow{\tau}\; 
+	      ((\nu c) (P\{c/b\}\{b/x\})) | Q
+  	}
+      \]
 \end{example}
 
 
@@ -441,42 +473,42 @@ In this case the set of actions $\mathbb{A}$ contains
 	    $(\nu z) P \xrightarrow{\alpha} (\nu z) P^{'}$
 	  \end{tabular}    
       \\\\
-	  \bf{Sum-L}
+	  \bf{SumL}
 	  \begin{tabular}{c}
 	      $P \xrightarrow{\alpha} P^{'}$
 	    \\\hline
 	      $P+Q \xrightarrow{\alpha} P^{'}$
 	  \end{tabular}
 	&
-	  \bf{Sum-R}
+	  \bf{SumR}
 	  \begin{tabular}{c}
 	      $Q \xrightarrow{\alpha} Q^{'}$
 	    \\\hline
 	      $P+Q \xrightarrow{\alpha} Q^{'}$
 	  \end{tabular}
       \\\\
-	  \bf{Par-L}
+	  \bf{ParL}
 	  \begin{tabular}{c}
 	      $P \xrightarrow{\alpha} P^{'}\;\; bn(\alpha)\cap fn(Q)=\emptyset$
 	    \\\hline
 	      $P|Q \xrightarrow{\alpha} P^{'}|Q$
 	  \end{tabular}
 	&
-	  \bf{Par-R}
+	  \bf{ParR}
 	  \begin{tabular}{c}
 	      $Q \xrightarrow{\alpha} Q^{'}\;\; bn(\alpha)\cap fn(Q)=\emptyset$
 	    \\\hline
 	      $P|Q \xrightarrow{\alpha} P|Q^{'}$
 	  \end{tabular}
       \\\\
-	  \bf{LCom}
+	  \bf{ComL}
 	  \begin{tabular}{c}
 	      $P \xrightarrow{x(y)} P^{'}\;\; Q\xrightarrow{\overline{x}(z)} Q^{'}$
 	    \\\hline
 	      $P|Q \xrightarrow{\tau} P^{'}\{z/y\}|Q^{'}$
 	  \end{tabular}	
 	&
-	  \bf{RCom}
+	  \bf{ComR}
 	  \begin{tabular}{c}
 	      $P \xrightarrow{\overline{x}(z)} P^{'}\;\; Q\xrightarrow{x(y)} Q^{'}$
 	    \\\hline
@@ -496,14 +528,14 @@ In this case the set of actions $\mathbb{A}$ contains
 	    $\overline{x}y.P \xrightarrow{\overline{x}y} P$
 	  \end{tabular}
       \\\\
-	  \bf{CloseL}
+	  \bf{ClsL}
 	  \begin{tabular}{c}
 	      $P\; \xrightarrow{\overline{x}(z)}\; P^{'}$  $Q \xrightarrow{xz} Q^{'}$ $z\notin fn(Q)$
 	    \\\hline
 	      $P|Q\; \xrightarrow{\tau}\; (\nu z)(P^{'}|Q^{'})$
 	  \end{tabular}
 	&
-	  \bf{CloseR}
+	  \bf{ClsR}
 	  \begin{tabular}{c}
 	      $P \xrightarrow{xz} P^{'}$  $Q \xrightarrow{\overline{x}(z)} Q^{'}$ $z\notin fn(P)$
 	    \\\hline
@@ -631,14 +663,14 @@ We can make some clarification on the axioms of the structural congruence:
     We can deal with associativity and commutativity properties of sum and parallel composition by using SOS rules or by axiom of the structural congruence. For example the commutativity of the sum can be expressed by the following two rules:
     \begin{center}
       \begin{tabular}{cc}
-	\bf{Sum-L}
+	\bf{SumL}
 	  \begin{tabular}{c}
 	    $P \xrightarrow{\alpha} P^{'}$\\
 	    \hline
 	    $P+Q \xrightarrow{\alpha} P^{'}$
 	  \end{tabular}
 	 &
-	 \bf{Sum-R}
+	 \bf{SumR}
 	   \begin{tabular}{c}
 	    $Q \xrightarrow{\alpha} Q^{'}$\\
 	    \hline
@@ -670,6 +702,9 @@ We can make some clarification on the axioms of the structural congruence:
 
 
 \section{Operational semantic with structural congruence}
+
+\subsection{Early semantic with a minimal structural congruence}
+In this subsection we introduce the early operational semantic for $\pi$ calculus with the use of a minimal structural congruence, specifically we exploit only the easy of $\alpha$ conversion.
 
 \subsection{Early semantic with structural congruence}
 
