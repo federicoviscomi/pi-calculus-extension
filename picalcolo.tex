@@ -1233,6 +1233,95 @@ Let us try to prove $(\nu y)\overline{x}y.0\xrightarrow{\overline{x}(w)}_{1}[0]_
 
 \begin{theorem}
   $P\xrightarrow{\alpha}_{2}P^{'}\; \Leftrightarrow\; \exists P^{''}: P^{'}\equiv P^{''}\; and\; P\xrightarrow{\alpha}_{3}P^{''}$
+  \begin{proof}
+    \begin{description}
+      \item[$\Rightarrow$] 
+	First we prove $P\xrightarrow{\alpha}_{2}P^{'}\; \Rightarrow\; \exists P^{''}: P^{'}\equiv P^{''}\; and\; P\xrightarrow{\alpha}_{3}P^{''}$. The proof is by induction on the length of the derivation of $P\xrightarrow{\alpha}_{2}P^{'}$, and then both the base case and the inductive case proceed by cases on the last rule used.
+	\begin{description}
+	  \item[base case]
+	    in this case the rule used can be one of the following $Out, EInp, Tau$ which are also in $R_{3}$ so a derivation of $P\xrightarrow{\alpha}_{2}P^{'}$ is also a derivation of $P\xrightarrow{\alpha}_{3}P^{'}$
+	  \item[inductive case]:
+	    \begin{itemize}
+	      \item 
+		the last rule used can be one in $R_{2}\cap R_{3}=\{Res, Opn\}$ and so for example we have 
+		\[
+		  \inferrule* [left=Res]{
+		      P\xrightarrow{\alpha}_{2} P^{'}
+		    \\
+		      z\notin n(\alpha)
+		  }{
+		    (\nu z) P\xrightarrow{\alpha}_{2}(\nu z) P^{'}
+		  }
+		\]
+		we apply the inductive hypothesis on $P\xrightarrow{\alpha}_{2} P^{'}$ and get $\exists P^{''}$ such that $P^{'}\equiv_{\alpha}P^{''}$ and $P\xrightarrow{\alpha}_{3} P^{''}$. The proof we want is:
+		\[
+		  \inferrule* [left=Res]{
+		      P\xrightarrow{\alpha}_{3} P^{''}
+		    \\
+		      z\notin n(\alpha)
+		  }{
+		    (\nu z) P\xrightarrow{\alpha}_{3}(\nu z) P^{''}
+		  }
+		\]
+		and $(\nu z) P^{''}\equiv_{\alpha}(\nu z) P^{'}$
+	      \item
+		the last rule used can be one in $\{ParL, ParR, SumL, SumR, EComL, EComR\}$, in this case we can proceed as in the previous case and if necessary add an application of $Str$ thus exploiting the commutativity of sum or parallel composition. For example
+		\[
+		  \inferrule* [left=ParR]{
+		      Q\xrightarrow{\alpha}_{2}Q^{'}
+		    \\
+		      bn(\alpha)\cap fn(Q)=\emptyset
+		  }{
+		      P|Q\xrightarrow{\alpha}_{2}P|Q^{'}
+		  }
+		\]	
+		now we apply the inductive hypothesis to $Q\xrightarrow{\alpha}_{2}Q^{'}$ and get $Q\xrightarrow{\alpha}_{3}Q^{''}$ for a $Q^{''}$ such that $Q^{'}\equiv_{\alpha} Q^{''}$. The proof we want is
+		\[
+		  \inferrule* [left=Str]{
+		      P|Q\equiv_{\alpha}Q|P
+		    \\
+		      \inferrule* [left=Par]{
+			  Q\xrightarrow{\alpha}_{3}Q^{''}
+			\\
+			  bn(\alpha)\cap fn(Q)=\emptyset
+		      }{
+			  Q|P\xrightarrow{\alpha}_{3}Q^{''}|P
+		      }
+		    }{
+		      P|Q\xrightarrow{\alpha}_{3}Q^{''}|P
+		    }
+		\]
+		and $Q^{''}|P\equiv_{\alpha}P|Q^{'}$
+	      \item
+		the last rule used if $Cns$:
+		\[
+		    \inferrule* [left=Cns]{
+			A(\tilde{x})\stackrel{def}{=}P
+		      \\
+			P\{\tilde{y}/\tilde{x}\}\xrightarrow{\alpha}_{2}P^{'}
+		    }{
+		      A(\tilde{y})\xrightarrow{\alpha}_{2}P^{'}
+		    }
+		\]
+		we apply the inductive hypothesis on the premise and get $P\{\tilde{y}/\tilde{x}\}\xrightarrow{\alpha}_{3}P^{''}$ such that $P^{''}\equiv_{\alpha}P^{'}$. Now the proof we want is
+		\[
+		    \inferrule* [left=Str]{
+			A(\tilde{y})\equiv_{\alpha}P\{\tilde{y}/\tilde{x}\}
+		      \\
+			P\{\tilde{y}/\tilde{x}\}\xrightarrow{\alpha}_{3}P^{''}
+		    }{
+		      A(\tilde{y})\xrightarrow{\alpha}_{3}P^{''}
+		    }
+		\]		
+	      \item
+		if the rule $Alp$, then we just notice that this rule is a particular case of $Str$
+	      \item
+		the rules $ClsL$ or $ClsR$
+		
+	    \end{itemize}	    
+	\end{description}
+    \end{description}
+  \end{proof}
 \end{theorem}
 
 \subsection{Equivalence of the late semantics}
