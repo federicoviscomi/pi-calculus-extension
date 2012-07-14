@@ -1,0 +1,127 @@
+	\begin{description}
+	  \item[base case] 
+	    if the length of the derivation is one, then the last and only rule used in the derivation have to be one of $Out,\; EInp,\; Tau$. This rules are also contained in $R_{1}$
+	  \item[inductive case]
+	    the last rule used in the derivation can be
+	    \begin{itemize}
+	      \item
+		a rule $R$ in $R_{1}\cap R_{2}$, in such a case we can apply the inductive hypothesis on the premises of the rule $R$ and then apply the rule itself 
+	      \item
+		the rule $Alp$, in such a case the last part of the derivation of $P\xrightarrow{\alpha}_{2}P^{'}$ is
+		\[
+		  \inferrule* [left=Alp]{
+		      P\equiv Q
+		    \\
+		      Q\xrightarrow{\alpha}_{2}Q^{'}
+		    \\
+		      P^{'}\equiv Q^{'}
+		  }{
+		    P\xrightarrow{\alpha}_{2}P^{'}
+		  }
+		\]
+		now we can apply the inductive hypothesis on the premise $Q\xrightarrow{\alpha}_{2}Q^{'}$ and get $Q\xrightarrow{\alpha}_{1}Q^{'}$. Now we cannot just apply the rule $Alp$ because $Alp\notin R_{1}$, so we show by induction on the length of the derivation of $Q\xrightarrow{\alpha}_{1}Q^{'}$ that we can avoid using the rule $Alp$.
+		\begin{description}
+		  \item[base case] 
+		    if the length is one then the last and only rule used can be one of $Out, Tau, EInp$. This means that $P$ has a prefix at the top level. To prove the transition $P\xrightarrow{\alpha}_{1}P^{'}$ we apply the appropriate rule for prefix to $P$.
+		  \item[inductive case]
+		    if the length of the derivation of $Q\xrightarrow{\alpha}_{1}Q^{'}$ is greater than one, we need to look at the last rule used $R$ 
+
+
+
+    \begin{itemize}
+	\item
+	  \bf{ParL}
+	  \begin{tabular}{c}
+	      $P \xrightarrow{\alpha} P^{'}\;\; bn(\alpha)\cap fn(Q)=\emptyset$
+	    \\\hline
+	      $P|Q \xrightarrow{\alpha} P^{'}|Q$
+	  \end{tabular}
+	\item
+	  \bf{ParR}
+	  \begin{tabular}{c}
+	      $Q \xrightarrow{\alpha} Q^{'}\;\; bn(\alpha)\cap fn(Q)=\emptyset$
+	    \\\hline
+	      $P|Q \xrightarrow{\alpha} P|Q^{'}$
+	  \end{tabular}
+	\item
+	  \bf{SumL}
+	  \begin{tabular}{c}
+	      $P \xrightarrow{\alpha} P^{'}$
+	    \\\hline
+	      $P+Q \xrightarrow{\alpha} P^{'}$
+	  \end{tabular}
+	\item
+	  \bf{SumR}
+	  \begin{tabular}{c}
+	      $Q \xrightarrow{\alpha} Q^{'}$
+	    \\\hline
+	      $P+Q \xrightarrow{\alpha} Q^{'}$
+	    \end{tabular}
+	\item
+	  \bf{Res}
+	  \begin{tabular}{c}
+	      $P \xrightarrow{\alpha} P^{'}\;\; z\notin n(\alpha)$
+	    \\\hline
+	      $(\nu z) P \xrightarrow{\alpha} (\nu z) P^{'}$
+	  \end{tabular}
+	\item
+	  \bf{ResAlp}
+	  \begin{tabular}{c}
+	      $(\nu w)P\{w/z\} \xrightarrow{xz} P^{'}\;\; w\notin n(P)$
+	    \\\hline
+	      $(\nu z) P \xrightarrow{xz} P^{'}$
+	  \end{tabular}
+	\item
+	  \bf{EComR}
+	  \begin{tabular}{c}
+	      $P \xrightarrow{\overline{x}y} P^{'}\;\; Q\xrightarrow{xy} Q^{'}$
+	    \\\hline
+	      $P|Q \xrightarrow{\tau} P^{'}|Q^{'}$
+	  \end{tabular}
+	\item
+	  \bf{EComL}
+	  \begin{tabular}{c}
+	      $P \xrightarrow{xy} P^{'}\;\; Q\xrightarrow{\overline{x}y} Q^{'}$
+	    \\\hline
+	      $P|Q \xrightarrow{\tau} P^{'}|Q^{'}$
+	  \end{tabular}
+	\item
+	    \bf{ClsL}
+	    \begin{tabular}{c}
+		$P \xrightarrow{\overline{x}(z)} P^{'}$  
+		$Q \xrightarrow{xz} Q^{'}$ 
+		$z\notin fn(Q)$
+	      \\\hline
+		$P|Q \xrightarrow{\tau} (\nu z)(P^{'}|Q^{'})$
+	    \end{tabular}
+	\item
+	    \bf{ClsR}
+	    \begin{tabular}{c}
+		$P \xrightarrow{xz} P^{'}$  
+		$Q \xrightarrow{\overline{x}(z)} Q^{'}$ 
+		$z\notin fn(P)$
+	      \\\hline
+		$P|Q \xrightarrow{\tau} (\nu z)(P^{'}|Q^{'})$
+	    \end{tabular}
+	\item
+	  \bf{Cns}
+	  \begin{tabular}{c}
+	      $A(\tilde{x}) \stackrel{def}{=} P\; P\{\tilde{y}/\tilde{x}\} \xrightarrow{\alpha} P^{'}$
+	    \\\hline
+	      $A(\tilde{y}) \xrightarrow{\alpha} P^{'}$
+	  \end{tabular}
+	\item
+	  \bf{Opn}
+	  \begin{tabular}{c}
+	      $P \;\xrightarrow{\overline{x}z} P^{'}\;\; z\neq x$
+	    \\\hline
+	      $(\nu z) P \;\xrightarrow{\overline{x}(z)} P^{'}$
+	  \end{tabular}
+    \end{itemize}
+
+
+
+
+		\end{description}
+	    \end{itemize}
+	\end{description}
