@@ -135,6 +135,51 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 \begin{theorem}
   $P\xrightarrow{\alpha}_{1}P^{'}\; \Leftrightarrow\; P\xrightarrow{\alpha}_{2}P^{'}$
   \begin{proof}
@@ -651,3 +696,733 @@
     \end{description}
   \end{proof}
 \end{theorem}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  \begin{proof}
+    The proof can go by induction on the length of the derivation of a transaction, and then both the base case and the inductive case proceed by cases on the last rule used in the derivation.
+    \begin{description}
+      \item[base case]
+	in this case the rule used in the derivation of $P\xrightarrow{\alpha}_{2}P^{'}$ can be one of $Out, EInp, Prefix$, but this rules are also in $R_{1}$ so the derivation of $P\xrightarrow{\alpha}_{2}P^{'}$ is also a derivation of $P\xrightarrow{\alpha}_{1}P^{'}$
+      \item[inductive case]:
+	\begin{itemize}
+	  \item 
+	    if the last rule $R$ used in the derivation of $P\xrightarrow{\alpha}_{2}P^{'}$ is in $R_{1}$ then we can apply the inductive hypothesis to the premises of the rule $R$ and the apply the rule $R$ to get the result. For the sake of clarity we show an example. Suppose the last rule is $SumL$, so $P=P_{1}+P_{2}$ and $P^{'}=P_{1}^{'}$. We have at the end of the derivation tree of $P\xrightarrow{\alpha}_{2}P^{'}$ the following:
+	    \[
+	      \inferrule* [left=SumL]{
+		  P_{1}\xrightarrow{\alpha}_{2}P_{1}^{'}
+	      }{
+		P_{1}+P_{2}\xrightarrow{\alpha}_{2}P_{1}^{'}
+	      }
+	    \]
+	    the inductive hypothesis on the premise $P_{1}\xrightarrow{\alpha}_{2}P_{1}^{'}$ tells us that
+	    \begin{center}
+	      $P_{1}\xrightarrow{\alpha}_{1}P_{1}^{''}$ and $P_{1}^{''}\equiv_{\alpha}P_{1}^{'}$ 
+	    \end{center}
+	    so if we apply the rule $SumL$ we get 
+	    \[
+	      \inferrule* [left=SumL]{
+		  P_{1}\xrightarrow{\alpha}_{1}P_{1}^{''}
+	      }{
+		P_{1}+P_{2}\xrightarrow{\alpha}_{1}P_{1}^{''}
+	      }
+	    \]
+	  \item
+	    if the last rule $R$ used in the derivation is $Alp$ then we show that we can move toward the top level of the derivation tree the occurrence of the rule $Alp$ until we can replace it by an instance of $ResAlp$ or of a prefix rule. So suppose we have at the end of the derivation tree of $P\xrightarrow{\alpha}_{2}P^{'}$ the following:
+	    \[
+	      \inferrule* [left=Alp]{
+		  P\equiv_{\alpha} Q
+		\\
+		  Q\xrightarrow{\alpha}_{2}P^{'}
+	      }{
+		P\xrightarrow{\alpha}_{2}P^{'}
+	      }
+	    \]
+	    now we proceed by cases on the last rule of the derivation of $Q\xrightarrow{\alpha}_{2}S^{'}$:
+	    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	\begin{description}
+	  \item[Out] 
+	    The last rule used in the derivation of $Q\xrightarrow{\alpha}_{2}P^{'}$ is $Out$ so $Q$ is $\overline{x}y.Q_{1}$ for some names $x,y$ and process $Q_{1}$. Since $Q$ is $\alpha$ equivalent to $P$ for the inversion lemma we have that $P$ is $\overline{x}y.P_{1}$ for some process $P_{1}$ e $P_{1}\equiv_{\alpha}Q_{1}$. So the last part of the derivation tree is the following:
+	    \[
+	      \inferrule* [left=Alp]{
+		  \overline{x}y.P_{1}\equiv_{\alpha}\overline{x}y.Q_{1}
+		\\
+		  \inferrule* [left=Out]{
+		  }{
+		    \overline{x}y.Q_{1}\xrightarrow{\overline{x}y}_{2}Q_{1}
+		  }
+	      }{
+		\overline{x}y.P_{1}\; \xrightarrow{\overline{x}y}_{2}\; Q_{1}
+	      }
+	    \]
+	    which become
+	    \[
+	      \inferrule* [left=Out]{
+	      }{
+		\overline{x}y.P_{1}\; \xrightarrow{\overline{x}y}_{1}\; P_{1}
+	      }
+	    \]
+	    and this is fine because $P_{1}\equiv_{\alpha}Q_{1}$
+	  \item[Tau]
+	    \[
+	      \inferrule* [left=Alp]{
+		  \tau.P_{1}\equiv_{\alpha}\tau.Q_{1}
+		\\
+		  \inferrule* [left=Tau]{
+		  }{
+		    \tau.Q_{1}\xrightarrow{\tau}_{2}Q_{1}
+		  }
+	      }{
+		\tau.P_{1}\; \xrightarrow{\tau}_{2}\; Q_{1}
+	      }
+	    \]
+	    become
+	    \[
+	      \inferrule* [left=Tau]{
+	      }{
+		\tau.P_{1}\; \xrightarrow{\tau}_{2}\; Q_{1}
+	      }
+	    \]
+	  \item[EInp]
+	    from the hypothesis \[x(y).P_{1}\equiv_{\alpha}x(z).Q_{1}\] and the inversion lemma we get \[P_{1}\{z/y\}\equiv_{\alpha}Q_{1}\] it follows that \[Q_{1}\{w/z\}\equiv_{\alpha} (P_{1}\{z/y\})\{w/z\}=P_{1}\{w/y\}\]
+	    So this
+	    \[
+	      \inferrule* [left=Alp]{
+		  x(y).P_{1}\equiv_{\alpha}x(z).Q_{1}
+		\\
+		  \inferrule* [left=EInp]{
+		  }{
+		    x(z).Q_{1}\xrightarrow{x w}_{2}Q_{1}\{w/z\}
+		  }
+	      }{
+		x(y).P_{1}\; \xrightarrow{xw}_{2}\; Q_{1}\{w/z\}
+	      }
+	    \]
+	    become
+	    \[
+	      \inferrule* [left=Alp]{
+	      }{
+		x(y).P_{1}\; \xrightarrow{xw}_{1}\; P_{1}\{w/y\}
+	      }
+	    \]
+	  \item[SumL] 
+	    in such case $Q$ is $Q_{1}+Q_{2}$ for some $Q_{1}$ and $Q_{2}$. From $P\equiv_{\alpha} Q_{1}+Q_{2}$ we get that $P$ is $P_{1}+P_{2}$ for some $P_{1}$ and $P_{2}$ such that $Q_{1}\equiv_{\alpha}P_{1}$ and $Q_{2}\equiv_{\alpha}P_{2}$. To sum up the last part of the derivation tree is:
+	    \[
+	      \inferrule* [left=Alp]{
+		  P_{1}+P_{2}\equiv_{\alpha}Q_{1}+Q_{2}
+		\\
+		  \inferrule* [left=SumL]{
+		    Q_{1}\xrightarrow{\alpha}_{2}Q_{1}^{'}
+		  }{
+		    Q_{1}+Q_{2}\xrightarrow{\alpha}_{2}Q_{1}^{'}
+		  }
+	      }{
+		P_{1}+P_{2}\; \xrightarrow{\alpha}_{2}\; Q_{1}^{'}
+	      }
+	    \]
+	    we move upward the rule $Alp$ like this:
+	    \[
+	      \inferrule* [left=SumL]{
+		\inferrule* [left=Alp]{
+		    P_{1}\equiv_{\alpha}Q_{1}
+		  \\
+		    Q_{1}\xrightarrow{\alpha}_{2}Q_{1}^{'}
+		}{
+		  P_{1}\; \xrightarrow{\alpha}_{2}\; Q_{1}^{'}
+		}
+	      }{
+		P_{1}+P_{2}\; \xrightarrow{\alpha}_{2}\; Q_{1}^{'}
+	      }
+	    \]
+	    Now we can apply the inductive hypothesis to $P_{1}\; \xrightarrow{\alpha}_{2}\; Q_{1}^{'}$ and get $P_{1}\; \xrightarrow{\alpha}_{1}\; Q_{1}^{''}$ for some $Q_{1}^{''}\equiv_{\alpha} Q_{1}^{'}$. After this we apply the rule $SumL$ and get 
+	    \[
+	      P_{1}+P_{2}\; \xrightarrow{\alpha}_{1}\; Q_{1}^{''}
+	    \]
+	    The case for $SumR$ is simmetric and so omitted.
+	  \item[ParL]
+	    \[
+	      \inferrule* [left=Alp]{
+		  P_{1}|P_{2}\equiv_{\alpha}Q_{1}|Q_{2}
+		\\
+		  \inferrule* [left=ParL]{
+		      Q_{1}\xrightarrow{\alpha}_{2}Q_{1}^{'}
+		    \\
+		      bn(\alpha)\cap fn(Q_{2})=\emptyset
+		  }{
+		    Q_{1}|Q_{2}\xrightarrow{\alpha}_{2}Q_{1}^{'}|Q_{2}
+		  }
+	      }{
+		P_{1}|P_{2}\; \xrightarrow{\alpha}_{2}\; Q_{1}^{'}|Q_{2}
+	      }
+	    \]
+	    this become
+	    \[
+	      \inferrule* [left=ParL]{
+		  \inferrule* [left=Alp]{
+		      P_{1}\equiv_{\alpha}Q_{1}
+		    \\
+		      Q_{1}\xrightarrow{\alpha}_{2}Q_{1}^{'}
+		  }{
+		    P_{1}\; \xrightarrow{\alpha}_{2}\; Q_{1}^{'}
+		  }
+		\\
+		   bn(\alpha)\cap fn(Q_{2})=\emptyset
+	      }{
+		P_{1}|P_{2}\; \xrightarrow{\alpha}_{2}\; Q_{1}^{'}|Q_{2}
+	      }
+	    \]
+	  \item[Res]
+	    \[
+	      \inferrule* [left=Alp]{
+		  (\nu z)R\equiv_{\alpha}(\nu y)S
+		\\
+		  \inferrule* [left=Res]{
+		      S\xrightarrow{\alpha}_{2}S^{'}
+		    \\
+		      y\notin n(\alpha)
+		  }{
+		    (\nu y) S \xrightarrow{\alpha}_{2} (\nu y) S^{'}
+		  }
+	      }{
+		(\nu z) R \xrightarrow{\alpha}_{2} (\nu y) S^{'}
+	      }
+	    \]
+	    this become:
+	    \[
+	      \inferrule* [left=ResAlp]{
+	      \inferrule* [left=Res]{
+		  \inferrule* [left=Alp]{
+		      R\{y/z\}\equiv_{\alpha}S
+		    \\
+		      S\xrightarrow{\alpha}_{2}S^{'}
+		  }{
+		    R\{y/z\}\xrightarrow{\alpha}_{2}S^{'}
+		  }
+		\\
+		  y\notin n(\alpha)
+	      }{
+		(\nu y) R\{y/z\} \xrightarrow{\alpha}_{2} (\nu y) S^{'}
+	      }}{
+		(\nu z) R \xrightarrow{\alpha}_{2} (\nu y) S^{'}
+	      }
+	    \]
+	    whether
+	    \[
+	      \inferrule* [left=Alp]{
+		  (\nu y)R\equiv_{\alpha}(\nu y)S
+		\\
+		  \inferrule* [left=Res]{
+		      S\xrightarrow{\alpha}_{2}S^{'}
+		    \\
+		      y\notin n(\alpha)
+		  }{
+		    (\nu y) S \xrightarrow{\alpha}_{2} (\nu y) S^{'}
+		  }
+	      }{
+		(\nu y) R \xrightarrow{\alpha}_{2} (\nu y) S^{'}
+	      }
+	    \]
+	    become:
+	    \[
+	      \inferrule* [left=Res]{
+		  \inferrule* [left=Alp]{
+		      R\equiv_{\alpha}S
+		    \\
+		      S\xrightarrow{\alpha}_{2}S^{'}
+		  }{
+		    R\xrightarrow{\alpha}_{2}S^{'}
+		  }
+		\\
+		  y\notin n(\alpha)
+	      }{
+		(\nu y) R \xrightarrow{\alpha}_{2} (\nu y) S^{'}
+	      }
+	    \]
+
+	  \item[Alp]
+	    \[
+	      \inferrule* [left=Alp]{
+		  P\equiv_{\alpha}Q
+		\\
+		  \inferrule* [left=Alp]{
+		      Q\equiv_{\alpha}S
+		    \\
+		      S\xrightarrow{\alpha}_{2}S^{'}
+		  }{
+		    Q \xrightarrow{\alpha}_{2} S^{'}
+		  }
+	      }{
+		P \xrightarrow{\alpha}_{2} S^{'}
+	      }
+	    \]
+	    because of the transitivity of $\alpha$ equivalence we can replace the previous part of the tree by the following:
+	    \[
+	      \inferrule* [left=Alp]{
+		  P\equiv_{\alpha}S
+		\\
+		  S \xrightarrow{\alpha}_{2} S^{'}
+	      }{
+		P \xrightarrow{\alpha}_{2} S^{'}
+	      }
+	    \]
+	    so we can assume the tree has no two adjacent application of the rule $Alp$
+	  \item[EComL]
+	    \[
+	      \inferrule* [left=Alp]{
+		  P_{1}|P_{2}\equiv_{\alpha}Q_{1}|Q_{2}
+		\\
+		  \inferrule* [left=EComL]{
+		      Q_{1}\xrightarrow{\overline{x}y}_{2}Q_{1}^{'}
+		    \\
+		      Q_{2}\xrightarrow{xy}_{2}Q_{2}^{'}
+		  }{
+		    Q_{1}|Q_{2} \xrightarrow{\tau}_{2} Q_{1}^{'}|Q_{2}^{'}
+		  }
+	      }{
+		P_{1}|P_{2} \xrightarrow{\tau}_{2} Q_{1}^{'}|Q_{2}^{'}
+	      }
+	    \]
+	    this become
+	    \[
+	      \inferrule* [left=EComL]{
+		  \inferrule* [left=Alp]{
+		      P_{1}\equiv_{\alpha}Q_{1}
+		    \\
+		      Q_{1}\xrightarrow{\overline{x}y}_{2}Q_{1}^{'}
+		  }{
+		    P_{1}\xrightarrow{\overline{x}y}_{2}Q_{1}^{'}
+		  }
+		\\
+		  \inferrule* [left=Alp]{
+		      P_{2}\equiv_{\alpha}Q_{2}
+		    \\
+		      Q_{2}\xrightarrow{xy}_{2}Q_{2}^{'}
+		  }{
+		    P_{2} \xrightarrow{xy}_{2} Q_{2}^{'}
+		  }
+	      }{
+		P_{1}|P_{2} \xrightarrow{\tau}_{2} Q_{1}^{'}|Q_{2}^{'}
+	      }
+	    \]
+	    The case for $EComR$ is simmetric and so omitted.
+	  \item[ClsL]
+	    \[
+	      \inferrule* [left=Alp]{
+ 		  P_{1}|P_{2}\equiv_{\alpha}Q_{1}|Q_{2}
+ 		\\
+		  \inferrule* [left=ClsL]{
+		      Q_{1} \xrightarrow{\overline{x}(z)} Q_{1}^{'}
+		    \\
+		      Q_{2} \xrightarrow{xz} Q_{2}^{'}
+ 		    \\
+ 		      z\notin fn(Q_{2})
+		  }{
+		    Q_{1}|Q_{2} \xrightarrow{\tau}_{2} (\nu z)(Q_{1}^{'}|Q_{2}^{'})
+		  }
+	      }{
+		P_{1}|P_{2} \xrightarrow{\tau}_{2} (\nu z)(Q_{1}^{'}|Q_{2}^{'})
+	      }
+	    \]
+	    this become:
+	    \[
+	      \inferrule* [left=ClsL]{
+		  \inferrule* [left=Alp]{
+		      P_{1}\equiv_{\alpha}Q_{1}
+		    \\
+		      Q_{1} \xrightarrow{\overline{x}(z)} Q_{1}^{'}
+		  }{
+		    P_{1} \xrightarrow{\overline{x}(z)} Q_{1}^{'}
+		  }
+		\\
+		  \inferrule* [left=Alp]{
+		      P_{2}\equiv_{\alpha}Q_{2}
+		    \\
+		      Q_{2} \xrightarrow{xz} Q_{2}^{'}
+		  }{
+		      P_{2} \xrightarrow{xz} Q_{2}^{'}
+		  }
+	      }{
+		P_{1}|P_{2} \xrightarrow{\tau}_{2} (\nu z)(Q_{1}^{'}|Q_{2}^{'})
+	      }
+	    \]
+	  \item[Cns]
+	    \[
+	      \inferrule* [left=Alp]{
+		  P\equiv_{\alpha}A(\tilde{y})
+		\\
+		  \inferrule* [left=Cns]{
+		      A(\tilde{x}) \stackrel{def}{=} Q
+		    \\
+		      Q\{\tilde{y}/\tilde{x}\} \xrightarrow{\alpha} Q^{'}
+		  }{
+		    A(\tilde{y}) \xrightarrow{\alpha} Q^{'}
+		  }
+	      }{
+		P \xrightarrow{\alpha} Q^{'}
+	      }
+	    \]
+	    Given $P\equiv_{\alpha}A(\tilde{y})$ and $A(\tilde{x})=Q$ we create another identifier $B(\tilde{y})=P$ such that $A(\tilde{y})\equiv_{\alpha}B(\tilde{y})$ and replace the previous derivation with:
+	    \[
+	      \inferrule* [left=Cns]{
+		  B(\tilde{y})\stackrel{def}{=}P
+		\\
+		  \inferrule* [left=Alp]{
+		      B(\tilde{y})\equiv_{\alpha}Q\{\tilde{y}/\tilde{x}\}
+		    \\
+		      Q\{\tilde{y}/\tilde{x}\} \xrightarrow{\alpha} Q^{'}
+		  }{
+		    B(\tilde{y})\xrightarrow{\alpha} Q^{'}
+		  }
+	      }{
+		P\xrightarrow{\alpha} Q^{'}
+	      }
+	    \]
+	  \item[Opn]
+	    \[
+	      \inferrule* [left=Alp]{
+		  (\nu z) P_{1} \equiv_{\alpha} (\nu z) Q_{1}
+		\\
+		  \inferrule* [left=Opn]{
+		      Q_{1} \xrightarrow{\overline{x}z} Q_{1}^{'}
+		    \\
+		      z\neq x
+		  }{
+ 		    (\nu z) Q_{1} \xrightarrow{\overline{x}(z)} Q_{1}^{'}
+		  }
+	      }{
+		(\nu z) P_{1} \xrightarrow{\overline{x}(z)} Q_{1}^{'}
+	      }
+	    \]
+	    become
+	    \[
+	      \inferrule* [left=Opn]{
+		  \inferrule* [left=Alp]{
+		      P_{1} \equiv_{\alpha} Q_{1} 
+		    \\
+		      Q_{1} \xrightarrow{\overline{x}z} Q_{1}^{'}
+		  }{
+		    P_{1} \xrightarrow{\overline{x}z} Q_{1}^{'}
+		  }
+		\\
+		  z\neq x
+	      }{
+		(\nu z) P_{1} \xrightarrow{\overline{x}(z)} Q_{1}^{'}
+	      }
+	    \]
+	    There is also the following case:
+	    \[
+	      \inferrule* [left=Alp]{
+		  (\nu y) P_{1} \equiv_{\alpha} (\nu z) Q_{1} 
+		\\
+		  \inferrule* [left=Opn]{
+		      Q_{1} \xrightarrow{\overline{x}z} Q_{1}^{'}
+		    \\
+		      z\neq x
+		  }{
+		    (\nu z) Q_{1} \xrightarrow{\overline{x}(z)} Q_{1}^{'}
+		  }
+	      }{
+		(\nu y) P_{1} \xrightarrow{\overline{x}(z)} Q_{1}^{'}
+	      }
+	    \]
+	    become
+	    \[
+	      \inferrule* [left=Opn]{
+		  (\nu y) \overline{x}y.0 \equiv_{\alpha} (\nu z) \overline{x}z.0
+		\\
+		  \inferrule* [left=Alp]{
+		      \inferrule* [left=Out]{
+		      }{
+			\overline{x}z.0 \xrightarrow{\overline{x}z}_{2} 0
+		      }
+		    \\
+		      z\neq x
+		  }{
+		    (\nu z) \overline{x}z.0 \xrightarrow{\overline{x}(z)}_{2} 0
+		  }
+	      }{
+		(\nu y) P_{1} \xrightarrow{\overline{x}(z)} Q_{1}^{'}
+	      }
+	    \]
+	    There is no way to prove $(\nu y) \overline{x}y.0 \xrightarrow{\overline{x}(z)}_{1} 0$ because the head of this derivation has a restriction at the top level so the only rules applicable are:
+	    \begin{description}
+	      \item[Res]
+		this rule does not work because the restriction in the body of the derivation is missing
+	      \item[ResAlp]
+		this rule dose not work because it requires an input action as label for the transition
+	      \item[Opn]
+		this rule implies $\overline{x}y.0 \xrightarrow{\overline{x}z}_{1} 0$ which cannot be proved
+	    \end{description}
+	    The solution is adding the following rule:
+	    \[
+	      \inferrule* [left=OpnAlp]{
+		  y\notin n(R)
+		\\
+		  R\xrightarrow{\overline{x}z}_{1}R^{'}
+		\\
+		  z\notin bn(R)
+	      }{
+		(\nu y)R\{y/z\}\xrightarrow{\overline{x}(z)}_{1}R^{'}
+	      }
+	    \]
+	    now the derivation become:
+	    \[
+	      \inferrule* [left=OpnAlp]{
+		  y\notin n(S\{z/y\})
+		\\
+		  \inferrule* [left=Alp]{
+		      S\{z/y\} \equiv_{\alpha} R
+		    \\
+		      R \xrightarrow{\overline{x}z} R^{'}
+		    \\
+		      P^{'} \equiv_{\alpha} R^{'}
+		  }{
+		    S\{z/y\} \xrightarrow{\overline{x}z} P^{'}
+		  }
+		\\
+		  z\notin bn(S)
+	      }{
+		(\nu y) S \xrightarrow{\overline{x}(z)} P^{'}
+	      }
+	    \]
+	\end{description}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	\end{itemize}
+    \end{description}
+  \end{proof}

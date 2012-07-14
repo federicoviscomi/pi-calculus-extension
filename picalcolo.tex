@@ -598,13 +598,13 @@ Structural congruences are a set of equations defining equality and congruence r
     \item
       If $P\equiv_{\alpha} \overline{x}y.Q$ then $P=\overline{x}y.P_{1}$ for some $P_{1}$ such that $P_{1}\equiv_{\alpha}Q$
     \item
-      If $P\equiv_{\alpha} x(y).Q$ then $P=x(z).P_{1}$ for some $P_{1}$ such that $P_{1}\{z/y\}\equiv_{\alpha}Q$
+      If $P\equiv_{\alpha} x(y).Q$ then $P=x(z).P_{1}$ for some $P_{1}$ such that $P_{1}\{z/y\}\equiv_{\alpha}Q$, or $P=x(y).P_{1}$ for some $P_{1}$ such that $P_{1}\equiv_{\alpha}Q$.
     \item
       If $P\equiv_{\alpha} Q_{1}+Q_{2}$ then $P=P_{1}+P_{2}$ for some $P_{1}$ and $P_{2}$ such that $P_{1}\equiv_{\alpha}Q_{1}$ and $P_{2}\equiv_{\alpha}Q_{2}$.
     \item 
       If $P\equiv_{\alpha} Q_{1}|Q_{2}$ then $P=P_{1}|P_{2}$ for some $P_{1}$ and $P_{2}$ such that $P_{1}\equiv_{\alpha}Q_{1}$ and $P_{2}\equiv_{\alpha}Q_{2}$.
     \item 
-      If $P\equiv_{\alpha} (\nu y)Q$ then $P=(\nu z)P_{1}$ such that $P_{1}\{z/y\}\equiv_{\alpha}Q$
+      If $P\equiv_{\alpha} (\nu y)Q$ then $P=(\nu z)P_{1}$ such that $P_{1}\{z/y\}\equiv_{\alpha}Q$, or $P=(\nu y).P_{1}$ for some $P_{1}$ such that $P_{1}\equiv_{\alpha}Q$.
     \item 
       caso degli identificatori?
   \end{itemize}
@@ -1153,8 +1153,8 @@ In this subsection we introduce the early operational semantic for $\pi$ calculu
 
 \section{Equivalence of the semantics}
 \subsection{Equivalence of the early semantics}
-Here we write $\rightarrow_{1}$ for the early semantic without structural congruence, $\rightarrow_{2}$ for the early semantic with just $\alpha$ conversion and $\rightarrow_{3}$ for the early semantic with the full structural congruence. 
-We would like to prove that $P\xrightarrow{\alpha}_{1}P^{'}\; \Leftrightarrow\; P\xrightarrow{\alpha}_{2}P^{'}$ but this is false because
+Here we write $\rightarrow_{1}$ for the early semantic without structural congruence, $\rightarrow_{2}$ for the early semantic with just $\alpha$ conversion and $\rightarrow_{3}$ for the early semantic with the full structural congruence. We call $R_{1}$ the set of rules for $\rightarrow_{1}$, $R_{2}$ the set of rules for $\rightarrow_{2}$ and $R_{3}$ the set of rules for $\rightarrow_{3}$.
+We would like to prove that $P\xrightarrow{\alpha}_{2}P^{'}\; \Rightarrow\; P\xrightarrow{\alpha}_{1}P^{'}$ but this is false because
 \[
   \inferrule* [left=Alp]{
       \overline{x}y.x(y).0 \equiv_{\alpha} \overline{x}y.x(w).0
@@ -1175,7 +1175,61 @@ The head of the transition has an output prefixing at the top level so the only 
 \[
   \overline{x}y.x(y).0\xrightarrow{\overline{x}y}_{1}x(y).0
 \] 
-which is not want we want.
+which is not want we want. We want to prove a weaker version
+\[
+  P\xrightarrow{\alpha}_{2}P^{'}\; \Rightarrow\; \exists P^{''}: P^{''}\equiv_{\alpha}P^{'}\; and\; P\xrightarrow{\alpha}_{1}P^{''}
+\]
+but this is also false because 
+\[
+  \inferrule* [left=Alp]{
+      (\nu y)\overline{x}y.0 \equiv_{\alpha} (\nu w)\overline{x}w.0
+    \\
+      \inferrule* [left=Opn]{
+	  \inferrule* [left=Out]{
+	  }{
+	    \overline{x}w.0\xrightarrow{\overline{x}w}_{2}0
+	  }
+	\\
+	  w\neq x
+      }{
+	(\nu w)\overline{x}w.0\xrightarrow{\overline{x}(w)}_{2}0
+      }
+  }{
+    (\nu y)\overline{x}y.0\xrightarrow{\overline{x}(w)}_{2}0
+  }
+\]
+Let us try to prove $(\nu y)\overline{x}y.0\xrightarrow{\overline{x}(w)}_{1}[0]_{\equiv_{\alpha}}$. The head of the transition has a restriction at the top level, so the rule applicable are 
+\begin{description}
+  \item[Res]
+    if we apply the rule $Res$ the premise is $\overline{x}y.0\xrightarrow{\overline{x}(w)}_{1}0$, now the top level is an output prefixing and so the only rule applicable is $Out$ which yields to $\overline{x}y.0\xrightarrow{\overline{x}y}_{1}0$.
+  \item[ResAlp]
+    we cannot apply this rule because it has an input as action whether we want to prove a transition with a bound output as action
+  \item[Opn]
+    this rule does not fit because the restricted name is also the bound output object, whether in the transition this does not hold.
+\end{description}
+
+\begin{theorem}
+  $P\xrightarrow{\alpha}_{1}P^{'}\; \Rightarrow\; P\xrightarrow{\alpha}_{2}P^{'}$
+  \begin{proof}
+    The proof can go by induction on the length of the derivation of a transaction, and then both the base case and the inductive case proceed by cases on the last rule used in the derivation. However it is not necessary to show all the details of the proof because the rules in $R_{2}$ are almost the same as the rules in $R_{1}$, the only difference is that in $R_{2}$ we have the rule $Alp$ instead of $ResAlp$. The rule $Alp$ can mimic the rule $ResAlp$ in the following way:
+	\[
+	  \inferrule *{
+	      (\nu z)P\equiv_{\alpha} (\nu w)P\{w/z\}
+	    \\
+	      w\notin n(P)
+	    \\
+	      (\nu w)P\{w/z\}\;
+		\xrightarrow{xz}\;
+		  P^{'}
+	  }{
+	    (\nu z)P\; 
+	      \xrightarrow{xz}\;
+		P^{'}
+	  }
+	\]
+  \end{proof}
+\end{theorem}
+
 
 \begin{theorem}
   $P\xrightarrow{\alpha}_{2}P^{'}\; \Leftrightarrow\; \exists P^{''}: P^{'}\equiv P^{''}\; and\; P\xrightarrow{\alpha}_{3}P^{''}$
