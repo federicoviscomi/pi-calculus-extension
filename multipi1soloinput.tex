@@ -124,6 +124,13 @@ In this case, a label can be a sequence of prefixes, whether in the original $\p
 	      P|Q \;\xrightarrow{\sigma} P^{'}|Q
 	  }$
 	&
+	  $\inferrule* [left=\bf{Opn}]{
+	      P \xrightarrow{\overline{x}z}\; P^{'}
+	    \\ 
+	      z\neq x
+	  }{
+	      (\nu z)P \xrightarrow{\overline{x}(z)}\; P^{'}
+	  }$
       \\\hline
     \end{tabular}
     \caption{Multi $\pi$ early semantic with structural congruence}
@@ -484,6 +491,15 @@ In this case, a label can be a sequence of prefixes, whether in the original $\p
 	  }{
 	    P|Q \;\xrightarrow{\sigma} P^{'}|Q
 	  }$
+      \\\\
+	  $\inferrule* [left=\bf{Opn}]{
+	      P \xrightarrow{\overline{x}z}\; P^{'}
+	    \\ 
+	      z\neq x
+	  }{
+	      (\nu z)P \xrightarrow{\overline{x}(z)}\; P^{'}
+	  }$
+	&
       \\\hline
     \end{tabular}
     \caption{Multi $\pi$ late semantic with structural congruence}

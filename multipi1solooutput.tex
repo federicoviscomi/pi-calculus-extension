@@ -116,6 +116,47 @@ In this case, a label can be a sequence of prefixes, whether in the original $\p
 	    \underline{\overline{x}y}.P \;\xrightarrow{\overline{x}y} P^{'}
 	  }$
 	&
+	  $\inferrule* [left=\bf{OpnSeq}]{
+	      P \xrightarrow{\sigma}\; P^{'}
+	    \\ 
+	      \exists \overline{x}z\in \sigma:\; x\neq z
+	  }{
+	      (\nu z)P \xrightarrow{opn(\sigma,z)}\; P^{'}
+	  }$
+      \\\\
+	\multicolumn{2}{l}{where $opn$ is defined:}
+      \\\\
+	  $\inferrule* {
+	      x\neq z
+	  }{
+	      opn(\overline{x}z,z)=\overline{x}(z)
+	  }$
+	&
+	  $\inferrule* {
+	      x\neq z
+	  }{
+	      opn(\overline{x}z\cdot \sigma,z)=\overline{x}(z)\cdot opn(\sigma,z)
+	  }$
+      \\\\
+	  $\inferrule* {
+	  }{
+	      opn(\overline{x}y,z)=\overline{x}y
+	  }$
+	&
+	  $\inferrule* {
+	  }{
+	      opn(\overline{x}y\cdot \sigma,z)=\overline{x}y\cdot opn(\sigma,z)
+	  }$
+      \\\\
+	  $\inferrule* {
+	  }{
+	      opn(xy,z)=xy
+	  }$
+	&
+	  $\inferrule* {
+	  }{
+	      opn(xy\cdot \sigma,z)=xy\cdot opn(\sigma,z)
+	  }$
       \\\hline
     \end{tabular}
     \caption{Multi $\pi$ early semantic with structural congruence}
