@@ -1394,6 +1394,278 @@ where $[0]_{\equiv_{\alpha}}$ stands for any process $\alpha$ equivalent to $0$(
 		and if $(\nu z)R\xrightarrow{\overline{x}(z)}_{2}P^{'}$ then there exists a derivation tree for this transition such that the last rule used is $Opn$
 	    \end{itemize}	    
 	\end{description}
+      \item[$\Leftarrow$] 
+	Secondly we prove $P\xrightarrow{\alpha}_{3}P^{'}\; \Rightarrow\; \exists P^{''}: P^{'}\equiv P^{''}\; and\; P\xrightarrow{\alpha}_{2}P^{''}$. The proof is by induction on the length of the derivation of $P\xrightarrow{\alpha}_{3}P^{'}$, and then both the base case and the inductive case proceed by cases on the last rule used.
+	\begin{description}
+	  \item[base case]
+	    in this case the rule used can be one of the following $Out, EInp, Tau$ which are also in $R_{2}$ so a derivation of $P\xrightarrow{\alpha}_{3}P^{'}$ is also a derivation of $P\xrightarrow{\alpha}_{2}P^{'}$
+	  \item[inductive case]:
+	    \begin{itemize}
+	      \item 
+		the last rule used can be one in $R_{2}\cap R_{3}=\{Res, Opn\}$, this goes like in the previous proof for the opposite direction with the transition numbers swapped.
+	      \item
+		the last rule used can be one in $\{Par, Sum, ECom\}$, in this case we apply the inductive hypothesis to the premises and the apply the appropriate rule in $\{ParL, SumL, EComL\}$. For example
+		\[
+		  \inferrule* [left=Par]{
+		      P\xrightarrow{\alpha}_{3}P^{'}
+		    \\
+		      bn(\alpha)\cap fn(Q)=\emptyset
+		  }{
+		      P|Q\xrightarrow{\alpha}_{3}P^{'}|Q
+		  }
+		\]	
+		now we apply the inductive hypothesis to $P\xrightarrow{\alpha}_{3}P^{'}$ and get $P\xrightarrow{\alpha}_{2}P^{''}$ for a $P^{''}$ such that $P^{'}\equiv P^{''}$. The proof we want is
+		\[
+		      \inferrule* [left=ParL]{
+			  P\xrightarrow{\alpha}_{2}P^{''}
+			\\
+			  bn(\alpha)\cap fn(Q)=\emptyset
+		      }{
+			  P|Q\xrightarrow{\alpha}_{2}P|Q^{''}
+		      }
+		\]
+		and $Q^{''}|P\equiv P|Q^{'}$
+	      \item
+		if the last rule is $Str$, then we have
+		\[
+		  \inferrule* [left=Str]{
+		      P\equiv Q
+		    \\
+		      Q\xrightarrow{\alpha}_{3}P^{'}
+		  }{
+		    P\xrightarrow{\alpha}_{3}P^{'}
+		  }
+		\]
+		we proceed by cases on the premise $Q\xrightarrow{\alpha}_{3}P^{'}$. In the cases of prefix we can just use the appropriate prefix rule of $R_{2}$ and get rid of the $Str$. In the other cases we can move upward the occurrence of $Str$, after that we have one or two smaller derivation trees that are suitable to application of the inductive hypothesis and finally we apply some appropriate rules in $R_{2}$.
+		\begin{description}
+		  \item[Out]
+		    Since we are using the rule $Out$, $Q=\overline{x}y.Q_{1}$ for some $Q_{1}$. $Q\equiv P$ means for the inversion lemma for structural congruence that $P=\overline{x}y.P_{1}$ for some $P_{1}\equiv Q_{1}$. The last part of the derivation tree is 
+		    \[
+		      \inferrule* [left=Str]{
+			  \overline{x}y.P_{1}\equiv \overline{x}y.Q_{1}
+			\\
+			  \inferrule* [left=Out]{
+			  }{
+			    \overline{x}y.Q_{1}\xrightarrow{\overline{x}y}_{3}Q_{1}
+			  }
+		      }{
+			\overline{x}y.P_{1}\xrightarrow{\overline{x}y}_{3}Q_{1}
+		      }
+		    \]
+		    So we get 
+		    \[
+		      \inferrule* [left=Out]{
+		      }{
+			\overline{x}y.P_{1}\xrightarrow{\overline{x}y}_{2}P_{1}
+		      }
+		    \]
+		    where $P_{1}\equiv Q_{1}$
+		  \item[Tau] this is very similar to the previous case
+		  \item[EInp]
+		    Since we are using the rule $EInp$, $Q=x(y).Q_{1}$ for some $Q_{1}$. From $Q\equiv P$ using the inversion lemma for structural congruence we can have two cases:
+		    \begin{itemize}
+		      \item 
+			$P=x(y).P_{1}$ for some $P_{1}\equiv Q_{1}$. The last part of the derivation tree is 
+			\[
+			  \inferrule* [left=Str]{
+			      x(y).P_{1}\equiv x(y).Q_{1}
+			    \\
+			      \inferrule* [left=EInp]{
+			      }{
+				x(y).Q_{1}\xrightarrow{xw}_{3}Q_{1}\{w/y\}
+			      }
+			  }{
+			    x(y).P_{1}\xrightarrow{xw}_{3}Q_{1}\{w/y\}
+			  }
+			\]
+			So we get 
+			\[
+			  \inferrule* [left=EInp]{
+			  }{
+			    x(y).P_{1}\xrightarrow{xw}_{2}P_{1}\{w/y\}
+			  }
+			\]
+			where $P_{1}\equiv Q_{1}$ implies $P_{1}\{w/y\}\equiv Q_{1}\{w/y\}$
+		      \item
+			$P=x(z).P_{1}$ for some $P_{1}\equiv Q_{1}\{z/y\}$. The last part of the derivation tree is 
+			\[
+			  \inferrule* [left=Str]{
+			      x(z).P_{1}\equiv x(y).Q_{1}
+			    \\
+			      \inferrule* [left=EInp]{
+			      }{
+				x(y).Q_{1}\xrightarrow{xw}_{3}Q_{1}\{w/y\}
+			      }
+			  }{
+			    x(z).P_{1}\xrightarrow{xw}_{3}Q_{1}\{w/y\}
+			  }
+			\]
+			So we get 
+			\[
+			  \inferrule* [left=EInp]{
+			  }{
+			    x(z).P_{1}\xrightarrow{xw}_{2}P_{1}\{w/z\}
+			  }
+			\]
+			where $P_{1}\equiv Q_{1}\{z/y\}$ implies $P_{1}\{w/z\}\equiv Q_{1}\{z/y\}\{w/z\}\equiv Q_{1}\{w/y\}$
+		    \end{itemize}
+		  \item[Par]
+		    Since we are using the rule $Par$, $Q=Q_{1}|Q_{2}$ for some $Q_{1},Q_{2}$. $Q\equiv P$ means for the inversion lemma for structural congruence that $P=P_{1}|P_{2}$ for some $P_{1},P_{2}$ such that $P_{1}\equiv Q_{1}$ and $P_{2}\equiv Q_{2}$. The last part of the derivation tree is 
+		    \[
+		      \inferrule* [left=Str]{
+			  P_{1}|P_{2}\equiv Q_{1}|Q_{2}
+			\\
+			  \inferrule* [left=Par]{
+			      Q_{1}\xrightarrow{\alpha}_{3}Q_{1}^{'}
+			    \\
+			      bn(\alpha)\cap fn(Q_{2})=\emptyset
+			  }{
+			    Q_{1}|Q_{2}\xrightarrow{\alpha}_{3}Q_{1}^{'}|Q_{2}
+			  }
+		      }{
+			P_{1}|P_{2}\xrightarrow{\alpha}_{3}Q_{1}^{'}|Q_{2}
+		      }
+		    \]
+		    the first step is this transformation:
+		    \[
+		      \inferrule* [left=Par]{
+			  \inferrule* [left=Str]{
+			      P_{1}\equiv Q_{1}
+			    \\
+			      Q_{1}\xrightarrow{\alpha}_{3}Q_{1}^{'}
+			  }{
+			    P_{1}\xrightarrow{\alpha}_{3}Q_{1}^{'}
+			  }
+			\\
+			  bn(\alpha)\cap fn(P_{2})=\emptyset
+		      }{
+			P_{1}|P_{2}\xrightarrow{\alpha}_{3}Q_{1}^{'}|P_{2}
+		      }
+		    \]
+		    then we apply the inductive hypothesis on $P_{1}\xrightarrow{\alpha}_{3}Q_{1}^{'}$ and get $P_{1}\xrightarrow{\alpha}_{2}Q_{1}^{''}$ where $Q_{1}^{'}\equiv Q_{1}^{''}$. The last step is 
+		    \[
+		      \inferrule* [left=ParL]{
+			  P_{1}\xrightarrow{\alpha}_{2}Q_{1}^{''}
+			\\
+			  bn(\alpha)\cap fn(P_{2})=\emptyset
+		      }{
+			P_{1}|P_{2}\xrightarrow{\alpha}_{2}Q_{1}^{''}|P_{2}
+		      }
+		    \]
+		  \item[Sum] this case is very similar to the previous.
+		  \item[ECom] this case is also similar to the $Par$ case.
+		  \item[Res]
+		    Since we are using the rule $Res$, $Q=(\nu z)Q_{1}$ for some $Q_{1}$ and some $z$. $(\nu z)Q_{1}\equiv P$ means thanks to the inversion lemma for structural congruence that one of the following cases holds:
+                    \begin{itemize}
+		      \item
+			$P=(\nu z)P_{1}$ for some $P_{1}$ such that $P_{1}\equiv Q_{1}$. The last part of the derivation tree is 
+			\[
+			  \inferrule* [left=Str]{
+			      (\nu z)P_{1}\equiv (\nu z)Q_{1}
+			    \\
+			      \inferrule* [left=Res]{
+				  Q_{1}\xrightarrow{\alpha}_{3}Q_{1}^{'}
+				\\
+				  z\notin n(\alpha)
+			      }{
+				(\nu z)Q_{1}\xrightarrow{\alpha}_{3}(\nu z)Q_{1}^{'}
+			      }
+			  }{
+			    (\nu z)P_{1}\xrightarrow{\alpha}_{3}(\nu z)Q_{1}^{'}
+			  }
+			\]
+			the first step is this transformation:
+			\[
+			  \inferrule* [left=Res]{
+			      \inferrule* [left=Str]{
+				  P_{1}\equiv Q_{1}
+				\\
+				  Q_{1}\xrightarrow{\alpha}_{3}Q_{1}^{'}
+			      }{
+				P_{1}\xrightarrow{\alpha}_{3}Q_{1}^{'}
+			      }
+			    \\
+			      z\notin n(\alpha)
+			  }{
+			    (\nu z)P_{1}\xrightarrow{\alpha}_{3}(\nu z)Q_{1}^{'}
+			  }
+			\]
+			then we apply the inductive hypothesis on $P_{1}\xrightarrow{\alpha}_{3}Q_{1}^{'}$ and get $P_{1}\xrightarrow{\alpha}_{2}Q_{1}^{''}$ where $Q_{1}^{'}\equiv Q_{1}^{''}$. The last step is 
+			\[
+			  \inferrule* [left=Res]{
+			      P_{1}\xrightarrow{\alpha}_{2}Q_{1}^{''}
+			    \\
+			      z\notin n(\alpha)
+			  }{
+			    (\nu z)P_{1}\xrightarrow{\alpha}_{2}(\nu z)Q_{1}^{''}
+			  }
+			\]
+		      \item
+			$P=(\nu y)P_{1}$ for some $P_{1}$ such that $P_{1}\equiv Q_{1}\{y/z\}$. The last part of the derivation tree is 
+			\[
+			  \inferrule* [left=Str]{
+			      (\nu y)P_{1}\equiv (\nu z)Q_{1}
+			    \\
+			      \inferrule* [left=Res]{
+				  Q_{1}\xrightarrow{\alpha}_{3}Q_{1}^{'}
+				\\
+				  z\notin n(\alpha)
+			      }{
+				(\nu z)Q_{1}\xrightarrow{\alpha}_{3}(\nu z)Q_{1}^{'}
+			      }
+			  }{
+			    (\nu y)P_{1}\xrightarrow{\alpha}_{3}(\nu z)Q_{1}^{'}
+			  }
+			\]
+			we use the following fact:
+			\begin{center}
+% 			  \begin{tabular}{lll}
+% 			  $y\notin n(P)$&&\\
+% 			  $z\notin n(\alpha)$&$\Rightarrow$&$P\{y/z\}\xrightarrow{\alpha}_{3}Q\{y/z\}$\\
+% 			  $P\xrightarrow{\alpha}_{3}Q$&&\\
+% 			  \end{tabular}
+			  $y\notin n(P)$ and 
+			  $z\notin n(\alpha)$ and 
+			  $P\xrightarrow{\alpha}_{3}Q$ $\Rightarrow$ $P\{y/z\}\xrightarrow{\alpha}_{3}Q\{y/z\}$
+			\end{center}
+			the first step is this transformation:
+			\[
+			  \inferrule* [left=Res]{
+			      \inferrule* [left=Str]{
+				  P_{1}\equiv Q_{1}\{y/z\}
+				\\
+				  Q_{1}\{y/z\}\xrightarrow{\alpha}_{3}Q_{1}^{'}\{y/z\}
+			      }{
+				P_{1}\xrightarrow{\alpha}_{3}Q_{1}^{'}\{y/z\}
+			      }
+			    \\
+			      y\notin n(\alpha)
+			  }{
+			    (\nu y)P_{1}\xrightarrow{\alpha}_{3}(\nu y)(Q_{1}^{'}\{y/z\})
+			  }
+			\]
+			then we apply the inductive hypothesis on $P_{1}\xrightarrow{\alpha}_{3}Q_{1}^{'}\{y/z\}$ and get $P_{1}\xrightarrow{\alpha}_{2}Q_{1}^{''}$ where $Q_{1}^{'}\{y/z\}\equiv Q_{1}^{''}$ which implies $(\nu y)(Q_{1}^{'}\{y/z\})\equiv (\nu y)(Q_{1}^{''})$ which in turn implies $(\nu z)Q_{1}^{'}\equiv (\nu y)(Q_{1}^{''})$. The last step is 
+			\[
+			  \inferrule* [left=Res]{
+			      P_{1}\xrightarrow{\alpha}_{2}Q_{1}^{''}
+			    \\
+			      y\notin n(\alpha)
+			  }{
+			    (\nu y)P_{1}\xrightarrow{\alpha}_{2}(\nu y)Q_{1}^{''}
+			  }
+			\]
+                      \end{itemize}
+		  \item[Opn]
+	  \begin{tabular}{c}
+	    $P \xrightarrow{\overline{x}z} P^{'}\;\; z\neq x$\\
+	    \hline
+	    $(\nu z) P \xrightarrow{\overline{x}(z)} P^{'}$
+	  \end{tabular}
+		  \item[Str] 
+		    we can assume we do not have two consecutive application of the rule $Str$ because if we had those, we could use the transitivity of the structural congruence to merge them.
+		\end{description}
+	    \end{itemize}	    
+	\end{description}
     \end{description}
   \end{proof}
 \end{theorem}
