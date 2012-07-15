@@ -1153,7 +1153,15 @@ In this subsection we introduce the early operational semantic for $\pi$ calculu
 
 \section{Equivalence of the semantics}
 \subsection{Equivalence of the early semantics}
-Here we write $\rightarrow_{1}$ for the early semantic without structural congruence, $\rightarrow_{2}$ for the early semantic with just $\alpha$ conversion and $\rightarrow_{3}$ for the early semantic with the full structural congruence. We call $R_{1}$ the set of rules for $\rightarrow_{1}$, $R_{2}$ the set of rules for $\rightarrow_{2}$ and $R_{3}$ the set of rules for $\rightarrow_{3}$.
+Here we write $\rightarrow_{1}$ for the early semantic without structural congruence, $\rightarrow_{2}$ for the early semantic with just $\alpha$ conversion and $\rightarrow_{3}$ for the early semantic with the full structural congruence. We call $R_{1}$ the set of rules for $\rightarrow_{1}$, $R_{2}$ the set of rules for $\rightarrow_{2}$ and $R_{3}$ the set of rules for $\rightarrow_{3}$. In the following section we assume that 
+\[
+  P\xrightarrow{\alpha}Q\; \Rightarrow\; fn(Q)\subseteq fn(P)
+\]
+and that 
+\[
+  P\equiv Q\; \Rightarrow\; fn(Q)= fn(P)
+\]
+
 We would like to prove that $P\xrightarrow{\alpha}_{2}P^{'}\; \Rightarrow\; P\xrightarrow{\alpha}_{1}P^{'}$ but this is false because
 \[
   \inferrule* [left=Alp]{
@@ -1167,7 +1175,7 @@ We would like to prove that $P\xrightarrow{\alpha}_{2}P^{'}\; \Rightarrow\; P\xr
     \overline{x}y.x(y).0\xrightarrow{\overline{x}y}_{2}x(w).0
   }
 \]
-We want to prove 
+so we want to prove 
 \[
   \overline{x}y.x(y).0\xrightarrow{\overline{x}y}_{1}x(w).0
 \] 
@@ -1198,15 +1206,24 @@ but this is also false because
     (\nu y)\overline{x}y.0\xrightarrow{\overline{x}(w)}_{2}0
   }
 \]
-Let us try to prove $(\nu y)\overline{x}y.0\xrightarrow{\overline{x}(w)}_{1}[0]_{\equiv_{\alpha}}$. The head of the transition has a restriction at the top level, so the rule applicable are 
+Let us try to prove 
+\[
+  (\nu y)\overline{x}y.0\xrightarrow{\overline{x}(w)}_{1}[0]_{\equiv_{\alpha}}
+\]
+where $[0]_{\equiv_{\alpha}}$ stands for any process $\alpha$ equivalent to $0$(which is only $0$ itself). The head of the transition has a restriction at the top level, so the only rules applicable are 
 \begin{description}
   \item[Res]
-    if we apply the rule $Res$ the premise is $\overline{x}y.0\xrightarrow{\overline{x}(w)}_{1}0$, now the top level is an output prefixing and so the only rule applicable is $Out$ which yields to $\overline{x}y.0\xrightarrow{\overline{x}y}_{1}0$.
+    we cannot apply this rule because the body of the transition is $0$ and has no restriction at the top level. Even if we search for a proof of
+    \[
+      (\nu y)\overline{x}y.0\xrightarrow{\overline{x}(w)}_{1}(\nu y)0
+    \]
+    if we apply the rule $Res$ the premise is $\overline{x}y.0\xrightarrow{\overline{x}(w)}_{1}0$, now the top level is an output prefixing and so the only rule applicable is $Out$ which yields to a different transition $\overline{x}y.0\xrightarrow{\overline{x}y}_{1}0$.
   \item[ResAlp]
     we cannot apply this rule because it has an input as action whether we want to prove a transition with a bound output as action
   \item[Opn]
     this rule does not fit because the restricted name is also the bound output object, whether in the transition this does not hold.
 \end{description}
+
 
 \begin{theorem}
   $P\xrightarrow{\alpha}_{1}P^{'}\; \Rightarrow\; P\xrightarrow{\alpha}_{2}P^{'}$
@@ -1253,7 +1270,7 @@ Let us try to prove $(\nu y)\overline{x}y.0\xrightarrow{\overline{x}(w)}_{1}[0]_
 		    (\nu z) P\xrightarrow{\alpha}_{2}(\nu z) P^{'}
 		  }
 		\]
-		we apply the inductive hypothesis on $P\xrightarrow{\alpha}_{2} P^{'}$ and get $\exists P^{''}$ such that $P^{'}\equiv_{\alpha}P^{''}$ and $P\xrightarrow{\alpha}_{3} P^{''}$. The proof we want is:
+		we apply the inductive hypothesis on $P\xrightarrow{\alpha}_{2} P^{'}$ and get $\exists P^{''}$ such that $P^{'}\equiv P^{''}$ and $P\xrightarrow{\alpha}_{3} P^{''}$. The proof we want is:
 		\[
 		  \inferrule* [left=Res]{
 		      P\xrightarrow{\alpha}_{3} P^{''}
@@ -1263,7 +1280,7 @@ Let us try to prove $(\nu y)\overline{x}y.0\xrightarrow{\overline{x}(w)}_{1}[0]_
 		    (\nu z) P\xrightarrow{\alpha}_{3}(\nu z) P^{''}
 		  }
 		\]
-		and $(\nu z) P^{''}\equiv_{\alpha}(\nu z) P^{'}$
+		and $(\nu z) P^{''}\equiv (\nu z) P^{'}$
 	      \item
 		the last rule used can be one in $\{ParL, ParR, SumL, SumR, EComL, EComR\}$, in this case we can proceed as in the previous case and if necessary add an application of $Str$ thus exploiting the commutativity of sum or parallel composition. For example
 		\[
@@ -1275,10 +1292,10 @@ Let us try to prove $(\nu y)\overline{x}y.0\xrightarrow{\overline{x}(w)}_{1}[0]_
 		      P|Q\xrightarrow{\alpha}_{2}P|Q^{'}
 		  }
 		\]	
-		now we apply the inductive hypothesis to $Q\xrightarrow{\alpha}_{2}Q^{'}$ and get $Q\xrightarrow{\alpha}_{3}Q^{''}$ for a $Q^{''}$ such that $Q^{'}\equiv_{\alpha} Q^{''}$. The proof we want is
+		now we apply the inductive hypothesis to $Q\xrightarrow{\alpha}_{2}Q^{'}$ and get $Q\xrightarrow{\alpha}_{3}Q^{''}$ for a $Q^{''}$ such that $Q^{'}\equiv Q^{''}$. The proof we want is
 		\[
 		  \inferrule* [left=Str]{
-		      P|Q\equiv_{\alpha}Q|P
+		      P|Q\equiv Q|P
 		    \\
 		      \inferrule* [left=Par]{
 			  Q\xrightarrow{\alpha}_{3}Q^{''}
@@ -1291,9 +1308,9 @@ Let us try to prove $(\nu y)\overline{x}y.0\xrightarrow{\overline{x}(w)}_{1}[0]_
 		      P|Q\xrightarrow{\alpha}_{3}Q^{''}|P
 		    }
 		\]
-		and $Q^{''}|P\equiv_{\alpha}P|Q^{'}$
+		and $Q^{''}|P\equiv P|Q^{'}$
 	      \item
-		the last rule used if $Cns$:
+		if the last rule used is $Cns$:
 		\[
 		    \inferrule* [left=Cns]{
 			A(\tilde{x})\stackrel{def}{=}P
@@ -1303,10 +1320,10 @@ Let us try to prove $(\nu y)\overline{x}y.0\xrightarrow{\overline{x}(w)}_{1}[0]_
 		      A(\tilde{y})\xrightarrow{\alpha}_{2}P^{'}
 		    }
 		\]
-		we apply the inductive hypothesis on the premise and get $P\{\tilde{y}/\tilde{x}\}\xrightarrow{\alpha}_{3}P^{''}$ such that $P^{''}\equiv_{\alpha}P^{'}$. Now the proof we want is
+		we apply the inductive hypothesis on the premise and get $P\{\tilde{y}/\tilde{x}\}\xrightarrow{\alpha}_{3}P^{''}$ such that $P^{''}\equiv P^{'}$. Now the proof we want is
 		\[
 		    \inferrule* [left=Str]{
-			A(\tilde{y})\equiv_{\alpha}P\{\tilde{y}/\tilde{x}\}
+			A(\tilde{y})\equiv P\{\tilde{y}/\tilde{x}\}
 		      \\
 			P\{\tilde{y}/\tilde{x}\}\xrightarrow{\alpha}_{3}P^{''}
 		    }{
@@ -1314,10 +1331,67 @@ Let us try to prove $(\nu y)\overline{x}y.0\xrightarrow{\overline{x}(w)}_{1}[0]_
 		    }
 		\]		
 	      \item
-		if the rule $Alp$, then we just notice that this rule is a particular case of $Str$
+		if the last rule is $Alp$, then we just notice that this rule is a particular case of $Str$
 	      \item
-		the rules $ClsL$ or $ClsR$
-		
+		if the last rule is $ClsL$(the case for $ClsR$ is simmetric) then we have
+		\[
+		    \inferrule* [left=ClsL]{
+			P\xrightarrow{\overline{x}(z)}_{2}P^{'}
+		      \\
+			Q\xrightarrow{xz}_{2}Q^{'}
+		      \\
+			z\notin fn(Q)
+		    }{
+		      P|Q\xrightarrow{\tau}_{2}(\nu z)(P^{'}|Q^{'})
+		    }
+		\]
+		there is no easy way to mimic this rule with the rules in $R_{3}$. But if in the derivation tree we have an introduction of the bound output $\overline{x}(z)$ followed directly by an elimination of the same bound output such as:
+		\[
+		    \inferrule* [left=ClsL]{
+			\inferrule* [left=Opn]{
+			    P\xrightarrow{\overline{x}z}_{2}P^{'}
+			  \\
+			    z\neq x
+			}{
+			  (\nu z)P\xrightarrow{\overline{x}(z)}_{2}P^{'}
+			}
+		      \\
+			Q\xrightarrow{xz}_{2}Q^{'}
+		      \\
+			z\notin fn(Q)
+		    }{
+		      ((\nu z)P)|Q\xrightarrow{\tau}_{2}(\nu z)(P^{'}|Q^{'})
+		    }
+		\]
+		we can apply the inductive hypothesis and get that 
+		\[
+		  P\xrightarrow{\overline{x}z}_{3}P^{''}\; and\; Q\xrightarrow{xz}_{3}Q^{''}
+		\]
+		where $P^{'}\equiv P^{''}$ and $Q^{'}\equiv Q^{''}$, so we create the needed proof in the following way
+		\[
+		    \inferrule* [left=Str]{
+			(\nu z)(P|Q)\equiv ((\nu z)P)|Q
+		      \\
+			\inferrule* [left=Res]{
+			  \inferrule* [left=Com]{
+			      P\xrightarrow{\overline{x}z}_{3}P^{''}
+			    \\
+			      Q\xrightarrow{xz}_{3}Q^{''}
+			  }{
+			    P|Q\xrightarrow{\tau}_{3}P^{''}|Q^{''}
+			  }
+			}{
+			  (\nu z)(P|Q)\xrightarrow{\tau}_{3}(\nu z)(P^{''}|Q^{''})
+			}
+		    }{
+		      ((\nu z)P)|Q\xrightarrow{\tau}_{3}(\nu z)(P^{''}|Q^{''})
+		    }
+		\]
+		We can always take a derivation tree in $R_{2}$ and move downward each occurrence of $Opn$ until we find the appropriate occurrence of $ClsL$. In this process we might need to use the structural congruence, in particular the scope extension axioms. We can attempt to prove that in the following way:
+		\[
+		  P\xrightarrow{\overline{x}(z)}_{2}P^{'}\; \Rightarrow\; \exists R: (\nu z)R\equiv P
+		\]
+		and if $(\nu z)R\xrightarrow{\overline{x}(z)}_{2}P^{'}$ then there exists a derivation tree for this transition such that the last rule used is $Opn$
 	    \end{itemize}	    
 	\end{description}
     \end{description}
