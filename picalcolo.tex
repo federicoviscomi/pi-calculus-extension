@@ -1617,13 +1617,8 @@ where $[0]_{\equiv_{\alpha}}$ stands for any process $\alpha$ equivalent to $0$(
 			    (\nu y)P_{1}\xrightarrow{\alpha}_{3}(\nu z)Q_{1}^{'}
 			  }
 			\]
-			we use the following fact:
+			we use the following fact which we will prove separately:
 			\begin{center}
-% 			  \begin{tabular}{lll}
-% 			  $y\notin n(P)$&&\\
-% 			  $z\notin n(\alpha)$&$\Rightarrow$&$P\{y/z\}\xrightarrow{\alpha}_{3}Q\{y/z\}$\\
-% 			  $P\xrightarrow{\alpha}_{3}Q$&&\\
-% 			  \end{tabular}
 			  $y\notin n(P)$ and 
 			  $z\notin n(\alpha)$ and 
 			  $P\xrightarrow{\alpha}_{3}Q$ $\Rightarrow$ $P\{y/z\}\xrightarrow{\alpha}_{3}Q\{y/z\}$
@@ -1656,19 +1651,243 @@ where $[0]_{\equiv_{\alpha}}$ stands for any process $\alpha$ equivalent to $0$(
 			\]
                       \end{itemize}
 		  \item[Opn]
+		    Since we are using the rule $Opn$, $Q=(\nu z) Q_{1}$ for some $Q_{1}$. $(\nu z) Q_{1}\equiv P$ means for the inversion lemma for structural congruence that
+		    \begin{itemize}
+		      \item
+			$P=(\nu z) P_{1}$ for some $P_{1}$ such that $P_{1}\equiv Q_{1}$. The last part of the derivation tree is 
+			\[
+			  \inferrule* [left=Str]{
+			      (\nu z) P_{1}\equiv (\nu z) Q_{1}
+			    \\
+			      \inferrule* [left=Opn]{
+				  Q_{1} \xrightarrow{\overline{x}z} Q_{1}^{'}
+				\\
+				  z\neq x
+			      }{
+				(\nu z) Q_{1} \xrightarrow{\overline{x}(z)} Q_{1}^{'}
+			      }
+			  }{
+			    (\nu z) P_{1} \xrightarrow{\overline{x}(z)} Q_{1}^{'}
+			  }
+			\]
+			the first step is this transformation:
+			\[
+			  \inferrule* [left=Res]{
+			      \inferrule* [left=Str]{
+				  P_{1}\equiv Q_{1}
+				\\
+				  Q_{1}\xrightarrow{\overline{x}z}_{3}Q_{1}^{'}
+			      }{
+				P_{1}\xrightarrow{\overline{x}z}_{3}Q_{1}^{'}
+			      }
+			    \\
+			      z\neq x
+			  }{
+			    (\nu z)P_{1}\xrightarrow{\overline{x}z}_{3}Q_{1}^{'}
+			  }
+			\]
+			then we apply the inductive hypothesis on $P_{1}\xrightarrow{\overline{x}z}_{3}Q_{1}^{'}$ and get $P_{1}\xrightarrow{\overline{x}z}_{2}Q_{1}^{''}$ where $Q_{1}^{'}\equiv Q_{1}^{''}$. The last step is 
+			\[
+			  \inferrule* [left=Res]{
+			      P_{1}\xrightarrow{\overline{x}z}_{2}Q_{1}^{''}
+			    \\
+			      z\neq x
+			  }{
+			    (\nu z)P_{1}\xrightarrow{\overline{x}z}_{2}Q_{1}^{''}
+			  }
+			\]
+		      \item
+			$P=(\nu z) P_{1}$ for some $P_{1}$ such that $P_{1}\equiv Q_{1}$. The last part of the derivation tree is 
+			\[
+			  \inferrule* [left=Str]{
+			      (\nu z) P_{1}\equiv (\nu z) Q_{1}
+			    \\
+			      \inferrule* [left=Opn]{
+				  Q_{1} \xrightarrow{\overline{x}z} Q_{1}^{'}
+				\\
+				  z\neq x
+			      }{
+				(\nu z) Q_{1} \xrightarrow{\overline{x}(z)} Q_{1}^{'}
+			      }
+			  }{
+			    (\nu z) P_{1} \xrightarrow{\overline{x}(z)} Q_{1}^{'}
+			  }
+			\]
+			the first step is this transformation:
+			\[
+			  \inferrule* [left=Res]{
+			      \inferrule* [left=Str]{
+				  P_{1}\equiv Q_{1}
+				\\
+				  Q_{1}\xrightarrow{\overline{x}z}_{3}Q_{1}^{'}
+			      }{
+				P_{1}\xrightarrow{\overline{x}z}_{3}Q_{1}^{'}
+			      }
+			    \\
+			      z\neq x
+			  }{
+			    (\nu z)P_{1}\xrightarrow{\overline{x}z}_{3}Q_{1}^{'}
+			  }
+			\]
+			then we apply the inductive hypothesis on $P_{1}\xrightarrow{\overline{x}z}_{3}Q_{1}^{'}$ and get $P_{1}\xrightarrow{\overline{x}z}_{2}Q_{1}^{''}$ where $Q_{1}^{'}\equiv Q_{1}^{''}$. The last step is 
+			\[
+			  \inferrule* [left=Res]{
+			      P_{1}\xrightarrow{\overline{x}z}_{2}Q_{1}^{''}
+			    \\
+			      z\neq x
+			  }{
+			    (\nu z)P_{1}\xrightarrow{\overline{x}z}_{2}Q_{1}^{''}
+			  }
+			\]
+		      \item
+			$P=(\nu y) P_{1}$ for some $P_{1}$ such that $P_{1}\equiv Q_{1}\{y/z\}$. The last part of the derivation tree is 
+			\[
+			  \inferrule* [left=Str]{
+			      (\nu y) P_{1}\equiv (\nu z) Q_{1}
+			    \\
+			      \inferrule* [left=Opn]{
+				  Q_{1} \xrightarrow{\overline{x}z} Q_{1}^{'}
+				\\
+				  z\neq x
+			      }{
+				(\nu z) Q_{1} \xrightarrow{\overline{x}(z)} Q_{1}^{'}
+			      }
+			  }{
+			    (\nu y) P_{1} \xrightarrow{\overline{x}(z)} Q_{1}^{'}
+			  }
+			\]
+			the first step is this transformation:
+			\[
+			  \inferrule* [left=Str]{
+			      (\nu y) P_{1}\equiv (\nu y) Q_{1}\{y/z\}
+			    \\
+			      \inferrule* [left=Str]{
+				  (\nu y) Q_{1}\{y/z\}\equiv_{\alpha} (\nu z) Q_{1}
+				\\
+				  \inferrule* [left=Opn]{
+				      Q_{1} \xrightarrow{\overline{x}z} Q_{1}^{'}
+				    \\
+				      z\neq x
+				  }{
+				    (\nu z) Q_{1} \xrightarrow{\overline{x}(z)} Q_{1}^{'}
+				  }
+			      }{
+				(\nu y) Q_{1}\{y/z\} \xrightarrow{\overline{x}(z)} Q_{1}^{'}
+			      }
+			  }{
+			    (\nu y) P_{1} \xrightarrow{\overline{x}(z)} Q_{1}^{'}
+			  }
+			\]
+			\[
+			  \inferrule* [left=Res]{
+			      \inferrule* [left=Str]{
+				  P_{1}\equiv Q_{1}\{y/z\}
+				\\
+				  Q_{1}\{y/z\}\xrightarrow{\overline{x}z}_{3}Q_{1}^{'}\{y/z\}
+			      }{
+				P_{1}\xrightarrow{\overline{x}z}_{3}Q_{1}^{'}
+			      }
+			    \\
+			      z\neq x
+			  }{
+			    (\nu z)P_{1}\xrightarrow{\overline{x}z}_{3}Q_{1}^{'}
+			  }
+			\]
+			then we apply the inductive hypothesis on $P_{1}\xrightarrow{\overline{x}z}_{3}Q_{1}^{'}$ and get $P_{1}\xrightarrow{\overline{x}z}_{2}Q_{1}^{''}$ where $Q_{1}^{'}\equiv Q_{1}^{''}$. The last step is 
+			\[
+			  \inferrule* [left=Res]{
+			      P_{1}\xrightarrow{\overline{x}z}_{2}Q_{1}^{''}
+			    \\
+			      z\neq x
+			  }{
+			    (\nu z)P_{1}\xrightarrow{\overline{x}z}_{2}Q_{1}^{''}
+			  }
+			\]
+		  \end{itemize}
+		\end{description}
+	    \end{itemize}	    
+	\end{description}
+    \end{description}
+    To complete the proof we have to prove this:
+    \begin{center}
+      $y\notin n(P)$ and 
+      $z\notin n(\alpha)$ and 
+      $P\xrightarrow{\alpha}_{3}Q$ $\Rightarrow$ $P\{y/z\}\xrightarrow{\alpha}_{3}Q\{y/z\}$
+    \end{center}
+    the proof goes by induction on the length of the derivation of $P\xrightarrow{\alpha}_{3}Q$ and then it goes by cases on the last rule of the derivation:
+    \begin{description}
+      \item[base case]:
+	\begin{description}
+	  \item[]
+
+	  \bf{Out}
+	  \begin{tabular}{c}
+	    \hline
+	    $\overline{x}y.P \xrightarrow{\overline{x}y} P$
+	  \end{tabular}
+	  \bf{EInp}
+	  \begin{tabular}{c}
+	    \hline
+	    $x(z).P \xrightarrow{xy} P\{y/z\}$
+	  \end{tabular}
+	  \bf{Tau}
+	  \begin{tabular}{c}
+	    \hline
+	    $\tau.P \xrightarrow{\tau} P$
+	  \end{tabular}
+
+	\end{description}
+      \item[inductive case]:
+	\begin{description}
+	  \item 
+	  \bf{Par}
+	  \begin{tabular}{c}
+	    $P \xrightarrow{\alpha} P^{'}\;\; bn(\alpha)\cap fn(Q)=\emptyset$\\
+	    \hline
+	    $P|Q \xrightarrow{\alpha} P^{'}|Q$
+	  \end{tabular}
+
+	  \bf{Sum}
+	  \begin{tabular}{c}
+	    $P \xrightarrow{\alpha} P^{'}$\\
+	    \hline
+	    $P+Q \xrightarrow{\alpha} P^{'}$
+	  \end{tabular}
+
+	    \bf{ECom}
+	    \begin{tabular}{c}
+	      $P \xrightarrow{xy} P^{'}\;\; Q\xrightarrow{\overline{x}y} Q^{'}$\\
+	      \hline
+	      $P|Q \xrightarrow{\tau} P^{'}|Q^{'}$
+	    \end{tabular}
+
+	  \bf{Res}
+	  \begin{tabular}{c}
+	    $P \xrightarrow{\alpha} P^{'}\;\; z\notin n(\alpha)$\\
+	    \hline
+	    $(\nu z) P \xrightarrow{\alpha} (\nu z) P^{'}$
+	  \end{tabular}
+
+
+	  \bf{Opn}
 	  \begin{tabular}{c}
 	    $P \xrightarrow{\overline{x}z} P^{'}\;\; z\neq x$\\
 	    \hline
 	    $(\nu z) P \xrightarrow{\overline{x}(z)} P^{'}$
 	  \end{tabular}
-		  \item[Str] 
-		    we can assume we do not have two consecutive application of the rule $Str$ because if we had those, we could use the transitivity of the structural congruence to merge them.
-		\end{description}
-	    \end{itemize}	    
+
+	  \bf{Str}
+	  \begin{tabular}{c}
+	    $P\equiv P^{'}\;\; P\xrightarrow{\alpha} Q\;\; Q\equiv Q^{'}$\\
+	    \hline
+	    $P^{'} \xrightarrow{\alpha} Q^{'}$
+	  \end{tabular}
 	\end{description}
     \end{description}
   \end{proof}
 \end{theorem}
+
+
 
 \subsection{Equivalence of the late semantics}
 
@@ -1678,15 +1897,23 @@ where $[0]_{\equiv_{\alpha}}$ stands for any process $\alpha$ equivalent to $0$(
 We present here some behavioural equivalences and some of their properties. 
 
 \subsection{Bisimilarity}
-In the following we will use the phrase $bn(\alpha)$ is fresh in a definition to mean that the name in $bn(\alpha)$, if any, is different from any free name occurring in any of the agents in the definition. In this subsection the transition relation is given by the late semantic with structural congruence.
+In the following we will use the phrase $bn(\alpha)$ is fresh in a definition to mean that the name in $bn(\alpha)$, if any, is different from any free name occurring in any of the agents in the definition. We write 
+\[
+  \rightarrow_{E}
+\]
+for the early semantic and 
+\[
+  \rightarrow_{L}
+\]
+for the late semantic.
 
 \begin{definition}
-  A \emph{strong (late) bisimulation} is a symmetric binary relation $\mathbb{R}$ on agents satisfying the following: $P\mathbb{R} Q$ and $P\; \xrightarrow{\alpha}_{E}\; P^{'}$ where $bn(\alpha)$ is fresh implies that
+  A \emph{strong (late) bisimulation} is a symmetric binary relation $\mathbb{R}$ on agents satisfying the following: $P\mathbb{R} Q$ and $P\; \xrightarrow{\alpha}_{L}\; P^{'}$ where $bn(\alpha)$ is fresh implies that
   \begin{itemize}
     \item
-      if $\alpha=a(x)$ then $\exists Q^{'}: Q\xrightarrow{a(x)}Q^{'}\; \wedge\; \forall u:\; P^{'}\{u/x\}\mathbb{R}Q^{'}\{u/x\}$
+      if $\alpha=a(x)$ then $\exists Q^{'}: Q\xrightarrow{a(x)}_{L}Q^{'}\; \wedge\; \forall u:\; P^{'}\{u/x\}\mathbb{R}Q^{'}\{u/x\}$
     \item
-      if $\alpha$ is not an input the $\exists Q^{'}: Q\xrightarrow{\alpha}Q^{'}\; \wedge\; P^{'}\mathbb{R}Q^{'}$
+      if $\alpha$ is not an input the $\exists Q^{'}: Q\xrightarrow{\alpha}_{L}Q^{'}\; \wedge\; P^{'}\mathbb{R}Q^{'}$
   \end{itemize}
   $P$ and $Q$ are strongly bisimilar, written $P\; \dot{\sim}\; Q$, if they are related by a bisimulation. 
 \end{definition}
@@ -1758,18 +1985,18 @@ We define a bisimulation for the early semantic with structural congruence, for 
 \begin{definition}\index{bisimulation! strong! early! with early semantic}
   A \emph{strong early bisimulation with early semantic} is a symmetric binary relation $\mathbb{R}$ on agents satisfying the following: $P\mathbb{R} Q$ and $P\; \xrightarrow{\alpha}_{E}\; P^{'}$ where $bn(\alpha)$ is fresh implies that
   \begin{center}
-    $\exists Q^{'}: Q\xrightarrow{\alpha}Q^{'}\; \wedge\; P^{'}\mathbb{R}Q^{'}$
+    $\exists Q^{'}: Q\xrightarrow{\alpha}_{E}Q^{'}\; \wedge\; P^{'}\mathbb{R}Q^{'}$
   \end{center}
   $P$ and $Q$ are strongly early bisimilar, written $P\; \dot{\sim}_{E}\; Q$, if they are related by an early bisimulation.
 \end{definition}
 
 \begin{definition}\index{bisimulation! strong! early! with late semantic}
-  A \emph{strong early bisimulation with late semantic} is a symmetric binary relation $\mathbb{R}$ on agents satisfying the following: $P\mathbb{R} Q$ and $P\; \xrightarrow{\alpha}\; P^{'}$ where $bn(\alpha)$ is fresh implies that
+  A \emph{strong early bisimulation with late semantic} is a symmetric binary relation $\mathbb{R}$ on agents satisfying the following: $P\mathbb{R} Q$ and $P\; \xrightarrow{\alpha}_{L}\; P^{'}$ where $bn(\alpha)$ is fresh implies that
   \begin{itemize}
     \item
-      if $\alpha=a(x)$ then $\forall u\; \exists Q^{'}:\;\; Q\xrightarrow{a(x)}Q^{'}\; \wedge\; P^{'}\{u/x\}\mathbb{R}Q^{'}\{u/x\}$
+      if $\alpha=a(x)$ then $\forall u\; \exists Q^{'}:\;\; Q\xrightarrow{a(x)}_{L}Q^{'}\; \wedge\; P^{'}\{u/x\}\mathbb{R}Q^{'}\{u/x\}$
     \item
-      if $\alpha$ is not an input then $\exists Q^{'}:\;\; Q\xrightarrow{\alpha}Q^{'}\; \wedge\; P^{'}\mathbb{R}Q^{'}$
+      if $\alpha$ is not an input then $\exists Q^{'}:\;\; Q\xrightarrow{\alpha}_{L}Q^{'}\; \wedge\; P^{'}\mathbb{R}Q^{'}$
   \end{itemize}
 \end{definition}
 
@@ -1792,9 +2019,9 @@ We define a bisimulation for the early semantic with structural congruence, for 
 
 In the following definition we consider a subcalculus without restriction. 
 \begin{definition}\index{bisimulation! strong! open! early}
-  A \emph{strong open bisimulation} is a symmetric binary relation $\mathbb{R}$ on agents satisfying the following for all substitutions $\sigma$: $P\mathbb{R} Q$ and $P\sigma\; \xrightarrow{\alpha}\; P^{'}$ where $bn(\alpha)$ is fresh implies that
+  A \emph{strong open bisimulation} is a symmetric binary relation $\mathbb{R}$ on agents satisfying the following for all substitutions $\sigma$: $P\mathbb{R} Q$ and $P\sigma\; \xrightarrow{\alpha}_{E}\; P^{'}$ where $bn(\alpha)$ is fresh implies that
   \begin{center}
-    $\exists Q^{'}:\;\; Q\sigma\xrightarrow{\alpha}Q^{'}\; \wedge\; P^{'}\mathbb{R}Q^{'}$
+    $\exists Q^{'}:\;\; Q\sigma\xrightarrow{\alpha}_{E}Q^{'}\; \wedge\; P^{'}\mathbb{R}Q^{'}$
   \end{center}
   $P$ and $Q$ are strongly open bisimilar, written $P\; \dot{\sim}_{O}\; Q$ if they are related by an open bisimulation.
 \end{definition}
