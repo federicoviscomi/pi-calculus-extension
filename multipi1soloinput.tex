@@ -61,11 +61,13 @@ In this case, a label can be a sequence of prefixes, whether in the original $\p
 	  }$
 	&
 	  $\inferrule* [left=\bf{SInp}]{
-	      P\; \xrightarrow{\sigma}\; P^{'}
+	      P\{y/z\} \xrightarrow{\sigma} P^{'}
 	    \\
 	      \sigma\neq \tau
+	    \\
+	      y\notin fn((\nu z) P)
 	  }{
-	    \underline{x(y)}.P \;\xrightarrow{xz \cdot \sigma} P^{'}\{z/y\}
+	    \underline{x(z)}.P \xrightarrow{xy \cdot \sigma} P^{'}
 	  }$
       \\\\
 	  $\inferrule* [left=\bf{Sum}]{
@@ -84,22 +86,20 @@ In this case, a label can be a sequence of prefixes, whether in the original $\p
 	      P\; \xrightarrow{\alpha}\; Q
 	  }$
       \\\\
-	  $\inferrule* [left=\bf{Par}]{
-	      P \;\xrightarrow{\sigma}\; P^{'}
-	    \\ 
-	      bn(\sigma)\cap fn(Q)=\emptyset
+	  $\inferrule* [left=\bf{Com}]{
+	      P \xrightarrow{\overline{x}y} P^{'}
+	    \\
+	      Q \xrightarrow{xy} Q^{'}
 	  }{
-	      P|Q \;\xrightarrow{\sigma} P^{'}|Q
+	    P|Q \xrightarrow{\tau} P^{'}|Q^{'}
 	  }$
 	&
-	  $\inferrule* [left=\bf{Com}]{
-	      P \;\xrightarrow{\sigma_{1}} P^{'}
+	  $\inferrule* [left=\bf{ComSeq}]{
+	      P \xrightarrow{xy\cdot \sigma} P^{'}
 	    \\
-	      Q\;\xrightarrow{\sigma_{2}} Q^{'}
-	    \\
-	      Sync(\sigma_{1}, \sigma_{2}, \sigma_{3})
+	      Q \xrightarrow{\overline{x}y} Q^{'}
 	  }{
-	    P|Q \;\xrightarrow{\sigma_{3}} P^{'}|Q^{'}
+	    P|Q \xrightarrow{\sigma} P^{'}|Q^{'}
 	  }$
       \\\\
 	  $\inferrule* [left=\bf{Res}]{
@@ -115,59 +115,21 @@ In this case, a label can be a sequence of prefixes, whether in the original $\p
 	  }{
 	    \underline{x(y)}.P \;\xrightarrow{xz} P^{'}\{z/y\}
 	  }$
+      \\\\
+	  $\inferrule* [left=\bf{Par}]{
+	      P \;\xrightarrow{\sigma}\; P^{'}
+	    \\ 
+	      bn(\sigma)\cap fn(Q)=\emptyset
+	  }{
+	      P|Q \;\xrightarrow{\sigma} P^{'}|Q
+	  }$
+	&
       \\\hline
     \end{tabular}
     \caption{Multi $\pi$ early semantic with structural congruence}
     \label{multipisoloinputearlywith}
   \end{table}
 \end{definition}
-\begin{definition}
-  We define the synchronization relation in the following way:
-  \begin{center}
-    \begin{tabular}{ccc}
-	  $\inferrule* [left=Com1L]{
-	   }{
-	    Sync(\overline{x}y,xy,\tau)
-	  }$
-	&
-	  $\inferrule* [left=Com2L]{
-	   }{
-	    Sync(xy\cdot \sigma,\overline{x}y,\sigma)
-	  }$	  
-	&
-      \\\\
-	  $\inferrule* [left=Com1R]{
-	   }{
-	    Sync(xy,\overline{x}y,\tau)
-	  }$
-	&
-	  $\inferrule* [left=Com2R]{
-	   }{
-	    Sync(\overline{x}y,xy\cdot \sigma,\sigma)
-	  }$	  
-	&
-      \\\\
-    \end{tabular}
-  \end{center}
-\end{definition}
-
-This does not work because:
-\begin{center}
-  $
-    \inferrule* [left=SInp]{
-      \inferrule* [left=Out]{
-      }{
-	\overline{a}z.P\; \xrightarrow{\overline{a}z}\; P
-      }
-    }{
-      \underline{x(a)}.\overline{a}z.P\; \xrightarrow{xb\cdot \overline{a}z}\; P\{b/a\}
-    }
-  $
-\end{center}
-whether the semantic for $\underline{x(a)}.\overline{a}z.P$ is supposed to be
-\[
-  \underline{x(a)}.\overline{a}z.P\; \xrightarrow{xb\cdot \overline{b}z}\; P\{b/a\}
-\]
 
 
 
