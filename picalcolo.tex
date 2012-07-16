@@ -1756,53 +1756,57 @@ where $[0]_{\equiv_{\alpha}}$ stands for any process $\alpha$ equivalent to $0$(
 			    (\nu y) P_{1} \xrightarrow{\overline{x}(z)} Q_{1}^{'}
 			  }
 			\]
-			the first step is this transformation:
-			\[
-			  \inferrule* [left=Str]{
-			      (\nu y) P_{1}\equiv (\nu y) Q_{1}\{y/z\}
-			    \\
-			      \inferrule* [left=Str]{
-				  (\nu y) Q_{1}\{y/z\}\equiv_{\alpha} (\nu z) Q_{1}
-				\\
-				  \inferrule* [left=Opn]{
-				      Q_{1} \xrightarrow{\overline{x}z} Q_{1}^{'}
-				    \\
-				      z\neq x
-				  }{
-				    (\nu z) Q_{1} \xrightarrow{\overline{x}(z)} Q_{1}^{'}
-				  }
-			      }{
-				(\nu y) Q_{1}\{y/z\} \xrightarrow{\overline{x}(z)} Q_{1}^{'}
-			      }
-			  }{
-			    (\nu y) P_{1} \xrightarrow{\overline{x}(z)} Q_{1}^{'}
-			  }
-			\]
-			\[
-			  \inferrule* [left=Res]{
-			      \inferrule* [left=Str]{
-				  P_{1}\equiv Q_{1}\{y/z\}
-				\\
-				  Q_{1}\{y/z\}\xrightarrow{\overline{x}z}_{3}Q_{1}^{'}\{y/z\}
-			      }{
-				P_{1}\xrightarrow{\overline{x}z}_{3}Q_{1}^{'}
-			      }
-			    \\
-			      z\neq x
-			  }{
-			    (\nu z)P_{1}\xrightarrow{\overline{x}z}_{3}Q_{1}^{'}
-			  }
-			\]
-			then we apply the inductive hypothesis on $P_{1}\xrightarrow{\overline{x}z}_{3}Q_{1}^{'}$ and get $P_{1}\xrightarrow{\overline{x}z}_{2}Q_{1}^{''}$ where $Q_{1}^{'}\equiv Q_{1}^{''}$. The last step is 
-			\[
-			  \inferrule* [left=Res]{
-			      P_{1}\xrightarrow{\overline{x}z}_{2}Q_{1}^{''}
-			    \\
-			      z\neq x
-			  }{
-			    (\nu z)P_{1}\xrightarrow{\overline{x}z}_{2}Q_{1}^{''}
-			  }
-			\]
+\begin{center}
+  ?
+\end{center}
+
+% 			the first step is this transformation:
+% 			\[
+% 			  \inferrule* [left=Str]{
+% 			      (\nu y) P_{1}\equiv (\nu y) Q_{1}\{y/z\}
+% 			    \\
+% 			      \inferrule* [left=Str]{
+% 				  (\nu y) Q_{1}\{y/z\}\equiv_{\alpha} (\nu z) Q_{1}
+% 				\\
+% 				  \inferrule* [left=Opn]{
+% 				      Q_{1} \xrightarrow{\overline{x}z} Q_{1}^{'}
+% 				    \\
+% 				      z\neq x
+% 				  }{
+% 				    (\nu z) Q_{1} \xrightarrow{\overline{x}(z)} Q_{1}^{'}
+% 				  }
+% 			      }{
+% 				(\nu y) Q_{1}\{y/z\} \xrightarrow{\overline{x}(z)} Q_{1}^{'}
+% 			      }
+% 			  }{
+% 			    (\nu y) P_{1} \xrightarrow{\overline{x}(z)} Q_{1}^{'}
+% 			  }
+% 			\]
+% 			\[
+% 			  \inferrule* [left=Res]{
+% 			      \inferrule* [left=Str]{
+% 				  P_{1}\equiv Q_{1}\{y/z\}
+% 				\\
+% 				  Q_{1}\{y/z\}\xrightarrow{\overline{x}z}_{3}Q_{1}^{'}\{y/z\}
+% 			      }{
+% 				P_{1}\xrightarrow{\overline{x}z}_{3}Q_{1}^{'}
+% 			      }
+% 			    \\
+% 			      z\neq x
+% 			  }{
+% 			    (\nu z)P_{1}\xrightarrow{\overline{x}z}_{3}Q_{1}^{'}
+% 			  }
+% 			\]
+% 			then we apply the inductive hypothesis on $P_{1}\xrightarrow{\overline{x}z}_{3}Q_{1}^{'}$ and get $P_{1}\xrightarrow{\overline{x}z}_{2}Q_{1}^{''}$ where $Q_{1}^{'}\equiv Q_{1}^{''}$. The last step is 
+% 			\[
+% 			  \inferrule* [left=Res]{
+% 			      P_{1}\xrightarrow{\overline{x}z}_{2}Q_{1}^{''}
+% 			    \\
+% 			      z\neq x
+% 			  }{
+% 			    (\nu z)P_{1}\xrightarrow{\overline{x}z}_{2}Q_{1}^{''}
+% 			  }
+% 			\]
 		  \end{itemize}
 		\end{description}
 	    \end{itemize}	    
@@ -1815,75 +1819,75 @@ where $[0]_{\equiv_{\alpha}}$ stands for any process $\alpha$ equivalent to $0$(
       $P\xrightarrow{\alpha}_{3}Q$ $\Rightarrow$ $P\{y/z\}\xrightarrow{\alpha}_{3}Q\{y/z\}$
     \end{center}
     the proof goes by induction on the length of the derivation of $P\xrightarrow{\alpha}_{3}Q$ and then it goes by cases on the last rule of the derivation:
-    \begin{description}
-      \item[base case]:
-	\begin{description}
-	  \item[]
-
-	  \bf{Out}
-	  \begin{tabular}{c}
-	    \hline
-	    $\overline{x}y.P \xrightarrow{\overline{x}y} P$
-	  \end{tabular}
-	  \bf{EInp}
-	  \begin{tabular}{c}
-	    \hline
-	    $x(z).P \xrightarrow{xy} P\{y/z\}$
-	  \end{tabular}
-	  \bf{Tau}
-	  \begin{tabular}{c}
-	    \hline
-	    $\tau.P \xrightarrow{\tau} P$
-	  \end{tabular}
-
-	\end{description}
-      \item[inductive case]:
-	\begin{description}
-	  \item 
-	  \bf{Par}
-	  \begin{tabular}{c}
-	    $P \xrightarrow{\alpha} P^{'}\;\; bn(\alpha)\cap fn(Q)=\emptyset$\\
-	    \hline
-	    $P|Q \xrightarrow{\alpha} P^{'}|Q$
-	  \end{tabular}
-
-	  \bf{Sum}
-	  \begin{tabular}{c}
-	    $P \xrightarrow{\alpha} P^{'}$\\
-	    \hline
-	    $P+Q \xrightarrow{\alpha} P^{'}$
-	  \end{tabular}
-
-	    \bf{ECom}
-	    \begin{tabular}{c}
-	      $P \xrightarrow{xy} P^{'}\;\; Q\xrightarrow{\overline{x}y} Q^{'}$\\
-	      \hline
-	      $P|Q \xrightarrow{\tau} P^{'}|Q^{'}$
-	    \end{tabular}
-
-	  \bf{Res}
-	  \begin{tabular}{c}
-	    $P \xrightarrow{\alpha} P^{'}\;\; z\notin n(\alpha)$\\
-	    \hline
-	    $(\nu z) P \xrightarrow{\alpha} (\nu z) P^{'}$
-	  \end{tabular}
-
-
-	  \bf{Opn}
-	  \begin{tabular}{c}
-	    $P \xrightarrow{\overline{x}z} P^{'}\;\; z\neq x$\\
-	    \hline
-	    $(\nu z) P \xrightarrow{\overline{x}(z)} P^{'}$
-	  \end{tabular}
-
-	  \bf{Str}
-	  \begin{tabular}{c}
-	    $P\equiv P^{'}\;\; P\xrightarrow{\alpha} Q\;\; Q\equiv Q^{'}$\\
-	    \hline
-	    $P^{'} \xrightarrow{\alpha} Q^{'}$
-	  \end{tabular}
-	\end{description}
-    \end{description}
+%     \begin{description}
+%       \item[base case]:
+% 	\begin{description}
+% 	  \item[]
+% 
+% 	  \bf{Out}
+% 	  \begin{tabular}{c}
+% 	    \hline
+% 	    $\overline{x}y.P \xrightarrow{\overline{x}y} P$
+% 	  \end{tabular}
+% 	  \bf{EInp}
+% 	  \begin{tabular}{c}
+% 	    \hline
+% 	    $x(z).P \xrightarrow{xy} P\{y/z\}$
+% 	  \end{tabular}
+% 	  \bf{Tau}
+% 	  \begin{tabular}{c}
+% 	    \hline
+% 	    $\tau.P \xrightarrow{\tau} P$
+% 	  \end{tabular}
+% 
+% 	\end{description}
+%       \item[inductive case]:
+% 	\begin{description}
+% 	  \item 
+% 	  \bf{Par}
+% 	  \begin{tabular}{c}
+% 	    $P \xrightarrow{\alpha} P^{'}\;\; bn(\alpha)\cap fn(Q)=\emptyset$\\
+% 	    \hline
+% 	    $P|Q \xrightarrow{\alpha} P^{'}|Q$
+% 	  \end{tabular}
+% 
+% 	  \bf{Sum}
+% 	  \begin{tabular}{c}
+% 	    $P \xrightarrow{\alpha} P^{'}$\\
+% 	    \hline
+% 	    $P+Q \xrightarrow{\alpha} P^{'}$
+% 	  \end{tabular}
+% 
+% 	    \bf{ECom}
+% 	    \begin{tabular}{c}
+% 	      $P \xrightarrow{xy} P^{'}\;\; Q\xrightarrow{\overline{x}y} Q^{'}$\\
+% 	      \hline
+% 	      $P|Q \xrightarrow{\tau} P^{'}|Q^{'}$
+% 	    \end{tabular}
+% 
+% 	  \bf{Res}
+% 	  \begin{tabular}{c}
+% 	    $P \xrightarrow{\alpha} P^{'}\;\; z\notin n(\alpha)$\\
+% 	    \hline
+% 	    $(\nu z) P \xrightarrow{\alpha} (\nu z) P^{'}$
+% 	  \end{tabular}
+% 
+% 
+% 	  \bf{Opn}
+% 	  \begin{tabular}{c}
+% 	    $P \xrightarrow{\overline{x}z} P^{'}\;\; z\neq x$\\
+% 	    \hline
+% 	    $(\nu z) P \xrightarrow{\overline{x}(z)} P^{'}$
+% 	  \end{tabular}
+% 
+% 	  \bf{Str}
+% 	  \begin{tabular}{c}
+% 	    $P\equiv P^{'}\;\; P\xrightarrow{\alpha} Q\;\; Q\equiv Q^{'}$\\
+% 	    \hline
+% 	    $P^{'} \xrightarrow{\alpha} Q^{'}$
+% 	  \end{tabular}
+% 	\end{description}
+%     \end{description}
   \end{proof}
 \end{theorem}
 
