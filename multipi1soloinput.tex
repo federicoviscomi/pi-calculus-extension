@@ -64,8 +64,8 @@ In this case, a label can be a sequence of prefixes, whether in the original $\p
 	      P\{y/z\} \xrightarrow{\sigma} P^{'}
 	    \\
 	      \sigma\neq \tau
-	    \\
-	      y\notin fn((\nu z) P)
+% 	    \\
+% 	      y\notin fn((\nu z) P)
 	  }{
 	    \underline{x(z)}.P \xrightarrow{xy \cdot \sigma} P^{'}
 	  }$
@@ -111,9 +111,9 @@ In this case, a label can be a sequence of prefixes, whether in the original $\p
 	  }$
 	&
 	  $\inferrule* [left=\bf{SInpTau}]{
-	      P\; \xrightarrow{\tau}\; P^{'}
+	      P\{y/z\}\; \xrightarrow{\tau}\; P^{'}
 	  }{
-	    \underline{x(y)}.P \;\xrightarrow{xz} P^{'}\{z/y\}
+	    \underline{x(z)}.P \;\xrightarrow{xy} P^{'}
 	  }$
       \\\\
 	  $\inferrule* [left=\bf{Par}]{
