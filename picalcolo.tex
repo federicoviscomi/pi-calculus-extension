@@ -285,9 +285,9 @@ there is no substitution, instead the substitution occurs at an early point in t
 	&
 	  \bf{ResAlp}
 	  \begin{tabular}{c}
-	      $(\nu w)P\{w/z\} \xrightarrow{xz} P^{'}\;\; w\notin n(P)$
+	      $(\nu w)P\{w/z\} \xrightarrow{\alpha} P^{'}\;\; w\notin n(P)$
 	    \\\hline
-	      $(\nu z) P \xrightarrow{xz} P^{'}$
+	      $(\nu z) P \xrightarrow{\alpha} P^{'}$
 	  \end{tabular}
       \\\\
 	  \bf{EComR}
@@ -1214,7 +1214,7 @@ which is not want we want. So we prove a weaker version
       \item[base case]
 	If the depth of the derivation tree is one, the rule used has to be a prefix rule 
 	\[
-	  \{Out, EInp, Tau\}\in R_{1}\cup R_{2}
+	  \{Out, EInp, Tau\}\in R_{1}\cap R_{2}
 	\]
 	so a derivation tree of $P\xrightarrow{\alpha}_{2}P^{'}$ is also a derivation tree of $P\xrightarrow{\alpha}_{1}P^{'}$
       \item[inductive case]
@@ -1227,7 +1227,7 @@ which is not want we want. So we prove a weaker version
 	  \inferrule* [left=SumL]{
 	    P_{1}\xrightarrow{\alpha}_{2}P_{1}^{'}
 	  }{
-	    \underbrace{P_{1}+P_{2}}_{P}\xrightarrow{\alpha}_{2}P_{1}^{'}
+	    \underbrace{P_{1}+P_{2}}_{P}\xrightarrow{\alpha}_{2}\underbrace{P_{1}^{'}}_{P^{'}}
 	  }
 	\]
 	for the inductive hypothesis there exists a process $P_{1}^{''}$ such that $P_{1}\xrightarrow{\alpha}_{1}P_{1}^{''}$ and $P_{1}^{'}\equiv_{\alpha}P_{1}^{''}$. So we can reapply the rule $SumL$ and get
@@ -1235,7 +1235,7 @@ which is not want we want. So we prove a weaker version
 	  \inferrule* [left=SumL]{
 	    P_{1}\xrightarrow{\alpha}_{1}P_{1}^{''}
 	  }{
-	    P_{1}+P_{2}\xrightarrow{\alpha}_{1}P_{1}^{''}
+	    \underbrace{P_{1}+P_{2}}_{P}\xrightarrow{\alpha}_{1}\underbrace{P_{1}^{''}}_{P^{''}}
 	  }
 	\]
 	If the rule $R$ is in 
@@ -1308,21 +1308,327 @@ which is not want we want. So we prove a weaker version
 	      \item
 		there exists some $P_{1}$ and some name $w$ such that 
 		\[
-		  P=x(w).P_{1}\; and\; P_{1}\equiv_{\alpha}Q_{1}
+		  P=x(w).P_{1}\; and\; P_{1}\equiv_{\alpha}Q_{1}\{w/y\}
 		\]
 		and so we have
 		\[
 		  \inferrule* [left=EInp]{
 		  }{
-		    x(y).P_{1}\xrightarrow{xz}_{1}P_{1}\{z/y\}
+		    x(w).P_{1}\xrightarrow{x z}_{1}P_{1}\{z/w\}
 		  }
 		\]
 		This is what we want because 
 		\[
-		  P_{1}\equiv_{\alpha}Q_{1}\Rightarrow P_{1}\{z/y\}\equiv_{\alpha}Q_{1}\{z/y\}
+		  P_{1}\equiv_{\alpha}Q_{1}\{w/y\} \Rightarrow P_{1}\{z/w\}\equiv_{\alpha}Q_{1}\{w/y\}\{z/w\}=Q_{1}\{z/y\}
 		\]		
 	    \end{itemize}
 	  \item[Tau]
+	    If $S=Tau$ then there exists a process $Q_{1}$ such that 
+	    \[
+	      Q=\tau.Q_{1}
+	    \]
+	    and $\alpha=\tau$. Since 
+	    \[
+	      P\equiv_{\alpha}\tau.Q_{1}
+	    \]
+	    then for the inversion lemma there exists some $P_{1}$ such that 
+	    \[
+	      P=\tau.P_{1}\; and\; P_{1}\equiv_{\alpha}Q_{1}
+	    \]
+	    and so we have
+	    \[
+	      \inferrule* [left=Tau]{
+	      }{
+		\tau.P_{1}\xrightarrow{\tau}_{1}P_{1}
+	      }
+	    \]
+	  \item[ParL]
+	    If $S=ParL$ then there exists some processes $Q_{1},Q_{2}$ such that 
+	    \[
+	      Q=Q_{1}|Q_{2}
+	    \]
+	    Since 
+	    \[
+	      P\equiv_{\alpha}Q_{1}|Q_{2}
+	    \]
+	    then for the inversion lemma there exists $P_{1},P_{2}$ such that 
+	    \[
+	      P=P_{1}|P_{2}\; and\; P_{1}\equiv_{\alpha}Q_{1}\; and P_{2}\equiv_{\alpha}Q_{2}
+	    \]
+	    and so the last part of the derivation tree of $P\xrightarrow{\alpha}_{2}P^{'}$ looks like this:
+	    \[
+	      \inferrule* [left=Alp]{
+		  P_{1}|P_{2}\equiv_{\alpha}Q_{1}|Q_{2}
+		\\
+		  \inferrule* [left=ParL]{
+		      Q_{1}\xrightarrow{\alpha}_{2}Q_{1}^{'}
+		    \\
+		      bn(\alpha)\cap fn(Q_{2})=\emptyset
+		  }{
+		    Q_{1}|Q_{2}\xrightarrow{\alpha}_{2}Q_{1}^{'}
+		  }
+	      }{
+		\underbrace{P_{1}|P_{2}}_{P}\xrightarrow{\alpha}_{2}\underbrace{Q_{1}^{'}}_{P^{'}}
+	      }
+	    \]
+	    from this hypothesis we can create the following proof tree of $P_{1}\xrightarrow{\alpha}_{2}Q_{1}^{'}$:
+	    \[
+	      \inferrule* [left=Alp]{
+		  P_{1}\equiv_{\alpha}Q_{1}
+		\\
+		  Q_{1}\xrightarrow{\alpha}_{2}Q_{1}^{'}
+	      }{
+		P_{1}\xrightarrow{\alpha}_{2}Q_{1}^{'}
+	      }
+	    \]
+	    this proof tree is smaller than the proof tree of $P_{1}|P_{2}\xrightarrow{\alpha}_{2}Q_{1}^{'}$ so we can apply the inductive hypothesis and get that there exists a process $Q_{1}^{''}$ such that
+	    \[
+	      Q_{1}^{'}\equiv Q_{1}^{''}\; and\; P_{1}\xrightarrow{\alpha}_{1}Q_{1}^{''} 
+	    \]
+	    then we apply again the rule $ParL$ and get 
+	    \[
+	      \inferrule* [left=ParL]{
+		  P_{1}\xrightarrow{\alpha}_{1}Q_{1}^{''} 
+		\\
+		  bn(\alpha) \cap fn(P_{2})=\emptyset
+	      }{
+		\underbrace{P_{1}|P_{2}}_{P}\xrightarrow{\alpha}_{1}\underbrace{Q_{1}^{''}}_{P^{''}}
+	      }
+	    \]
+	    The second premise of the previous instance holds because:
+	    \[
+	      bn(\alpha)\cap fn(Q_{2})=\emptyset\; and\; P_{2}\equiv_{\alpha}Q_{2}\Rightarrow bn(\alpha)\cap fn(P_{2})=\emptyset
+	    \]
+	  \item[ParR, SumL, SumR, EComL, EComR, ClsL, ClsR] 
+	    This cases are similar to the previous.
+	  \item[Res]
+	    If $S=Res$ then there exists some name $z$ and a process $Q_{1}$ such that 
+	    \[
+	      Q=(\nu z)Q_{1}
+	    \]
+	    and $P^{'}=(\nu z)Q_{1}^{'}$. Since 
+	    \[
+	      P\equiv_{\alpha}(\nu z)Q_{1}
+	    \]
+	    then for the inversion lemma we have two cases:
+	    \begin{itemize}
+	      \item 
+		there exists some $P_{1}$ such that 
+		\[
+		  P=(\nu z)P_{1}\; and\; P_{1}\equiv_{\alpha}Q_{1}
+		\]
+		and so the last part of the derivation tree of $P\xrightarrow{\alpha}_{2}P^{'}$ looks like this:
+		\[
+		  \inferrule* [left=Alp]{
+		      (\nu z)P_{1}\equiv_{\alpha}(\nu z)Q_{1}
+		    \\
+		      \inferrule* [left=Res]{
+			  Q_{1}\xrightarrow{\alpha}_{2}Q_{1}^{'}
+			\\
+			  z\notin n(\alpha)
+		      }{
+			(\nu z)Q_{1}\xrightarrow{\alpha}_{2}(\nu z)Q_{1}^{'}
+		      }
+		  }{
+		    (\nu z)P_{1}\xrightarrow{\alpha}_{2}(\nu z)Q_{1}^{'}
+		  }
+		\]
+		from this we create the following proof tree of $P_{1}\xrightarrow{\alpha}_{2}Q_{1}^{'}$:
+		\[
+		  \inferrule* [left=Alp]{
+		      P_{1}\equiv_{\alpha}Q_{1}
+		    \\
+		      Q_{1}\xrightarrow{\alpha}_{2}Q_{1}^{'}
+		  }{
+		    P_{1}\xrightarrow{\alpha}_{2}Q_{1}^{'}
+		  }		
+		\]
+		to which we can apply the inductive hypothesis and get that there exists a process $Q_{1}^{''}$ such that
+		\[
+		  P_{1}\xrightarrow{\alpha}_{1}Q_{1}^{''}\;and\; Q_{1}^{''}\equiv_{\alpha}Q_{1}^{'}
+		\]
+		then we apply the rule $Res$ to get
+		\[
+		      \inferrule* [left=Res]{
+			  P_{1}\xrightarrow{\alpha}_{1}Q_{1}^{''}
+			\\
+			  z\notin n(\alpha)
+		      }{
+			(\nu z)P_{1}\xrightarrow{\alpha}_{1}(\nu z)Q_{1}^{''}
+		      }		 
+		\]
+		this satisfies the thesis of the theorem because  
+		\[
+		  (\nu z)Q_{1}^{''}\equiv(\nu z)Q_{1}^{'}
+		\]
+	      \item
+		there exists some $P_{1}$ such that 
+		\[
+		  P=(\nu y)P_{1}\; and\; P_{1}\{z/y\}\equiv_{\alpha}Q_{1}
+		\]
+		and so the last part of the derivation tree of $P\xrightarrow{\alpha}_{2}P^{'}$ looks like this:
+		\[
+		  \inferrule* [left=Alp]{
+		      (\nu y)P_{1}\equiv_{\alpha}(\nu z)Q_{1}
+		    \\
+		      \inferrule* [left=Res]{
+			  Q_{1}\xrightarrow{\alpha}_{2}Q_{1}^{'}
+			\\
+			  z\notin n(\alpha)
+		      }{
+			(\nu z)Q_{1}\xrightarrow{\alpha}_{2}(\nu z)Q_{1}^{'}
+		      }
+		  }{
+		    (\nu y)P_{1}\xrightarrow{\alpha}_{2}(\nu z)Q_{1}^{'}
+		  }
+		\]
+		from this we create the following proof tree of $P_{1}\{z/y\}\xrightarrow{\alpha}_{2}Q_{1}^{'}$:
+		\[
+		  \inferrule* [left=Alp]{
+		      P_{1}\{z/y\}\equiv_{\alpha}Q_{1}
+		    \\
+		      Q_{1}\xrightarrow{\alpha}_{2}Q_{1}^{'}
+		  }{
+		    P_{1}\{z/y\}\xrightarrow{\alpha}_{2}Q_{1}^{'}
+		  }		
+		\]
+		to which we can apply the inductive hypothesis and get that there exists a process $Q_{1}^{''}$ such that
+		\[
+		  P_{1}\{z/y\}\xrightarrow{\alpha}_{1}Q_{1}^{''}\;and\; Q_{1}^{''}\equiv_{\alpha}Q_{1}^{'}
+		\]
+		then we apply the rule $Res$ and $ResAlp$ to get
+		\[
+		  \inferrule* [left=ResAlp]{
+		      \inferrule* [left=Res]{
+			  P_{1}\{z/y\} \xrightarrow{\alpha}_{1}Q_{1}^{''}
+			\\
+			  z\notin n(\alpha)
+		      }{
+			(\nu z)P_{1}\{z/y\} \xrightarrow{\alpha}_{1}(\nu z)Q_{1}^{''}
+		      }		 
+		  }{
+		    (\nu y)P_{1} \xrightarrow{\alpha}_{1}(\nu z)Q_{1}^{''}
+		  }
+		\]
+		this satisfies the thesis of the theorem because  
+		\[
+		  (\nu z)Q_{1}^{''}\equiv(\nu z)Q_{1}^{'}
+		\]
+	    \end{itemize}
+	  \item[Alp]
+	    we can assume that there are no two consecutive application of the rule $Alp$ because we can merge them thanks to the transitivity of the alpha equivalence.
+	  \item[Opn]
+	    If $S=Opn$ then there exists some names $x,z$ and a process $Q_{1}$ such that 
+	    \[
+	      Q=(\nu z)Q_{1}
+	    \]
+	    and $P^{'}=Q_{1}^{'}$ and $\alpha=\overline{x}(z)$. Since 
+	    \[
+	      P\equiv_{\alpha}(\nu z)Q_{1}
+	    \]
+	    then for the inversion lemma we have two cases:
+	    \begin{itemize}
+	      \item 
+		there exists some $P_{1}$ such that 
+		\[
+		  P=(\nu z)P_{1}\; and\; P_{1}\equiv_{\alpha}Q_{1}
+		\]
+		and so the last part of the derivation tree of $P\xrightarrow{\alpha}_{2}P^{'}$ looks like this:
+		\[
+		  \inferrule* [left=Alp]{
+		      (\nu z)P_{1}\equiv_{\alpha}(\nu z)Q_{1}
+		    \\
+		      \inferrule* [left=Opn]{
+			  Q_{1}\xrightarrow{\overline{x}z}_{2}Q_{1}^{'}
+			\\
+			  z\neq x
+		      }{
+			(\nu z)Q_{1}\xrightarrow{\overline{x}(z)}_{2}Q_{1}^{'}
+		      }
+		  }{
+		    (\nu z)P_{1}\xrightarrow{\overline{x}(z)}_{2}Q_{1}^{'}
+		  }
+		\]
+		from this we create the following proof tree of $P_{1}\xrightarrow{\overline{x}z}_{2}Q_{1}^{'}$:
+		\[
+		  \inferrule* [left=Alp]{
+		      P_{1}\equiv_{\alpha}Q_{1}
+		    \\
+		      Q_{1}\xrightarrow{\overline{x}z}_{2}Q_{1}^{'}
+		  }{
+		    P_{1}\xrightarrow{\overline{x}z}_{2}Q_{1}^{'}
+		  }		
+		\]
+		to which we can apply the inductive hypothesis and get that there exists a process $Q_{1}^{''}$ such that
+		\[
+		  P_{1}\xrightarrow{\overline{x}z}_{1}Q_{1}^{''}\;and\; Q_{1}^{''}\equiv_{\alpha}Q_{1}^{'}
+		\]
+		then we apply the rule $Opn$ to get
+		\[
+		      \inferrule* [left=Opn]{
+			  P_{1}\xrightarrow{\overline{x}z}_{1}Q_{1}^{''}
+			\\
+			  z\neq x
+		      }{
+			(\nu z)P_{1}\xrightarrow{\alpha}_{1}Q_{1}^{''}
+		      }		 
+		\]
+	      \item
+		there exists some $P_{1}$ such that 
+		\[
+		  P=(\nu y)P_{1}\; and\; P_{1}\{z/y\}\equiv_{\alpha}Q_{1}
+		\]
+		and so the last part of the derivation tree of $P\xrightarrow{\alpha}_{2}P^{'}$ looks like this:
+		\[
+		  \inferrule* [left=Alp]{
+		      (\nu y)P_{1}\equiv_{\alpha}(\nu z)Q_{1}
+		    \\
+		      \inferrule* [left=Opn]{
+			  Q_{1}\xrightarrow{\overline{x}z}_{2}Q_{1}^{'}
+			\\
+			  z\neq x
+		      }{
+			(\nu z)Q_{1}\xrightarrow{\overline{x}z}_{2}Q_{1}^{'}
+		      }
+		  }{
+		    (\nu y)P_{1}\xrightarrow{\alpha}_{2}Q_{1}^{'}
+		  }
+		\]
+		from this we create the following proof tree of $P_{1}\{z/y\}\xrightarrow{\alpha}_{2}Q_{1}^{'}$:
+		\[
+		  \inferrule* [left=Alp]{
+		      P_{1}\{z/y\}\equiv_{\alpha}Q_{1}
+		    \\
+		      Q_{1}\xrightarrow{\alpha}_{2}Q_{1}^{'}
+		  }{
+		    P_{1}\{z/y\}\xrightarrow{\alpha}_{2}Q_{1}^{'}
+		  }		
+		\]
+		to which we can apply the inductive hypothesis and get that there exists a process $Q_{1}^{''}$ such that
+		\[
+		  P_{1}\{z/y\}\xrightarrow{\alpha}_{1}Q_{1}^{''}\;and\; Q_{1}^{''}\equiv_{\alpha}Q_{1}^{'}
+		\]
+		then we apply the rule $Opn$ and $OpnAlp$ to get
+		\[
+		  \inferrule* [left=OpnAlp]{
+		      \inferrule* [left=Opn]{
+			  P_{1}\{z/y\} \xrightarrow{\overline{x}z}_{1}Q_{1}^{''}
+			\\
+			  z\neq x
+		      }{
+			(\nu z)P_{1}\{z/y\} \xrightarrow{\overline{x}(z)}_{1}Q_{1}^{''}
+		      }
+		    \\
+		      z\notin n(P)
+		    \\
+		      x\neq y\neq z
+		  }{
+		    (\nu y)P_{1} \xrightarrow{\overline{x}(z)}_{1}Q_{1}^{''}
+		  }
+		\]
+	    \end{itemize}
+	  \item[Cns]
+	    ?
 	\end{description}
     \end{description}
   \end{proof}
@@ -1370,7 +1676,7 @@ which is not want we want. So we prove a weaker version
 \begin{theorem}
   $P\xrightarrow{\alpha}_{1}P^{'}\; \Rightarrow\; P\xrightarrow{\alpha}_{2}P^{'}$
   \begin{proof}
-    The proof can go by induction on the length of the derivation of a transaction, and then both the base case and the inductive case proceed by cases on the last rule used in the derivation. However it is not necessary to show all the details of the proof because the rules in $R_{2}$ are almost the same as the rules in $R_{1}$, the only difference is that in $R_{2}$ we have the rule $Alp$ instead of $ResAlp$. The rule $Alp$ can mimic the rule $ResAlp$ in the following way:
+    The proof can go by induction on the length of the derivation of a transaction, and then both the base case and the inductive case proceed by cases on the last rule used in the derivation. However it is not necessary to show all the details of the proof because the rules in $R_{2}$ are almost the same as the rules in $R_{1}$, the only difference is that in $R_{2}$ we have the rule $Alp$ instead of $ResAlp$ and $OpnAlp$. The rule $Alp$ can mimic the rule $ResAlp$ in the following way:
 	\[
 	  \inferrule *{
 	      (\nu z)P\equiv_{\alpha} (\nu w)P\{w/z\}
@@ -1383,6 +1689,24 @@ which is not want we want. So we prove a weaker version
 	  }{
 	    (\nu z)P\; 
 	      \xrightarrow{xz}\;
+		P^{'}
+	  }
+	\]
+	And the rule $Alp$ can mimic the rule $OpnAlp$ in the following way:
+	\[
+	  \inferrule *{
+	      (\nu z)P\equiv_{\alpha} (\nu w)P\{w/z\}
+	    \\
+	      w\notin n(P)
+	    \\
+	      (\nu w)P\{w/z\}\;
+		\xrightarrow{\overline{x}(w)}\;
+		  P^{'}
+	    \\
+	      x\neq w\neq z
+	  }{
+	    (\nu z)P\; 
+	      \xrightarrow{\overline{x}(w)}\;
 		P^{'}
 	  }
 	\]
@@ -1743,7 +2067,7 @@ which is not want we want. So we prove a weaker version
 			  }
 			\]
 		      \item
-			$P=(\nu y)P_{1}$ for some $P_{1}$ such that $P_{1}\equiv Q_{1}\{y/z\}$. The last part of the derivation tree is 
+			$P=(\nu y)P_{1}$ for some $P_{1}$ such that $P_{1}\{z/y\}\equiv Q_{1}$. The last part of the derivation tree is 
 			\[
 			  \inferrule* [left=Str]{
 			      (\nu y)P_{1}\equiv (\nu z)Q_{1}
@@ -1759,36 +2083,38 @@ which is not want we want. So we prove a weaker version
 			    (\nu y)P_{1}\xrightarrow{\alpha}_{3}(\nu z)Q_{1}^{'}
 			  }
 			\]
-			we use the following fact which we will prove separately:
-			\begin{center}
-			  $y\notin n(P)$ and 
-			  $z\notin n(\alpha)$ and 
-			  $P\xrightarrow{\alpha}_{3}Q$ $\Rightarrow$ $P\{y/z\}\xrightarrow{\alpha}_{3}Q\{y/z\}$
-			\end{center}
-			the first step is this transformation:
+			we create the following proof of $P_{1}\{z/y\}\xrightarrow{\alpha}_{3}Q_{1}^{'}$:
 			\[
-			  \inferrule* [left=Res]{
-			      \inferrule* [left=Str]{
-				  P_{1}\equiv Q_{1}\{y/z\}
-				\\
-				  Q_{1}\{y/z\}\xrightarrow{\alpha}_{3}Q_{1}^{'}\{y/z\}
-			      }{
-				P_{1}\xrightarrow{\alpha}_{3}Q_{1}^{'}\{y/z\}
-			      }
+			  \inferrule* [left=Str]{
+			      P_{1}\{z/y\}\equiv Q_{1}
 			    \\
-			      y\notin n(\alpha)
+			      Q_{1}\xrightarrow{\alpha}_{3}Q_{1}^{'}
 			  }{
-			    (\nu y)P_{1}\xrightarrow{\alpha}_{3}(\nu y)(Q_{1}^{'}\{y/z\})
+			    P_{1}\{z/y\}\xrightarrow{\alpha}_{3}Q_{1}^{'}
 			  }
 			\]
-			then we apply the inductive hypothesis on $P_{1}\xrightarrow{\alpha}_{3}Q_{1}^{'}\{y/z\}$ and get $P_{1}\xrightarrow{\alpha}_{2}Q_{1}^{''}$ where $Q_{1}^{'}\{y/z\}\equiv Q_{1}^{''}$ which implies $(\nu y)(Q_{1}^{'}\{y/z\})\equiv (\nu y)(Q_{1}^{''})$ which in turn implies $(\nu z)Q_{1}^{'}\equiv (\nu y)(Q_{1}^{''})$. The last step is 
+			this proof tree is shorter then the one of $(\nu y)P_{1}\xrightarrow{\alpha}_{3}(\nu z)Q_{1}^{'}$ so we can apply the inductive hypothesis and get that there exists a process $Q_{1}^{''}$ such that 
 			\[
-			  \inferrule* [left=Res]{
-			      P_{1}\xrightarrow{\alpha}_{2}Q_{1}^{''}
-			    \\
-			      y\notin n(\alpha)
+			  P_{1}\{z/y\}\xrightarrow{\alpha}_{2}Q_{1}^{''}\; and\; Q_{1}^{''}\equiv Q_{1}^{'}
+			\]
+			now we can apply the rules $Res$ and $Alp$ to get the desired proof tree:
+			\[
+			  \inferrule* [left=Alp]{
+				(\nu z)P_{1}\{z/y\}\equiv_{\alpha} (\nu y)P_{1}
+			      \\
+				\inferrule* [left=Res]{
+				    P_{1}\{z/y\}
+				      \xrightarrow{\alpha}_{2}
+					Q_{1}^{''}
+				  \\
+				    z\notin(\alpha)
+				  }{
+				    (\nu z)P_{1}\{z/y\}
+				      \xrightarrow{\alpha}_{2}
+					(\nu z)Q_{1}^{''}
+				  }
 			  }{
-			    (\nu y)P_{1}\xrightarrow{\alpha}_{2}(\nu y)Q_{1}^{''}
+			    (\nu y)P_{1}\xrightarrow{\alpha}_{2}(\nu z)Q_{1}^{''}
 			  }
 			\]
                       \end{itemize}
@@ -1882,154 +2208,64 @@ which is not want we want. So we prove a weaker version
 			  }
 			\]
 		      \item
-			$P=(\nu y) P_{1}$ for some $P_{1}$ such that $P_{1}\equiv Q_{1}\{y/z\}$. The last part of the derivation tree is 
+			$P=(\nu y) P_{1}$ for some $P_{1}$ such that $P_{1}\{z/y\}\equiv Q_{1}$. The last part of the derivation tree is 
 			\[
 			  \inferrule* [left=Str]{
 			      (\nu y) P_{1}\equiv (\nu z) Q_{1}
 			    \\
 			      \inferrule* [left=Opn]{
-				  Q_{1} \xrightarrow{\overline{x}z} Q_{1}^{'}
+				  Q_{1} \xrightarrow{\overline{x}z}_{3} Q_{1}^{'}
 				\\
 				  z\neq x
 			      }{
-				(\nu z) Q_{1} \xrightarrow{\overline{x}(z)} Q_{1}^{'}
+				(\nu z) Q_{1} \xrightarrow{\overline{x}(z)}_{3} Q_{1}^{'}
 			      }
 			  }{
-			    (\nu y) P_{1} \xrightarrow{\overline{x}(z)} Q_{1}^{'}
+			    (\nu y) P_{1} \xrightarrow{\overline{x}(z)}_{3} Q_{1}^{'}
 			  }
 			\]
-\begin{center}
-  ?
-\end{center}
-
-% 			the first step is this transformation:
-% 			\[
-% 			  \inferrule* [left=Str]{
-% 			      (\nu y) P_{1}\equiv (\nu y) Q_{1}\{y/z\}
-% 			    \\
-% 			      \inferrule* [left=Str]{
-% 				  (\nu y) Q_{1}\{y/z\}\equiv_{\alpha} (\nu z) Q_{1}
-% 				\\
-% 				  \inferrule* [left=Opn]{
-% 				      Q_{1} \xrightarrow{\overline{x}z} Q_{1}^{'}
-% 				    \\
-% 				      z\neq x
-% 				  }{
-% 				    (\nu z) Q_{1} \xrightarrow{\overline{x}(z)} Q_{1}^{'}
-% 				  }
-% 			      }{
-% 				(\nu y) Q_{1}\{y/z\} \xrightarrow{\overline{x}(z)} Q_{1}^{'}
-% 			      }
-% 			  }{
-% 			    (\nu y) P_{1} \xrightarrow{\overline{x}(z)} Q_{1}^{'}
-% 			  }
-% 			\]
-% 			\[
-% 			  \inferrule* [left=Res]{
-% 			      \inferrule* [left=Str]{
-% 				  P_{1}\equiv Q_{1}\{y/z\}
-% 				\\
-% 				  Q_{1}\{y/z\}\xrightarrow{\overline{x}z}_{3}Q_{1}^{'}\{y/z\}
-% 			      }{
-% 				P_{1}\xrightarrow{\overline{x}z}_{3}Q_{1}^{'}
-% 			      }
-% 			    \\
-% 			      z\neq x
-% 			  }{
-% 			    (\nu z)P_{1}\xrightarrow{\overline{x}z}_{3}Q_{1}^{'}
-% 			  }
-% 			\]
-% 			then we apply the inductive hypothesis on $P_{1}\xrightarrow{\overline{x}z}_{3}Q_{1}^{'}$ and get $P_{1}\xrightarrow{\overline{x}z}_{2}Q_{1}^{''}$ where $Q_{1}^{'}\equiv Q_{1}^{''}$. The last step is 
-% 			\[
-% 			  \inferrule* [left=Res]{
-% 			      P_{1}\xrightarrow{\overline{x}z}_{2}Q_{1}^{''}
-% 			    \\
-% 			      z\neq x
-% 			  }{
-% 			    (\nu z)P_{1}\xrightarrow{\overline{x}z}_{2}Q_{1}^{''}
-% 			  }
-% 			\]
+			we can create the following proof of $P_{1}\{z/y\} \xrightarrow{\overline{x}z}_{3} Q_{1}^{'}$:
+			\[
+			  \inferrule* [left=Str]{
+			      P_{1}\{z/y\}\equiv Q_{1}
+			    \\
+			      Q_{1} 
+				\xrightarrow{\overline{x}z}_{3} 
+				  Q_{1}^{'}
+			  }{
+			    P_{1}\{z/y\} 
+			      \xrightarrow{\overline{x}z}_{3} 
+				Q_{1}^{'}
+			  }
+			\]
+			this proof tree is shorter then the one of $(\nu y) P_{1} \xrightarrow{\overline{x}(z)}_{3} Q_{1}^{'}$ so we can apply the inductive hypothesis and get that there exists a process $Q_{1}^{''}$ such that
+			\[
+			  Q_{1}^{''}\equiv Q_{1}^{'}\; and\;
+			    P_{1}\{z/y\} 
+			      \xrightarrow{\overline{x}z}_{2} 
+				Q_{1}^{''} 
+			\]
+			so now we only need to apply the rules $Opn$ and $Alp$:
+			\[
+			  \inferrule* [left=Alp]{
+			      (\nu y) P_{1}\equiv_{\alpha} (\nu z) P_{1}\{z/y\}
+			    \\
+			      \inferrule* [left=Opn]{
+				  P_{1}\{z/y\} \xrightarrow{\overline{x}z}_{2} Q_{1}^{''}
+				\\
+				  z\neq x
+			      }{
+				(\nu z) P_{1}\{z/y\} \xrightarrow{\overline{x}(z)}_{3} Q_{1}^{''}
+			      }
+			  }{
+			    (\nu y) P_{1} \xrightarrow{\overline{x}(z)}_{2} Q_{1}^{''}
+			  }
+			\]
 		  \end{itemize}
 		\end{description}
 	    \end{itemize}	    
 	\end{description}
     \end{description}
-    To complete the proof we have to prove this:
-    \begin{center}
-      $y\notin n(P)$ and 
-      $z\notin n(\alpha)$ and 
-      $P\xrightarrow{\alpha}_{3}Q$ $\Rightarrow$ $P\{y/z\}\xrightarrow{\alpha}_{3}Q\{y/z\}$
-    \end{center}
-    the proof goes by induction on the length of the derivation of $P\xrightarrow{\alpha}_{3}Q$ and then it goes by cases on the last rule of the derivation:
-%     \begin{description}
-%       \item[base case]:
-% 	\begin{description}
-% 	  \item[]
-% 
-% 	  \bf{Out}
-% 	  \begin{tabular}{c}
-% 	    \hline
-% 	    $\overline{x}y.P \xrightarrow{\overline{x}y} P$
-% 	  \end{tabular}
-% 	  \bf{EInp}
-% 	  \begin{tabular}{c}
-% 	    \hline
-% 	    $x(z).P \xrightarrow{xy} P\{y/z\}$
-% 	  \end{tabular}
-% 	  \bf{Tau}
-% 	  \begin{tabular}{c}
-% 	    \hline
-% 	    $\tau.P \xrightarrow{\tau} P$
-% 	  \end{tabular}
-% 
-% 	\end{description}
-%       \item[inductive case]:
-% 	\begin{description}
-% 	  \item 
-% 	  \bf{Par}
-% 	  \begin{tabular}{c}
-% 	    $P \xrightarrow{\alpha} P^{'}\;\; bn(\alpha)\cap fn(Q)=\emptyset$\\
-% 	    \hline
-% 	    $P|Q \xrightarrow{\alpha} P^{'}|Q$
-% 	  \end{tabular}
-% 
-% 	  \bf{Sum}
-% 	  \begin{tabular}{c}
-% 	    $P \xrightarrow{\alpha} P^{'}$\\
-% 	    \hline
-% 	    $P+Q \xrightarrow{\alpha} P^{'}$
-% 	  \end{tabular}
-% 
-% 	    \bf{ECom}
-% 	    \begin{tabular}{c}
-% 	      $P \xrightarrow{xy} P^{'}\;\; Q\xrightarrow{\overline{x}y} Q^{'}$\\
-% 	      \hline
-% 	      $P|Q \xrightarrow{\tau} P^{'}|Q^{'}$
-% 	    \end{tabular}
-% 
-% 	  \bf{Res}
-% 	  \begin{tabular}{c}
-% 	    $P \xrightarrow{\alpha} P^{'}\;\; z\notin n(\alpha)$\\
-% 	    \hline
-% 	    $(\nu z) P \xrightarrow{\alpha} (\nu z) P^{'}$
-% 	  \end{tabular}
-% 
-% 
-% 	  \bf{Opn}
-% 	  \begin{tabular}{c}
-% 	    $P \xrightarrow{\overline{x}z} P^{'}\;\; z\neq x$\\
-% 	    \hline
-% 	    $(\nu z) P \xrightarrow{\overline{x}(z)} P^{'}$
-% 	  \end{tabular}
-% 
-% 	  \bf{Str}
-% 	  \begin{tabular}{c}
-% 	    $P\equiv P^{'}\;\; P\xrightarrow{\alpha} Q\;\; Q\equiv Q^{'}$\\
-% 	    \hline
-% 	    $P^{'} \xrightarrow{\alpha} Q^{'}$
-% 	  \end{tabular}
-% 	\end{description}
-%     \end{description}
   \end{proof}
 \end{theorem}
 
