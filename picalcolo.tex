@@ -32,22 +32,23 @@ and they have the following intuitive meaning:
   \item[$P+Q$] 
     is the sum, this process can enact either $P$ or $Q$
   \item[$P|Q$] 
-    is the parallel composition, $P$ and $Q$ can execute concurrently and also syncronize with each other
+    is the parallel composition, $P$ and $Q$ can execute concurrently and also synchronize with each other
   \item[$(\nu z) P$] 
     is the scope restriction. This process behave as $P$ but the name $z$ is local. This process cannot use the name $z$ to interact with other process but it can for communication within it.
   \item[$A(x_{1}, \cdots, x_{n}\; | \;y_{1}, \cdots, y_{m})$] 
-    is an identifier whose arity is $n$. Every identifier has a definition
+    is an identifier. Every identifier has a definition
     \begin{center}
       $A(x_{1}, \cdots, x_{n}\; | \;y_{1}, \cdots, y_{m})=P$
     \end{center}
-    where the $x_{i}$ and the $y_{i}$ must be pairwise disjoint.
+    Of course it is preferable to write the $x_{i}$s so as they are pairwise disjoint, and the same holds for the $y_{i}$s. However it can be the case that $x_{i}=y_{j}$ for some pairs of indexes. The intuition is that we can substitute for some of the $x_{i}$s and change some $y_{i}$s in $P$ to get a $\pi$ calculus process. 
 \end{description}
 
 To resolve ambiguity we can use parentheses and observe the conventions that prefixing and restriction bind more tightly than composition and prefixing binds more tightly than sum. 
 
 \begin{definition} \index{binder} \index{bind} \index{name occurrence! bound} \index{scope}
-  We say that the input prefix $x(z).P$ \emph{binds} $z$ in $P$ or is a \emph{binder} for $z$ in $P$. We also say that $P$ is the \emph{scope} of the binder and that any occurrence of $z$ in $P$ are \emph{bound} by the binder. Also the restriction operator $(\nu z)P$ is a binder for $z$ in $P$.
+  We say that the input prefix $x(z).P$ \emph{binds} $z$ in $P$ or is a \emph{binder} for $z$ in $P$. We also say that $P$ is the \emph{scope} of the binder and that any occurrence of $z$ in $P$ are \emph{bound} by the binder. Also the restriction operator $(\nu z)P$ is a binder for $z$ in $P$. 
 \end{definition}
+
 
 \begin{definition} \index{$bn$}
   $bn(P)$ is the set of names that have a bound occurrence in $P$ and is defined as $B(P, \emptyset)$, where $B(P, I)$, with $I$ a set of process constants, is defined in table \ref{table:B}
@@ -134,15 +135,26 @@ In a definition
 the $x_{1}, \cdots, x_{n}$ are all the free names contained in $P$ and the $y_{1}, \cdots, y_{m}$ are all the bound names in $P$, specifically 
 \[
   fn(P) \subseteq\{x_{1}, \cdots, x_{n}\}
-\]
-and
-\[
+  \;\;\mbox{and}\;\;
   bn(P) \subseteq\{y_{1}, \cdots, y_{m}\}
 \]
+If we look at the definitions of $bn$ and of $fn$ we notice that if $P$ contains another identifier whose definition is:
+\[
+  B(z_{1},\cdots, z_{h}|w_{1},\cdots, w_{k})=Q
+\] 
+then we have 
+\[
+  fn(Q)\subseteq\{x_{1}, \cdots, x_{n}\}
+\]
+
+
 
 
 \begin{definition}\index{syntactic substitution}
-  $P\{b/a\}$ is the syntactic substitution of name $b$ for a different name $a$ inside a $\pi$ calculus process, and it consists in replacing every free occurrences of $a$ with $b$. If $b$ is a bound name in $P$, in order to avoid name capture we perform an appropriate $\alpha$ conversion. $P\{b/a\}$ is defined in table \ref{syntacticsubstitution}
+  $P\{b/a\}$ is the syntactic substitution of name $b$ for a different name $a$ inside a $\pi$ calculus process, and it consists in replacing every free occurrences of $a$ with $b$. If $b$ is a bound name in $P$, in order to avoid name capture we perform an appropriate $\alpha$ conversion. $P\{b/a\}$ is defined in table \ref{syntacticsubstitution}. There is the following short notation
+  \[
+    \{\tilde{x}/\tilde{y}\}\mbox{ means } \{x_{1}/y_{1}, \cdots, x_{n}/y_{n}\}
+  \]
 \end{definition}
 
   \begin{table}
@@ -200,6 +212,72 @@ and
   \end{table}
 
 
+\begin{definition}
+  A \emph{change of bound names} in a process $P$ is the replacement of a subterm $x(z).Q$ of $P$ by $x(w).Q\{w/z\}$ or the replacement of a subterm $(\nu z)Q$ of $P$ by $(\nu w)Q\{w/z\}$ where in each case $w$ does not occur in $Q$. If a name $x$ appear bound in a process $P$ and a name $y$ does not appear at all in $P$, we write 
+  \[
+    P\{x/y\}_{bound}
+  \]
+  for the process $P$ in which for every binder of $x$, we replace $x$ by $y$.
+%   In formulas the definition is in tabl \ref{changeofboundnames}
+\end{definition}
+
+
+%   \begin{table}
+%     \begin{tabular}{l}
+%       \hline\\
+% 	$0\{b/a\}_{bound}\; =\; 0$
+%       \\\\
+% 	$(\overline{x}y.Q)\{b/a\}_{bound}\; =\; \overline{x}y.Q\{b/a\}_{bound}$
+%       \\\\
+% 	$(x(y).Q)\{b/a\}\; =\; x\{b/a\}(y).Q\{b/a\}$ if $y\neq a$ and $y\neq b$
+%       \\\\
+% 	$(x(a).Q)\{b/a\}\; =\; x\{b/a\}(a).Q$
+%       \\\\
+% 	$(x(b).Q)\{b/a\}\; =\; x\{b/a\}(c).((Q\{c/b\})\{b/a\})$ where $c\notin n(Q)$
+%       \\\\
+% 	$(\tau.Q)\{b/a\}\; =\; \tau.Q\{b/a\}$
+%       \\\\
+% 	if $a\in \{x_{1}, \cdots, x_{n}\}$ then
+%       \\
+% 	$(A(x_{1}, \cdots, x_{n}\; | \;y_{1}, \cdots, y_{m}))\{b/a\}=$
+%       \\
+% 	$\;\;\;\;\;\left\{
+% 	  \begin{array}{ll}
+% 		A(x_{1}\{b/a\}, \cdots, x_{n}\{b/a\}\; | \;y_{1}, \cdots, y_{m})
+% 	      &
+% 		if\; b\notin \{y_{1}, \cdots, y_{m}\}
+% 	    \\
+% 		A(x_{1}\{b/a\}, \cdots, x_{n}\{b/a\}\; | \;y_{1}, \cdots, y_{i-1},c,y_{i+1},\cdots, y_{m})
+% 	      &
+% 		if\; b = y_{i}
+% 	    \\
+% 	        \;\;\;\;where\; c\; is\; fresh
+% 	      &
+% 	  \end{array}\right.$
+%       \\\\
+% 	if $a\notin \{x_{1}, \cdots, x_{n}\}$ then
+%       \\
+% 	$(A(x_{1}, \cdots, x_{n}\; | \;y_{1}, \cdots, y_{m}))\{b/a\}=A(x_{1}, \cdots, x_{n}\; | \;y_{1}, \cdots, y_{m})$
+%       \\\\
+% 	$(Q+R)\{b/a\}\; =\; Q\{b/a\} + R\{b/a\}$
+%       \\\\
+% 	$(Q|R)\{b/a\}\; =\; Q\{b/a\} | R\{b/a\}$
+%       \\\\
+% 	$((\nu y)Q)\{b/a\}\; =\;(\nu y)Q\{b/a\}$ if $y\neq a$ and $y\neq b$
+%       \\\\
+% 	$((\nu a)Q)\{b/a\}\; =\;(\nu a)Q$
+%       \\\\
+% 	$((\nu b)Q)\{b/a\}\; =\;(\nu c)((Q\{c/b\})\{b/a\})$ where $c\notin n(Q)$ if $a\in fn(Q)$ 
+%       \\\\
+% 	$((\nu b)Q)\{b/a\}\; =\;(\nu b)Q$ if $a\notin fn(Q)$
+%       \\\hline
+%     \end{tabular}
+%     \caption{Change of a bound name}
+%     \label{changeofboundnames}
+%   \end{table}
+
+
+
 
 \section{Operational Semantic(without structural congruence)}
 \subsection{Early operational semantic(without structural congruence)}
@@ -229,8 +307,9 @@ In the following section we present the early semantic without structural congru
 \end{center}
 there is no substitution, instead the substitution occurs at an early point in the inference of this translation, namely during the inference of the input action. 
 
+
 \begin{definition}\index{transition relation! early! without structural congruence}
-  The \emph{early transition relation} $\rightarrow\subseteq \mathbb{P}\times \mathbb{A} \times \mathbb{P}$ is the smallest relation induced by the rules in table \ref{transitionrelationearlywithoutstructuralcongruence}.
+  The \emph{early transition relation} $\rightarrow\subseteq \mathbb{P}\times \mathbb{A} \times \mathbb{P}$ is the smallest relation induced by the rules in table \ref{transitionrelationearlywithoutstructuralcongruence}. Where with $\tilde{x}$ we mean a sequence of names $x_{1}, \cdots, x_{n}$.
 
   \begin{table}
     \begin{tabular}{ll}  
@@ -329,11 +408,11 @@ there is no substitution, instead the substitution occurs at an early point in t
 	      $\tau.P \xrightarrow{\tau} P$
 	  \end{tabular}
 	  &
-	  \bf{Cns}
+	  \bf{CnsAlp}
 	  \begin{tabular}{c}
-	      $A(\tilde{x}) \stackrel{def}{=} P\; P\{\tilde{y}/\tilde{x}\} \xrightarrow{\alpha} P^{'}$
+	      $A(\tilde{x}|\tilde{y}) \stackrel{def}{=} P\; P\{\tilde{w}/\tilde{x}\}\{\tilde{z}/\tilde{y}\}_{bound} \xrightarrow{\alpha} P^{'}$
 	    \\\hline
-	      $A(\tilde{y}) \xrightarrow{\alpha} P^{'}$
+	      $A(\tilde{w}|\tilde{z}) \xrightarrow{\alpha} P^{'}$
 	  \end{tabular}
       \\\\
 	  \bf{Opn}
@@ -488,7 +567,7 @@ In this case the set of actions $\mathbb{A}$ contains
 
 
 \begin{definition}\index{transition relation! pi! late! without structural congruence}
-  The \emph{late transition relation without structural congruence} $\rightarrow\subseteq \mathbb{P}\times \mathbb{A} \times \mathbb{P}$ is the smallest relation induced by the rules in table \ref{transitionrelationpilatewithoutstructuralcongruence}.
+  The \emph{late transition relation without structural congruence} $\rightarrow\subseteq \mathbb{P}\times \mathbb{A} \times \mathbb{P}$ is the smallest relation induced by the rules in table \ref{transitionrelationpilatewithoutstructuralcongruence}. TUTTE LE SEMANTICHE LATE DEL PI CALCOLO SONO DA AGGIORNARE!!!! !!! !! !
   \begin{table}
     \begin{tabular}{ll}
       \hline\\
@@ -602,35 +681,80 @@ In this case the set of actions $\mathbb{A}$ contains
 
 Structural congruences are a set of equations defining equality and congruence relations on process. They can be used in combination with an SOS semantic for languages. In some cases structural congruences help simplifying the SOS rules: for example they can capture inherent properties of composition operators(e.g. commutativity, associativity and zero element). Also, in process calculi, structural congruences let processes interact even in case they are not adjacent in the syntax. There is a possible trade off between what to include in the structural congruence and what to include in the transition rules: for example in the case of the commutativity of the sum operator. It is worth noticing that in most process calculi every structurally congruent processes should never be distinguished and thus any semantic must assign them the same behaviour.
 
-\begin{definition}
-  A \emph{change of bound names} in a process $P$ is the replacement of a subterm $x(z).Q$ of $P$ by $x(w).Q\{w/z\}$ or the replacement of a subterm $(\nu z)Q$ of $P$ by $(\nu w)Q\{w/z\}$ where in each case $w$ does not occur in $Q$.
-\end{definition}
 
 \begin{definition}
   Processes $P$ and $Q$ are \emph{$\alpha$ convertible} if $Q$ can be obtained from $P$ by a finite number of changes of bound names. If $P$ and $Q$ are $\alpha$ convertible we write $P\equiv_{\alpha}Q$
 \end{definition}
 
-\begin{lemma}{\emph{inversion lemma}}
-  In the proof of equivalence of the semantics in the next section we need this lemma of inversion of the $\alpha$ conversion relation.
-  \begin{itemize}
-    \item 
-      If $P\equiv_{\alpha} Q$ then $P$ and $Q$ have the same operator at the top level. 
+In the proof of equivalence of the semantics in the next section we need the following lemmas
+
+\begin{lemma}
+  :\begin{itemize}
     \item
       If $P\equiv_{\alpha} \tau.Q$ then $P=\tau.P_{1}$ for some $P_{1}$ such that $P_{1}\equiv_{\alpha}Q$
     \item
       If $P\equiv_{\alpha} \overline{x}y.Q$ then $P=\overline{x}y.P_{1}$ for some $P_{1}$ such that $P_{1}\equiv_{\alpha}Q$
     \item
-      If $P\equiv_{\alpha} x(y).Q$ then $P=x(z).P_{1}$ for some $P_{1}$ such that $P_{1}\{z/y\}\equiv_{\alpha}Q$, or $P=x(y).P_{1}$ for some $P_{1}$ such that $P_{1}\equiv_{\alpha}Q$.
+      If $P\equiv_{\alpha} x(y).Q$ then one and only one of the following cases holds:
+      \begin{itemize}
+	\item 
+	  $P=x(z).P_{1}$ for some $P_{1}$ such that $P_{1}\{z/y\}\equiv_{\alpha}Q$
+	\item
+	  $P=x(y).P_{1}$ for some $P_{1}$ such that $P_{1}\equiv_{\alpha}Q$
+      \end{itemize}
     \item
       If $P\equiv_{\alpha} Q_{1}+Q_{2}$ then $P=P_{1}+P_{2}$ for some $P_{1}$ and $P_{2}$ such that $P_{1}\equiv_{\alpha}Q_{1}$ and $P_{2}\equiv_{\alpha}Q_{2}$.
     \item 
       If $P\equiv_{\alpha} Q_{1}|Q_{2}$ then $P=P_{1}|P_{2}$ for some $P_{1}$ and $P_{2}$ such that $P_{1}\equiv_{\alpha}Q_{1}$ and $P_{2}\equiv_{\alpha}Q_{2}$.
     \item 
-      If $P\equiv_{\alpha} (\nu y)Q$ then $P=(\nu z)P_{1}$ such that $P_{1}\{z/y\}\equiv_{\alpha}Q$, or $P=(\nu y).P_{1}$ for some $P_{1}$ such that $P_{1}\equiv_{\alpha}Q$.
+      If $P\equiv_{\alpha} (\nu y)Q$ then one and only one of the following cases holds:
+      \begin{itemize}
+	\item
+	  $P=(\nu z)P_{1}$ such that $P_{1}\{z/y\}\equiv_{\alpha}Q$
+	\item
+	  $P=(\nu y).P_{1}$ for some $P_{1}$ such that $P_{1}\equiv_{\alpha}Q$
+      \end{itemize}
+    \item 
+      If $P\equiv_{\alpha} A(\tilde{x}|\tilde{y})$ then ??? ?? ?
   \end{itemize}
-
+  \begin{proof}
+    
+  \end{proof}
 \end{lemma}
 
+\begin{lemma}
+  E' FALSO!!!!! !!!! !!! !! !:\begin{itemize}
+    \item
+      If $P\equiv \tau.Q$ then $P=\tau.P_{1}$ for some $P_{1}$ such that $P_{1}\equiv Q$
+    \item
+      If $P\equiv \overline{x}y.Q$ then $P=\overline{x}y.P_{1}$ for some $P_{1}$ such that $P_{1}\equiv Q$
+    \item
+      If $P\equiv x(y).Q$ then one and only one of the following cases holds:
+      \begin{itemize}
+	\item 
+	  $P=x(z).P_{1}$ for some $P_{1}$ such that $P_{1}\{z/y\}\equiv Q$
+	\item
+	  $P=x(y).P_{1}$ for some $P_{1}$ such that $P_{1}\equiv Q$
+      \end{itemize}
+    \item
+      If $P\equiv Q_{1}+Q_{2}$ then $P=P_{1}+P_{2}$ for some $P_{1}$ and $P_{2}$ such that $P_{1}\equiv Q_{1}$ and $P_{2}\equiv Q_{2}$.
+    \item 
+      If $P\equiv Q_{1}|Q_{2}$ then $P=P_{1}|P_{2}$ for some $P_{1}$ and $P_{2}$ such that $P_{1}\equiv Q_{1}$ and $P_{2}\equiv Q_{2}$.
+    \item 
+      If $P\equiv (\nu y)Q$ then one and only one of the following cases holds:
+      \begin{itemize}
+        \item 
+	  $P=(\nu z)P_{1}$ such that $P_{1}\{z/y\}\equiv Q$
+	\item
+	  $P=(\nu y).P_{1}$ for some $P_{1}$ such that $P_{1}\equiv Q$
+      \end{itemize}
+    \item 
+      If $P\equiv A(\tilde{x}|\tilde{y})$ then ??? ?? ?
+  \end{itemize}
+  \begin{proof}
+    
+  \end{proof}
+\end{lemma}
 
 
 \begin{definition}\index{context}
@@ -690,7 +814,7 @@ Structural congruences are a set of equations defining equality and congruence r
       \\\\
 	\multicolumn{3}{l}{unfolding law:}
       \\
-	SC-IDE&$A(\tilde{y})\equiv P\{\tilde{y}/\tilde{x}\}$&if $A(\tilde{x})\stackrel{def}{=}P$
+	SC-IDE&$A(\tilde{w}|\tilde{y})\equiv P\{\tilde{w}/\tilde{x}\}$&if $A(\tilde{x}|\tilde{y})\stackrel{def}{=}P$
       \\\hline
     \end{tabular}
     \caption{Structural congruence axioms}
@@ -701,19 +825,10 @@ Structural congruences are a set of equations defining equality and congruence r
 We can make some clarification on the axioms of the structural congruence:
 \begin{description}
   \item[$unfolding$] 
-    this just helps replace an identifier by its definition, with the appropriate parameter instantiation. The alternative is to use an appropriate SOS rule: 
-    \begin{center}
-	  \bf{Cns}
-	  \begin{tabular}{c}
-	      $A(\tilde{x}) \stackrel{def}{=} P\; P\{\tilde{y}/\tilde{x}\} \xrightarrow{\alpha} P^{'}$
-	    \\\hline
-	      $A(\tilde{y}) \xrightarrow{\alpha} P^{'}$
-	  \end{tabular}
-    \end{center}
+    this just helps replace an identifier by its definition, with the appropriate parameter instantiation. The alternative is to use the rule $Cns$ in table \ref{transitionrelationearlywithoutstructuralcongruence}.
   \item[$\alpha\; conversion$]
-    is the $\alpha$ conversion, i.e., the choice of bound names, it identifies agents like $x(y).\overline{z}y$ and $x(w).\overline{z}w$. In the semantic of pi calculus we can use the structural congruence with the rule SC-ALP or the we can embed the $\alpha$ conversion in the SOS rules. 
-    In the early case the rule for input takes care of $\alpha$ conversion, whether in the late case the rule for communication is in charge for $\alpha$ conversion.
-    But this works only for one binder: the input prefix. 
+    is the $\alpha$ conversion, i.e., the choice of bound names, it identifies agents like $x(y).\overline{z}y$ and $x(w).\overline{z}w$. In the semantic of $\pi$ calculus we can use the structural congruence with the rule SC-ALP or we can embed the $\alpha$ conversion in the SOS rules. 
+    In the early case, the rule for input and the rules $ResAlp, OpnAlp, Cns$ take care of $\alpha$ conversion, whether in the late case the rule for communication and the rules is $ResAlp, OpnAlp, Cns$ are in charge for $\alpha$ conversion.
   \item[$abelian\; monoidal\; properties\; of\; some\; operators$]
     We can deal with associativity and commutativity properties of sum and parallel composition by using SOS rules or by axiom of the structural congruence. For example the commutativity of the sum can be expressed by the following two rules:
     \begin{center}
@@ -750,10 +865,9 @@ We can make some clarification on the axioms of the structural congruence:
       \end{tabular}
     \end{center}
     and the rule $Str$
-  \item[$scope\; extension\; laws$]
-    We can use this scope extension laws or the rules $Opn$ and $Cls$ to deal with the scope extension.
+  \item[$scope\; extension$]
+    We can use the scope extension laws in table \ref{structuralcongrunce} or the rules $Opn$ and $Cls$ in table \ref{transitionrelationearlywithoutstructuralcongruence} to deal with the scope extension.
 \end{description}
-
 
 
 
@@ -858,9 +972,9 @@ In this subsection we introduce the early operational semantic for $\pi$ calculu
       \\\\
 	  \bf{Cns}
 	  \begin{tabular}{c}
-	      $A(\tilde{x}) \stackrel{def}{=} P\; P\{\tilde{y}/\tilde{x}\} \xrightarrow{\alpha} P^{'}$
+	      $A(\tilde{x}|\tilde{y}) \stackrel{def}{=} P\; P\{\tilde{w}/\tilde{x}\} \xrightarrow{\alpha} P^{'}$
 	    \\\hline
-	      $A(\tilde{y}) \xrightarrow{\alpha} P^{'}$
+	      $A(\tilde{w}|\tilde{y}) \xrightarrow{\alpha} P^{'}$
 	  \end{tabular}
 	&
 	  \bf{Opn}
