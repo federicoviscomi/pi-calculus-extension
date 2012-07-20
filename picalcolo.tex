@@ -763,7 +763,7 @@ Structural congruences are a set of equations defining equality and congruence r
 	    P\{\tilde{w}/\tilde{x}\}\equiv_{\alpha}A(\tilde{w}|\tilde{y})
 	  }$
       \\\\
-	  $\inferrule*[left=AlpRes1]{
+	  $\inferrule*[left=AlpInp1]{
 	      P\equiv_{\alpha}Q\{z/y\}
 	  }{
 	    x(y).P\equiv_{\alpha}x(z).Q
@@ -887,7 +887,8 @@ In the proof of equivalence of the semantics in the next section we need the fol
 ha senso chiamarlo lemma di invesione? Altrimenti come lo chiamo? lemma delle forme canoniche?
 
 \begin{lemma}
-  :\begin{itemize}
+  Inversion lemma for $\alpha$ equivalence
+  \begin{itemize}
     \item
       If $P\equiv_{\alpha} \tau.Q$ then $P=\tau.P_{1}$ for some $P_{1}$ such that $P_{1}\equiv_{\alpha}Q$
     \item
@@ -919,8 +920,52 @@ ha senso chiamarlo lemma di invesione? Altrimenti come lo chiamo? lemma delle fo
       \]
       then $P\equiv_{\alpha}Q$
   \end{itemize}
-  \begin{proof}
-    
+  \begin{proof}:
+   \begin{itemize}
+     \item
+      We prove 
+      \begin{center}
+	$P\equiv_{\alpha} \tau.Q$ then $P=\tau.P_{1}$ for some $P_{1}$ such that $P_{1}\equiv_{\alpha}Q$
+      \end{center}
+      by induction on the proof tree of $P\equiv_{\alpha} \tau.Q$ and then by cases on the last rule of the tree
+      \begin{description}
+        \item[base case]
+	  if the proof tree has length one then the only rule used can be $Ref$ and this implies $P=Q$
+        \item[inductive case]
+	  the proof proceed by cases on the last rule used in the proof tree
+	  \begin{description}
+	    \item[$AlpSim$] 
+	  \end{description}
+      \end{description}
+    \item
+      If $P\equiv_{\alpha} \overline{x}y.Q$ then $P=\overline{x}y.P_{1}$ for some $P_{1}$ such that $P_{1}\equiv_{\alpha}Q$
+    \item
+      If $P\equiv_{\alpha} x(y).Q$ then one and only one of the following cases holds:
+      \begin{itemize}
+	\item 
+	  $P=x(z).P_{1}$ for some $P_{1}$ such that $P_{1}\{z/y\}\equiv_{\alpha}Q$
+	\item
+	  $P=x(y).P_{1}$ for some $P_{1}$ such that $P_{1}\equiv_{\alpha}Q$
+      \end{itemize}
+    \item
+      If $P\equiv_{\alpha} Q_{1}+Q_{2}$ then $P=P_{1}+P_{2}$ for some $P_{1}$ and $P_{2}$ such that $P_{1}\equiv_{\alpha}Q_{1}$ and $P_{2}\equiv_{\alpha}Q_{2}$.
+    \item 
+      If $P\equiv_{\alpha} Q_{1}|Q_{2}$ then $P=P_{1}|P_{2}$ for some $P_{1}$ and $P_{2}$ such that $P_{1}\equiv_{\alpha}Q_{1}$ and $P_{2}\equiv_{\alpha}Q_{2}$.
+    \item 
+      If $P\equiv_{\alpha} (\nu y)Q$ then one and only one of the following cases holds:
+      \begin{itemize}
+	\item
+	  $P=(\nu z)P_{1}$ such that $P_{1}\{z/y\}\equiv_{\alpha}Q$
+	\item
+	  $P=(\nu y).P_{1}$ for some $P_{1}$ such that $P_{1}\equiv_{\alpha}Q$
+      \end{itemize}
+    \item 
+      If $P\equiv_{\alpha} A(\tilde{x}|\tilde{y})$ where 
+      \[
+	A(\tilde{x}|\tilde{y}) \stackrel{def}{=} Q
+      \]
+      then $P\equiv_{\alpha}Q$
+  \end{itemize}  
   \end{proof}
 \end{lemma}
 
@@ -1421,7 +1466,7 @@ In the following section we will need:
     \end{description}
   \end{proof}
 \end{lemma}
-DOVE LO USIAMO? SERVE DAVVERO?
+DOVE LO USO? SERVE DAVVERO?
 
 prima devo capire se serve e dove, poi cerco di dimostrarlo
 
@@ -1917,43 +1962,6 @@ which is not want we want. So we prove a weaker version
 \end{theorem}
 
 
-% but this is also false because 
-% \[
-%   \inferrule* [left=Alp]{
-%       (\nu y)\overline{x}y.0 \equiv_{\alpha} (\nu w)\overline{x}w.0
-%     \\
-%       \inferrule* [left=Opn]{
-% 	  \inferrule* [left=Out]{
-% 	  }{
-% 	    \overline{x}w.0\xrightarrow{\overline{x}w}_{2}0
-% 	  }
-% 	\\
-% 	  w\neq x
-%       }{
-% 	(\nu w)\overline{x}w.0\xrightarrow{\overline{x}(w)}_{2}0
-%       }
-%   }{
-%     (\nu y)\overline{x}y.0\xrightarrow{\overline{x}(w)}_{2}0
-%   }
-% \]
-% Let us try to prove 
-% \[
-%   (\nu y)\overline{x}y.0\xrightarrow{\overline{x}(w)}_{1}[0]_{\equiv_{\alpha}}
-% \]
-% where $[0]_{\equiv_{\alpha}}$ stands for any process $\alpha$ equivalent to $0$(which is only $0$ itself). The head of the transition has a restriction at the top level, so the only rules applicable are 
-% \begin{description}
-%   \item[Res]
-%     we cannot apply this rule because the body of the transition is $0$ and has no restriction at the top level. Even if we search for a proof of
-%     \[
-%       (\nu y)\overline{x}y.0\xrightarrow{\overline{x}(w)}_{1}(\nu y)0
-%     \]
-%     if we apply the rule $Res$ the premise is $\overline{x}y.0\xrightarrow{\overline{x}(w)}_{1}0$, now the top level is an output prefixing and so the only rule applicable is $Out$ which yields to a different transition $\overline{x}y.0\xrightarrow{\overline{x}y}_{1}0$.
-%   \item[ResAlp]
-%     we cannot apply this rule because it has an input as action whether we want to prove a transition with a bound output as action
-%   \item[Opn]
-%     this rule does not fit because the restricted name is also the bound output object, whether in the transition this does not hold.
-% \end{description}
-
 
 \begin{theorem}
   $P\xrightarrow{\alpha}_{1}P^{'}\; \Rightarrow\; P\xrightarrow{\alpha}_{2}P^{'}$
@@ -2143,6 +2151,9 @@ which is not want we want. So we prove a weaker version
 	    \end{itemize}	    
 	\end{description}
       \item[$\Leftarrow$] 
+	
+	PRIMA DEVO DIMOSTRARE IL LEMMA DI INVERSIONE PER LA CONGRUENZA STRUTTURALE(SE E' VERO)
+
 	Secondly we prove $P\xrightarrow{\alpha}_{3}P^{'}\; \Rightarrow\; \exists P^{''}: P^{'}\equiv P^{''}\; and\; P\xrightarrow{\alpha}_{2}P^{''}$. The proof is by induction on the length of the derivation of $P\xrightarrow{\alpha}_{3}P^{'}$, and then both the base case and the inductive case proceed by cases on the last rule used.
 	\begin{description}
 	  \item[base case]
