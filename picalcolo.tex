@@ -66,9 +66,17 @@ To resolve ambiguity we can use parentheses and observe the conventions that pre
 	$B(\tau.Q, I)\; =\; B(Q, I)$&
       \\\\
 	\multicolumn{2}{l}{
-	$B(A(x_{1},\cdots, x_{n}|y_{1},\cdots, y_{m}), I)=\left\{
+	$B(A(\tilde{x}|\tilde{y}), I)=\left\{
 	  \begin{array}{ll}
-		B(Q, I\cup \{A\})\; where\; A\stackrel{def}{=}Q
+		%B(Q, I\cup \{A\})\; 
+		???
+		where\; A(\tilde{x}|\tilde{y})\stackrel{def}{=}Q
+	      &
+		if\; A\notin I
+	    \\
+		%B(Q, I\cup \{A\})\; 
+		???
+		where\; A(\tilde{z}|\tilde{w})\stackrel{def}{=}Q
 	      &
 		if\; A\notin I
 	    \\
@@ -100,9 +108,17 @@ To resolve ambiguity we can use parentheses and observe the conventions that pre
 	$F(\tau.Q, I)\; =\; F(Q, I)$
       \\\\
 	\multicolumn{2}{l}{
-	$F(A(x_{1},\cdots, x_{n}|y_{1},\cdots, y_{m}), I)=\left\{
+	$F(A(\tilde{x}|\tilde{y}), I)=\left\{
 	  \begin{array}{ll}
-		F(Q, I\cup \{A\})\; where\; A\stackrel{def}{=}Q
+		%F(Q, I\cup \{A\})\; 
+		????
+		where\; A(\tilde{x}|\tilde{y})\stackrel{def}{=}Q
+	      &
+		if\; A\notin I
+	    \\
+		%F(Q, I\cup \{A\})\; 
+		?????
+		where\; A(\tilde{z}|\tilde{w})\stackrel{def}{=}Q
 	      &
 		if\; A\notin I
 	    \\
@@ -111,6 +127,8 @@ To resolve ambiguity we can use parentheses and observe the conventions that pre
 		if\; A\in I
 	  \end{array}\right.$
 	}
+      \\\\
+	
       \\\hline
     \end{tabular}
     \caption{Free occurrences}
@@ -211,15 +229,6 @@ then we have
     \label{syntacticsubstitution}
   \end{table}
 
-
-\begin{definition}
-  A \emph{change of bound names} in a process $P$ is the replacement of a subterm $x(z).Q$ of $P$ by $x(w).Q\{w/z\}$ or the replacement of a subterm $(\nu z)Q$ of $P$ by $(\nu w)Q\{w/z\}$ where in each case $w$ does not occur in $Q$. If a name $x$ appear bound in a process $P$ and a name $y$ does not appear at all in $P$, we write 
-  \[
-    P\{x/y\}_{bound}
-  \]
-  for the process $P$ in which for every binder of $x$, we replace $x$ by $y$.
-%   In formulas the definition is in tabl \ref{changeofboundnames}
-\end{definition}
 
 
 %   \begin{table}
@@ -408,11 +417,11 @@ there is no substitution, instead the substitution occurs at an early point in t
 	      $\tau.P \xrightarrow{\tau} P$
 	  \end{tabular}
 	  &
-	  \bf{CnsAlp}
+	  \bf{Cns}
 	  \begin{tabular}{c}
-	      $A(\tilde{x}|\tilde{y}) \stackrel{def}{=} P\; P\{\tilde{w}/\tilde{x}\}\{\tilde{z}/\tilde{y}\}_{bound} \xrightarrow{\alpha} P^{'}$
+	      $A(\tilde{x}|\tilde{y}) \stackrel{def}{=} P\; P\{\tilde{w}/\tilde{x}\} \xrightarrow{\alpha} P^{'}$
 	    \\\hline
-	      $A(\tilde{w}|\tilde{z}) \xrightarrow{\alpha} P^{'}$
+	      $A(\tilde{w}|\tilde{y}) \xrightarrow{\alpha} P^{'}$
 	  \end{tabular}
       \\\\
 	  \bf{Opn}
@@ -683,78 +692,13 @@ Structural congruences are a set of equations defining equality and congruence r
 
 
 \begin{definition}
-  Processes $P$ and $Q$ are \emph{$\alpha$ convertible} if $Q$ can be obtained from $P$ by a finite number of changes of bound names. If $P$ and $Q$ are $\alpha$ convertible we write $P\equiv_{\alpha}Q$
+  A \emph{change of bound names} in a process $P$ is the replacement of a subterm $x(z).Q$ of $P$ by $x(w).Q\{w/z\}$ or the replacement of a subterm $(\nu z)Q$ of $P$ by $(\nu w)Q\{w/z\}$ where in each case $w$ does not occur in $Q$. If a name $x$ appear bound in a process $P$ and a name $y$ does not appear at all in $P$, we write 
+  \[
+    P\{x/y\}_{bound}
+  \]
+  for the process $P$ in which for every binder of $x$, we replace $x$ by $y$.
+%   In formulas the definition is in tabl \ref{changeofboundnames}
 \end{definition}
-
-In the proof of equivalence of the semantics in the next section we need the following lemmas
-
-\begin{lemma}
-  :\begin{itemize}
-    \item
-      If $P\equiv_{\alpha} \tau.Q$ then $P=\tau.P_{1}$ for some $P_{1}$ such that $P_{1}\equiv_{\alpha}Q$
-    \item
-      If $P\equiv_{\alpha} \overline{x}y.Q$ then $P=\overline{x}y.P_{1}$ for some $P_{1}$ such that $P_{1}\equiv_{\alpha}Q$
-    \item
-      If $P\equiv_{\alpha} x(y).Q$ then one and only one of the following cases holds:
-      \begin{itemize}
-	\item 
-	  $P=x(z).P_{1}$ for some $P_{1}$ such that $P_{1}\{z/y\}\equiv_{\alpha}Q$
-	\item
-	  $P=x(y).P_{1}$ for some $P_{1}$ such that $P_{1}\equiv_{\alpha}Q$
-      \end{itemize}
-    \item
-      If $P\equiv_{\alpha} Q_{1}+Q_{2}$ then $P=P_{1}+P_{2}$ for some $P_{1}$ and $P_{2}$ such that $P_{1}\equiv_{\alpha}Q_{1}$ and $P_{2}\equiv_{\alpha}Q_{2}$.
-    \item 
-      If $P\equiv_{\alpha} Q_{1}|Q_{2}$ then $P=P_{1}|P_{2}$ for some $P_{1}$ and $P_{2}$ such that $P_{1}\equiv_{\alpha}Q_{1}$ and $P_{2}\equiv_{\alpha}Q_{2}$.
-    \item 
-      If $P\equiv_{\alpha} (\nu y)Q$ then one and only one of the following cases holds:
-      \begin{itemize}
-	\item
-	  $P=(\nu z)P_{1}$ such that $P_{1}\{z/y\}\equiv_{\alpha}Q$
-	\item
-	  $P=(\nu y).P_{1}$ for some $P_{1}$ such that $P_{1}\equiv_{\alpha}Q$
-      \end{itemize}
-    \item 
-      If $P\equiv_{\alpha} A(\tilde{x}|\tilde{y})$ then ??? ?? ?
-  \end{itemize}
-  \begin{proof}
-    
-  \end{proof}
-\end{lemma}
-
-\begin{lemma}
-  E' FALSO!!!!! !!!! !!! !! !:\begin{itemize}
-    \item
-      If $P\equiv \tau.Q$ then $P=\tau.P_{1}$ for some $P_{1}$ such that $P_{1}\equiv Q$
-    \item
-      If $P\equiv \overline{x}y.Q$ then $P=\overline{x}y.P_{1}$ for some $P_{1}$ such that $P_{1}\equiv Q$
-    \item
-      If $P\equiv x(y).Q$ then one and only one of the following cases holds:
-      \begin{itemize}
-	\item 
-	  $P=x(z).P_{1}$ for some $P_{1}$ such that $P_{1}\{z/y\}\equiv Q$
-	\item
-	  $P=x(y).P_{1}$ for some $P_{1}$ such that $P_{1}\equiv Q$
-      \end{itemize}
-    \item
-      If $P\equiv Q_{1}+Q_{2}$ then $P=P_{1}+P_{2}$ for some $P_{1}$ and $P_{2}$ such that $P_{1}\equiv Q_{1}$ and $P_{2}\equiv Q_{2}$.
-    \item 
-      If $P\equiv Q_{1}|Q_{2}$ then $P=P_{1}|P_{2}$ for some $P_{1}$ and $P_{2}$ such that $P_{1}\equiv Q_{1}$ and $P_{2}\equiv Q_{2}$.
-    \item 
-      If $P\equiv (\nu y)Q$ then one and only one of the following cases holds:
-      \begin{itemize}
-        \item 
-	  $P=(\nu z)P_{1}$ such that $P_{1}\{z/y\}\equiv Q$
-	\item
-	  $P=(\nu y).P_{1}$ for some $P_{1}$ such that $P_{1}\equiv Q$
-      \end{itemize}
-    \item 
-      If $P\equiv A(\tilde{x}|\tilde{y})$ then ??? ?? ?
-  \end{itemize}
-  \begin{proof}
-    
-  \end{proof}
-\end{lemma}
 
 
 \begin{definition}\index{context}
@@ -775,9 +719,77 @@ In the proof of equivalence of the semantics in the next section we need the fol
   \end{itemize}
 \end{definition}
 
-% \begin{definition}\label{congruenza strutturale}
-%   As stated in \cite{mousavireniers}, a \emph{structural congruence} is the minimal congruence on processes that satisify the following property:
-% \end{definition}
+\begin{definition}\index{$\alpha$ convertible}
+  Processes $P$ and $Q$ are \emph{$\alpha$ convertible} or \emph{$\alpha$ equivalent} if $Q$ can be obtained from $P$ by a finite number of changes of bound names. If $P$ and $Q$ are $\alpha$ equivalent then we write $P\equiv_{\alpha}Q$. Specifically the $\alpha$ equivalence is the smallest binary relation on processes that satisfies the laws in table \ref{alphaequivalence}
+  \begin{table}
+    \begin{tabular}{lll}
+      \hline\\
+	  $\inferrule*[left=AlpRef]{
+	  }{
+	    P\equiv_{\alpha}P
+	  }$
+	&
+	  $\inferrule*[left=AlpSim]{
+	    Q\equiv_{\alpha}P
+	  }{
+	    P\equiv_{\alpha}Q
+	  }$
+	&
+	  $\inferrule*[left=AlpTrs]{
+	      P\equiv_{\alpha}Q
+	    \\
+	      Q\equiv_{\alpha}R
+	  }{
+	    P\equiv_{\alpha}R
+	  }$
+      \\\\
+	  $\inferrule*[left=AlpRes1]{
+	      P\equiv_{\alpha}Q\{x/y\}
+	  }{
+	    (\nu x)P\equiv_{\alpha}(\nu y)Q
+	  }$
+	&
+	  $\inferrule*[left=AlpRes2]{
+	      P\{y/x\}\equiv_{\alpha}Q
+	  }{
+	    (\nu x)P\equiv_{\alpha}(\nu y)Q
+	  }$
+	&
+	  $\inferrule*[left=AlpCns]{
+	      P\equiv_{\alpha}Q
+	    \\
+	      Q\stackrel{def}{=}A(\tilde{x}|\tilde{y})
+	  }{
+	    P\{\tilde{w}/\tilde{x}\}\equiv_{\alpha}A(\tilde{w}|\tilde{y})
+	  }$
+      \\\\
+	  $\inferrule*[left=AlpRes1]{
+	      P\equiv_{\alpha}Q\{z/y\}
+	  }{
+	    x(y).P\equiv_{\alpha}x(z).Q
+	  }$
+	&
+	  $\inferrule*[left=AlpInp2]{
+	      P\{z/y\}\equiv_{\alpha}Q
+	  }{
+	    x(y).P\equiv_{\alpha}x(z).Q
+	  }$
+	&
+	  $\inferrule*[left=AlpCon]{
+	      P\equiv_{\alpha}Q
+	  }{
+	    C[P]\equiv_{\alpha}C[Q]
+	  }$
+      \\\\
+	&
+	&
+      \\\hline
+    \end{tabular}
+    \caption{$\alpha$ equivalence laws}
+    \label{alphaequivalence}
+  \end{table}
+\end{definition}
+
 
 \begin{definition}\index{structural congruence}
   We define a \emph{structural congruence $\equiv$} as the smallest congruence on processes that satisfies the axioms in table \ref{structuralcongrunce}
@@ -870,6 +882,81 @@ We can make some clarification on the axioms of the structural congruence:
 \end{description}
 
 
+In the proof of equivalence of the semantics in the next section we need the following lemmas
+
+ha senso chiamarlo lemma di invesione? Altrimenti come lo chiamo? lemma delle forme canoniche?
+
+\begin{lemma}
+  :\begin{itemize}
+    \item
+      If $P\equiv_{\alpha} \tau.Q$ then $P=\tau.P_{1}$ for some $P_{1}$ such that $P_{1}\equiv_{\alpha}Q$
+    \item
+      If $P\equiv_{\alpha} \overline{x}y.Q$ then $P=\overline{x}y.P_{1}$ for some $P_{1}$ such that $P_{1}\equiv_{\alpha}Q$
+    \item
+      If $P\equiv_{\alpha} x(y).Q$ then one and only one of the following cases holds:
+      \begin{itemize}
+	\item 
+	  $P=x(z).P_{1}$ for some $P_{1}$ such that $P_{1}\{z/y\}\equiv_{\alpha}Q$
+	\item
+	  $P=x(y).P_{1}$ for some $P_{1}$ such that $P_{1}\equiv_{\alpha}Q$
+      \end{itemize}
+    \item
+      If $P\equiv_{\alpha} Q_{1}+Q_{2}$ then $P=P_{1}+P_{2}$ for some $P_{1}$ and $P_{2}$ such that $P_{1}\equiv_{\alpha}Q_{1}$ and $P_{2}\equiv_{\alpha}Q_{2}$.
+    \item 
+      If $P\equiv_{\alpha} Q_{1}|Q_{2}$ then $P=P_{1}|P_{2}$ for some $P_{1}$ and $P_{2}$ such that $P_{1}\equiv_{\alpha}Q_{1}$ and $P_{2}\equiv_{\alpha}Q_{2}$.
+    \item 
+      If $P\equiv_{\alpha} (\nu y)Q$ then one and only one of the following cases holds:
+      \begin{itemize}
+	\item
+	  $P=(\nu z)P_{1}$ such that $P_{1}\{z/y\}\equiv_{\alpha}Q$
+	\item
+	  $P=(\nu y).P_{1}$ for some $P_{1}$ such that $P_{1}\equiv_{\alpha}Q$
+      \end{itemize}
+    \item 
+      If $P\equiv_{\alpha} A(\tilde{x}|\tilde{y})$ where 
+      \[
+	A(\tilde{x}|\tilde{y}) \stackrel{def}{=} Q
+      \]
+      then $P\equiv_{\alpha}Q$
+  \end{itemize}
+  \begin{proof}
+    
+  \end{proof}
+\end{lemma}
+
+\begin{lemma}
+  E' FALSO!!!!! !!!! !!! !! !:\begin{itemize}
+    \item
+      If $P\equiv \tau.Q$ then $P=\tau.P_{1}$ for some $P_{1}$ such that $P_{1}\equiv Q$
+    \item
+      If $P\equiv \overline{x}y.Q$ then $P=\overline{x}y.P_{1}$ for some $P_{1}$ such that $P_{1}\equiv Q$
+    \item
+      If $P\equiv x(y).Q$ then one and only one of the following cases holds:
+      \begin{itemize}
+	\item 
+	  $P=x(z).P_{1}$ for some $P_{1}$ such that $P_{1}\{z/y\}\equiv Q$
+	\item
+	  $P=x(y).P_{1}$ for some $P_{1}$ such that $P_{1}\equiv Q$
+      \end{itemize}
+    \item
+      If $P\equiv Q_{1}+Q_{2}$ then $P=P_{1}+P_{2}$ for some $P_{1}$ and $P_{2}$ such that $P_{1}\equiv Q_{1}$ and $P_{2}\equiv Q_{2}$.
+    \item 
+      If $P\equiv Q_{1}|Q_{2}$ then $P=P_{1}|P_{2}$ for some $P_{1}$ and $P_{2}$ such that $P_{1}\equiv Q_{1}$ and $P_{2}\equiv Q_{2}$.
+    \item 
+      If $P\equiv (\nu y)Q$ then one and only one of the following cases holds:
+      \begin{itemize}
+        \item 
+	  $P=(\nu z)P_{1}$ such that $P_{1}\{z/y\}\equiv Q$
+	\item
+	  $P=(\nu y).P_{1}$ for some $P_{1}$ such that $P_{1}\equiv Q$
+      \end{itemize}
+    \item 
+      If $P\equiv A(\tilde{x}|\tilde{y})$ then ??? ?? ?
+  \end{itemize}
+  \begin{proof}
+    
+  \end{proof}
+\end{lemma}
 
 
 \section{Operational semantic with structural congruence}
@@ -1287,14 +1374,57 @@ In this subsection we introduce the early operational semantic for $\pi$ calculu
 
 \section{Equivalence of the semantics}
 \subsection{Equivalence of the early semantics}
-Here we write $\rightarrow_{1}$ for the early semantic without structural congruence, $\rightarrow_{2}$ for the early semantic with just $\alpha$ conversion and $\rightarrow_{3}$ for the early semantic with the full structural congruence. We call $R_{1}$ the set of rules for $\rightarrow_{1}$, $R_{2}$ the set of rules for $\rightarrow_{2}$ and $R_{3}$ the set of rules for $\rightarrow_{3}$. In the following section we assume that 
-\[
-  P\xrightarrow{\alpha}Q\; \Rightarrow\; fn(Q)\subseteq fn(P)
-\]
-and that 
+In this subsection we write $\rightarrow_{1}$ for the early semantic without structural congruence, $\rightarrow_{2}$ for the early semantic with just $\alpha$ conversion and $\rightarrow_{3}$ for the early semantic with the full structural congruence. We call $R_{1}$ the set of rules for $\rightarrow_{1}$, $R_{2}$ the set of rules for $\rightarrow_{2}$ and $R_{3}$ the set of rules for $\rightarrow_{3}$. 
+In the following section we will need:
+% 
+%   E' FALSO !!!!!! !!!!! !!!! !!! !! !
+% \begin{lemma}
+% \[
+%   P\xrightarrow{\alpha}Q\; \Rightarrow\; fn(Q)\subseteq fn(P)
+% \]
+% This is a set of lemmas, one for each semantic that we have presented.
+%   \begin{proof}
+%     We prove the result for $\rightarrow_{1}$ by induction on the length of the proof tree of $P\xrightarrow{\alpha}_{1}Q$ and then by cases on the last rule used in the proof tree:
+%     \begin{description}
+%       \item[base case] the last rule used is in $\{Out, EInp, Tau\}$ 
+%     \end{description}
+%   \end{proof}
+% \end{lemma}
+\begin{lemma}
 \[
   P\equiv Q\; \Rightarrow\; fn(Q)= fn(P)
 \]
+  \begin{proof}
+    A proof can go by induction on the proof tree of $P\equiv Q$ and then by cases on the last rule used in the proof tree. 
+    \begin{description}
+      \item[base case]
+	The last and only rule of the proof tree can be one of the following axioms:
+	\begin{description}
+	  \item[SC-ALP]$\begin{array}{c}P \equiv_{\alpha} Q\\\overline{P\equiv Q}\end{array}$
+	  \item[SC-SUM-ASC] $M_{1}+(M_{2}+M_{3})\equiv (M_{1}+M_{2})+M_{3}$ 
+	  \item[SC-SUM-COM] $M_{1}+M_{2}\equiv M_{2}+M_{1}$ 
+	  \item[SC-SUM-INC] $M+0\equiv M$
+	  \item[SC-COM-ASC] $P_{1}|(P_{2}|P_{3})\equiv (P_{1}|P_{2})|P_{3}$ 
+	  \item[SC-COM-COM] $P_{1}|P_{2}\equiv P_{2}|P_{1}$ 	
+	  \item[SC-COM-INC] $P|0\equiv P$
+	  \item[SC-RES] $(\nu z) (\nu w) P \equiv (\nu w) (\nu z) P$ 
+	  \item[SC-RES-INC] $(\nu z) 0 \equiv 0$ 
+	  \item[SC-RES-COM] $(\nu z) (P_{1}|P_{2}) \equiv P_{1}|(\nu z) P_{2}$ if $z\notin fn(P_{1})$
+	  \item[SC-RES-SUM] $(\nu z) (P_{1}+P_{2}) \equiv P_{1}+(\nu z) P_{2}$ if $z\notin fn(P_{1})$
+	  \item[SC-IDE]$A(\tilde{w}|\tilde{y})\equiv P\{\tilde{w}/\tilde{x}\}$
+	\end{description}
+      \item[inductive case]
+	\item[SC-REFL] $\inferrule*{}{P\equiv P}$
+	\item[SC-SIMM] $\inferrule*{Q\equiv P}{P\equiv Q}$
+	\item[SC-TRAN] $\inferrule*{P\equiv Q \\ Q\equiv R}{P\equiv R}$
+	\item[SC-CONG] $\inferrule*{P\equiv Q}{C[P]\equiv C[Q]}$
+    \end{description}
+  \end{proof}
+\end{lemma}
+DOVE LO USIAMO? SERVE DAVVERO?
+
+prima devo capire se serve e dove, poi cerco di dimostrarlo
+
 
 We would like to prove that $P\xrightarrow{\alpha}_{2}P^{'}\; \Rightarrow\; P\xrightarrow{\alpha}_{1}P^{'}$ but this is false because
 \[
@@ -1742,7 +1872,45 @@ which is not want we want. So we prove a weaker version
 		\]
 	    \end{itemize}
 	  \item[Cns]
-	    ?
+	    If $S=Cns$ then the last part of the derivation tree of $P\xrightarrow{\alpha}_{2}P^{'}$ looks like this:
+		\[
+		  \inferrule* [left=Alp]{
+		      P\equiv_{\alpha}A(\tilde{w}|\tilde{y})
+		    \\
+		      \inferrule* [left=Cns]{
+			  A(\tilde{x}|\tilde{y})\stackrel{def}{=}R
+			\\
+			  R\{\tilde{w}/\tilde{x}\}\xrightarrow{\alpha}_{2}P^{'}
+		      }{
+			A(\tilde{w}|\tilde{y})\xrightarrow{\alpha}_{2}P^{'}
+		      }
+		  }{
+		    P\xrightarrow{\alpha}_{2}P^{'}
+		  }
+		\]
+	    We have
+	    \begin{center}
+	      \begin{tabular}{ll}
+		  $P\equiv_{\alpha}A(\tilde{w}|\tilde{y})$ &
+		\\
+		  $\Rightarrow P\{\tilde{x}/\tilde{w}\}\equiv_{\alpha}A(\tilde{x}|\tilde{y})$  & inversion lemma
+		\\
+		  $\Rightarrow P\{\tilde{x}/\tilde{w}\}\equiv_{\alpha}R$ & 
+		\\
+		  $\Rightarrow P\equiv_{\alpha}R\{\tilde{w}/\tilde{x}\}$ & 
+	      \end{tabular}
+	    \end{center}
+	    now we create the following proof which is shorter then the inductive case and so suitable for inductive hypothesis application
+	    \[
+		  \inferrule* [left=Alp]{
+		      P\equiv_{\alpha}R\{\tilde{w}/\tilde{x}\}
+		    \\
+		      R\{\tilde{w}/\tilde{x}\}\xrightarrow{\alpha}_{2}P^{'}
+		  }{
+		    P\xrightarrow{\alpha}_{2}P^{'}
+		  }	      
+	    \]
+	    the inductive hypothesis tells us that there exists a process $P^{''}$ such that $P^{''}\equiv P^{'}$ and $P\xrightarrow{\alpha}_{1}P^{''}$
 	\end{description}
     \end{description}
   \end{proof}
@@ -1893,21 +2061,21 @@ which is not want we want. So we prove a weaker version
 		if the last rule used is $Cns$:
 		\[
 		    \inferrule* [left=Cns]{
-			A(\tilde{x})\stackrel{def}{=}P
+			A(\tilde{x}|\tilde{z})\stackrel{def}{=}P
 		      \\
 			P\{\tilde{y}/\tilde{x}\}\xrightarrow{\alpha}_{2}P^{'}
 		    }{
-		      A(\tilde{y})\xrightarrow{\alpha}_{2}P^{'}
+		      A(\tilde{y}|\tilde{z})\xrightarrow{\alpha}_{2}P^{'}
 		    }
 		\]
 		we apply the inductive hypothesis on the premise and get $P\{\tilde{y}/\tilde{x}\}\xrightarrow{\alpha}_{3}P^{''}$ such that $P^{''}\equiv P^{'}$. Now the proof we want is
 		\[
 		    \inferrule* [left=Str]{
-			A(\tilde{y})\equiv P\{\tilde{y}/\tilde{x}\}
+			A(\tilde{y}|\tilde{z})\equiv P\{\tilde{y}/\tilde{x}\}
 		      \\
 			P\{\tilde{y}/\tilde{x}\}\xrightarrow{\alpha}_{3}P^{''}
 		    }{
-		      A(\tilde{y})\xrightarrow{\alpha}_{3}P^{''}
+		      A(\tilde{y}|\tilde{z})\xrightarrow{\alpha}_{3}P^{''}
 		    }
 		\]		
 	      \item
