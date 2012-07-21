@@ -421,7 +421,7 @@ there is no substitution, instead the substitution occurs at an early point in t
 	  \begin{tabular}{c}
 	      $A(\tilde{x}|\tilde{y}) \stackrel{def}{=} P\; P\{\tilde{w}/\tilde{x}\} \xrightarrow{\alpha} P^{'}$
 	    \\\hline
-	      $A(\tilde{w}|\tilde{y}) \xrightarrow{\alpha} P^{'}$
+	      $A(\tilde{x}|\tilde{y})\{\tilde{w}/\tilde{x}\} \xrightarrow{\alpha} P^{'}$
 	  \end{tabular}
       \\\\
 	  \bf{Opn}
@@ -533,6 +533,39 @@ there is no substitution, instead the substitution occurs at an early point in t
   	}
       \]
 \end{example}
+
+\begin{example}
+  We have to spend some time to deal with the change of bound names in an identifier. Suppose we have
+  \[
+    A(x|a,y)\stackrel{def}{=} \underbrace{x(y).x(a).0}_{P}
+  \]
+  From the definition of substitution it follows that
+  \[
+    A(x|a,y)\{y/x\}=A(y|a,z)
+  \]
+  The identifier $A(y|a,z)$ is expected to behave consistently with 
+  \[
+    P\{y/x\}=y(z).y(a).0
+  \]
+  so we have to prove
+  \[
+    A(y|a,z)\xrightarrow{yw}y(a).0
+  \]
+  We can prove this in the following way:
+  \[
+    \inferrule* [left=Cns]{
+	A(x|a,y)\stackrel{def}{=} P
+      \\
+	\inferrule* [left=EInp]{
+	}{
+	  P\{y/x\}\xrightarrow{yw}y(a).0
+	}
+    }{
+      A(y|a,z)\xrightarrow{yw}y(a).0
+    }
+  \]
+\end{example}
+
 
 
 % \begin{example}
@@ -934,7 +967,8 @@ ha senso chiamarlo lemma di invesione? Altrimenti come lo chiamo? lemma delle fo
         \item[inductive case]
 	  the proof proceed by cases on the last rule used in the proof tree
 	  \begin{description}
-	    \item[$AlpSim$] 
+	    \item[$AlpSim$]
+	      
 	  \end{description}
       \end{description}
     \item
