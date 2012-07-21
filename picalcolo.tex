@@ -755,49 +755,8 @@ Structural congruences are a set of equations defining equality and congruence r
 \begin{definition}\index{$\alpha$ convertible}
   Processes $P$ and $Q$ are \emph{$\alpha$ convertible} or \emph{$\alpha$ equivalent} if $Q$ can be obtained from $P$ by a finite number of changes of bound names. If $P$ and $Q$ are $\alpha$ equivalent then we write $P\equiv_{\alpha}Q$. Specifically the $\alpha$ equivalence is the smallest binary relation on processes that satisfies the laws in table \ref{alphaequivalence}
   \begin{table}
-    \begin{tabular}{lll}
+    \begin{tabular}{ll}
       \hline\\
-	  $\inferrule*[left=AlpZero]{
-	  }{
-	    0\equiv_{\alpha}0
-	  }$
-	&
-%	  $\inferrule*[left=AlpCong]{
-%	      P\equiv_{\alpha}Q
-%	  }{
-%	    C[P]\equiv_{\alpha}C[Q]
-%	  }$
-	  $\inferrule*[left=AlpTau]{
-	      P\equiv_{\alpha}Q
-	  }{
-	    \tau.P\equiv_{\alpha}\tau.Q
-	  }$
-	&
-	  $\inferrule*[left=AlpOut]{
-	      P\equiv_{\alpha}Q
-	  }{
-	    \overline{x}y.P\equiv_{\alpha}\overline{x}y.Q
-	  }$
-%	  $\inferrule*[left=AlpTrs]{
-%	      P\equiv_{\alpha}Q
-%	    \\
-%	      Q\equiv_{\alpha}R
-%	  }{
-%	    P\equiv_{\alpha}R
-%	  }$
-      \\\\
-	  $\inferrule*[left=AlpRes1]{
-	      P\equiv_{\alpha}Q\{x/y\}
-	  }{
-	    (\nu x)P\equiv_{\alpha}(\nu y)Q
-	  }$
-	&
-	  $\inferrule*[left=AlpInp1]{
-	      P\equiv_{\alpha}Q\{x/y\}
-	  }{
-	    z(x).P\equiv_{\alpha}z(y).Q
-	  }$
-	&
 	  $\inferrule*[left=AlpSum]{
 	      P_{1}\equiv_{\alpha}Q_{1}
 	    \\
@@ -805,29 +764,6 @@ Structural congruences are a set of equations defining equality and congruence r
 	  }{
 	    P_{1}+P_{2}\equiv_{\alpha}Q_{1}+Q_{2}
 	  }$
-% 	  $\inferrule*[left=AlpSost]{
-% 	      P\equiv_{\alpha}Q
-% 	  }{
-% 	    P\sigma\equiv_{\alpha}Q\sigma
-% 	  }$
-%	  $\inferrule*[left=AlpSim]{
-%	      Q\equiv_{\alpha}P
-%	  }{
-%	    P\equiv_{\alpha}Q
-%	  }$
-      \\\\
-% 	  $\inferrule*[left=AlpRes2]{
-% 	      P\{y/x\}\equiv_{\alpha}Q
-% 	  }{
-% 	    (\nu x)P\equiv_{\alpha}(\nu y)Q
-% 	  }$
-
-	&
-% 	  $\inferrule*[left=AlpInp2]{
-% 	      P\{y/x\}\equiv_{\alpha}Q
-% 	  }{
-% 	    z(x).P\equiv_{\alpha}z(y).Q
-% 	  }$
 	&
 	  $\inferrule*[left=AlpPar]{
 	      P_{1}\equiv_{\alpha}Q_{1}
@@ -837,10 +773,30 @@ Structural congruences are a set of equations defining equality and congruence r
 	    P_{1}|P_{2}\equiv_{\alpha}Q_{1}|Q_{2}
 	  }$
       \\\\
+	  $\inferrule*[left=AlpRes1]{
+	      P\equiv_{\alpha}Q\{x/y\}
+	    \\
+	      x\neq y
+	    \\
+	      y\notin fn(Q)
+	  }{
+	    (\nu x)P\equiv_{\alpha}(\nu y)Q
+	  }$
+	&
 	  $\inferrule*[left=AlpRes]{
 	      P\equiv_{\alpha}Q
 	  }{
 	    (\nu x)P\equiv_{\alpha}(\nu x)Q
+	  }$
+      \\\\
+	  $\inferrule*[left=AlpInp1]{
+	      P\equiv_{\alpha}Q\{x/y\}
+	    \\
+	      x\neq y
+	    \\
+	      y\notin fn(Q)
+	  }{
+	    z(x).P\equiv_{\alpha}z(y).Q
 	  }$
 	&
 	  $\inferrule*[left=AlpInp]{
@@ -848,10 +804,27 @@ Structural congruences are a set of equations defining equality and congruence r
 	  }{
 	    x(y).P\equiv_{\alpha}x(y).Q
 	  }$
-	&
+    \\\\
+	  $\inferrule*[left=AlpTau]{
+	      P\equiv_{\alpha}Q
+	  }{
+	    \tau.P\equiv_{\alpha}\tau.Q
+	  }$
+      &
+	  $\inferrule*[left=AlpOut]{
+	      P\equiv_{\alpha}Q
+	  }{
+	    \overline{x}y.P\equiv_{\alpha}\overline{x}y.Q
+	  }$
+    \\\\
 	  $\inferrule*[left=AlpIde]{
 	  }{
 	    A(\tilde{x}|\tilde{y})\equiv_{\alpha}A(\tilde{x}|\tilde{y})
+	  }$
+	&
+	  $\inferrule*[left=AlpZero]{
+	  }{
+	    0\equiv_{\alpha}0
 	  }$
       \\\hline
     \end{tabular}
@@ -989,6 +962,107 @@ We can make some clarification on the axioms of the structural congruence:
   \item[$scope\; extension$]
     We can use the scope extension laws in table \ref{structuralcongrunce} or the rules $Opn$ and $Cls$ in table \ref{transitionrelationearlywithoutstructuralcongruence} to deal with the scope extension.
 \end{description}
+
+
+\begin{lemma}
+  $P\equiv_{\alpha}Q\Rightarrow fn(P)=fn(Q)$
+  \begin{proof}
+    The proof goes by induction on rules 
+    \begin{description}
+      \item[$AlpZero$]
+	the lemma holds because $P$ and $Q$ are the same process.
+      \item[$AlpTau$]:
+	\begin{center}
+	  \begin{tabular}{ll}
+	    $fn(\tau.P)=fn(P)$&definition of $fn$\\
+	    $=fn(Q)$&inductive hypothesis\\
+	    $=fn(\tau.Q)$&definition of $fn$\\
+	  \end{tabular}
+	\end{center}
+      \item[$AlpOut$]:
+	\begin{center}
+	  \begin{tabular}{ll}
+	    $fn(P)=fn(Q)$&inductive hypothesis\\
+	    $\Rightarrow fn(P)\cup \{x,y\}=fn(Q)\cup \{x,y\}$&\\
+	    $\Rightarrow fn(\overline{x}y.P)=fn(\overline{x}y.Q)$&definition of $fn$\\
+	  \end{tabular}
+	\end{center}
+      \item[$AlpRes1$]:
+	\begin{center}
+	  \begin{tabular}{ll}
+	    $fn(P)=fn(Q\{x/y\})$&inductive hypothesis\\
+	    $\Rightarrow fn(P)-\{x\}=fn(Q\{x/y\})-\{x\}$&\\
+	    $\Rightarrow fn(P)-\{x\}=(fn(Q)-\{y\}\cap \{x\})-\{x\}$&\\
+	    $\Rightarrow fn(P)-\{x\}=fn(Q)-\{y\}$&definition of $fn$\\
+	    $\Rightarrow fn((\nu x)P)=fn((\nu y)Q)$&\\
+	  \end{tabular}
+	\end{center}
+      \item[$AlpInp1$]
+	  $\inferrule*[left=AlpInp1]{
+	      P\equiv_{\alpha}Q\{x/y\}
+	  }{
+	    z(x).P\equiv_{\alpha}z(y).Q
+	  }$
+	We have two cases:
+	\begin{description}
+	  \item[$y\in fn(Q)$]
+	    \begin{center}
+	      \begin{tabular}{ll}
+		$fn(P)=fn(Q\{x/y\})$&inductive hypothesis\\
+		$\Rightarrow fn(P)=(fn(Q)-\{y\})\cup \{x\}$&\\
+		$\Rightarrow fn(P)-\{x\}=fn(Q)-\{y\}$&definition of $fn$\\
+		$\Rightarrow fn(z(x)P)=fn(z(y)Q)$&\\
+	      \end{tabular}
+	    \end{center}	    
+	  \item[$y\notin fn(Q)$]
+	    \begin{center}
+	      \begin{tabular}{ll}
+		$fn(P)=fn(Q\{x/y\})$&inductive hypothesis\\
+		$\Rightarrow fn(P)=fn(Q)$&\\
+		$\Rightarrow fn(P)-\{x\}=(fn(Q)-\{y\}\cap \{x\})-\{x\}$&\\
+		$\Rightarrow fn(P)-\{x\}=fn(Q)-\{y\}$&definition of $fn$\\
+		$\Rightarrow fn((\nu x)P)=fn((\nu y)Q)$&\\
+	      \end{tabular}
+	    \end{center}	    	    
+	\end{description}
+
+      \item[$AlpSum$]
+	\begin{center}
+	  \begin{tabular}{ll}
+	    $fn(P_{1})=fn(Q_{1})\; and\; fn(P_{2})=fn(Q_{2})$&inductive hypothesis\\
+	    $\Rightarrow fn(P_{1})\cap fn(P_{2})=fn(Q_{1})\cap fn(Q_{2})$&definition of $fn$\\
+	    $\Rightarrow fn(P_{1}+P_{2})=fn(Q_{1}+Q_{2})$&\\
+	  \end{tabular}
+	\end{center}
+      \item[$AlpPar$]
+	\begin{center}
+	  \begin{tabular}{ll}
+	    $fn(P_{1})=fn(Q_{1})\; and\; fn(P_{2})=fn(Q_{2})$&inductive hypothesis\\
+	    $\Rightarrow fn(P_{1})\cap fn(P_{2})=fn(Q_{1})\cap fn(Q_{2})$&definition of $fn$\\
+	    $\Rightarrow fn(P_{1}|P_{2})=fn(Q_{1}|Q_{2})$&\\
+	  \end{tabular}
+	\end{center}
+      \item[$AlpRes$]:
+	\begin{center}
+	  \begin{tabular}{ll}
+	    $fn(P)=fn(Q)$&inductive hypothesis\\
+	    $\Rightarrow fn(P)- \{x\}=fn(Q)- \{x\}$&\\
+	    $\Rightarrow fn((\nu x)P)=fn((\nu x)Q)$&definition of $fn$\\
+	  \end{tabular}
+	\end{center}
+      \item[$AlpInp$]:
+	\begin{center}
+	  \begin{tabular}{ll}
+	    $fn(P)=fn(Q)$&inductive hypothesis\\
+	    $\Rightarrow (fn(P)-\{y\})\cup \{x\}=(fn(Q)-\{y\})\cup \{x\}$&\\
+	    $\Rightarrow fn(x(y).P)=fn(x(y).Q)$&definition of $fn$\\
+	  \end{tabular}
+	\end{center}
+      \item[$AlpIde$]
+	the lemma holds because $P$ and $Q$ are the same process.
+    \end{description}
+  \end{proof}
+\end{lemma}
 
 
 \begin{lemma}
