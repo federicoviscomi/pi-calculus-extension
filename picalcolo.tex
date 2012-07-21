@@ -757,24 +757,34 @@ Structural congruences are a set of equations defining equality and congruence r
   \begin{table}
     \begin{tabular}{lll}
       \hline\\
-	  $\inferrule*[left=AlpRef]{
+	  $\inferrule*[left=AlpZero]{
 	  }{
-	    P\equiv_{\alpha}P
+	    0\equiv_{\alpha}0
 	  }$
 	&
-	  $\inferrule*[left=AlpSim]{
-	    Q\equiv_{\alpha}P
-	  }{
-	    P\equiv_{\alpha}Q
-	  }$
-	&
-	  $\inferrule*[left=AlpTrs]{
+%	  $\inferrule*[left=AlpCong]{
+%	      P\equiv_{\alpha}Q
+%	  }{
+%	    C[P]\equiv_{\alpha}C[Q]
+%	  }$
+	  $\inferrule*[left=AlpTau]{
 	      P\equiv_{\alpha}Q
-	    \\
-	      Q\equiv_{\alpha}R
 	  }{
-	    P\equiv_{\alpha}R
+	    \tau.P\equiv_{\alpha}\tau.Q
 	  }$
+	&
+	  $\inferrule*[left=AlpOut]{
+	      P\equiv_{\alpha}Q
+	  }{
+	    \overline{x}y.P\equiv_{\alpha}\overline{x}y.Q
+	  }$
+%	  $\inferrule*[left=AlpTrs]{
+%	      P\equiv_{\alpha}Q
+%	    \\
+%	      Q\equiv_{\alpha}R
+%	  }{
+%	    P\equiv_{\alpha}R
+%	  }$
       \\\\
 	  $\inferrule*[left=AlpRes1]{
 	      P\equiv_{\alpha}Q\{x/y\}
@@ -782,46 +792,112 @@ Structural congruences are a set of equations defining equality and congruence r
 	    (\nu x)P\equiv_{\alpha}(\nu y)Q
 	  }$
 	&
-	  $\inferrule*[left=AlpRes2]{
-	      P\{y/x\}\equiv_{\alpha}Q
-	  }{
-	    (\nu x)P\equiv_{\alpha}(\nu y)Q
-	  }$
-	&
-	  $\inferrule*[left=AlpCns]{
-	      P\equiv_{\alpha}Q
-	    \\
-	      Q\stackrel{def}{=}A(\tilde{x}|\tilde{y})
-	  }{
-	    P\{\tilde{w}/\tilde{x}\}\equiv_{\alpha}A(\tilde{w}|\tilde{y})
-	  }$
-      \\\\
 	  $\inferrule*[left=AlpInp1]{
-	      P\equiv_{\alpha}Q\{z/y\}
+	      P\equiv_{\alpha}Q\{x/y\}
 	  }{
-	    x(y).P\equiv_{\alpha}x(z).Q
+	    z(x).P\equiv_{\alpha}z(y).Q
 	  }$
 	&
-	  $\inferrule*[left=AlpInp2]{
-	      P\{z/y\}\equiv_{\alpha}Q
+	  $\inferrule*[left=AlpSum]{
+	      P_{1}\equiv_{\alpha}Q_{1}
+	    \\
+	      P_{2}\equiv_{\alpha}Q_{2}
 	  }{
-	    x(y).P\equiv_{\alpha}x(z).Q
+	    P_{1}+P_{2}\equiv_{\alpha}Q_{1}+Q_{2}
 	  }$
+% 	  $\inferrule*[left=AlpSost]{
+% 	      P\equiv_{\alpha}Q
+% 	  }{
+% 	    P\sigma\equiv_{\alpha}Q\sigma
+% 	  }$
+%	  $\inferrule*[left=AlpSim]{
+%	      Q\equiv_{\alpha}P
+%	  }{
+%	    P\equiv_{\alpha}Q
+%	  }$
+      \\\\
+% 	  $\inferrule*[left=AlpRes2]{
+% 	      P\{y/x\}\equiv_{\alpha}Q
+% 	  }{
+% 	    (\nu x)P\equiv_{\alpha}(\nu y)Q
+% 	  }$
+
 	&
-	  $\inferrule*[left=AlpCon]{
-	      P\equiv_{\alpha}Q
+% 	  $\inferrule*[left=AlpInp2]{
+% 	      P\{y/x\}\equiv_{\alpha}Q
+% 	  }{
+% 	    z(x).P\equiv_{\alpha}z(y).Q
+% 	  }$
+	&
+	  $\inferrule*[left=AlpPar]{
+	      P_{1}\equiv_{\alpha}Q_{1}
+	    \\
+	      P_{2}\equiv_{\alpha}Q_{2}
 	  }{
-	    C[P]\equiv_{\alpha}C[Q]
+	    P_{1}|P_{2}\equiv_{\alpha}Q_{1}|Q_{2}
 	  }$
       \\\\
+	  $\inferrule*[left=AlpRes]{
+	      P\equiv_{\alpha}Q
+	  }{
+	    (\nu x)P\equiv_{\alpha}(\nu x)Q
+	  }$
 	&
+	  $\inferrule*[left=AlpInp]{
+	      P\equiv_{\alpha}Q
+	  }{
+	    x(y).P\equiv_{\alpha}x(y).Q
+	  }$
 	&
+	  $\inferrule*[left=AlpIde]{
+	  }{
+	    A(\tilde{x}|\tilde{y})\equiv_{\alpha}A(\tilde{x}|\tilde{y})
+	  }$
       \\\hline
     \end{tabular}
     \caption{$\alpha$ equivalence laws}
     \label{alphaequivalence}
   \end{table}
 \end{definition}
+
+
+\begin{lemma}
+  Inversion lemma for $\alpha$ equivalence
+  \begin{itemize}
+    \item 	
+      If $P\equiv_{\alpha}0$ then $P$ is also the null process $0$
+    \item
+      If $P\equiv_{\alpha} \tau.Q_{1}$ then $P=\tau.P_{1}$ for some $P_{1}$ such that $P_{1}\equiv_{\alpha}Q_{1}$
+    \item
+      If $P\equiv_{\alpha} \overline{x}y.Q_{1}$ then $P=\overline{x}y.P_{1}$ for some $P_{1}$ such that $P_{1}\equiv_{\alpha}Q_{1}$
+    \item
+      If $P\equiv_{\alpha} z(y).Q_{1}$ then one and only one of the following cases holds:
+      \begin{itemize}
+	\item 
+	  $P=z(x).P_{1}$ for some $P_{1}$ such that $P_{1}\equiv_{\alpha}Q_{1}\{x/y\}$
+	\item
+	  $P=z(y).P_{1}$ for some $P_{1}$ such that $P_{1}\equiv_{\alpha}Q_{1}$
+      \end{itemize}
+    \item
+      If $P\equiv_{\alpha} Q_{1}+Q_{2}$ then $P=P_{1}+P_{2}$ for some $P_{1}$ and $P_{2}$ such that $P_{1}\equiv_{\alpha}Q_{1}$ and $P_{2}\equiv_{\alpha}Q_{2}$.
+    \item 
+      If $P\equiv_{\alpha} Q_{1}|Q_{2}$ then $P=P_{1}|P_{2}$ for some $P_{1}$ and $P_{2}$ such that $P_{1}\equiv_{\alpha}Q_{1}$ and $P_{2}\equiv_{\alpha}Q_{2}$.
+    \item 
+      If $P\equiv_{\alpha} (\nu y)Q_{1}$ then one and only one of the following cases holds:
+      \begin{itemize}
+	\item
+	  $P=(\nu x)P_{1}$ such that $P_{1}\equiv_{\alpha}Q_{1}\{x/y\}$
+	\item
+	  $P=(\nu y).P_{1}$ for some $P_{1}$ such that $P_{1}\equiv_{\alpha}Q_{1}$
+      \end{itemize}
+    \item 
+      If $P\equiv_{\alpha} A(\tilde{x}|\tilde{y})$ then $P$ is $Q$.
+  \end{itemize}
+    \begin{proof}
+      This lemma works because given $Q$ we know which rules must be at the end of any proof tree of $P\equiv_{\alpha}Q$.
+    \end{proof}
+\end{lemma}
+
 
 
 \begin{definition}\index{structural congruence}
@@ -915,93 +991,271 @@ We can make some clarification on the axioms of the structural congruence:
 \end{description}
 
 
-In the proof of equivalence of the semantics in the next section we need the following lemmas
-
-ha senso chiamarlo lemma di invesione? Altrimenti come lo chiamo? lemma delle forme canoniche?
-
 \begin{lemma}
-  Inversion lemma for $\alpha$ equivalence
-  \begin{itemize}
-    \item
-      If $P\equiv_{\alpha} \tau.Q$ then $P=\tau.P_{1}$ for some $P_{1}$ such that $P_{1}\equiv_{\alpha}Q$
-    \item
-      If $P\equiv_{\alpha} \overline{x}y.Q$ then $P=\overline{x}y.P_{1}$ for some $P_{1}$ such that $P_{1}\equiv_{\alpha}Q$
-    \item
-      If $P\equiv_{\alpha} x(y).Q$ then one and only one of the following cases holds:
-      \begin{itemize}
-	\item 
-	  $P=x(z).P_{1}$ for some $P_{1}$ such that $P_{1}\{z/y\}\equiv_{\alpha}Q$
-	\item
-	  $P=x(y).P_{1}$ for some $P_{1}$ such that $P_{1}\equiv_{\alpha}Q$
-      \end{itemize}
-    \item
-      If $P\equiv_{\alpha} Q_{1}+Q_{2}$ then $P=P_{1}+P_{2}$ for some $P_{1}$ and $P_{2}$ such that $P_{1}\equiv_{\alpha}Q_{1}$ and $P_{2}\equiv_{\alpha}Q_{2}$.
-    \item 
-      If $P\equiv_{\alpha} Q_{1}|Q_{2}$ then $P=P_{1}|P_{2}$ for some $P_{1}$ and $P_{2}$ such that $P_{1}\equiv_{\alpha}Q_{1}$ and $P_{2}\equiv_{\alpha}Q_{2}$.
-    \item 
-      If $P\equiv_{\alpha} (\nu y)Q$ then one and only one of the following cases holds:
-      \begin{itemize}
-	\item
-	  $P=(\nu z)P_{1}$ such that $P_{1}\{z/y\}\equiv_{\alpha}Q$
-	\item
-	  $P=(\nu y).P_{1}$ for some $P_{1}$ such that $P_{1}\equiv_{\alpha}Q$
-      \end{itemize}
-    \item 
-      If $P\equiv_{\alpha} A(\tilde{x}|\tilde{y})$ where 
-      \[
-	A(\tilde{x}|\tilde{y}) \stackrel{def}{=} Q
-      \]
-      then $P\equiv_{\alpha}Q$
-  \end{itemize}
-  \begin{proof}:
-   \begin{itemize}
-     \item
-      We prove 
-      \begin{center}
-	$P\equiv_{\alpha} \tau.Q$ then $P=\tau.P_{1}$ for some $P_{1}$ such that $P_{1}\equiv_{\alpha}Q$
-      \end{center}
-      by induction on the proof tree of $P\equiv_{\alpha} \tau.Q$ and then by cases on the last rule of the tree
-      \begin{description}
-        \item[base case]
-	  if the proof tree has length one then the only rule used can be $Ref$ and this implies $P=Q$
-        \item[inductive case]
-	  the proof proceed by cases on the last rule used in the proof tree
-	  \begin{description}
-	    \item[$AlpSim$]
-	      
-	  \end{description}
-      \end{description}
-    \item
-      If $P\equiv_{\alpha} \overline{x}y.Q$ then $P=\overline{x}y.P_{1}$ for some $P_{1}$ such that $P_{1}\equiv_{\alpha}Q$
-    \item
-      If $P\equiv_{\alpha} x(y).Q$ then one and only one of the following cases holds:
-      \begin{itemize}
-	\item 
-	  $P=x(z).P_{1}$ for some $P_{1}$ such that $P_{1}\{z/y\}\equiv_{\alpha}Q$
-	\item
-	  $P=x(y).P_{1}$ for some $P_{1}$ such that $P_{1}\equiv_{\alpha}Q$
-      \end{itemize}
-    \item
-      If $P\equiv_{\alpha} Q_{1}+Q_{2}$ then $P=P_{1}+P_{2}$ for some $P_{1}$ and $P_{2}$ such that $P_{1}\equiv_{\alpha}Q_{1}$ and $P_{2}\equiv_{\alpha}Q_{2}$.
-    \item 
-      If $P\equiv_{\alpha} Q_{1}|Q_{2}$ then $P=P_{1}|P_{2}$ for some $P_{1}$ and $P_{2}$ such that $P_{1}\equiv_{\alpha}Q_{1}$ and $P_{2}\equiv_{\alpha}Q_{2}$.
-    \item 
-      If $P\equiv_{\alpha} (\nu y)Q$ then one and only one of the following cases holds:
-      \begin{itemize}
-	\item
-	  $P=(\nu z)P_{1}$ such that $P_{1}\{z/y\}\equiv_{\alpha}Q$
-	\item
-	  $P=(\nu y).P_{1}$ for some $P_{1}$ such that $P_{1}\equiv_{\alpha}Q$
-      \end{itemize}
-    \item 
-      If $P\equiv_{\alpha} A(\tilde{x}|\tilde{y})$ where 
-      \[
-	A(\tilde{x}|\tilde{y}) \stackrel{def}{=} Q
-      \]
-      then $P\equiv_{\alpha}Q$
-  \end{itemize}  
+  $P\equiv_{\alpha}Q\Rightarrow P\{b/a\}\equiv_{\alpha}Q\{b/a\}$
+  \begin{proof}
+    The proof goes by structural induction on $Q$ and the each cases use the inversion lemma for $\alpha$ equivalence:
+	\begin{description}
+	  \item[$0$]
+	    for the inversion lemma then also $P$ is $0$ and so both $P\{b/a\}$ and $Q\{b/a\}$ are $0$ and $\alpha$ equivalent.
+	  \item[$A(\tilde{x}|\tilde{y})$]:
+	    for the inversion lemma $P$ are syntacticly the same as $Q$ so the lemma holds.
+	  \item[$\tau.Q_{1}$]:
+	    for the inversion lemma then $P=\tau.P_{1}$ and $P_{1}\equiv_{\alpha}Q_{1}$ so for the inductive hypothesis $P_{1}\{b/a\}\equiv_{\alpha}Q_{1}\{b/a\}$ and for the rule $AlpTau$ $\tau.(P_{1}\{b/a\})\equiv_{\alpha}\tau.(Q_{1}\{b/a\})$ and for the definition of substitution $(\tau.P_{1})\{b/a\}\equiv_{\alpha}(\tau.Q_{1})\{b/a\}$.
+	  \item[$Q_{1}+Q_{2}$]:
+	    for the inversion lemma $P=P_{1}+P_{2}$ and $P_{1}\equiv Q_{1}$ and $P_{2}\equiv Q_{2}$, so applying the inductive hypothesis twice yields $P_{1}\{b/a\}\equiv Q_{1}\{b/a\}$ and $P_{2}\{b/a\}\equiv Q_{2}\{b/a\}$. Now we apply the rule $AlpSum$:
+	    \[
+	      \inferrule* [left=AlpSum]{
+		  P_{1}\{b/a\}\equiv Q_{1}\{b/a\}
+		\\
+		  P_{2}\{b/a\}\equiv Q_{2}\{b/a\}
+	      }{
+		  P_{1}\{b/a\}+P_{2}\{b/a\}\equiv Q_{1}\{b/a\}+Q_{2}\{b/a\}
+	      }
+	    \]
+	    and after we apply the the definition of substitution to the conclusion of the previous rule instance we get the lemma thesis.
+	  \item[$Q_{1}|Q_{2}$]:
+	    this case is very similar to the previous one.
+	  \item[$\overline{x}y.Q_{1}$]:
+	    for the inversion lemma $P=\overline{x}y.P_{1}$ and $P_{1}\equiv_{\alpha}Q_{1}$. For the inductive hypothesis $P_{1}\{b/a\}\equiv_{\alpha}Q_{1}\{b/a\}$ and for the rule $AlpOut$ $\overline{x}\{b/a\}y\{b/a\}.P_{1}\{b/a\}\equiv_{\alpha}\overline{x}\{b/a\}y\{b/a\}.Q_{1}\{b/a\}$ and for the definition of substitution $(\overline{x}y.P_{1})\{b/a\}\equiv_{\alpha}(\overline{x}y.Q_{1})\{b/a\}$.
+	  \item[$x(y).Q_{1}$]:
+	    
+	  \item[$(\nu x)Q_{1}$]:
+	    
+	\end{description}
   \end{proof}
 \end{lemma}
+
+
+In the proof of equivalence of the semantics in the next section we need the following lemmas
+
+
+\begin{lemma}
+  $P\{x/y\}\equiv_{\alpha}Q$ implies $P\equiv_{\alpha}Q\{y/x\}$. NON FUNZIONA LA DIMOSTRAZIONE!
+  \begin{proof}
+    The proof is an induction on the length of the proof tree of $P\{x/y\}\equiv_{\alpha}Q$ and then by cases on the last rule:
+    \begin{description}
+      \item[base case]
+	the last rule can be
+	\begin{description}
+	  \item[$AlpZero$]
+	    in this case both $P$ and $Q$ are the null process $0$ so the thesis holds.
+	  \item[$AlpIde$]
+ 	    for this rule to apply $P\{x/y\}$ and $Q$ must be some identifier $A$ with the same variable. Suppose that 
+	    $P=A(\tilde{a}|\tilde{b})$
+	    There can be some different cases:
+	    \begin{description}
+	      \item[$y\in \tilde{a}$]
+		we can suppose that $\tilde{a}=y, \tilde{c}$ then
+		\begin{description}
+		  \item[$x\in \tilde{b}$]
+		    we can suppose that $\tilde{b}=x, \tilde{d}$, then
+		    \[
+		      Q=P\{x/y\}=A(x, \tilde{c}|z, \tilde{d})
+		    \]
+		    where $z$ is a fresh name. We need now the identifier equal to $Q\{y/x\}=A(x, \tilde{c}|z, \tilde{d})\{y/x\}$ so we have to distinguish two cases:
+		    \begin{description}
+		      \item[$x\in tilde{d}$]
+			
+		      \item[$x\notin tilde{d}$]
+		      \[
+			Q\{y/x\}=A(x, \tilde{c}|z, \tilde{d})\{y/x\}=A(y, \tilde{c}|z, \tilde{d})
+		      \]			
+		    \end{description}
+		  \item[$y\notin \tilde{y}$]
+		    in this case there is no need to change bound names so 
+		    \[
+		      Q\{y/x\}=A(y, \tilde{z}|\tilde{y})
+		    \]
+		\end{description}
+	      \item[$x\notin \tilde{x}$]
+		then 
+		\[
+		  Q\{y/x\}=Q=A(\tilde{x}|\tilde{y})
+		\]
+		  
+	    \end{description}
+
+% 	    \begin{description}
+% 	      \item[$y\notin \tilde{x}$]:
+% 		\begin{description}
+% 		  \item[$y\notin \tilde{y}$]:
+% 		    \begin{description}
+% 		      \item[$x\notin \tilde{x}$]:
+% 			\begin{description}
+% 			  \item[$x\notin \tilde{y}$]:
+% 
+% 			  \item[$x\in \tilde{y}$]:
+% 			    
+% 			\end{description}
+% 		      \item[$x\in \tilde{x}$]:
+% 			\begin{description}
+%  			  \item[$x\notin \tilde{y}$]:
+%  		
+%  			  \item[$x\in \tilde{y}$]:
+%  		
+%  			\end{description}		
+%  		    \end{description}
+%  		  \item[$y\in \tilde{y}$]:
+%  		    \begin{description}
+%  		      \item[$x\notin \tilde{x}$]:
+%  			\begin{description}
+%  			  \item[$x\notin \tilde{y}$]:
+%  		
+%  			  \item[$x\in \tilde{y}$]:
+%  		
+%  			\end{description}
+%  		      \item[$x\in \tilde{x}$]:
+%  			\begin{description}
+%  			  \item[$x\notin \tilde{y}$]:
+%  		
+%  			  \item[$x\in \tilde{y}$]:
+%  		
+%  			\end{description}		
+%  		    \end{description}
+%  		\end{description}
+%  	      \item[$y\in \tilde{x}$]:
+%  		\begin{description}
+%  		  \item[$y\notin \tilde{y}$]:
+%  		    \begin{description}
+%  		      \item[$x\notin \tilde{x}$]:
+%  			\begin{description}
+%  			  \item[$x\notin \tilde{y}$]:
+%  		
+%  			  \item[$x\in \tilde{y}$]:
+%  		
+%  			\end{description}
+%  		      \item[$x\in \tilde{x}$]:
+%  			\begin{description}
+%  			  \item[$x\notin \tilde{y}$]:
+%  		
+%  			  \item[$x\in \tilde{y}$]:
+%  		
+%  			\end{description}		
+%  		    \end{description}
+%  		  \item[$y\in \tilde{y}$]:
+%  		    \begin{description}
+%  		      \item[$x\notin \tilde{x}$]:
+%  			\begin{description}
+%  			  \item[$x\notin \tilde{y}$]:
+% 		
+% 			  \item[$x\in \tilde{y}$]:
+% 		
+% 			\end{description}
+% 		      \item[$x\in \tilde{x}$]:
+% 			\begin{description}
+% 			  \item[$x\notin \tilde{y}$]:
+% 		
+% 			  \item[$x\in \tilde{y}$]:
+% 		
+% 			\end{description}		
+% 		    \end{description}		
+% 		\end{description}		
+% 	    \end{description}
+
+ 	\end{description}
+      \item[inductive case]
+	
+    \end{description}
+  \end{proof}
+\end{lemma}
+
+
+\begin{lemma}
+  The $\alpha$ equivalence is an equivalence relation.
+  \begin{proof}:
+    \begin{description}
+      \item[reflexivity]
+	We prove $P\equiv_{\alpha}P$ by structural induction on $P$:
+	\begin{description}
+	  \item[$0$]:
+	    \[\inferrule* [left=AlpZero]{
+	    }{
+	      0\equiv_{\alpha}0
+	    }\]
+	  \item[$\tau.P_{1}$]:
+	    for induction $P_{1}\equiv_{\alpha}P_{1}$ so
+	    \[\inferrule* [left=AlpTau]{
+	      P_{1}\equiv_{\alpha}P_{1}
+	    }{
+	      \tau.P_{1}\equiv_{\alpha}\tau.P_{1}
+	    }\]
+	  \item[$x(y).P_{1}$]:
+	    for induction $P_{1}\equiv_{\alpha}P_{1}$ so
+	    \[\inferrule* [left=AlpInp]{
+	      P_{1}\equiv_{\alpha}P_{1}
+	    }{
+	      x(y).P_{1}\equiv_{\alpha}x(y).P_{1}
+	    }\]
+	  \item[$\overline{x}y.P_{1}$]:
+	    for induction $P_{1}\equiv_{\alpha}P_{1}$ so
+	    \[\inferrule* [left=AlpOut]{
+	      P_{1}\equiv_{\alpha}P_{1}
+	    }{
+	      \overline{x}y.P_{1}\equiv_{\alpha}\overline{x}y.P_{1}
+	    }\]
+	  \item[$P_{1}+P_{2}$]:
+	    for induction $P_{1}\equiv_{\alpha}P_{1}$ and $P_{2}\equiv_{\alpha}P_{2}$ so
+	    \[\inferrule* [left=AlpSum]{
+		  P_{1}\equiv_{\alpha}P_{1}
+		\\
+		  P_{2}\equiv_{\alpha}P_{2}
+	    }{
+	      P_{1}+P_{2}\equiv_{\alpha}P_{1}+P_{2}
+	    }\]
+	  \item[$P_{1}|P_{2}$]:
+	    for induction $P_{1}\equiv_{\alpha}P_{1}$ and $P_{2}\equiv_{\alpha}P_{2}$ so
+	    \[\inferrule* [left=AlpPar]{
+		  P_{1}\equiv_{\alpha}P_{1}
+		\\
+		  P_{2}\equiv_{\alpha}P_{2}
+	    }{
+	      P_{1}|P_{2}\equiv_{\alpha}P_{1}|P_{2}
+	    }\]
+	  \item[$(\nu x)P_{1}$]:
+	    for induction $P_{1}\equiv_{\alpha}P_{1}$ so
+	    \[\inferrule* [left=AlpRes]{
+	      P_{1}\equiv_{\alpha}P_{1}
+	    }{
+	      (\nu x)P_{1}\equiv_{\alpha}(\nu x)P_{1}
+	    }\]
+	  \item[$A(\tilde{x}|\tilde{y})$]:
+	    \[\inferrule* [left=AlpIde]{
+	    }{
+	      A(\tilde{x}|\tilde{y})\equiv_{\alpha}A(\tilde{x}|\tilde{y})
+	    }\]
+	\end{description}
+      \item[symmetry]
+	A proof of 
+	\[
+	  P\equiv_{\alpha}Q\Rightarrow Q\equiv_{\alpha}P
+	\]
+	can go by induction on the length of the proof tree of $P\equiv_{\alpha}Q$ and then by cases on the last rule used. Nevertheless we notice that the base case rules $AlpZero$ and $AlpIde$ are symmetric and the inductive case rules are symmetric except for $AlpRes1$ and $AlpInp1$. So we provide with the cases for those last two rules:
+	\begin{description}
+	  \item[$AlpRes1$]
+	    the last part of the proof tree is
+	    \[\inferrule*[left=AlpRes1]{
+		P\equiv_{\alpha}Q\{x/y\}
+	    }{
+	      (\nu x)P\equiv_{\alpha}(\nu y)Q
+	    }\]
+	    we apply the inductive hypothesis on $P\equiv_{\alpha}Q\{x/y\}$ and get $Q\{x/y\}\equiv_{\alpha}P$ which implies $Q\equiv_{\alpha}P\{y/x\}$ so an application of the same rule yields:
+	    \[\inferrule*[left=AlpRes1]{
+		Q\equiv_{\alpha}P\{y/x\}
+	    }{
+	      (\nu y)QP\equiv_{\alpha}(\nu x)
+	    }\]
+	  \item[$AlpInp1$]
+	    this is very similar to the previous.
+	\end{description}
+      \item[transitivity]
+	
+    \end{description}
+  \end{proof}
+\end{lemma}
+
+
+
 
 \begin{lemma}
   E' FALSO!!!!! !!!! !!! !! !:\begin{itemize}
@@ -1140,7 +1394,7 @@ In this subsection we introduce the early operational semantic for $\pi$ calculu
 	  \begin{tabular}{c}
 	      $A(\tilde{x}|\tilde{y}) \stackrel{def}{=} P\; P\{\tilde{w}/\tilde{x}\} \xrightarrow{\alpha} P^{'}$
 	    \\\hline
-	      $A(\tilde{w}|\tilde{y}) \xrightarrow{\alpha} P^{'}$
+	      $A(\tilde{x}|\tilde{y})\{\tilde{w}/\tilde{x}\} \xrightarrow{\alpha} P^{'}$
 	  \end{tabular}
 	&
 	  \bf{Opn}
@@ -1951,45 +2205,46 @@ which is not want we want. So we prove a weaker version
 		\]
 	    \end{itemize}
 	  \item[Cns]
-	    If $S=Cns$ then the last part of the derivation tree of $P\xrightarrow{\alpha}_{2}P^{'}$ looks like this:
-		\[
-		  \inferrule* [left=Alp]{
-		      P\equiv_{\alpha}A(\tilde{w}|\tilde{y})
-		    \\
-		      \inferrule* [left=Cns]{
-			  A(\tilde{x}|\tilde{y})\stackrel{def}{=}R
-			\\
-			  R\{\tilde{w}/\tilde{x}\}\xrightarrow{\alpha}_{2}P^{'}
-		      }{
-			A(\tilde{w}|\tilde{y})\xrightarrow{\alpha}_{2}P^{'}
-		      }
-		  }{
-		    P\xrightarrow{\alpha}_{2}P^{'}
-		  }
-		\]
-	    We have
-	    \begin{center}
-	      \begin{tabular}{ll}
-		  $P\equiv_{\alpha}A(\tilde{w}|\tilde{y})$ &
-		\\
-		  $\Rightarrow P\{\tilde{x}/\tilde{w}\}\equiv_{\alpha}A(\tilde{x}|\tilde{y})$  & inversion lemma
-		\\
-		  $\Rightarrow P\{\tilde{x}/\tilde{w}\}\equiv_{\alpha}R$ & 
-		\\
-		  $\Rightarrow P\equiv_{\alpha}R\{\tilde{w}/\tilde{x}\}$ & 
-	      \end{tabular}
-	    \end{center}
-	    now we create the following proof which is shorter then the inductive case and so suitable for inductive hypothesis application
-	    \[
-		  \inferrule* [left=Alp]{
-		      P\equiv_{\alpha}R\{\tilde{w}/\tilde{x}\}
-		    \\
-		      R\{\tilde{w}/\tilde{x}\}\xrightarrow{\alpha}_{2}P^{'}
-		  }{
-		    P\xrightarrow{\alpha}_{2}P^{'}
-		  }	      
-	    \]
-	    the inductive hypothesis tells us that there exists a process $P^{''}$ such that $P^{''}\equiv P^{'}$ and $P\xrightarrow{\alpha}_{1}P^{''}$
+	    Since there is no process $\alpha$ equivalent to an identifier except for the identifier itself, the last part of the derivation tree of $P\xrightarrow{\alpha}_{2}P^{'}$ looks like this:
+ 		\[
+ 		  \inferrule* [left=Alp]{
+ 		      A(\tilde{x}|\tilde{y})\{\tilde{w}/\tilde{x}\}\equiv_{\alpha}A(\tilde{x}|\tilde{y})\{\tilde{w}/\tilde{x}\}
+ 		    \\
+ 		      \inferrule* [left=Cns]{
+ 			  A(\tilde{x}|\tilde{y})\stackrel{def}{=}R
+ 			\\
+ 			  R\{\tilde{w}/\tilde{x}\}\xrightarrow{\alpha}_{2}P^{'}
+ 		      }{
+ 			A(\tilde{x}|\tilde{y})\{\tilde{w}/\tilde{x}\}\xrightarrow{\alpha}_{2}P^{'}
+ 		      }
+ 		  }{
+ 		    A(\tilde{x}|\tilde{y})\{\tilde{w}/\tilde{x}\}\xrightarrow{\alpha}_{2}P^{'}
+ 		  }
+ 		\]
+	    here we can apply the inductive hypothesis on the conclusion of $S$ and get that there exists a process $P^{''}$ such that $A(\tilde{x}|\tilde{y})\{\tilde{w}/\tilde{x}\}\xrightarrow{\alpha}_{1}P^{''}$ and $P^{'}\equiv_{\alpha}P^{''}$
+% 	    We have
+% 	    \begin{center}
+% 	      \begin{tabular}{ll}
+% 		  $P\equiv_{\alpha}A(\tilde{w}|\tilde{y})$ &
+% 		\\
+% 		  $\Rightarrow P\{\tilde{x}/\tilde{w}\}\equiv_{\alpha}A(\tilde{x}|\tilde{y})$  & inversion lemma
+% 		\\
+% 		  $\Rightarrow P\{\tilde{x}/\tilde{w}\}\equiv_{\alpha}R$ & 
+% 		\\
+% 		  $\Rightarrow P\equiv_{\alpha}R\{\tilde{w}/\tilde{x}\}$ & 
+% 	      \end{tabular}
+% 	    \end{center}
+% 	    now we create the following proof which is shorter then the inductive case and so suitable for inductive hypothesis application
+% 	    \[
+% 		  \inferrule* [left=Alp]{
+% 		      P\equiv_{\alpha}R\{\tilde{w}/\tilde{x}\}
+% 		    \\
+% 		      R\{\tilde{w}/\tilde{x}\}\xrightarrow{\alpha}_{2}P^{'}
+% 		  }{
+% 		    P\xrightarrow{\alpha}_{2}P^{'}
+% 		  }	      
+% 	    \]
+% 	    the inductive hypothesis tells us that there exists a process $P^{''}$ such that $P^{''}\equiv P^{'}$ and $P\xrightarrow{\alpha}_{1}P^{''}$
 	\end{description}
     \end{description}
   \end{proof}
