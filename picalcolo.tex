@@ -717,7 +717,7 @@ Structural congruences are a set of equations defining equality and congruence r
 	    \\
 	      x\neq y
 	    \\
-	      y\notin fn(Q)
+	      y\in fn(Q)
 	  }{
 	    (\nu x)P\equiv_{\alpha}(\nu y)Q
 	  }$
@@ -733,7 +733,7 @@ Structural congruences are a set of equations defining equality and congruence r
 	    \\
 	      x\neq y
 	    \\
-	      y\notin fn(Q)
+	      y\in fn(Q)
 	  }{
 	    z(x).P\equiv_{\alpha}z(y).Q
 	  }$
@@ -902,6 +902,78 @@ We can make some clarification on the axioms of the structural congruence:
     We can use the scope extension laws in table \ref{structuralcongrunce} or the rules $Opn$ and $Cls$ in table \ref{transitionrelationearlywithoutstructuralcongruence} to deal with the scope extension.
 \end{description}
 
+\begin{lemma}\label{freenamesandsubstitution}
+  \[
+    a\in fn(Q)\Rightarrow fn(Q\{b/a\})=(fn(Q)-\{a\}) \cup \{b\}
+  \]
+  \begin{proof}
+%     The proof is a structural induction on $Q$:
+%     \begin{description}
+%       \item[$0$] this case does not exist.
+%       \item[$\overline{x}y.Q_{1}$]:
+% 	\begin{center}
+% 	  \begin{tabular}{ll}
+% 	    $fn(Q_{1}\{b/a\})=(fn(Q_{1})-\{a\})\cup \{b\}$ &inductive hypothesis\\
+% 	    $\Rightarrow fn(Q_{1}\{b/a\})\cup \{x,y\}=((fn(Q_{1})-\{a\})\cup \{b\})\cup \{x,y\}$ & $x, y, a, b$ pairwise disjoint\\
+% 	    $\Rightarrow fn(\overline{x}y.(Q_{1}\{b/a\}))=((fn(Q_{1})-\{a\})\cup \{b\})\cup \{x,y\}$ &\\
+% 	  \end{tabular}
+% 	\end{center}
+% 	$(\overline{x}y.Q_{1})\{b/a\}\; =\; \overline{x}\{b/a\}y\{b/a\}.Q_{1}\{b/a\}$
+%       \item[$x(y).Q_{1}$]
+% 	$(x(y).Q_{1})\{b/a\}\; =\; x\{b/a\}(y).Q_{1}\{b/a\}$ if $y\neq a$ and $y\neq b$
+%       \item[$x(a).Q_{1}$]
+% 	$(x(a).Q_{1})\{b/a\}\; =\; x\{b/a\}(a).Q_{1}$
+%       \item[$x(b).Q_{1}$]
+% 	$(x(b).Q_{1})\{b/a\}\; =\; x\{b/a\}(c).((Q_{1}\{c/b\})\{b/a\})$ where $c\notin n(Q_{1})$
+%       \item[$\tau.Q_{1}$]
+% 	$(\tau.Q_{1})\{b/a\}\; =\; \tau.Q_{1}\{b/a\}$
+%       \item[$A(x_{1}, \cdots, x_{n}\; | \;y_{1}, \cdots, y_{m})$]
+% 	if $a\in \{x_{1}, \cdots, x_{n}\}$ then
+%     
+% 	$(A(x_{1}, \cdots, x_{n}\; | \;y_{1}, \cdots, y_{m}))\{b/a\}=$
+%     
+% 	$\;\;\;\;\;\left\{
+% 	  \begin{array}{ll}
+% 		A(x_{1}\{b/a\}, \cdots, x_{n}\{b/a\}\; | \;y_{1}, \cdots, y_{m})
+% 	      &
+% 		if\; b\notin \{y_{1}, \cdots, y_{m}\}
+% 	    \\
+% 		A(x_{1}\{b/a\}, \cdots, x_{n}\{b/a\}\; | \;y_{1}, \cdots, y_{i-1},c,y_{i+1},\cdots, y_{m})
+% 	      &
+% 		if\; b = y_{i}
+% 	    \\
+% 	        \;\;\;\;where\; c\; is\; fresh
+% 	      &
+% 	  \end{array}\right.$
+%       \item[$A(x_{1}, \cdots, x_{n}\; | \;y_{1}, \cdots, y_{m})$]
+% 	if $a\notin \{x_{1}, \cdots, x_{n}\}$ then
+%       
+% 	$(A(x_{1}, \cdots, x_{n}\; | \;y_{1}, \cdots, y_{m}))\{b/a\}=A(x_{1}, \cdots, x_{n}\; | \;y_{1}, \cdots, y_{m})$
+%       \item[$Q_{1}+Q_{2}$]:
+% 	\begin{center}
+% 	  \begin{tabular}{ll}
+% 	    inductive hypothesis:&\\
+% 	    $fn(Q_{1}\{b/a\})=(fn(Q_{1})-\{a\})\cup \{b\}$ and $fn(Q_{2}\{b/a\})=(fn(Q_{2})-\{a\})\cup \{b\}$ &\\
+% 	    $\Rightarrow fn(Q_{1}\{b/a\})\cup fn(Q_{2}\{b/a\})=((fn(Q_{1})-\{a\})\cup \{b\}) \cup ((fn(Q_{2})-\{a\})\cup \{b\})$  &\\
+% 	    $\Rightarrow fn(Q_{1}\{b/a\})\cup fn(Q_{2}\{b/a\})=((fn(Q_{1}) \cup fn(Q_{2}))-\{a\})\cup \{b\}$  &\\
+% 	    $\Rightarrow fn(Q_{1}\{b/a\}+Q_{2}\{b/a\})=((fn(Q_{1}+Q_{2}))-\{a\})\cup \{b\}$  &\\
+% 	    $\Rightarrow fn((Q_{1}+Q_{2})\{b/a\})=((fn(Q_{1}+Q_{2}))-\{a\})\cup \{b\}$  &\\
+% 	  \end{tabular}
+% 	\end{center}
+%       \item[$Q_{1}|Q_{2}$] this case is very similar to the previous one.
+%       \item[$(\nu y)Q_{1}$]
+% 	$((\nu y)Q_{1})\{b/a\}\; =\;(\nu y)Q_{1}\{b/a\}$ if $y\neq a$ and $y\neq b$
+%       \item[$(\nu a)Q_{1}$]
+% 	$((\nu a)Q_{1})\{b/a\}\; =\;(\nu a)Q_{1}$
+%       \item[$(\nu b)Q_{1}$]
+% 	$((\nu b)Q_{1})\{b/a\}\; =\;(\nu c)((Q_{1}\{c/b\})\{b/a\})$ where $c\notin n(Q_{1})$ if $a\in fn(Q_{1})$ 
+%       \item[$(\nu b)Q_{1}$]
+% 	$((\nu b)Q_{1})\{b/a\}\; =\;(\nu b)Q_{1}$ if $a\notin fn(Q_{1})$
+%     \end{description}
+  \end{proof}
+\end{lemma}
+
+
 
 \begin{lemma}
   $P\equiv_{\alpha}Q\Rightarrow fn(P)=fn(Q)$
@@ -913,9 +985,8 @@ We can make some clarification on the axioms of the structural congruence:
       \item[$AlpTau$]:
 	\begin{center}
 	  \begin{tabular}{ll}
-	    $fn(\tau.P)=fn(P)$&definition of $fn$\\
-	    $=fn(Q)$&inductive hypothesis\\
-	    $=fn(\tau.Q)$&definition of $fn$\\
+	    $fn(P)=fn(Q)$&inductive hypothesis\\
+	    $\Rightarrow fn(\tau.P)=fn(\tau.Q)$&definition of $fn$\\
 	  \end{tabular}
 	\end{center}
       \item[$AlpOut$]:
@@ -930,54 +1001,35 @@ We can make some clarification on the axioms of the structural congruence:
 	\begin{center}
 	  \begin{tabular}{ll}
 	    $fn(P)=fn(Q\{x/y\})$&inductive hypothesis\\
-	    $\Rightarrow fn(P)-\{x\}=fn(Q\{x/y\})-\{x\}$&\\
-	    $\Rightarrow fn(P)-\{x\}=(fn(Q)-\{y\}\cap \{x\})-\{x\}$&\\
+	    $\Rightarrow fn(P)-\{x\}=fn(Q\{x/y\})-\{x\}$&lemma \ref{freenamesandsubstitution}\\
+	    $\Rightarrow fn(P)-\{x\}=(fn(Q)-\{y\}\cup \{x\})-\{x\}$&\\
 	    $\Rightarrow fn(P)-\{x\}=fn(Q)-\{y\}$&definition of $fn$\\
 	    $\Rightarrow fn((\nu x)P)=fn((\nu y)Q)$&\\
 	  \end{tabular}
 	\end{center}
-      \item[$AlpInp1$]
-	  $\inferrule*[left=AlpInp1]{
-	      P\equiv_{\alpha}Q\{x/y\}
-	  }{
-	    z(x).P\equiv_{\alpha}z(y).Q
-	  }$
-	We have two cases:
-	\begin{description}
-	  \item[$y\in fn(Q)$]
-	    \begin{center}
-	      \begin{tabular}{ll}
-		$fn(P)=fn(Q\{x/y\})$&inductive hypothesis\\
-		$\Rightarrow fn(P)=(fn(Q)-\{y\})\cup \{x\}$&\\
-		$\Rightarrow fn(P)-\{x\}=fn(Q)-\{y\}$&definition of $fn$\\
-		$\Rightarrow fn(z(x)P)=fn(z(y)Q)$&\\
-	      \end{tabular}
-	    \end{center}	    
-	  \item[$y\notin fn(Q)$]
-	    \begin{center}
-	      \begin{tabular}{ll}
-		$fn(P)=fn(Q\{x/y\})$&inductive hypothesis\\
-		$\Rightarrow fn(P)=fn(Q)$&\\
-		$\Rightarrow fn(P)-\{x\}=(fn(Q)-\{y\}\cap \{x\})-\{x\}$&\\
-		$\Rightarrow fn(P)-\{x\}=fn(Q)-\{y\}$&definition of $fn$\\
-		$\Rightarrow fn((\nu x)P)=fn((\nu y)Q)$&\\
-	      \end{tabular}
-	    \end{center}	    	    
-	\end{description}
-
-      \item[$AlpSum$]
+      \item[$AlpInp1$]:
+	\begin{center}
+	  \begin{tabular}{ll}
+	    $fn(P)=fn(Q\{x/y\})$&inductive hypothesis\\
+	    $\Rightarrow fn(P)-\{x\}=fn(Q\{x/y\})-\{x\}$&lemma \ref{freenamesandsubstitution}\\
+	    $\Rightarrow fn(P)-\{x\}=(fn(Q)-\{y\}\cup \{x\})-\{x\}$&\\
+	    $\Rightarrow fn(P)-\{x\}=fn(Q)-\{y\}$&definition of $fn$\\
+	    $\Rightarrow fn(z(x).P)=fn(z(y).Q)$&\\
+	  \end{tabular}
+	\end{center}
+      \item[$AlpSum$]:
 	\begin{center}
 	  \begin{tabular}{ll}
 	    $fn(P_{1})=fn(Q_{1})\; and\; fn(P_{2})=fn(Q_{2})$&inductive hypothesis\\
-	    $\Rightarrow fn(P_{1})\cap fn(P_{2})=fn(Q_{1})\cap fn(Q_{2})$&definition of $fn$\\
+	    $\Rightarrow fn(P_{1})\cup fn(P_{2})=fn(Q_{1})\cap fn(Q_{2})$&definition of $fn$\\
 	    $\Rightarrow fn(P_{1}+P_{2})=fn(Q_{1}+Q_{2})$&\\
 	  \end{tabular}
 	\end{center}
-      \item[$AlpPar$]
+      \item[$AlpPar$]:
 	\begin{center}
 	  \begin{tabular}{ll}
 	    $fn(P_{1})=fn(Q_{1})\; and\; fn(P_{2})=fn(Q_{2})$&inductive hypothesis\\
-	    $\Rightarrow fn(P_{1})\cap fn(P_{2})=fn(Q_{1})\cap fn(Q_{2})$&definition of $fn$\\
+	    $\Rightarrow fn(P_{1})\cup fn(P_{2})=fn(Q_{1})\cap fn(Q_{2})$&definition of $fn$\\
 	    $\Rightarrow fn(P_{1}|P_{2})=fn(Q_{1}|Q_{2})$&\\
 	  \end{tabular}
 	\end{center}
@@ -1005,37 +1057,211 @@ We can make some clarification on the axioms of the structural congruence:
 
 
 \begin{lemma}
-  $P\equiv_{\alpha}Q\Rightarrow P\{b/a\}\equiv_{\alpha}Q\{b/a\}$
+  If we have a proof tree of 
+  \[
+    P\equiv_{\alpha}Q
+  \]
+  then we can create a proof tree of
+  \[
+    P\{b/a\}\equiv_{\alpha}Q\{b/a\}
+  \]
+  with the same length.
   \begin{proof}
-    The proof goes by structural induction on $Q$ and the each cases use the inversion lemma for $\alpha$ equivalence:
+    The proof goes by induction on the length of the proof tree of $P\equiv_{\alpha}Q$ and then by cases on the last rule of the proof tree:
+    \begin{description}
+      \item[base case]:
 	\begin{description}
-	  \item[$0$]
-	    for the inversion lemma then also $P$ is $0$ and so both $P\{b/a\}$ and $Q\{b/a\}$ are $0$ and $\alpha$ equivalent.
-	  \item[$A(\tilde{x}|\tilde{y})$]:
-	    for the inversion lemma $P$ are syntacticly the same as $Q$ so the lemma holds.
-	  \item[$\tau.Q_{1}$]:
-	    for the inversion lemma then $P=\tau.P_{1}$ and $P_{1}\equiv_{\alpha}Q_{1}$ so for the inductive hypothesis $P_{1}\{b/a\}\equiv_{\alpha}Q_{1}\{b/a\}$ and for the rule $AlpTau$ $\tau.(P_{1}\{b/a\})\equiv_{\alpha}\tau.(Q_{1}\{b/a\})$ and for the definition of substitution $(\tau.P_{1})\{b/a\}\equiv_{\alpha}(\tau.Q_{1})\{b/a\}$.
-	  \item[$Q_{1}+Q_{2}$]:
-	    for the inversion lemma $P=P_{1}+P_{2}$ and $P_{1}\equiv Q_{1}$ and $P_{2}\equiv Q_{2}$, so applying the inductive hypothesis twice yields $P_{1}\{b/a\}\equiv Q_{1}\{b/a\}$ and $P_{2}\{b/a\}\equiv Q_{2}\{b/a\}$. Now we apply the rule $AlpSum$:
-	    \[
-	      \inferrule* [left=AlpSum]{
-		  P_{1}\{b/a\}\equiv Q_{1}\{b/a\}
-		\\
-		  P_{2}\{b/a\}\equiv Q_{2}\{b/a\}
-	      }{
-		  P_{1}\{b/a\}+P_{2}\{b/a\}\equiv Q_{1}\{b/a\}+Q_{2}\{b/a\}
-	      }
-	    \]
-	    and after we apply the the definition of substitution to the conclusion of the previous rule instance we get the lemma thesis.
-	  \item[$Q_{1}|Q_{2}$]:
+	  \item[$AlpZerp, AlpIde$]
+	    the lemma holds because $P$ and $Q$ are syntacticly the same process.
+	\end{description}
+      \item[inductive case]:
+	\begin{description}
+	  \item[$AlpTau$]:
+	    \begin{center}
+	      \begin{tabular}{ll}
+		&rule premise\\
+		$P_{1}\equiv_{\alpha}Q_{1}$&inductive hypothesis\\
+		$\Rightarrow P_{1}\{b/a\}\equiv_{\alpha}Q_{1}\{b/a\}$&rule $AlpTau$\\
+		$\Rightarrow \tau.(P_{1}\{b/a\})\equiv_{\alpha}\tau.(Q_{1}\{b/a\}) $&definition of substitution\\
+		$\Rightarrow (\tau.P_{1})\{b/a\}\equiv_{\alpha}(\tau.Q_{1})\{b/a\} $&\\
+	      \end{tabular}
+	    \end{center}
+	  \item[$AlpSum$]:
+	    \begin{center}
+	      \begin{tabular}{ll}
+		&rule premises\\
+		$P_{1}\equiv Q_{1}$ and $P_{2}\equiv Q_{2}$&inductive hypothesis\\
+		$\Rightarrow P_{1}\{b/a\}\equiv Q_{1}\{b/a\}$ and $P_{2}\{b/a\}\equiv Q_{2}\{b/a\}$&rule $AlpSum$\\
+		$\Rightarrow P_{1}\{b/a\}+P_{2}\{b/a\}\equiv Q_{1}\{b/a\}+Q_{2}\{b/a\} $&definition of substitution\\
+		$\Rightarrow (P_{1}+P_{2})\{b/a\}\equiv_{\alpha}(Q_{1}+Q_{2})\{b/a\} $&\\
+	      \end{tabular}
+	    \end{center}
+	  \item[$AlpPar$]:
 	    this case is very similar to the previous one.
-	  \item[$\overline{x}y.Q_{1}$]:
-	    for the inversion lemma $P=\overline{x}y.P_{1}$ and $P_{1}\equiv_{\alpha}Q_{1}$. For the inductive hypothesis $P_{1}\{b/a\}\equiv_{\alpha}Q_{1}\{b/a\}$ and for the rule $AlpOut$ $\overline{x}\{b/a\}y\{b/a\}.P_{1}\{b/a\}\equiv_{\alpha}\overline{x}\{b/a\}y\{b/a\}.Q_{1}\{b/a\}$ and for the definition of substitution $(\overline{x}y.P_{1})\{b/a\}\equiv_{\alpha}(\overline{x}y.Q_{1})\{b/a\}$.
-	  \item[$x(y).Q_{1}$]:
-	    
-	  \item[$(\nu x)Q_{1}$]:
+	  \item[$AlpOut$]:
+	    \begin{center}
+	      \begin{tabular}{ll}
+		&rule premise\\
+		$P_{1}\equiv_{\alpha}Q_{1}$&inductive hypothesis\\
+		$\Rightarrow P_{1}\{b/a\}\equiv_{\alpha}Q_{1}\{b/a\}$&rule $AlpOut$\\
+		$\Rightarrow \overline{x}\{b/a\}y\{b/a\}.P_{1}\{b/a\}\equiv_{\alpha}\overline{x}\{b/a\}y\{b/a\}.Q_{1}\{b/a\} $&definition of substitution\\
+		$\Rightarrow (\overline{x}y.P_{1})\{b/a\}\equiv_{\alpha}(\overline{x}y.Q_{1})\{b/a\} $&\\
+	      \end{tabular}
+	    \end{center}
+	  \item[$AlpInp$]
+	    where $y$ $a$ and $b$ are pairwise disjoint. 
+	    \begin{center}
+	      \begin{tabular}{ll}
+		&rule premise\\
+		$P_{1}\equiv_{\alpha}Q_{1}$&inductive hypothesis\\
+		$\Rightarrow P_{1}\{b/a\}\equiv_{\alpha}Q_{1}\{b/a\}$&rule $AlpIn$\\
+		$\Rightarrow x\{b/a\}(y).P_{1}\{b/a\}\equiv_{\alpha}x\{b/a\}(y).Q_{1}\{b/a\} $&definition of substitution\\
+		$\Rightarrow (x(y).P_{1})\{b/a\}\equiv_{\alpha}(x(y).Q_{1})\{b/a\} $&\\
+	      \end{tabular}
+	    \end{center}	    	    
+	    \begin{center}
+	      \begin{tabular}{ll}
+		&rule premise\\
+		$P_{1}\equiv_{\alpha}Q_{1}$&rule $AlpIn$\\
+		$\Rightarrow x\{b/a\}(a).P_{1}\equiv_{\alpha}x\{b/a\}(a).Q_{1} $&definition of substitution\\
+		$\Rightarrow (x(a).P_{1})\{b/a\}\equiv_{\alpha}(x(a).Q_{1})\{b/a\} $&\\
+	      \end{tabular}
+	    \end{center}	    	    
+	    \begin{center}
+	      \begin{tabular}{ll}
+		&rule premise\\
+		$P_{1}\equiv_{\alpha}Q_{1}$&inductive hypothesis\\
+		$\Rightarrow P_{1}\{c/b\}\equiv_{\alpha}Q_{1}\{c/b\}$&inductive hypothesis\\
+		$\Rightarrow P_{1}\{c/b\}\{b/a\}\equiv_{\alpha}Q_{1}\{c/b\}\{b/a\} $&rule $AlpIn$\\
+		$\Rightarrow x\{b/a\}(c).(P_{1}\{c/b\}\{b/a\})\equiv_{\alpha}x\{b/a\}(c).(Q_{1}\{c/b\}\{b/a\}) $&definition of substitution\\
+		$\Rightarrow (x(b).P_{1})\{b/a\}\equiv_{\alpha}(x(b).Q_{1})\{b/a\} $&\\
+	      \end{tabular}
+	    \end{center}	    	    
+	  \item[$AlpInp1$]:
+	    the last part of the proof tree of $P\equiv_{\alpha}Q$ is
+	    \[\inferrule*[left=AlpInp1]{
+		P_{1}\equiv_{\alpha}Q_{1}\{x/y\}
+	      \\
+		x\neq y	      
+	      \\
+		y\in fn(Q)
+	    }{
+	      \underbrace{z(x).P_{1}}_{P}\equiv_{\alpha}\underbrace{z(y).Q_{1}}_{Q}
+	    }\]
+
+	    \begin{center}
+	      \begin{tabular}{ll}
+		&rule premise\\
+		$P_{1}\equiv_{\alpha}Q_{1}\{x/y\}$&inductive hypothesis\\
+		$\Rightarrow P_{1}\{b/a\}\equiv_{\alpha}Q_{1}\{x/y\}\{b/a\}$&DA DIMOSTARE\\
+		$\Rightarrow P_{1}\{b/a\}\equiv_{\alpha}Q_{1}\{b/a\}\{x/y\}$&rule $AlpInp1$\\
+		$\Rightarrow z\{b/a\}(x).(P_{1}\{b/a\})\equiv_{\alpha}z\{b/a\}(y).(Q_{1}\{b/a\}) $&definition of substitution\\
+		$\Rightarrow (z(x).P_{1})\{b/a\}\equiv_{\alpha}(z(y).Q_{1})\{b/a\} $&\\
+	      \end{tabular}
+	    \end{center}	    	    
+	    \begin{center}
+	      \begin{tabular}{ll}
+		&rule premise\\
+		$P_{1}\equiv_{\alpha}Q_{1}\{a/y\}$&\\
+		$?$&\\
+		$\Rightarrow P_{1}\equiv_{\alpha}Q_{1}\{b/a\}\{a/y\}$&\\
+		$\Rightarrow z\{b/a\}(a).P_{1}\equiv_{\alpha}z\{b/a\}(y).(Q_{1}\{b/a\}) $&definition of substitution\\
+		$\Rightarrow (z(a).P_{1})\{b/a\}\equiv_{\alpha}(z(y).Q_{1})\{b/a\} $&\\
+	      \end{tabular}
+	    \end{center}	    	    
+	    \begin{center}
+	      \begin{tabular}{ll}
+		&rule premise\\
+		$P_{1}\equiv_{\alpha}Q_{1}\{b/y\}$&inductive hypothesis\\
+		$?$&\\
+		$\Rightarrow P_{1}\{c/b\}\{b/a\}\equiv_{\alpha}Q_{1}\{b/a\}\{c/y\} $&rule $AlpInp1$\\
+		$\Rightarrow z\{b/a\}(c).(P_{1}\{c/b\}\{b/a\})\equiv_{\alpha}z\{b/a\}(y).(Q_{1}\{b/a\}) $&definition of substitution\\
+		$\Rightarrow (z(b).P_{1})\{b/a\}\equiv_{\alpha}(z(y).Q_{1})\{b/a\} $&\\
+	      \end{tabular}
+	    \end{center}	    	    
+	    \begin{center}
+	      \begin{tabular}{ll}
+		&rule premise\\
+		$P_{1}\equiv_{\alpha}Q_{1}\{b/a\}$&inductive hypothesis\\
+		$?$&\\
+		$\Rightarrow P_{1}\{c/b\}\{b/a\}\equiv_{\alpha}Q_{1}\{c/a\} $&rule $AlpInp1$\\
+		$\Rightarrow z\{b/a\}(c).P_{1}\{c/b\}\{b/a\}\equiv_{\alpha}z\{b/a\}(a).Q_{1} $&\\
+		$\Rightarrow (z(b).P_{1})\{b/a\}\equiv_{\alpha}(z(a).Q_{1})\{b/a\} $&\\
+	      \end{tabular}
+	    \end{center}	    	    
+	    \begin{center}
+	      \begin{tabular}{ll}
+		&rule premise\\
+		$P_{1}\equiv_{\alpha}Q_{1}\{x/a\}$&inductive hypothesis\\
+		$?$&\\
+		$\Rightarrow P_{1}\{b/a\}\equiv_{\alpha}Q_{1}\{x/a\} $&rule $AlpInp1$\\
+		$\Rightarrow z\{b/a\}(x).P_{1}\{b/a\}\equiv_{\alpha}z\{b/a\}(a).Q_{1} $&definition of substitution\\
+		$\Rightarrow (z(x).P_{1})\{b/a\}\equiv_{\alpha}(z(a).Q_{1})\{b/a\} $&\\
+	      \end{tabular}
+	    \end{center}	    	    
+	    \begin{center}
+	      \begin{tabular}{ll}
+		&rule premise\\
+		$P_{1}\equiv_{\alpha}Q_{1}\{x/b\}$&inductive hypothesis\\
+		$?$&\\
+		$\Rightarrow P_{1}\{b/a\}\equiv_{\alpha}Q_{1}\{c/b\}\{b/a\}\{x/b\} $&rule $AlpInp1$\\
+		$\Rightarrow z\{b/a\}(x).P_{1}\{b/a\}\equiv_{\alpha}z\{b/a\}(b).Q_{1}\{c/b\}\{b/a\} $&definition of substitution\\
+		$\Rightarrow (z(x).P_{1})\{b/a\}\equiv_{\alpha}(z(b).Q_{1})\{b/a\} $&\\
+	      \end{tabular}
+	    \end{center}	    	    
+	    \begin{center}
+	      \begin{tabular}{ll}
+		&rule premise\\
+		$P_{1}\equiv_{\alpha}Q_{1}\{a/b\}$&inductive hypothesis\\
+		$?$&\\
+		$\Rightarrow P_{1}\equiv_{\alpha}Q_{1}\{c/b\}\{b/a\}\{a/b\} $&rule $AlpInp1$\\
+		$\Rightarrow z\{b/a\}(a).P_{1}\equiv_{\alpha}z\{b/a\}(b).Q_{1}\{c/b\}\{b/a\} $&definition of substitution\\
+		$\Rightarrow (z(a).P_{1})\{b/a\}\equiv_{\alpha}(z(b).Q_{1})\{b/a\} $&\\
+	      \end{tabular}
+	    \end{center}	    	    
+
+	  \item[$AlpRes$]:
+	    where $x, a$ and $b$ are pairwise disjoint. 
+	    \begin{center}
+	      \begin{tabular}{ll}
+		&rule premise\\
+		$P_{1}\equiv_{\alpha}Q_{1}$&inductive hypothesis\\
+		$\Rightarrow P_{1}\{b/a\}\equiv_{\alpha}Q_{1}\{b/a\}$&rule $AlpRes$\\
+		$\Rightarrow (\nu x)(P_{1}\{b/a\})\equiv_{\alpha}(\nu x)(Q_{1}\{b/a\}) $&definition of substitution\\
+		$\Rightarrow ((\nu x)P_{1})\{b/a\}\equiv_{\alpha}((\nu x)Q_{1})\{b/a\} $&\\
+	      \end{tabular}
+	    \end{center}	    	    
+	    \begin{center}
+	      \begin{tabular}{ll}
+		&rule premise\\
+		$P_{1}\equiv_{\alpha}Q_{1}$&rule $AlpRes$\\
+		$\Rightarrow (\nu a)P_{1}\equiv_{\alpha}(\nu a)Q_{1} $&definition of substitution\\
+		$\Rightarrow ((\nu a)P_{1})\{b/a\}\equiv_{\alpha}((\nu a)Q_{1})\{b/a\} $&\\
+	      \end{tabular}
+	    \end{center}	    	    
+	    \begin{center}
+	      \begin{tabular}{ll}
+		&rule premise\\
+		$P_{1}\equiv_{\alpha}Q_{1}$&inductive hypothesis\\
+		$P_{1}\{c/b\}\equiv_{\alpha}Q_{1}\{c/b\}$&inductive hypothesis\\
+		$\Rightarrow P_{1}\{c/b\}\{b/a\}\equiv_{\alpha}Q_{1}\{c/b\}\{b/a\}$&rule $AlpRes$\\
+		$\Rightarrow (\nu c)(P_{1}\{c/b\}\{b/a\})\equiv_{\alpha}(\nu c)(Q_{1}\{c/b\}\{b/a\}) $&definition of substitution\\
+		$\Rightarrow ((\nu b)P_{1})\{b/a\}\equiv_{\alpha}((\nu b)Q_{1})\{b/a\} $&\\
+	      \end{tabular}
+	    \end{center}	    	    
+	  \item[$AlpRes1$]:
+	  \[\inferrule*[left=AlpRes1]{
+	      P_{1}\equiv_{\alpha}Q_{1}\{x/y\}
+	    \\
+	      x\neq y
+	    \\
+	      y\in fn(Q_{1})
+	  }{
+	    \underbrace{(\nu x)P_{1}}_{P}\equiv_{\alpha}\underbrace{(\nu y)Q_{1}}_{Q}
+	  }\]
 	    
 	\end{description}
+    \end{description}
   \end{proof}
 \end{lemma}
 
