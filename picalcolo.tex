@@ -231,62 +231,6 @@ then we have
 
 
 
-%   \begin{table}
-%     \begin{tabular}{l}
-%       \hline\\
-% 	$0\{b/a\}_{bound}\; =\; 0$
-%       \\\\
-% 	$(\overline{x}y.Q)\{b/a\}_{bound}\; =\; \overline{x}y.Q\{b/a\}_{bound}$
-%       \\\\
-% 	$(x(y).Q)\{b/a\}\; =\; x\{b/a\}(y).Q\{b/a\}$ if $y\neq a$ and $y\neq b$
-%       \\\\
-% 	$(x(a).Q)\{b/a\}\; =\; x\{b/a\}(a).Q$
-%       \\\\
-% 	$(x(b).Q)\{b/a\}\; =\; x\{b/a\}(c).((Q\{c/b\})\{b/a\})$ where $c\notin n(Q)$
-%       \\\\
-% 	$(\tau.Q)\{b/a\}\; =\; \tau.Q\{b/a\}$
-%       \\\\
-% 	if $a\in \{x_{1}, \cdots, x_{n}\}$ then
-%       \\
-% 	$(A(x_{1}, \cdots, x_{n}\; | \;y_{1}, \cdots, y_{m}))\{b/a\}=$
-%       \\
-% 	$\;\;\;\;\;\left\{
-% 	  \begin{array}{ll}
-% 		A(x_{1}\{b/a\}, \cdots, x_{n}\{b/a\}\; | \;y_{1}, \cdots, y_{m})
-% 	      &
-% 		if\; b\notin \{y_{1}, \cdots, y_{m}\}
-% 	    \\
-% 		A(x_{1}\{b/a\}, \cdots, x_{n}\{b/a\}\; | \;y_{1}, \cdots, y_{i-1},c,y_{i+1},\cdots, y_{m})
-% 	      &
-% 		if\; b = y_{i}
-% 	    \\
-% 	        \;\;\;\;where\; c\; is\; fresh
-% 	      &
-% 	  \end{array}\right.$
-%       \\\\
-% 	if $a\notin \{x_{1}, \cdots, x_{n}\}$ then
-%       \\
-% 	$(A(x_{1}, \cdots, x_{n}\; | \;y_{1}, \cdots, y_{m}))\{b/a\}=A(x_{1}, \cdots, x_{n}\; | \;y_{1}, \cdots, y_{m})$
-%       \\\\
-% 	$(Q+R)\{b/a\}\; =\; Q\{b/a\} + R\{b/a\}$
-%       \\\\
-% 	$(Q|R)\{b/a\}\; =\; Q\{b/a\} | R\{b/a\}$
-%       \\\\
-% 	$((\nu y)Q)\{b/a\}\; =\;(\nu y)Q\{b/a\}$ if $y\neq a$ and $y\neq b$
-%       \\\\
-% 	$((\nu a)Q)\{b/a\}\; =\;(\nu a)Q$
-%       \\\\
-% 	$((\nu b)Q)\{b/a\}\; =\;(\nu c)((Q\{c/b\})\{b/a\})$ where $c\notin n(Q)$ if $a\in fn(Q)$ 
-%       \\\\
-% 	$((\nu b)Q)\{b/a\}\; =\;(\nu b)Q$ if $a\notin fn(Q)$
-%       \\\hline
-%     \end{tabular}
-%     \caption{Change of a bound name}
-%     \label{changeofboundnames}
-%   \end{table}
-
-
-
 
 \section{Operational Semantic(without structural congruence)}
 \subsection{Early operational semantic(without structural congruence)}
@@ -725,12 +669,7 @@ Structural congruences are a set of equations defining equality and congruence r
 
 
 \begin{definition}
-  A \emph{change of bound names} in a process $P$ is the replacement of a subterm $x(z).Q$ of $P$ by $x(w).Q\{w/z\}$ or the replacement of a subterm $(\nu z)Q$ of $P$ by $(\nu w)Q\{w/z\}$ where in each case $w$ does not occur in $Q$. If a name $x$ appear bound in a process $P$ and a name $y$ does not appear at all in $P$, we write 
-  \[
-    P\{x/y\}_{bound}
-  \]
-  for the process $P$ in which for every binder of $x$, we replace $x$ by $y$.
-%   In formulas the definition is in tabl \ref{changeofboundnames}
+  A \emph{change of bound names} in a process $P$ is the replacement of a subterm $x(z).Q$ of $P$ by $x(w).Q\{w/z\}$ or the replacement of a subterm $(\nu z)Q$ of $P$ by $(\nu w)Q\{w/z\}$ where in each case $w$ does not occur in $Q$.
 \end{definition}
 
 
