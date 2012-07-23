@@ -985,23 +985,29 @@ We can make some clarification on the axioms of the structural congruence:
       \item[$AlpTau$]:
 	\begin{center}
 	  \begin{tabular}{ll}
-	    $fn(P)=fn(Q)$&inductive hypothesis\\
-	    $\Rightarrow fn(\tau.P)=fn(\tau.Q)$&definition of $fn$\\
+	    &rule premise\\
+	    $P\equiv_{\alpha}Q$&inductive hypothesis\\
+	    $\Rightarrow fn(P)=fn(Q)$&definition of $fn$\\
+	    $\Rightarrow fn(\tau.P)=fn(\tau.Q)$&\\
 	  \end{tabular}
 	\end{center}
       \item[$AlpOut$]:
 	\begin{center}
 	  \begin{tabular}{ll}
-	    $fn(P)=fn(Q)$&inductive hypothesis\\
-	    $\Rightarrow fn(P)\cup \{x,y\}=fn(Q)\cup \{x,y\}$&\\
-	    $\Rightarrow fn(\overline{x}y.P)=fn(\overline{x}y.Q)$&definition of $fn$\\
+	    &rule premise\\
+	    $P\equiv_{\alpha}Q$&inductive hypothesis\\
+	    $\Rightarrow fn(P)=fn(Q)$&\\
+	    $\Rightarrow fn(P)\cup \{x,y\}=fn(Q)\cup \{x,y\}$&definition of $fn$\\
+	    $\Rightarrow fn(\overline{x}y.P)=fn(\overline{x}y.Q)$&\\
 	  \end{tabular}
 	\end{center}
       \item[$AlpRes1$]:
 	\begin{center}
 	  \begin{tabular}{ll}
-	    $fn(P)=fn(Q\{x/y\})$&inductive hypothesis\\
-	    $\Rightarrow fn(P)-\{x\}=fn(Q\{x/y\})-\{x\}$&lemma \ref{freenamesandsubstitution}\\
+	    &rule premise\\
+	    $P\equiv_{\alpha}Q\{x/y\}$&inductive hypothesis\\
+	    $\Rightarrow fn(P)=fn(Q\{x/y\})$&\\
+	    $\Rightarrow fn(P)-\{x\}=fn(Q\{x/y\})-\{x\}$&\\
 	    $\Rightarrow fn(P)-\{x\}=(fn(Q)-\{y\}\cup \{x\})-\{x\}$&\\
 	    $\Rightarrow fn(P)-\{x\}=fn(Q)-\{y\}$&definition of $fn$\\
 	    $\Rightarrow fn((\nu x)P)=fn((\nu y)Q)$&\\
@@ -1010,17 +1016,22 @@ We can make some clarification on the axioms of the structural congruence:
       \item[$AlpInp1$]:
 	\begin{center}
 	  \begin{tabular}{ll}
-	    $fn(P)=fn(Q\{x/y\})$&inductive hypothesis\\
+	    &rule premise\\
+	    $P\equiv_{\alpha}Q\{x/y\}$&inductive hypothesis\\
+	    $\Rightarrow fn(P)=fn(Q\{x/y\})$&\\
 	    $\Rightarrow fn(P)-\{x\}=fn(Q\{x/y\})-\{x\}$&lemma \ref{freenamesandsubstitution}\\
 	    $\Rightarrow fn(P)-\{x\}=(fn(Q)-\{y\}\cup \{x\})-\{x\}$&\\
-	    $\Rightarrow fn(P)-\{x\}=fn(Q)-\{y\}$&definition of $fn$\\
+	    $\Rightarrow fn(P)-\{x\}=fn(Q)-\{y\}$&\\
+	    $\Rightarrow (fn(P)-\{x\})\cup \{z\}=(fn(Q)-\{y\})\cup \{z\}$&definition of $fn$\\
 	    $\Rightarrow fn(z(x).P)=fn(z(y).Q)$&\\
 	  \end{tabular}
 	\end{center}
       \item[$AlpSum$]:
 	\begin{center}
 	  \begin{tabular}{ll}
-	    $fn(P_{1})=fn(Q_{1})\; and\; fn(P_{2})=fn(Q_{2})$&inductive hypothesis\\
+	    &rule premises\\
+	    $P_{1}\equiv_{\alpha}Q_{1}$ and $P_{2}\equiv_{\alpha}Q_{2}$&inductive hypothesis\\
+	    $\Rightarrow fn(P_{1})=fn(Q_{1})$ and $fn(P_{2})=fn(Q_{2})$&\\
 	    $\Rightarrow fn(P_{1})\cup fn(P_{2})=fn(Q_{1})\cap fn(Q_{2})$&definition of $fn$\\
 	    $\Rightarrow fn(P_{1}+P_{2})=fn(Q_{1}+Q_{2})$&\\
 	  \end{tabular}
@@ -1028,7 +1039,9 @@ We can make some clarification on the axioms of the structural congruence:
       \item[$AlpPar$]:
 	\begin{center}
 	  \begin{tabular}{ll}
-	    $fn(P_{1})=fn(Q_{1})\; and\; fn(P_{2})=fn(Q_{2})$&inductive hypothesis\\
+	    &rule premises\\
+	    $P_{1}\equiv_{\alpha}Q_{1}$ and $P_{2}\equiv_{\alpha}Q_{2}$&inductive hypothesis\\
+	    $\Rightarrow fn(P_{1})=fn(Q_{1})$ and $fn(P_{2})=fn(Q_{2})$&\\
 	    $\Rightarrow fn(P_{1})\cup fn(P_{2})=fn(Q_{1})\cap fn(Q_{2})$&definition of $fn$\\
 	    $\Rightarrow fn(P_{1}|P_{2})=fn(Q_{1}|Q_{2})$&\\
 	  \end{tabular}
@@ -1036,17 +1049,21 @@ We can make some clarification on the axioms of the structural congruence:
       \item[$AlpRes$]:
 	\begin{center}
 	  \begin{tabular}{ll}
-	    $fn(P)=fn(Q)$&inductive hypothesis\\
-	    $\Rightarrow fn(P)- \{x\}=fn(Q)- \{x\}$&\\
-	    $\Rightarrow fn((\nu x)P)=fn((\nu x)Q)$&definition of $fn$\\
+	    &rule premise\\
+	    $P\equiv_{\alpha}Q$&inductive hypothesis\\
+	    $\Rightarrow fn(P)=fn(Q)$&\\
+	    $\Rightarrow fn(P)- \{x\}=fn(Q)- \{x\}$&definition of $fn$\\
+	    $\Rightarrow fn((\nu x)P)=fn((\nu x)Q)$&\\
 	  \end{tabular}
 	\end{center}
       \item[$AlpInp$]:
 	\begin{center}
 	  \begin{tabular}{ll}
-	    $fn(P)=fn(Q)$&inductive hypothesis\\
-	    $\Rightarrow (fn(P)-\{y\})\cup \{x\}=(fn(Q)-\{y\})\cup \{x\}$&\\
-	    $\Rightarrow fn(x(y).P)=fn(x(y).Q)$&definition of $fn$\\
+	    &rule premise\\
+	    $P\equiv_{\alpha}Q\{x/y\}$&inductive hypothesis\\
+	    $\Rightarrow fn(P)=fn(Q)$&\\
+	    $\Rightarrow (fn(P)-\{y\})\cup \{x\}=(fn(Q)-\{y\})\cup \{x\}$&definition of $fn$\\
+	    $\Rightarrow fn(x(y).P)=fn(x(y).Q)$&\\
 	  \end{tabular}
 	\end{center}
       \item[$AlpIde$]
@@ -1488,7 +1505,28 @@ In the proof of equivalence of the semantics in the next section we need the fol
 	    this is very similar to the previous.
 	\end{description}
       \item[transitivity]
-	
+	suppose 
+	\[
+	  P\equiv_{\alpha}Q \mbox{ and } Q\equiv_{\alpha}R
+	\]
+	we prove the thesis $P\equiv_{\alpha}R$ by induction on the proof tree length of $P\equiv_{\alpha}Q$. If the tree has only one node then the rule used must be $AlpZero$ or $AlpIde$. In the former case both $P$ and $Q$ are $0$ and so $0\equiv_{\alpha}R$. For symmetry and the inversion lemma then $R$ is also $0$. In the latter case a similar argument applies. If the proof tree has more than one node then we proceed by cases on the last rule
+	\begin{description}
+	  \item[$AlpInp$]
+	    $P_{1}\equiv_{\alpha}Q_{1}$ rule premise
+	    $x(y).Q_{1}\equiv_{\alpha}R$ implies for symmetry and the inversion lemma that 
+	    \begin{itemize}
+	      \item 
+		$R=x(y).R_{1}$ and $Q_{1}\equiv_{\alpha}R_{1}$
+	      \item 
+		$R=x(z).R_{1}$ and $Q_{1}\equiv_{\alpha}R_{1}\{z/y\}$
+	    \end{itemize}
+	  \item[$AlpRes$]
+	    
+	  \item[$AlpInp1$]
+	    
+	  \item[$AlpRes1$]
+	    
+	\end{description}
     \end{description}
   \end{proof}
 \end{lemma}
