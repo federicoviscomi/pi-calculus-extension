@@ -12,7 +12,7 @@ We suppose that we have a countable set of names $\mathbb{N}$, ranged over by lo
 The process are defined by the following grammar:
 \begin{center}
   \begin{tabular}{l}
-    $P,Q$ ::= $0$ | $\pi.P$ | $P|Q$ | $P+Q$ | $(\nu x) P$ | $A(x_{1}, \cdots, x_{n}\; | \;y_{1}, \cdots, y_{m})$ 
+    $P,Q$ ::= $0$ | $\pi.P$ | $P|Q$ | $P+Q$ | $(\nu x) P$ | $A(x_{1}, \cdots, x_{n})$ 
   \end{tabular}
 \end{center}
 and they have the following intuitive meaning:
@@ -35,12 +35,12 @@ and they have the following intuitive meaning:
     is the parallel composition, $P$ and $Q$ can execute concurrently and also synchronize with each other
   \item[$(\nu z) P$] 
     is the scope restriction. This process behave as $P$ but the name $z$ is local. This process cannot use the name $z$ to interact with other process but it can for communication within it.
-  \item[$A(x_{1}, \cdots, x_{n}\; | \;y_{1}, \cdots, y_{m})$] 
+  \item[$A(x_{1}, \cdots, x_{n})$] 
     is an identifier. Every identifier has a definition
     \begin{center}
-      $A(x_{1}, \cdots, x_{n}\; | \;y_{1}, \cdots, y_{m})=P$
+      $A(x_{1}, \cdots, x_{n})=P$
     \end{center}
-    Of course it is preferable to write the $x_{i}$s so as they are pairwise disjoint, and the same holds for the $y_{i}$s. However it can be the case that $x_{i}=y_{j}$ for some pairs of indexes. The intuition is that we can substitute for some of the $x_{i}$s and change some $y_{i}$s in $P$ to get a $\pi$ calculus process. 
+    the $x_{i}$s must be pairwise disjoint. The intuition is that we can substitute for some of the $x_{i}$s in $P$ to get a $\pi$ calculus process. 
 \end{description}
 
 To resolve ambiguity we can use parentheses and observe the conventions that prefixing and restriction bind more tightly than composition and prefixing binds more tightly than sum. 
@@ -66,17 +66,10 @@ To resolve ambiguity we can use parentheses and observe the conventions that pre
 	$B(\tau.Q, I)\; =\; B(Q, I)$&
       \\\\
 	\multicolumn{2}{l}{
-	$B(A(\tilde{x}|\tilde{y}), I)=\left\{
+	$B(A(\tilde{x}), I)=\left\{
 	  \begin{array}{ll}
-		%B(Q, I\cup \{A\})\; 
-		???
-		where\; A(\tilde{x}|\tilde{y})\stackrel{def}{=}Q
-	      &
-		if\; A\notin I
-	    \\
-		%B(Q, I\cup \{A\})\; 
-		???
-		where\; A(\tilde{z}|\tilde{w})\stackrel{def}{=}Q
+		B(Q, I\cup \{A\})\; 
+		where\; A(\tilde{x})\stackrel{def}{=}Q
 	      &
 		if\; A\notin I
 	    \\
@@ -93,42 +86,27 @@ To resolve ambiguity we can use parentheses and observe the conventions that pre
 
 
 \begin{definition} \index{name occurrence! free}
-  We say that a name $x$ is \emph{free} in $P$ if $P$ contains a non bound occurrence of $x$. We write $fn(P)$ for the set of names with a free occurrence in $P$. $fn(P)$ is defined as $fn(P,\emptyset)$ where $fn(P, I)$, with $I$ a set of process constants, is defined in table \ref{F}
+  We say that a name $x$ is \emph{free} in $P$ if $P$ contains a non bound occurrence of $x$. We write $fn(P)$ for the set of names with a free occurrence in $P$. $fn(P)$ is defined in table \ref{F}
 \end{definition}
 
   \begin{table}
-    \begin{tabular}{ll}
+    \begin{tabular}{lll}
       \hline\\
-	$F(0, I)\; =\; \emptyset$&$F(Q+R,I)\; =\; F(Q,I)\cup F(R,I)$
+	  $fn(\overline{x}y.Q)\; =\; \{x,\overline{x},y,\overline{y}\}\cup fn(Q)$
+	&
+	  $fn(Q+R)\; =\; fn(Q)\cup fn(R)$
+	&
+	  $fn(0)\; =\; \emptyset$
       \\\\
-	$F(\overline{x}y.Q, I)\; =\; \{x,\overline{x},y,\overline{y}\}\cup F(Q, I)$&$F(Q|R,I)\; =\; F(Q,I)\cup F(R,I)$
+	  $fn(x(y).Q)\; =\; \{x,\overline{x}\}\cup (fn(Q)-\{y,\overline{y}\})$
+	&
+	  $fn(Q|R)\; =\; fn(Q)\cup fn(R)$
       \\\\
-	$F(x(y).Q, I)\; =\; \{x,\overline{x}\}\cup (F(Q, I)-\{y,\overline{y}\})$&$F((\nu x)Q, I)\; =\; F(Q, I)-\{x,\overline{x}\}$
-      \\\\
-	$F(\tau.Q, I)\; =\; F(Q, I)$
-      \\\\
-	\multicolumn{2}{l}{
-	$F(A(\tilde{x}|\tilde{y}), I)=\left\{
-	  \begin{array}{ll}
-		%F(Q, I\cup \{A\})\; 
-		????
-		where\; A(\tilde{x}|\tilde{y})\stackrel{def}{=}Q
-	      &
-		if\; A\notin I
-	    \\
-		%F(Q, I\cup \{A\})\; 
-		?????
-		where\; A(\tilde{z}|\tilde{w})\stackrel{def}{=}Q
-	      &
-		if\; A\notin I
-	    \\
-		\emptyset
-	      &
-		if\; A\in I
-	  \end{array}\right.$
-	}
-      \\\\
-	
+	  $fn((\nu x)Q)\; =\; fn(Q)-\{x,\overline{x}\}$	  
+	&
+	  $fn(\tau.Q)\; =\; fn(Q)$
+	&
+	  $fn(A(\tilde{x}))=\{\tilde{x}\}$
       \\\hline
     \end{tabular}
     \caption{Free occurrences}
@@ -148,17 +126,15 @@ To resolve ambiguity we can use parentheses and observe the conventions that pre
 
 In a definition
 \begin{center}
-   $A(x_{1}, \cdots, x_{n}\; | \;y_{1}, \cdots, y_{m})=P$
+   $A(x_{1}, \cdots, x_{n})=P$
 \end{center}
-the $x_{1}, \cdots, x_{n}$ are all the free names contained in $P$ and the $y_{1}, \cdots, y_{m}$ are all the bound names in $P$, specifically 
+the $x_{1}, \cdots, x_{n}$ are all the free names contained in $P$, specifically 
 \[
   fn(P) \subseteq\{x_{1}, \cdots, x_{n}\}
-  \;\;\mbox{and}\;\;
-  bn(P) \subseteq\{y_{1}, \cdots, y_{m}\}
 \]
 If we look at the definitions of $bn$ and of $fn$ we notice that if $P$ contains another identifier whose definition is:
 \[
-  B(z_{1},\cdots, z_{h}|w_{1},\cdots, w_{k})=Q
+  B(z_{1},\cdots, z_{h})=Q
 \] 
 then we have 
 \[
@@ -317,9 +293,9 @@ there is no substitution, instead the substitution occurs at an early point in t
 	&
 	  \bf{ResAlp}
 	  \begin{tabular}{c}
-	      $(\nu w)P\{w/z\} \xrightarrow{\alpha} P^{'}\;\; w\notin n(P)$
+	      $(\nu w)P\{w/z\} \xrightarrow{xz} P^{'}\;\; w\notin n(P)$
 	    \\\hline
-	      $(\nu z) P \xrightarrow{\alpha} P^{'}$
+	      $(\nu z) P \xrightarrow{xz} P^{'}$
 	  \end{tabular}
       \\\\
 	  \bf{EComR}
@@ -363,9 +339,9 @@ there is no substitution, instead the substitution occurs at an early point in t
 	  &
 	  \bf{Cns}
 	  \begin{tabular}{c}
-	      $A(\tilde{x}|\tilde{y}) \stackrel{def}{=} P\; P\{\tilde{w}/\tilde{x}\} \xrightarrow{\alpha} P^{'}$
+	      $A(\tilde{x}) \stackrel{def}{=} P\; P\{\tilde{w}/\tilde{x}\} \xrightarrow{\alpha} P^{'}$
 	    \\\hline
-	      $A(\tilde{x}|\tilde{y})\{\tilde{w}/\tilde{x}\} \xrightarrow{\alpha} P^{'}$
+	      $A(\tilde{x})\{\tilde{w}/\tilde{x}\} \xrightarrow{\alpha} P^{'}$
 	  \end{tabular}
       \\\\
 	  \bf{Opn}
@@ -481,34 +457,36 @@ there is no substitution, instead the substitution occurs at an early point in t
 \begin{example}
   We have to spend some time to deal with the change of bound names in an identifier. Suppose we have
   \[
-    A(x|a,y)\stackrel{def}{=} \underbrace{x(y).x(a).0}_{P}
+    A(x)\stackrel{def}{=} \underbrace{x(y).x(a).0}_{P}
   \]
   From the definition of substitution it follows that
   \[
-    A(x|a,y)\{y/x\}=A(y|a,z)
+    A(x)\{y/x\}=A(y)
   \]
-  The identifier $A(y|a,z)$ is expected to behave consistently with 
+  The identifier $A(y)$ is expected to behave consistently with 
   \[
     P\{y/x\}=y(z).y(a).0
   \]
   so we have to prove
   \[
-    A(y|a,z)\xrightarrow{yw}y(a).0
+    A(y)\xrightarrow{yw}y(a).0
   \]
   We can prove this in the following way:
   \[
     \inferrule* [left=Cns]{
-	A(x|a,y)\stackrel{def}{=} P
+	A(x)\stackrel{def}{=} P
       \\
 	\inferrule* [left=EInp]{
 	}{
 	  P\{y/x\}\xrightarrow{yw}y(a).0
 	}
     }{
-      A(y|a,z)\xrightarrow{yw}y(a).0
+      A(y)\xrightarrow{yw}y(a).0
     }
   \]
 \end{example}
+
+
 
 
 
@@ -704,12 +682,10 @@ Structural congruences are a set of equations defining equality and congruence r
 	    P_{1}+P_{2}\equiv_{\alpha}Q_{1}+Q_{2}
 	  }$
 	&
-	  $\inferrule*[left=AlpPar]{
-	      P_{1}\equiv_{\alpha}Q_{1}
-	    \\
-	      P_{2}\equiv_{\alpha}Q_{2}
+	  $\inferrule*[left=AlpTau]{
+	      P\equiv_{\alpha}Q
 	  }{
-	    P_{1}|P_{2}\equiv_{\alpha}Q_{1}|Q_{2}
+	    \tau.P\equiv_{\alpha}\tau.Q
 	  }$
       \\\\
 	  $\inferrule*[left=AlpRes1]{
@@ -718,6 +694,8 @@ Structural congruences are a set of equations defining equality and congruence r
 	      x\neq y
 	    \\
 	      y\in fn(Q)
+	    \\
+	      x\notin fn(Q)
 	  }{
 	    (\nu x)P\equiv_{\alpha}(\nu y)Q
 	  }$
@@ -734,6 +712,8 @@ Structural congruences are a set of equations defining equality and congruence r
 	      x\neq y
 	    \\
 	      y\in fn(Q)
+	    \\
+	      x\notin fn(Q)
 	  }{
 	    z(x).P\equiv_{\alpha}z(y).Q
 	  }$
@@ -744,10 +724,12 @@ Structural congruences are a set of equations defining equality and congruence r
 	    x(y).P\equiv_{\alpha}x(y).Q
 	  }$
     \\\\
-	  $\inferrule*[left=AlpTau]{
-	      P\equiv_{\alpha}Q
+	  $\inferrule*[left=AlpPar]{
+	      P_{1}\equiv_{\alpha}Q_{1}
+	    \\
+	      P_{2}\equiv_{\alpha}Q_{2}
 	  }{
-	    \tau.P\equiv_{\alpha}\tau.Q
+	    P_{1}|P_{2}\equiv_{\alpha}Q_{1}|Q_{2}
 	  }$
       &
 	  $\inferrule*[left=AlpOut]{
@@ -803,7 +785,7 @@ Structural congruences are a set of equations defining equality and congruence r
 	  $P=(\nu y).P_{1}$ for some $P_{1}$ such that $P_{1}\equiv_{\alpha}Q_{1}$
       \end{itemize}
     \item 
-      If $P\equiv_{\alpha} A(\tilde{x}|\tilde{y})$ then $P$ is $Q$.
+      If $P\equiv_{\alpha} A(\tilde{x})$ then $P$ is $Q$.
   \end{itemize}
     \begin{proof}
       This lemma works because given $Q$ we know which rules must be at the end of any proof tree of $P\equiv_{\alpha}Q$.
@@ -847,7 +829,7 @@ Structural congruences are a set of equations defining equality and congruence r
       \\\\
 	\multicolumn{3}{l}{unfolding law:}
       \\
-	SC-IDE&$A(\tilde{w}|\tilde{y})\equiv P\{\tilde{w}/\tilde{x}\}$&if $A(\tilde{x}|\tilde{y})\stackrel{def}{=}P$
+	SC-IDE&$A(\tilde{w})\equiv P\{\tilde{w}/\tilde{x}\}$&if $A(\tilde{x})\stackrel{def}{=}P$
       \\\hline
     \end{tabular}
     \caption{Structural congruence axioms}
@@ -975,7 +957,7 @@ We can make some clarification on the axioms of the structural congruence:
 
 
 
-\begin{lemma}
+\begin{lemma}\label{alphaequivalentsamefreenames}
   $P\equiv_{\alpha}Q\Rightarrow fn(P)=fn(Q)$
   \begin{proof}
     The proof goes by induction on rules 
@@ -1083,15 +1065,26 @@ We can make some clarification on the axioms of the structural congruence:
     P\{b/a\}\equiv_{\alpha}Q\{b/a\}
   \]
   with the same length.
-  \begin{proof}
-    The proof goes by induction on the length of the proof tree of $P\equiv_{\alpha}Q$ and then by cases on the last rule of the proof tree:
+  \begin{proof}:
+    \begin{center}
+      \begin{tabular}{ll}
+	&lemma hypothesis\\
+	$P \equiv_{\alpha} Q$&lemma \ref{alphaequivalentsamefreenames}\\
+	$\Rightarrow fn(P) = fn(Q)$&\\
+	$\Rightarrow a\notin fn(P) \wedge a\notin fn(Q)$ or $a\in fn(P) \wedge a\in fn(Q)$&\\
+      \end{tabular}
+    \end{center}
+    In the former case $a$ is not a free name in $P$ and $Q$ so the substitutions have no effects and the lemma holds. In the latter case $a$ is a free names in both processes: the proof goes by induction on the length of the proof tree of $P\equiv_{\alpha}Q$ and then by cases on the last rule of the proof tree.
     \begin{description}
-      \item[base case]:
-	\begin{description}
-	  \item[$AlpZerp, AlpIde$]
-	    the lemma holds because $P$ and $Q$ are syntacticly the same process.
-	\end{description}
-      \item[inductive case]:
+      \item[$base\; case$]
+    \end{description}
+    \begin{description}
+      \item[$AlpZerp, AlpIde$]
+	the lemma holds because $P$ and $Q$ are syntacticly the same process.
+    \end{description}
+    \begin{description}
+      \item[$inductive\; case$]
+    \end{description}
 	\begin{description}
 	  \item[$AlpTau$]:
 	    \begin{center}
@@ -1136,14 +1129,15 @@ We can make some clarification on the axioms of the structural congruence:
 		$\Rightarrow (x(y).P_{1})\{b/a\}\equiv_{\alpha}(x(y).Q_{1})\{b/a\} $&\\
 	      \end{tabular}
 	    \end{center}	    	    
-	    \begin{center}
-	      \begin{tabular}{ll}
-		&rule premise\\
-		$P_{1}\equiv_{\alpha}Q_{1}$&rule $AlpIn$\\
-		$\Rightarrow x\{b/a\}(a).P_{1}\equiv_{\alpha}x\{b/a\}(a).Q_{1} $&definition of substitution\\
-		$\Rightarrow (x(a).P_{1})\{b/a\}\equiv_{\alpha}(x(a).Q_{1})\{b/a\} $&\\
-	      \end{tabular}
-	    \end{center}	    	    
+ 	    \begin{center}
+ 	      \begin{tabular}{ll}
+ 		&rule premise\\
+ 		$P_{1}\equiv_{\alpha}Q_{1}$&rule $AlpIn$\\
+ 		$\Rightarrow b(a).P_{1}\equiv_{\alpha}b(a).Q_{1} $&definition of substitution\\
+ 		$\Rightarrow a\{b/a\}(a).P_{1}\equiv_{\alpha}a\{b/a\}(a).Q_{1} $&definition of substitution\\
+ 		$\Rightarrow (a(a).P_{1})\{b/a\}\equiv_{\alpha}(a(a).Q_{1})\{b/a\} $&\\
+ 	      \end{tabular}
+ 	    \end{center}	    	    
 	    \begin{center}
 	      \begin{tabular}{ll}
 		&rule premise\\
@@ -1155,85 +1149,80 @@ We can make some clarification on the axioms of the structural congruence:
 	      \end{tabular}
 	    \end{center}	    	    
 	  \item[$AlpInp1$]:
-	    the last part of the proof tree of $P\equiv_{\alpha}Q$ is
-	    \[\inferrule*[left=AlpInp1]{
-		P_{1}\equiv_{\alpha}Q_{1}\{x/y\}
-	      \\
-		x\neq y	      
-	      \\
-		y\in fn(Q)
-	    }{
-	      \underbrace{z(x).P_{1}}_{P}\equiv_{\alpha}\underbrace{z(y).Q_{1}}_{Q}
-	    }\]
+	    Let $x,y,z,a$ and $b$ be pairwise disjoint, then we have various cases:
+	    \begin{itemize}
+	      \item 
+		the last part of the proof tree of $P\equiv_{\alpha}Q$ is
+		\[\inferrule*[left=AlpInp1]{
+		      P_{1}\equiv_{\alpha}Q_{1}\{x/y\}
+		  \\
+		    x\neq y	      
+		  \\
+		    y\in fn(Q_{1})
+		  \\
+		    x\notin fn(Q_{1})
+		}{
+		  \underbrace{z(x).P_{1}}_{P}
+		    \equiv_{\alpha}
+		      \underbrace{z(y).Q_{1}}_{Q}
+		}\]
+	    \end{itemize}
+	    
 
 	    \begin{center}
 	      \begin{tabular}{ll}
 		&rule premise\\
-		$P_{1}\equiv_{\alpha}Q_{1}\{x/y\}$&inductive hypothesis\\
-		$\Rightarrow P_{1}\{b/a\}\equiv_{\alpha}Q_{1}\{x/y\}\{b/a\}$&DA DIMOSTARE\\
-		$\Rightarrow P_{1}\{b/a\}\equiv_{\alpha}Q_{1}\{b/a\}\{x/y\}$&rule $AlpInp1$\\
-		$\Rightarrow z\{b/a\}(x).(P_{1}\{b/a\})\equiv_{\alpha}z\{b/a\}(y).(Q_{1}\{b/a\}) $&definition of substitution\\
+		$P_{1}\equiv_{\alpha}Q_{1}\{x/y\}$ and $y\in fn(Q_{1})$ and $x\notin fn(Q_{1})$ &\\
+		$?$&\\
 		$\Rightarrow (z(x).P_{1})\{b/a\}\equiv_{\alpha}(z(y).Q_{1})\{b/a\} $&\\
 	      \end{tabular}
 	    \end{center}	    	    
 	    \begin{center}
 	      \begin{tabular}{ll}
 		&rule premise\\
-		$P_{1}\equiv_{\alpha}Q_{1}\{a/y\}$&\\
+		$P_{1}\equiv_{\alpha}Q_{1}\{a/y\}$ and $y\in fn(Q_{1})$ and $a\notin fn(Q_{1})$&\\
 		$?$&\\
-		$\Rightarrow P_{1}\equiv_{\alpha}Q_{1}\{b/a\}\{a/y\}$&\\
-		$\Rightarrow z\{b/a\}(a).P_{1}\equiv_{\alpha}z\{b/a\}(y).(Q_{1}\{b/a\}) $&definition of substitution\\
-		$\Rightarrow (z(a).P_{1})\{b/a\}\equiv_{\alpha}(z(y).Q_{1})\{b/a\} $&\\
+		$\Rightarrow (a(a).P_{1})\{b/a\}\equiv_{\alpha}(a(y).Q_{1})\{b/a\} $&\\
 	      \end{tabular}
 	    \end{center}	    	    
 	    \begin{center}
 	      \begin{tabular}{ll}
 		&rule premise\\
-		$P_{1}\equiv_{\alpha}Q_{1}\{b/y\}$&inductive hypothesis\\
+		$P_{1}\equiv_{\alpha}Q_{1}\{b/y\}$ and $y\in fn(Q_{1})$ and $b\notin fn(Q_{1})$ &\\
 		$?$&\\
-		$\Rightarrow P_{1}\{c/b\}\{b/a\}\equiv_{\alpha}Q_{1}\{b/a\}\{c/y\} $&rule $AlpInp1$\\
-		$\Rightarrow z\{b/a\}(c).(P_{1}\{c/b\}\{b/a\})\equiv_{\alpha}z\{b/a\}(y).(Q_{1}\{b/a\}) $&definition of substitution\\
 		$\Rightarrow (z(b).P_{1})\{b/a\}\equiv_{\alpha}(z(y).Q_{1})\{b/a\} $&\\
 	      \end{tabular}
 	    \end{center}	    	    
 	    \begin{center}
 	      \begin{tabular}{ll}
 		&rule premise\\
-		$P_{1}\equiv_{\alpha}Q_{1}\{b/a\}$&inductive hypothesis\\
+		$P_{1}\equiv_{\alpha}Q_{1}\{b/a\}$ and $a\in fn(Q_{1})$ and $b\notin fn(Q_{1})$ &\\
 		$?$&\\
-		$\Rightarrow P_{1}\{c/b\}\{b/a\}\equiv_{\alpha}Q_{1}\{c/a\} $&rule $AlpInp1$\\
-		$\Rightarrow z\{b/a\}(c).P_{1}\{c/b\}\{b/a\}\equiv_{\alpha}z\{b/a\}(a).Q_{1} $&\\
-		$\Rightarrow (z(b).P_{1})\{b/a\}\equiv_{\alpha}(z(a).Q_{1})\{b/a\} $&\\
+		$\Rightarrow (a(b).P_{1})\{b/a\}\equiv_{\alpha}(a(a).Q_{1})\{b/a\} $&\\
 	      \end{tabular}
 	    \end{center}	    	    
 	    \begin{center}
 	      \begin{tabular}{ll}
 		&rule premise\\
-		$P_{1}\equiv_{\alpha}Q_{1}\{x/a\}$&inductive hypothesis\\
+		$P_{1}\equiv_{\alpha}Q_{1}\{x/a\}$ and $a\in fn(Q_{1})$ and $x\notin fn(Q_{1})$ &\\
 		$?$&\\
-		$\Rightarrow P_{1}\{b/a\}\equiv_{\alpha}Q_{1}\{x/a\} $&rule $AlpInp1$\\
-		$\Rightarrow z\{b/a\}(x).P_{1}\{b/a\}\equiv_{\alpha}z\{b/a\}(a).Q_{1} $&definition of substitution\\
 		$\Rightarrow (z(x).P_{1})\{b/a\}\equiv_{\alpha}(z(a).Q_{1})\{b/a\} $&\\
 	      \end{tabular}
 	    \end{center}	    	    
 	    \begin{center}
 	      \begin{tabular}{ll}
 		&rule premise\\
-		$P_{1}\equiv_{\alpha}Q_{1}\{x/b\}$&inductive hypothesis\\
+		$P_{1}\equiv_{\alpha}Q_{1}\{x/b\}$ and $b\in fn(Q_{1})$ and $x\notin fn(Q_{1})$ &\\
 		$?$&\\
-		$\Rightarrow P_{1}\{b/a\}\equiv_{\alpha}Q_{1}\{c/b\}\{b/a\}\{x/b\} $&rule $AlpInp1$\\
-		$\Rightarrow z\{b/a\}(x).P_{1}\{b/a\}\equiv_{\alpha}z\{b/a\}(b).Q_{1}\{c/b\}\{b/a\} $&definition of substitution\\
 		$\Rightarrow (z(x).P_{1})\{b/a\}\equiv_{\alpha}(z(b).Q_{1})\{b/a\} $&\\
 	      \end{tabular}
 	    \end{center}	    	    
 	    \begin{center}
 	      \begin{tabular}{ll}
 		&rule premise\\
-		$P_{1}\equiv_{\alpha}Q_{1}\{a/b\}$&inductive hypothesis\\
+		$P_{1}\equiv_{\alpha}Q_{1}\{a/b\}$ and $b\in fn(Q_{1})$ and $a\notin fn(Q_{1})$ &\\
 		$?$&\\
-		$\Rightarrow P_{1}\equiv_{\alpha}Q_{1}\{c/b\}\{b/a\}\{a/b\} $&rule $AlpInp1$\\
-		$\Rightarrow z\{b/a\}(a).P_{1}\equiv_{\alpha}z\{b/a\}(b).Q_{1}\{c/b\}\{b/a\} $&definition of substitution\\
-		$\Rightarrow (z(a).P_{1})\{b/a\}\equiv_{\alpha}(z(b).Q_{1})\{b/a\} $&\\
+		$\Rightarrow (a(a).P_{1})\{b/a\}\equiv_{\alpha}(a(b).Q_{1})\{b/a\} $&\\
 	      \end{tabular}
 	    \end{center}	    	    
 
@@ -1246,14 +1235,6 @@ We can make some clarification on the axioms of the structural congruence:
 		$\Rightarrow P_{1}\{b/a\}\equiv_{\alpha}Q_{1}\{b/a\}$&rule $AlpRes$\\
 		$\Rightarrow (\nu x)(P_{1}\{b/a\})\equiv_{\alpha}(\nu x)(Q_{1}\{b/a\}) $&definition of substitution\\
 		$\Rightarrow ((\nu x)P_{1})\{b/a\}\equiv_{\alpha}((\nu x)Q_{1})\{b/a\} $&\\
-	      \end{tabular}
-	    \end{center}	    	    
-	    \begin{center}
-	      \begin{tabular}{ll}
-		&rule premise\\
-		$P_{1}\equiv_{\alpha}Q_{1}$&rule $AlpRes$\\
-		$\Rightarrow (\nu a)P_{1}\equiv_{\alpha}(\nu a)Q_{1} $&definition of substitution\\
-		$\Rightarrow ((\nu a)P_{1})\{b/a\}\equiv_{\alpha}((\nu a)Q_{1})\{b/a\} $&\\
 	      \end{tabular}
 	    \end{center}	    	    
 	    \begin{center}
@@ -1278,8 +1259,15 @@ We can make some clarification on the axioms of the structural congruence:
 	  }\]
 	    
 	\end{description}
-    \end{description}
   \end{proof}
+\end{lemma}
+
+
+\begin{lemma}
+  \[
+    P\equiv_{\alpha} P \{x/y\}\{y/x\}
+  \]
+  esistono delle precondizioni per le quali il lemma e' vero? esistono delle precondizioni per le quali si puo' addirittura avere l'uguaglianza sintattica?
 \end{lemma}
 
 
@@ -1287,7 +1275,7 @@ In the proof of equivalence of the semantics in the next section we need the fol
 
 
 \begin{lemma}
-  $P\{x/y\}\equiv_{\alpha}Q$ implies $P\equiv_{\alpha}Q\{y/x\}$. NON FUNZIONA LA DIMOSTRAZIONE!
+  $P\{x/y\}\equiv_{\alpha}Q$ if and only if $P\equiv_{\alpha}Q\{y/x\}$. NON FUNZIONA LA DIMOSTRAZIONE! staro' forse esagerando?
   \begin{proof}
     The proof is an induction on the length of the proof tree of $P\{x/y\}\equiv_{\alpha}Q$ and then by cases on the last rule:
     \begin{description}
@@ -2068,7 +2056,7 @@ which is not want we want. So we prove a weaker version
       \item[base case]
 	If the depth of the derivation tree is one, the rule used has to be a prefix rule 
 	\[
-	  \{Out, EInp, Tau\}\in R_{1}\cap R_{2}
+	  \{Out, EInp, Tau\}\subseteq R_{1}\cap R_{2}
 	\]
 	so a derivation tree of $P\xrightarrow{\alpha}_{2}P^{'}$ is also a derivation tree of $P\xrightarrow{\alpha}_{1}P^{'}$
       \item[inductive case]
@@ -2076,7 +2064,7 @@ which is not want we want. So we prove a weaker version
 	\[
 	  R\in \{ParL, ParR, SumL, SumR, Res, EComL, EComR, ClsL, ClsR, Cns, Opn\}
 	\]
-	then we just apply the inductive hypothesis on the premises of $R$ and then reapply $R$ to get the desired derivation tree. We show just the case for $SumL$. So the end of the derivation tree is 
+	then we just apply the inductive hypothesis on the premises of $R$ and then reapply $R$ to get the desired derivation tree. We show just the case for $SumL$ when the end of the derivation tree is 
 	\[
 	  \inferrule* [left=SumL]{
 	    P_{1}\xrightarrow{\alpha}_{2}P_{1}^{'}
@@ -2084,14 +2072,15 @@ which is not want we want. So we prove a weaker version
 	    \underbrace{P_{1}+P_{2}}_{P}\xrightarrow{\alpha}_{2}\underbrace{P_{1}^{'}}_{P^{'}}
 	  }
 	\]
-	for the inductive hypothesis there exists a process $P_{1}^{''}$ such that $P_{1}\xrightarrow{\alpha}_{1}P_{1}^{''}$ and $P_{1}^{'}\equiv_{\alpha}P_{1}^{''}$. So we can reapply the rule $SumL$ and get
-	\[
-	  \inferrule* [left=SumL]{
-	    P_{1}\xrightarrow{\alpha}_{1}P_{1}^{''}
-	  }{
-	    \underbrace{P_{1}+P_{2}}_{P}\xrightarrow{\alpha}_{1}\underbrace{P_{1}^{''}}_{P^{''}}
-	  }
-	\]
+	\begin{center}
+	  \begin{tabular}{ll}
+	    &rule premise\\
+	    $P_{1}\xrightarrow{\alpha}_{2}P_{1}^{'}$&inductive hypothesis\\
+	    $\Rightarrow  P_{1}\xrightarrow{\alpha}_{1}P_{1}^{''}$ and $P_{1}^{'}\equiv_{\alpha}P_{1}^{''}$&rule $SumL$\\
+	    $\Rightarrow  P_{1}+P_{2}\xrightarrow{\alpha}_{1}P_{1}^{''}$&\\
+	  \end{tabular}
+	\end{center}
+	
 	If the rule $R$ is in 
 	\[
 	  R_{2}-R_{1}=\{Alp\}
@@ -2112,90 +2101,60 @@ which is not want we want. So we prove a weaker version
 	\]
 	and the proof goes by cases on $S$ the last rule in the proof tree of $Q\xrightarrow{\alpha}_{2}P^{'}$:
 	\begin{description}
-	  \item[Out]
+	  \item[Out]:
 	    If $S=Out$ then there exists some names $x,y$ and a process $Q_{1}$ such that 
 	    \[
 	      Q=\overline{x}y.Q_{1}
 	    \]
-	    and $\alpha=\overline{x}y$. Since 
-	    \[
-	      P\equiv_{\alpha}\overline{x}y.Q_{1}
-	    \]
-	    then for the inversion lemma there exists some $P_{1}$ such that 
-	    \[
-	      P=\overline{x}y.P_{1}\; and\; P_{1}\equiv_{\alpha}Q_{1}
-	    \]
-	    and so we have
-	    \[
-	      \inferrule* [left=Out]{
-	      }{
-		\overline{x}y.P_{1}\xrightarrow{\overline{x}y}_{1}P_{1}
-	      }
-	    \]
+	    and $\alpha=\overline{x}y$. 
+ 	    \begin{center}
+ 	      \begin{tabular}{ll}
+ 		$P\equiv_{\alpha}\overline{x}y.Q_{1}$&inversion lemma\\
+ 		$\Rightarrow P=\overline{x}y.P_{1}$ and $P_{1}\equiv_{\alpha}Q_{1}$&rule $Out$\\
+ 		$\Rightarrow \overline{x}y.P_{1}\xrightarrow{\overline{x}y}_{1}P_{1}$&\\
+ 	      \end{tabular}
+ 	    \end{center}
 	  \item[EInp]
-	    If $S=EInp$ then there exists some names $x,y,z$ and a process $Q_{1}$ such that 
+	    If $S=EInp$ then there exists some names $x,y,z$ and a process $Q_{1}$ such that $Q=x(y).Q_{1}$, $\alpha=xz$ and $P^{'}=Q_{1}\{z/y\}$. Since 
 	    \[
-	      Q=x(y).Q_{1}
-	    \]
-	    and $\alpha=xz$ and $P^{'}=Q_{1}\{z/y\}$. Since 
-	    \[
-	      P\equiv_{\alpha}\overline{x}y.Q_{1}
+	      P\equiv_{\alpha}x(y).Q_{1}
 	    \]
 	    then for the inversion lemma we have two cases:
 	    \begin{itemize}
 	      \item 
-		there exists some $P_{1}$ such that 
-		\[
-		  P=x(y).P_{1}\; and\; P_{1}\equiv_{\alpha}Q_{1}
-		\]
-		and so we have
-		\[
-		  \inferrule* [left=EInp]{
-		  }{
-		    x(y).P_{1}\xrightarrow{xz}_{1}P_{1}\{z/y\}
-		  }
-		\]
+		:
+		\begin{center}
+		  \begin{tabular}{ll}
+		    $P=x(y).P_{1}$ and $P_{1}\equiv_{\alpha}Q_{1}$& rule $EInp$\\
+		    $\Rightarrow x(y).P_{1}\xrightarrow{xz}_{1}P_{1}\{z/y\}$& \\
+		  \end{tabular}
+		\end{center}
 		This is what we want because 
 		\[
 		  P_{1}\equiv_{\alpha}Q_{1}\Rightarrow P_{1}\{z/y\}\equiv_{\alpha}Q_{1}\{z/y\}
 		\]
 	      \item
-		there exists some $P_{1}$ and some name $w$ such that 
-		\[
-		  P=x(w).P_{1}\; and\; P_{1}\equiv_{\alpha}Q_{1}\{w/y\}
-		\]
-		and so we have
-		\[
-		  \inferrule* [left=EInp]{
-		  }{
-		    x(w).P_{1}\xrightarrow{x z}_{1}P_{1}\{z/w\}
-		  }
-		\]
+		:
+		\begin{center}
+		  \begin{tabular}{ll}
+		    $P=x(w).P_{1}$ and $P_{1}\equiv_{\alpha}Q_{1}\{w/y\}$& rule $EInp$\\
+		    $\Rightarrow x(w).P_{1}\xrightarrow{x z}_{1}P_{1}\{z/w\}$& \\
+		  \end{tabular}
+		\end{center}
 		This is what we want because 
 		\[
-		  P_{1}\equiv_{\alpha}Q_{1}\{w/y\} \Rightarrow P_{1}\{z/w\}\equiv_{\alpha}Q_{1}\{w/y\}\{z/w\}=Q_{1}\{z/y\}
+		  P_{1}\equiv_{\alpha}Q_{1}\{w/y\} \Rightarrow P_{1}\{z/w\}\equiv_{\alpha}Q_{1}\{w/y\}\{z/w\}\equiv_{\alpha}Q_{1}\{z/y\}
 		\]		
 	    \end{itemize}
 	  \item[Tau]
-	    If $S=Tau$ then there exists a process $Q_{1}$ such that 
-	    \[
-	      Q=\tau.Q_{1}
-	    \]
-	    and $\alpha=\tau$. Since 
-	    \[
-	      P\equiv_{\alpha}\tau.Q_{1}
-	    \]
-	    then for the inversion lemma there exists some $P_{1}$ such that 
-	    \[
-	      P=\tau.P_{1}\; and\; P_{1}\equiv_{\alpha}Q_{1}
-	    \]
-	    and so we have
-	    \[
-	      \inferrule* [left=Tau]{
-	      }{
-		\tau.P_{1}\xrightarrow{\tau}_{1}P_{1}
-	      }
-	    \]
+	    If $S=Tau$ then there exists a process $Q_{1}$ such that $Q=\tau.Q_{1}$ and $\alpha=\tau$ and $P^{'}=Q_{1}$. 
+	    \begin{center}
+	      \begin{tabular}{ll}
+		$P\equiv_{\alpha}\tau.Q_{1}$&inversion lemma\\
+		$\Rightarrow P=\tau.P_{1}$ and $P_{1}\equiv_{\alpha}Q_{1}$& rule $Tau$\\
+		$\Rightarrow \tau.P_{1}\xrightarrow{\tau}_{1}P_{1}$& \\
+	      \end{tabular}
+	    \end{center}
 	  \item[ParL]
 	    If $S=ParL$ then there exists some processes $Q_{1},Q_{2}$ such that 
 	    \[
@@ -2219,10 +2178,10 @@ which is not want we want. So we prove a weaker version
 		    \\
 		      bn(\alpha)\cap fn(Q_{2})=\emptyset
 		  }{
-		    Q_{1}|Q_{2}\xrightarrow{\alpha}_{2}Q_{1}^{'}
+		    Q_{1}|Q_{2}\xrightarrow{\alpha}_{2}Q_{1}^{'}|Q_{2}
 		  }
 	      }{
-		\underbrace{P_{1}|P_{2}}_{P}\xrightarrow{\alpha}_{2}\underbrace{Q_{1}^{'}}_{P^{'}}
+		\underbrace{P_{1}|P_{2}}_{P}\xrightarrow{\alpha}_{2}\underbrace{Q_{1}^{'}|Q_{2}}_{P^{'}}
 	      }
 	    \]
 	    from this hypothesis we can create the following proof tree of $P_{1}\xrightarrow{\alpha}_{2}Q_{1}^{'}$:
@@ -2235,7 +2194,7 @@ which is not want we want. So we prove a weaker version
 		P_{1}\xrightarrow{\alpha}_{2}Q_{1}^{'}
 	      }
 	    \]
-	    this proof tree is smaller than the proof tree of $P_{1}|P_{2}\xrightarrow{\alpha}_{2}Q_{1}^{'}$ so we can apply the inductive hypothesis and get that there exists a process $Q_{1}^{''}$ such that
+	    this proof tree is smaller than the proof tree of $P_{1}|P_{2}\xrightarrow{\alpha}_{2}Q_{1}^{'}|Q_{2}$ so we can apply the inductive hypothesis and get that there exists a process $Q_{1}^{''}$ such that
 	    \[
 	      Q_{1}^{'}\equiv Q_{1}^{''}\; and\; P_{1}\xrightarrow{\alpha}_{1}Q_{1}^{''} 
 	    \]
@@ -2246,7 +2205,7 @@ which is not want we want. So we prove a weaker version
 		\\
 		  bn(\alpha) \cap fn(P_{2})=\emptyset
 	      }{
-		\underbrace{P_{1}|P_{2}}_{P}\xrightarrow{\alpha}_{1}\underbrace{Q_{1}^{''}}_{P^{''}}
+		\underbrace{P_{1}|P_{2}}_{P}\xrightarrow{\alpha}_{1}\underbrace{Q_{1}^{''}|P_{2}}_{P^{''}}
 	      }
 	    \]
 	    The second premise of the previous instance holds because:

@@ -1426,3 +1426,143 @@
 	\end{itemize}
     \end{description}
   \end{proof}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 		the proof proceed by cases on $S$:
+ 		\begin{description}
+ 		  \item[$AlpZero$]
+ 		\end{description}
+ 		this case does not occur because $Q_{1}=0$ and $y$ cannot be in the free names of $0$
+ 		\begin{description}
+ 		  \item[$AlpIde$]
+ 		\end{description}
+ 		\begin{center}
+ 		  \begin{tabular}{ll}
+ 		    $P_{1}=Q_{1}\{x/y\}=A(\tilde{w})$ and $y\in fn(Q_{1})$ and $x\notin fn(Q_{1})$&\\
+ 		    $\Rightarrow A(\tilde{w})=A(x, \tilde{d})$&\\
+ 		    $\Rightarrow Q_{1}=A(y, \tilde{d})$&\\
+ 		  \end{tabular}
+ 		\end{center}
+ 		\begin{center}
+ 		  \begin{tabular}{ll}
+ 		    $(z(x).P_{1})\{b/a\}
+ 		      \equiv_{\alpha}
+ 			(z(y).Q_{1})\{b/a\}$&\\
+ 		    $\Leftarrow (z(x).A(x, \tilde{d}))\{b/a\}
+ 		      \equiv_{\alpha}
+ 			(z(y).A(y, \tilde{d}))\{b/a\}$&def of substitution\\
+ 		    $\Leftarrow z\{b/a\}(x).(A(x, \tilde{d})\{b/a\})
+ 		      \equiv_{\alpha}
+ 			z\{b/a\}(y).(A(y, \tilde{d})\{b/a\})$&\\
+ 		    $\Leftarrow z\{b/a\}(x).A(x, b, \tilde{e})
+ 		      \equiv_{\alpha}
+ 			z\{b/a\}(y).A(y, b, \tilde{e})$&rule $AlpInp1$\\
+ 		    $\Leftarrow A(x, b, \tilde{e})
+ 		      \equiv_{\alpha}
+ 			A(y, b, \tilde{e})\{x/y\}$&def of substitution\\
+ 		    $\Leftarrow A(x, b, \tilde{e})
+ 		      \equiv_{\alpha}
+ 			A(x, b, \tilde{e})$&rule $AlpIde$\\
+ 		  \end{tabular}
+ 		\end{center}
+ 		\begin{description}
+ 		  \item[$AlpOut$]
+ 		\end{description}
+ 		\[\inferrule*[left=AlpInp1]{
+ 		    \inferrule* [left=AlpOut]{
+ 		      R_{1}\equiv_{\alpha} S_{1}\{x/y\}
+ 		    }{
+ 		      \overline{g}h.R_{1}\equiv_{\alpha} (\overline{e}f.S_{1})\{x/y\}
+ 		    }
+ 		  \\
+ 		    x\neq y	      
+ 		}{
+ 		  \underbrace{z(x).\overline{g}h.R_{1}}_{P}
+ 		    \equiv_{\alpha}
+ 		      \underbrace{z(y).\overline{g}h.S_{1}}_{Q}
+ 		}\]
+ 		where $(\overline{e}f)\{x/y\}=\overline{g}h$ and
+ 		\begin{center}
+ 		  \begin{tabular}{ll}
+ 		    $x\notin fn(\overline{e}f.S_{1})$&\\
+ 		    $\Rightarrow x\neq e $ and $x\neq f$&\\
+ 		  \end{tabular}
+ 		\end{center}
+ 
+ ?? ?? ??
+ 
+ 		\begin{description}
+ 		  \item[$AlpTau$]
+ 		\end{description}
+ 		\[\inferrule*[left=AlpInp1]{
+ 		    \inferrule* [left=AlpTau]{
+ 		      R_{1}\equiv_{\alpha} Q_{1}\{x/y\}
+ 		    }{
+ 		      \tau.R_{1}\equiv_{\alpha} \tau.Q_{1}\{x/y\}
+ 		    }
+ 		  \\
+ 		    x\neq y	   
+ 		  \\
+ 		    y \in fn(\tau.Q_{1})
+ 		  \\
+ 		    x \notin fn(\tau.Q_{1})
+ 		}{
+ 		  \underbrace{z(x).\tau.R_{1}}_{P}
+ 		    \equiv_{\alpha}
+ 		      \underbrace{z(y).\tau.Q_{1}}_{Q}
+ 		}\]
+ 		
+ 
