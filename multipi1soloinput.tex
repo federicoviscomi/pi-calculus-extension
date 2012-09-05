@@ -139,6 +139,64 @@ In this case, a label can be a sequence of prefixes, whether in the original $\p
 \end{definition}
 
 
+\begin{example}[Multi-party synchronization]
+  We show an example of a derivation of three processes that synchronize.
+  \begin{center}
+  $\inferrule* [left=\bf{Res}]{
+      x\notin n(\tau)
+    \\
+      \inferrule* [left=\bf{EComSeq}]{
+	\underline{x(y)}.x(y).0|\overline{x}y.0)
+	  \xrightarrow{xy}
+	    0|0
+	\\
+	  \inferrule* [left=\bf{Out}]{
+	  }{
+	    \overline{x}y.0	
+	      \xrightarrow{\overline{x}y} 
+		0
+	  }
+      }{
+	(\underline{x(y)}.x(y).0|\overline{x}y.0)|\overline{x}y.0
+	  \xrightarrow{\tau}
+	    (0|0)|0
+      }
+  }{
+      (\nu x)((\underline{x(y)}.x(y).0|\overline{x}y.0)|\overline{x}y.0)
+	\xrightarrow{\tau}
+	  (\nu x)((0|0)|0)
+  }$
+  \end{center}
+  
+  \begin{center}
+  $\inferrule* [left=\bf{EComSng}]{
+      \inferrule* [left=\bf{SInp}]{
+	\inferrule* [left=\bf{EInp}]{
+	}{
+	  x(y).0 \xrightarrow{x(y)} 0
+	}
+      }{
+	\underline{x(y)}.x(y).0 
+	  \xrightarrow{x(y)\cdot x(y)} 
+	    0
+      }
+    \\
+      \inferrule* [left=\bf{Out}]{
+      }{
+	\overline{x}y.0\; \;\xrightarrow{\overline{x}y}\; 0
+      }
+  }{
+	\underline{x(y)}.x(y).0|\overline{x}y.0)
+	  \xrightarrow{xy}
+	    0|0
+  }$
+  \end{center}
+
+\end{example}
+
+
+
+
 
 % \begin{example}
 %   We show an example of three processes that synchronize. In particular we prove that

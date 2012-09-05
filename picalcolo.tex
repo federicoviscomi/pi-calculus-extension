@@ -693,8 +693,6 @@ Structural congruences are a set of equations defining equality and congruence r
 	    \\
 	      x\neq y
 	    \\
-	      y\in fn(Q)
-	    \\
 	      x\notin fn(Q)
 	  }{
 	    (\nu x)P\equiv_{\alpha}(\nu y)Q
@@ -710,8 +708,6 @@ Structural congruences are a set of equations defining equality and congruence r
 	      P\equiv_{\alpha}Q\{x/y\}
 	    \\
 	      x\neq y
-	    \\
-	      y\in fn(Q)
 	    \\
 	      x\notin fn(Q)
 	  }{
@@ -747,12 +743,48 @@ Structural congruences are a set of equations defining equality and congruence r
 	  }{
 	    0\equiv_{\alpha}0
 	  }$
+    \\\\
+	  $\inferrule*[left=AlpRes2]{
+	      P\equiv_{\alpha}Q
+	    \\
+	      x\notin fn(P)
+	    \\
+	      y\notin fn(Q)
+	  }{
+	    (\nu x)(P\{x/z\})\equiv_{\alpha}(\nu y)(Q\{y/z\})
+	  }$
+	&
+      \\\\
+	  $\inferrule*[left=AlpRes3]{
+	      P\{z/x\}\equiv_{\alpha}Q\{z/y\}
+	    \\
+	      z\notin fn(P)
+	    \\
+	      z\notin fn(Q)
+	  }{
+	    (\nu x)(P)\equiv_{\alpha}(\nu y)(Q)
+	  }$
+
+	&
+%     \\\\
+% 	  $\inferrule*[left=AlpSubst]{
+% 	      P\equiv_{\alpha}Q
+% 	    \\
+% 	      a\leq b
+% 	  }{
+% 	    P\{a/b\}\equiv_{\alpha}Q\{a/b\}
+% 	  }$
+% 	&
       \\\hline
     \end{tabular}
     \caption{$\alpha$ equivalence laws}
     \label{alphaequivalence}
   \end{table}
 \end{definition}
+
+
+It remains the problem of proving that $\alpha$ equivalence is well defined, i.e. if we change only some bound names in a process $P$ then we get a process $\alpha$ equivalent to $P$. 
+% We assume that there is a well order relation $\leq$ between the names. The condition $a\leq b$ in rule $AlpSubst$ ensure that we can apply this rule only a finite amount of times thus any proof tree of $\alpha$ equivalence is finite. 
 
 
 \begin{lemma}
@@ -1056,7 +1088,7 @@ We can make some clarification on the axioms of the structural congruence:
 
 
 \begin{lemma}
-  If we have a proof tree of 
+  $\alpha$ equivalence is invariant with respect to substitution. In other words if we have a proof tree of 
   \[
     P\equiv_{\alpha}Q
   \]
@@ -1154,11 +1186,9 @@ We can make some clarification on the axioms of the structural congruence:
 	      \item 
 		the last part of the proof tree of $P\equiv_{\alpha}Q$ is
 		\[\inferrule*[left=AlpInp1]{
-		      P_{1}\equiv_{\alpha}Q_{1}\{x/y\}
+		    P_{1}\equiv_{\alpha}Q_{1}\{x/y\}
 		  \\
 		    x\neq y	      
-		  \\
-		    y\in fn(Q_{1})
 		  \\
 		    x\notin fn(Q_{1})
 		}{
@@ -1166,17 +1196,75 @@ We can make some clarification on the axioms of the structural congruence:
 		    \equiv_{\alpha}
 		      \underbrace{z(y).Q_{1}}_{Q}
 		}\]
+	    \begin{center}
+	      \begin{tabular}{ll}
+		  &
+		rule premise
+	      \\
+		$P_{1}\equiv_{\alpha}Q_{1}\{x/y\}$ and $x\notin fn(Q_{1})$ 
+		  &
+		inductive hypothesis
+	      \\
+		$\Rightarrow P_{1}\{b/a\}\equiv_{\alpha}Q_{1}\{x/y\}\{b/a\}$
+		  &
+		rule $AlpInp$
+	      \\
+		$\Rightarrow z(x).(P_{1}\{b/a\})\equiv_{\alpha}z(x).(Q_{1}\{x/y\}\{b/a\})$
+		  &
+		definition of substitution
+	      \\
+		$\Rightarrow (z(x).P_{1})\{b/a\}\equiv_{\alpha}(z(x).(Q_{1}\{x/y\}))\{b/a\}$
+		  &
+		transitivity and equation (*)
+	      \\
+		$\Rightarrow (z(x).P_{1})\{b/a\}\equiv_{\alpha}(z(y).Q_{1})\{b/a\}$
+		  &
+	      \\
+	      \end{tabular}
+	    \end{center}	    	
+%  	    we create the following proof 
+%  	    \[
+%  	      \inferrule* [left=AlpInp1]{
+%  		\inferrule* [left=AlpRef]{
+%  		}{
+% 		  Q_{1}\{x/y\}\equiv_{\alpha}Q_{1}\{x/y\}
+%  		}
+%  	      }{
+%  		z(x).(Q_{1}\{x/y\})\equiv_{\alpha}z(y).Q_{1}
+%  	      }
+%  	    \]
+% 	    which is shorter than the proof of $z(x).P_{1}\equiv_{\alpha}z(y).Q_{1}$ if the proof of $P_{1}\equiv_{\alpha}Q_{1}\{x/y\}$ is longer than one, so we can apply the inductive hypothesis and get: 
+% 	    \begin{center}
+% 	      \begin{tabular}{ll}
+%  		  &
+%  		reflexivity
+%  	      \\
+%  		$Q_{1}\{x/y\}\equiv_{\alpha}Q_{1}\{x/y\}$
+%  		  &
+%  		rule $AlpInp1$
+%  	      \\
+%  		$\Rightarrow z(x).(Q_{1}\{x/y\})\equiv_{\alpha}z(y).Q_{1}$
+%  		  &
+%  		inductive hypothesis POSSIAMO?
+%  	      \\
+% 		$(z(x).(Q_{1}\{x/y\}))\{b/a\}\equiv_{\alpha}(z(y).Q_{1})\{b/a\}$ 
+% 		  &
+% 		(*)
+% 	      \\				
+% 	      \end{tabular}
+% 	    \end{center}
+% 	    if the length of the proof of $P_{1}\equiv_{\alpha}Q_{1}\{x/y\}$ is one then the rule used can be
+% 	    
+% 	    $AlpZero$ $AlpIde$ or $AlpRef$
+
+
+
 	    \end{itemize}
 	    
 
-	    \begin{center}
-	      \begin{tabular}{ll}
-		&rule premise\\
-		$P_{1}\equiv_{\alpha}Q_{1}\{x/y\}$ and $y\in fn(Q_{1})$ and $x\notin fn(Q_{1})$ &\\
-		$?$&\\
-		$\Rightarrow (z(x).P_{1})\{b/a\}\equiv_{\alpha}(z(y).Q_{1})\{b/a\} $&\\
-	      \end{tabular}
-	    \end{center}	    	    
+
+
+
 	    \begin{center}
 	      \begin{tabular}{ll}
 		&rule premise\\
@@ -1248,15 +1336,80 @@ We can make some clarification on the axioms of the structural congruence:
 	      \end{tabular}
 	    \end{center}	    	    
 	  \item[$AlpRes1$]:
-	  \[\inferrule*[left=AlpRes1]{
-	      P_{1}\equiv_{\alpha}Q_{1}\{x/y\}
-	    \\
-	      x\neq y
-	    \\
-	      y\in fn(Q_{1})
-	  }{
-	    \underbrace{(\nu x)P_{1}}_{P}\equiv_{\alpha}\underbrace{(\nu y)Q_{1}}_{Q}
-	  }\]
+	    Since $a$ is in the free names of both $P$ and $Q$ then $a$ cannot be in the restriction at the top level of $P$ or $Q$. So let $x,y,b$ and $a$ be pairwise disjoint. We have three different cases:
+
+	    \begin{description}
+	      \item[$1$]
+	    \end{description}
+	    \[\inferrule*[left=AlpRes1]{
+		P_{1}\equiv_{\alpha}Q_{1}\{x/y\}
+	      \\
+		x\neq y
+	      \\
+		x\notin fn(Q_{1})
+	    }{
+	      \underbrace{(\nu x)P_{1}}_{P}\equiv_{\alpha}\underbrace{(\nu y)Q_{1}}_{Q}
+	    }\]
+		
+	    we have to prove that
+	    \[
+	     	P_{1}\{b/a\}\equiv_{\alpha}Q_{1}\{x/y\}\{b/a\}
+	      \mbox{ and }
+		x\neq y
+	      \mbox{ and }
+		x\notin fn(Q_{1}) \Rightarrow 
+		((\nu x)P_{1})\{b/a\}\equiv_{\alpha}((\nu y)Q_{1})\{b/a\}
+	    \]
+
+  
+	    \begin{description}
+	      \item[$2$]
+	    \end{description}
+	    \[\inferrule*[left=AlpRes1]{
+		P_{1}\equiv_{\alpha}Q_{1}\{b/y\}
+	      \\
+		b\neq y
+	      \\
+		b\notin fn(Q_{1})
+	    }{
+	      \underbrace{(\nu b)P_{1}}_{P}\equiv_{\alpha}\underbrace{(\nu y)Q_{1}}_{Q}
+	    }\]
+
+	    we have to prove that
+	    \[
+	     	P_{1}\{b/a\}\equiv_{\alpha}Q_{1}\{/y\}\{b/a\}
+	      \mbox{ and }
+		b\neq y
+	      \mbox{ and }
+		b\notin fn(Q_{1}) \Rightarrow 
+		((\nu b)P_{1})\{b/a\}\equiv_{\alpha}((\nu y)Q_{1})\{b/a\}
+	    \]
+
+
+
+	    \begin{description}
+	      \item[$3$]
+	    \end{description}
+
+	    \[\inferrule*[left=AlpRes1]{
+		P_{1}\equiv_{\alpha}Q_{1}\{x/b\}
+	      \\
+		x\neq b
+	      \\
+		x\notin fn(Q_{1})
+	    }{
+	      \underbrace{(\nu x)P_{1}}_{P}\equiv_{\alpha}\underbrace{(\nu b)Q_{1}}_{Q}
+	    }\]
+	    we have to prove that
+	    \[
+	     	P_{1}\{b/a\}\equiv_{\alpha}Q_{1}\{x/b\}\{b/a\}
+	      \mbox{ and }
+		x\neq b
+	      \mbox{ and }
+		x\notin fn(Q_{1}) \Rightarrow 
+		((\nu x)P_{1})\{b/a\}\equiv_{\alpha}((\nu b)Q_{1})\{b/a\}
+	    \]
+
 	    
 	\end{description}
   \end{proof}

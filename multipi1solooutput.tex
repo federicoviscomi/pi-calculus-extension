@@ -162,48 +162,60 @@ In this case, a label can be a sequence of prefixes, whether in the original $\p
 \end{definition}
 
 
-In the following examples we omit sometimes the rule $Str$.
 
-\begin{example}
+
+\begin{example}[Multi-party synchronization]
   We show an example of a derivation of three processes that synchronize.
-  \begin{description}
-    \item[Res]
-      $(\nu x)((\underline{\overline{x}y}.\overline{x}y.0|x(y).0)|x(y).0)\; 
-	\;\xrightarrow{\tau}\; 
-	  (\nu x)((0|0)|0)$
-      \begin{description}
-	\item
-	  $x\notin n(\tau)$
-	\item[EComSng]
-	      $((\underline{\overline{x}y}.\overline{x}y.0|x(y).0)|x(y).0)\; 
-		\;\xrightarrow{\tau}\; 
-		  ((0|0)|0)$
-	      \begin{description}
-	       \item[EComSeq]
-		  $\underline{\overline{x}y}.\overline{x}y.0|x(y).0\; 
-		    \;\xrightarrow{\overline{x}y}\; 
-		      0|0$
-		  \begin{description}
-		    \item[EInp]
-		      $x(y).0\; \;\xrightarrow{xy}\; 0$
-		    \item[SOut]
-		      $\underline{\overline{x}y}.\overline{x}y.0\; 	
-			\;\xrightarrow{\overline{x}y\cdot \overline{x}y}\; 
-			  0$
-		    \begin{description}
-		      \item
-			$\overline{x}y\neq \tau$
-		      \item[Out]
-			$\overline{x}y.0\; 
-			\;\xrightarrow{\overline{x}y}\; 
-			  0$
-		    \end{description}
-		  \end{description}
-		\item[Out]
-		  $x(y).0\; \;\xrightarrow{xy}\; 0$
-	      \end{description}
-      \end{description}
-  \end{description}
+\begin{center}
+$\inferrule* [left=\bf{Res}]{
+    x\notin n(\tau)
+   \\
+    \inferrule* [left=\bf{EComSeq}]{
+	  \underline{\overline{x}y}.\overline{x}y.0|x(y).0
+	    \xrightarrow{\overline{x}y}
+	      0|0
+      \\
+	\inferrule* [left=\bf{Inp}]{
+	}{
+	  x(y).0	
+	    \xrightarrow{xy} 
+	      0
+	}
+    }{
+      ((\underline{\overline{x}y}.\overline{x}y.0|x(y).0)|x(y).0)
+	\xrightarrow{\tau}
+	  ((0|0)|0)
+    }
+  }{
+    (\nu x)((\underline{\overline{x}y}.\overline{x}y.0|x(y).0)|x(y).0)
+      \xrightarrow{\tau}
+	(\nu x)((0|0)|0)
+}$
+\end{center}
+
+\begin{center}
+$\inferrule* [left=\bf{EComSng}]{
+  \inferrule* [left=\bf{SOut}]{
+    \inferrule* [left=\bf{Out}]{
+    }{
+      \overline{x}y.0
+	\xrightarrow{\overline{x}y}
+	  0
+    }
+  }{
+    \underline{\overline{x}y}.\overline{x}y.0
+      \xrightarrow{\overline{x}y\cdot \overline{x}y}
+	0
+  }
+  \\
+    x(y).0\; \;\xrightarrow{xy}\; 0
+}{
+  \underline{\overline{x}y}.\overline{x}y.0|x(y).0
+    \xrightarrow{\overline{x}y}
+      0|0
+}$
+\end{center}
+
 \end{example}
 
 
@@ -214,6 +226,9 @@ In the following examples we omit sometimes the rule $Str$.
       \;\xrightarrow{\tau}\; 
 	(0|0)|(0|0)
   \]
+
+
+
   \begin{description}
     \item[Str]
       $(\underline{\overline{a}x}.c(x).0|b(x).0)|(a(x).0|\underline{\overline{b}x}.\overline{c}x.0)\;
@@ -275,136 +290,195 @@ In the following examples we omit sometimes the rule $Str$.
 \end{example}
 
 
-\begin{example}
-  The \emph{dining philosophers} problem, originally proposed by Dijkstra in \cite{djkstra}, is defined in the following way: Five silent philosophers sit at a round table. There is one fork between each pair of adjacent philosophers. Each philosopher must alternately think and eat. However, a philosopher can only eat while holding both the fork to the left and the fork to the right. Each philosopher can pick up an adjacent fork, when available, and put it down, when holding it. The problem is to design an algorithm such that no philosopher will starve, i.e. can forever continue to alternate between eating and thinking. We present one solution which uses only two forks and two philosophers:
-  \begin{itemize}
-    \item
-      we define two constants for the forks:
-      \begin{center}
-	\begin{tabular}{ll}
-	    $fork_{1}\; \stackrel{def}{=}\; up_{1}(x).dn_{1}(x).fork_{1}$
-	  &
-	    $fork_{0}\; \stackrel{def}{=}\; up_{0}(x).dn_{0}(x).fork_{0}$
-	\end{tabular}
-      \end{center}
-      the input name $x$ is not important and can be anything else.
-    \item
-      we define two constants for the philosophers:
-      \begin{center}
-	\begin{tabular}{l}
-	    $phil_{1}\; \stackrel{def}{=}\; think(x).phil_{1}+\underline{\overline{up_{1}}x}.\overline{up_{0}}(x).eat(x).\underline{\overline{dn_{1}}x}.dn_{0}(x).phil_{1}$
-	  \\
-	    $phil_{0}\; \stackrel{def}{=}\; think(x).phil_{0}+\underline{\overline{up_{0}}x}.\overline{up_{1}}(x).eat(x).\underline{\overline{dn_{0}}x}.dn_{1}(x).phil_{0}$
-	\end{tabular}
-      \end{center}
-      also in this case the name $x$ is not relevant.
-    \item
-      the following definition describe the whole system with philosophers and forks:
-      \begin{center}
-	$DP\; \stackrel{def}{=}\; (\nu \{up_{0}, up_{1}, down_{0}, down_{1}\})(phil_{0}|phil_{1}|fork_{0}|fork_{1})$
-      \end{center}
-      where with $(\nu \{up_{0}, up_{1}, down_{0}, down_{1}\})$ we mean $(\nu\; up_{0}) (\nu\; up_{1}) (\nu\; down_{0}) (\nu\; down_{1})$
-    \item
-      the operational semantic of $DP$ is the following lts:
-      \begin{center}
-	\begin{tikzpicture}[%
-	    ->,
-	    >=stealth,
-	    shorten >=1pt,
-	    node distance=2.8cm,
-	    %on grid,
-	    auto,
-	    state/.append style={minimum size=2em},
-	    thick
-	  ]
+% \begin{example}
+%   The \emph{dining philosophers} problem, originally proposed by Dijkstra in \cite{djkstra}, is defined in the following way: Five silent philosophers sit at a round table. There is one fork between each pair of adjacent philosophers. Each philosopher must alternately think and eat. However, a philosopher can only eat while holding both the fork to the left and the fork to the right. Each philosopher can pick up an adjacent fork, when available, and put it down, when holding it. The problem is to design an algorithm such that no philosopher will starve, i.e. can forever continue to alternate between eating and thinking. We present one solution which uses only two forks and two philosophers:
+%   \begin{itemize}
+%     \item
+%       we define two constants for the forks:
+%       \begin{center}
+% 	\begin{tabular}{ll}
+% 	    $fork_{1}\; \stackrel{def}{=}\; up_{1}(x).dn_{1}(x).fork_{1}$
+% 	  &
+% 	    $fork_{0}\; \stackrel{def}{=}\; up_{0}(x).dn_{0}(x).fork_{0}$
+% 	\end{tabular}
+%       \end{center}
+%       the input name $x$ is not important and can be anything else.
+%     \item
+%       we define two constants for the philosophers:
+%       \begin{center}
+% 	\begin{tabular}{l}
+% 	    $phil_{1}\; \stackrel{def}{=}\; think(x).phil_{1}+\underline{\overline{up_{1}}x}.\overline{up_{0}}(x).eat(x).\underline{\overline{dn_{1}}x}.dn_{0}(x).phil_{1}$
+% 	  \\
+% 	    $phil_{0}\; \stackrel{def}{=}\; think(x).phil_{0}+\underline{\overline{up_{0}}x}.\overline{up_{1}}(x).eat(x).\underline{\overline{dn_{0}}x}.dn_{1}(x).phil_{0}$
+% 	\end{tabular}
+%       \end{center}
+%       also in this case the name $x$ is not relevant.
+%     \item
+%       the following definition describe the whole system with philosophers and forks:
+%       \begin{center}
+% 	$DP\; \stackrel{def}{=}\; (\nu \{up_{0}, up_{1}, down_{0}, down_{1}\})(phil_{0}|phil_{1}|fork_{0}|fork_{1})$
+%       \end{center}
+%       where with $(\nu \{up_{0}, up_{1}, down_{0}, down_{1}\})$ we mean $(\nu\; up_{0}) (\nu\; up_{1}) (\nu\; down_{0}) (\nu\; down_{1})$
+%     \item
+%       the operational semantic of $DP$ is the following lts:
+%       \begin{center}
+% 	\begin{tikzpicture}[%
+% 	    ->,
+% 	    >=stealth,
+% 	    shorten >=1pt,
+% 	    node distance=2.8cm,
+% 	    %on grid,
+% 	    auto,
+% 	    state/.append style={minimum size=2em},
+% 	    thick
+% 	  ]
+% 
+% 
+%   %\tikzstyle{every state}=[fill=red,draw=none,text=white]
+% 
+% 
+% 	  \node[state] (A) {$P_{1}eaten$};
+% 	  \node[state] (B) [below right of=A] {$P_{1}F_{0,1}$};
+% 	  \node[state] (DP)[above right of=B] {$DP$};
+% 	  \node[state] (C) [below right of=DP] {$P_{0}F_{0,1}$};
+% 	  \node[state] (D) [above right of=C] {$P_{0}eaten$};
+%   
+% 	  \path[->] 
+% 	      
+%               (DP)       edge [loop above] node {$think\;x$} (DP)
+% 			 edge              node {$\tau$} (C)
+% 			 edge              node {$\tau$} (B)
+% 	      (A)        edge [loop above] node {$think\;x$} (A)
+% 			 edge              node {$\tau$} (DP)
+% 	      (B)        edge [loop below] node {$think\;x$} (B)
+% 			 edge   	   node {$eat\;x$} (A)
+% 	      (C)        edge [loop below] node {$think\;x$} (C)
+% 			 edge              node {$eat\;x$} (D)
+% 	      (D)        edge [loop above] node {$think\;x$} (D)
+% 			 edge              node {$\tau$} (DP);
+%          
+%       \end{tikzpicture}
+%     \end{center}
+%   \end{itemize}
+%   Now we need to prove every transition in the semantic of $DP$. Let $L=\{up_{0}, up_{1}, down_{0}, down_{1}\}$ we start with $DP\xrightarrow{\tau}DP$:
+% 
+% 
+% 
+% \end{example}
+
+% \begin{example}
+%   We want to show now an example of synchronization between four processes:
+%   \begin{description}
+%     \item[Res]
+%       $(\nu\; a)((((\underline{\overline{a}x}.\underline{\overline{a}x}.\overline{a}x.0| a(x).0)| a(x).0)| a(x).0)\;
+% 	\xrightarrow{\tau}\;
+% 	  (\nu\; a)(((0|0)|0)|0))$
+%       \begin{description}
+% 	\item
+% 	  $a\notin n(\tau)$
+% 	\item[EComSng]
+% 	  $(((\underline{\overline{a}x}.\underline{\overline{a}x}.\overline{a}x.0| a(x).0)| a(x).0)| a(x).0)\;
+% 	    \xrightarrow{\tau}\;
+% 	      ((0|0)|0)|0)$
+% 	  \begin{description}
+% 	    \item[EComSeq]
+% 	      $(\underline{\overline{a}x}.\underline{\overline{a}x}.\overline{a}x.0| a(x).0)| a(x).0\;
+% 		\xrightarrow{\overline{a}x}\;
+% 		  (0|0)|0$
+% 	      \begin{description}
+% 		\item[EComSeq]
+% 		  $\underline{\overline{a}x}.\underline{\overline{a}x}.\overline{a}x.0| a(x).0)\;
+% 		    \xrightarrow{\overline{a}x\cdot \overline{a}x}\;
+% 		      0|0$
+% 		  \begin{description}
+% 		    \item[SOut]
+% 		      $\underline{\overline{a}x}.\underline{\overline{a}x}.\overline{a}x.0\;
+% 			\xrightarrow{\overline{a}x\cdot \overline{a}x\cdot\overline{a}x}\;
+% 			  0$
+% 		      \begin{description}
+% 			\item[SOut]
+% 			  $\underline{\overline{a}x}.\overline{a}x.0\;\;\xrightarrow{\overline{a}x\cdot\overline{a}x}\;0$\newline
+%  			  %\begin{description}
+%  			  %   \item[SOut]
+%  				$\;\;\;\; {\bf SOut}\; \underline{\overline{a}x}.\overline{a}x.0\;\;\xrightarrow{\overline{a}x\cdot\overline{a}x}\;0$\newline
+% 	     			%\begin{description}
+% 				%   \item[SOut]
+% 				      .\hspace{4 mm}${\bf Out}\; \overline{a}x.0\;\;\xrightarrow{\overline{a}x}\;0$
+% 				%\end{description}
+%  			  %\end{description}
+% 		      \end{description}
+% 		    \item[Inp]
+% 		      $a(x).0\;\;\xrightarrow{ax}\;0$
+% 		  \end{description}
+% 		\item[Inp]
+% 		  $a(x).0\;\;\xrightarrow{ax}\;0$	 
+% 	      \end{description}
+% 	    \item[Inp]
+% 	      $a(x).0\;\;\xrightarrow{ax}\;0$	      
+% 	  \end{description}
+%     \end{description}
+%   \end{description}
+% 
+% \end{example}
 
 
-  %\tikzstyle{every state}=[fill=red,draw=none,text=white]
-
-
-	  \node[state] (A) {$P_{1}eaten$};
-	  \node[state] (B) [below right of=A] {$P_{1}F_{0,1}$};
-	  \node[state] (DP)[above right of=B] {$DP$};
-	  \node[state] (C) [below right of=DP] {$P_{0}F_{0,1}$};
-	  \node[state] (D) [above right of=C] {$P_{0}eaten$};
-  
-	  \path[->] 
-	      
-              (DP)       edge [loop above] node {$think\;x$} (DP)
-			 edge              node {$\tau$} (C)
-			 edge              node {$\tau$} (B)
-	      (A)        edge [loop above] node {$think\;x$} (A)
-			 edge              node {$\tau$} (DP)
-	      (B)        edge [loop below] node {$think\;x$} (B)
-			 edge   	   node {$eat\;x$} (A)
-	      (C)        edge [loop below] node {$think\;x$} (C)
-			 edge              node {$eat\;x$} (D)
-	      (D)        edge [loop above] node {$think\;x$} (D)
-			 edge              node {$\tau$} (DP);
-         
-      \end{tikzpicture}
-    \end{center}
-  \end{itemize}
-  Now we need to prove every transition in the semantic of $DP$. Let $L=\{up_{0}, up_{1}, down_{0}, down_{1}\}$ we start with $DP\xrightarrow{\tau}DP$:
-
-
+\begin{example}[Transactional synchronization]
+  In this setting two process cannot synchronize on a sequence of actions with length greater then one.
+% \begin{center}
+% $\inferrule* [left=\bf{EComSeq}]{
+%       \underline{\overline{x}y}.\overline{x}y.0
+% 	\xrightarrow{\overline{x}y \cdot \overline{x}y}
+% 	  0
+%     \\
+%     \inferrule* [left=\bf{EComSeq}]{
+% 	  \underline{\overline{x}y}.\overline{x}y.0|x(y).0
+% 	    \xrightarrow{\overline{x}y}
+% 	      0|0
+%       \\
+% 	\inferrule* [left=\bf{Inp}]{
+% 	}{
+% 	  x(y).0	
+% 	    \xrightarrow{xy} 
+% 	      0
+% 	}
+%     }{
+%       ((\underline{\overline{x}y}.\overline{x}y.0|x(y).0)|x(y).0)
+% 	\xrightarrow{\tau}
+% 	  ((0|0)|0)
+%     }
+%   }{
+%     \underline{\overline{x}y}.\overline{x}y.0 | x(y).x(y).0
+%       \xrightarrow{\tau}
+% 	0|0
+% }$
+% \end{center}
+% 
+% \begin{center}
+% $\inferrule* [left=\bf{EComSng}]{
+%   \inferrule* [left=\bf{SOut}]{
+%     \inferrule* [left=\bf{Out}]{
+%     }{
+%       \overline{x}y.0
+% 	\xrightarrow{\overline{x}y}
+% 	  0
+%     }
+%   }{
+%     \underline{\overline{x}y}.\overline{x}y.0
+%       \xrightarrow{\overline{x}y\cdot \overline{x}y}
+% 	0
+%   }
+%   \\
+%     x(y).0\; \;\xrightarrow{xy}\; 0
+% }{
+%   \underline{\overline{x}y}.\overline{x}y.0|x(y).0
+%     \xrightarrow{\overline{x}y}
+%       0|0
+% }$
+% \end{center}
 
 \end{example}
 
-\begin{example}
-  We want to show now an example of synchronization between four processes:
-  \begin{description}
-    \item[Res]
-      $(\nu\; a)((((\underline{\overline{a}x}.\underline{\overline{a}x}.\overline{a}x.0| a(x).0)| a(x).0)| a(x).0)\;
-	\xrightarrow{\tau}\;
-	  (\nu\; a)(((0|0)|0)|0))$
-      \begin{description}
-	\item
-	  $a\notin n(\tau)$
-	\item[EComSng]
-	  $(((\underline{\overline{a}x}.\underline{\overline{a}x}.\overline{a}x.0| a(x).0)| a(x).0)| a(x).0)\;
-	    \xrightarrow{\tau}\;
-	      ((0|0)|0)|0)$
-	  \begin{description}
-	    \item[EComSeq]
-	      $(\underline{\overline{a}x}.\underline{\overline{a}x}.\overline{a}x.0| a(x).0)| a(x).0\;
-		\xrightarrow{\overline{a}x}\;
-		  (0|0)|0$
-	      \begin{description}
-		\item[EComSeq]
-		  $\underline{\overline{a}x}.\underline{\overline{a}x}.\overline{a}x.0| a(x).0)\;
-		    \xrightarrow{\overline{a}x\cdot \overline{a}x}\;
-		      0|0$
-		  \begin{description}
-		    \item[SOut]
-		      $\underline{\overline{a}x}.\underline{\overline{a}x}.\overline{a}x.0\;
-			\xrightarrow{\overline{a}x\cdot \overline{a}x\cdot\overline{a}x}\;
-			  0$
-		      \begin{description}
-			\item[SOut]
-			  $\underline{\overline{a}x}.\overline{a}x.0\;\;\xrightarrow{\overline{a}x\cdot\overline{a}x}\;0$\newline
- 			  %\begin{description}
- 			  %   \item[SOut]
- 				$\;\;\;\; {\bf SOut}\; \underline{\overline{a}x}.\overline{a}x.0\;\;\xrightarrow{\overline{a}x\cdot\overline{a}x}\;0$\newline
-	     			%\begin{description}
-				%   \item[SOut]
-				      .\hspace{4 mm}${\bf Out}\; \overline{a}x.0\;\;\xrightarrow{\overline{a}x}\;0$
-				%\end{description}
- 			  %\end{description}
-		      \end{description}
-		    \item[Inp]
-		      $a(x).0\;\;\xrightarrow{ax}\;0$
-		  \end{description}
-		\item[Inp]
-		  $a(x).0\;\;\xrightarrow{ax}\;0$	 
-	      \end{description}
-	    \item[Inp]
-	      $a(x).0\;\;\xrightarrow{ax}\;0$	      
-	  \end{description}
-    \end{description}
-  \end{description}
 
-\end{example}
 
 
 
@@ -440,7 +514,7 @@ In the following examples we omit sometimes the rule $Str$.
 	  }$
 	&
 	  $\inferrule* [left=\bf{LComSeq}]{
-	      P \;\xrightarrow{x(y)} P^{'}
+	      P \;\xrightarrow{xy} P^{'}
 	    \\
 	      Q\;\xrightarrow{\overline{x}z\cdot \sigma} Q^{'}
 	    \\
@@ -472,7 +546,7 @@ In the following examples we omit sometimes the rule $Str$.
 	  }$
 	&
 	  $\inferrule* [left=\bf{LComSng}]{
-	      P \;\xrightarrow{x(y)} P^{'}
+	      P \;\xrightarrow{xy} P^{'}
 	    \\
 	      Q\;\xrightarrow{\overline{x}z} Q^{'}
 	    \\
@@ -486,6 +560,4 @@ In the following examples we omit sometimes the rule $Str$.
     \label{multipilatewith}
   \end{table}
 \end{definition}
-
-
 
