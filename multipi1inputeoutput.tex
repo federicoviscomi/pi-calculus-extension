@@ -53,102 +53,102 @@ The semantic of a multi $\pi$ process is labeled transition system such that
 
 In this case, a label can be a sequence of prefixes, whether in the original $\pi$ calculus a label can be only a prefix. We use the symbol $\cdot$ to denote the concatenation operator.
 
-\begin{definition}\index{transition relation! multipi! late! with structural congruence}
-  The \emph{late transition relation with structural congruence} is the smallest relation induced by the rules in table \ref{multiIOlatewith1}
-  \begin{table}
-    \begin{tabular}{ll}
-	  \hline\\
- 	  \bf{Pref}
- 	  \begin{tabular}{c}
- 	      $\alpha\; not\; a\; strong\; prefix$
- 	    \\\hline
- 	      $\alpha.P \;\xrightarrow{\alpha} P$
- 	  \end{tabular}
-	&
-	  \bf{Par}
-	  \begin{tabular}{c}
-	      $P \;\xrightarrow{\sigma} P^{'}\;\; bn(\sigma)\cap fn(Q)=\emptyset$
-	    \\\hline
-	      $P|Q \;\xrightarrow{\sigma} P^{'}|Q$
-	  \end{tabular}
-      \\\\
-	  \bf{SOut}
-	  \begin{tabular}{c}
-	      $P \;\xrightarrow{\sigma} P^{'}\;\; \sigma\neq \tau$
-	    \\\hline
-	      $\underline{\overline{x}y}.P \;\xrightarrow{\overline{x}y \cdot \sigma} P^{'}$
-	  \end{tabular}
-	&
-	  $\inferrule* [left=\bf{LComSeq1}]{
-	      P \;\xrightarrow{x(y)}\; P^{'}
-	    \\
-	      Q\;\xrightarrow{\overline{x}z\cdot \sigma} Q^{'}
-	    \\
-	      z\notin fn(P)
-	  }{
-	    P|Q \;\xrightarrow{\sigma} P^{'}\{z/y\}|Q^{'}
-	  }$
-      \\\\
-	  \bf{Sum}
-	  \begin{tabular}{c}
-	      $P \;\xrightarrow{\sigma} P^{'}$
-	    \\\hline
-	      $P+Q \;\xrightarrow{\sigma} P^{'}$
-	  \end{tabular}
-	&
-	$\inferrule* [left=\bf{Str}]{
-	    P\equiv P^{'}
-	  \\
-	    P^{'}\; \;\xrightarrow{\alpha}\; Q^{'}
-	  \\
-	    Q\equiv Q^{'}
-	}{
-	    P\; \;\xrightarrow{\alpha}\; Q
-	}$
-      \\\\
-	  \bf{Res}
-	  \begin{tabular}{c}
-	      $P \;\xrightarrow{\sigma} P^{'}\;\; z\notin n(\alpha)$
-	    \\\hline
-	      $(\nu z) P \;\xrightarrow{\sigma} (\nu z) P^{'}$
-	  \end{tabular}
-	&
-	  $\inferrule* [left=\bf{LComSng}]{
-	      P \;\xrightarrow{x(y)} P^{'}
-	    \\
-	      Q\;\xrightarrow{\overline{x}z} Q^{'}
-	    \\
-	      z\notin fn(P)
-	  }{
-	    P|Q \;\xrightarrow{\tau} P^{'}\{z/y\}|Q^{'}
-	  }$
-      \\\\
-	  $\inferrule* [left=\bf{SInp}]{
-	      P \;\xrightarrow{\sigma}\; P^{'}
-	    \\
-	      \sigma\neq \tau
-	  }{
-	    \underline{x(y)}.P \;\xrightarrow{x(y) \cdot \sigma} P^{'}
-	  }$
-	&
-	  $\inferrule* [left=\bf{LComSeq2}]{
-	      P \;\xrightarrow{\overline{x}z}\; P^{'}
-	    \\
-	      Q\;\xrightarrow{x(y)\cdot \sigma}\; Q^{'}
-	    \\
-	      z\notin fn(P)
-	  }{
-	    P|Q \;\xrightarrow{\sigma\{z/y\}}\; P^{'}|Q^{'}\{z/y\}
-	  }$
-      \\\hline
-    \end{tabular}
-    \caption{Multi $\pi$ late semantic with structural congruence}
-    \label{multiIOlatewith1}
-  \end{table}
-\end{definition}
+% \begin{definition}\index{transition relation! multipi! late! with structural congruence}
+%   The \emph{late transition relation with structural congruence} is the smallest relation induced by the rules in table \ref{multiIOlatewith1}
+%   \begin{table}
+%     \begin{tabular}{ll}
+% 	  \hline\\
+%  	  \bf{Pref}
+%  	  \begin{tabular}{c}
+%  	      $\alpha\; not\; a\; strong\; prefix$
+%  	    \\\hline
+%  	      $\alpha.P \;\xrightarrow{\alpha} P$
+%  	  \end{tabular}
+% 	&
+% 	  \bf{Par}
+% 	  \begin{tabular}{c}
+% 	      $P \;\xrightarrow{\sigma} P^{'}\;\; bn(\sigma)\cap fn(Q)=\emptyset$
+% 	    \\\hline
+% 	      $P|Q \;\xrightarrow{\sigma} P^{'}|Q$
+% 	  \end{tabular}
+%       \\\\
+% 	  \bf{SOut}
+% 	  \begin{tabular}{c}
+% 	      $P \;\xrightarrow{\sigma} P^{'}\;\; \sigma\neq \tau$
+% 	    \\\hline
+% 	      $\underline{\overline{x}y}.P \;\xrightarrow{\overline{x}y \cdot \sigma} P^{'}$
+% 	  \end{tabular}
+% 	&
+% 	  $\inferrule* [left=\bf{LComSeq1}]{
+% 	      P \;\xrightarrow{x(y)}\; P^{'}
+% 	    \\
+% 	      Q\;\xrightarrow{\overline{x}z\cdot \sigma} Q^{'}
+% 	    \\
+% 	      z\notin fn(P)
+% 	  }{
+% 	    P|Q \;\xrightarrow{\sigma} P^{'}\{z/y\}|Q^{'}
+% 	  }$
+%       \\\\
+% 	  \bf{Sum}
+% 	  \begin{tabular}{c}
+% 	      $P \;\xrightarrow{\sigma} P^{'}$
+% 	    \\\hline
+% 	      $P+Q \;\xrightarrow{\sigma} P^{'}$
+% 	  \end{tabular}
+% 	&
+% 	$\inferrule* [left=\bf{Str}]{
+% 	    P\equiv P^{'}
+% 	  \\
+% 	    P^{'}\; \;\xrightarrow{\alpha}\; Q^{'}
+% 	  \\
+% 	    Q\equiv Q^{'}
+% 	}{
+% 	    P\; \;\xrightarrow{\alpha}\; Q
+% 	}$
+%       \\\\
+% 	  \bf{Res}
+% 	  \begin{tabular}{c}
+% 	      $P \;\xrightarrow{\sigma} P^{'}\;\; z\notin n(\alpha)$
+% 	    \\\hline
+% 	      $(\nu z) P \;\xrightarrow{\sigma} (\nu z) P^{'}$
+% 	  \end{tabular}
+% 	&
+% 	  $\inferrule* [left=\bf{LComSng}]{
+% 	      P \;\xrightarrow{x(y)} P^{'}
+% 	    \\
+% 	      Q\;\xrightarrow{\overline{x}z} Q^{'}
+% 	    \\
+% 	      z\notin fn(P)
+% 	  }{
+% 	    P|Q \;\xrightarrow{\tau} P^{'}\{z/y\}|Q^{'}
+% 	  }$
+%       \\\\
+% 	  $\inferrule* [left=\bf{SInp}]{
+% 	      P \;\xrightarrow{\sigma}\; P^{'}
+% 	    \\
+% 	      \sigma\neq \tau
+% 	  }{
+% 	    \underline{x(y)}.P \;\xrightarrow{x(y) \cdot \sigma} P^{'}
+% 	  }$
+% 	&
+% 	  $\inferrule* [left=\bf{LComSeq2}]{
+% 	      P \;\xrightarrow{\overline{x}z}\; P^{'}
+% 	    \\
+% 	      Q\;\xrightarrow{x(y)\cdot \sigma}\; Q^{'}
+% 	    \\
+% 	      z\notin fn(P)
+% 	  }{
+% 	    P|Q \;\xrightarrow{\sigma\{z/y\}}\; P^{'}|Q^{'}\{z/y\}
+% 	  }$
+%       \\\hline
+%     \end{tabular}
+%     \caption{Multi $\pi$ late semantic with structural congruence}
+%     \label{multiIOlatewith1}
+%   \end{table}
+% \end{definition}
 
 
-\subsection{Another attemp to late operational semantic with structural congruence}
+% \subsection{Another attemp to late operational semantic with structural congruence}
 
 \begin{definition}\index{transition relation! multipi! late! with structural congruence}
   The \emph{late transition relation with structural congruence} is the smallest relation induced by the rules in table \ref{multiIOlatewith2}:
@@ -505,8 +505,8 @@ In what follows, the names $\delta, \delta_{1}, \delta_{2}$ represents substitut
 
 
 
-\begin{example}
-  We want to prove that:
+\begin{example}[Transactional synchronization]
+  This is an example of two processes that synchronize over a sequence of actions of length two:
   \[
     \underline{\overline{a}x}.\overline{a}y.P|\underline{a(w)}.a(z).Q\; \xrightarrow{\tau} P|Q\{x/w\}\{y/z\}
   \]
@@ -550,8 +550,107 @@ In what follows, the names $\delta, \delta_{1}, \delta_{2}$ represents substitut
   and in the end we just need to apply the rule $\bf{LCom}$
 \end{example}
 
+\begin{example}[Multi-party synchronization]
+  In this example we have three processes that want to synchronize:
+  \begin{center}$
+    \inferrule* [left=\tiny{\bf{LCom}}]{
+	\underline{\overline{a}f}.\overline{b}g.P|a(w).Q
+	  \xrightarrow{\overline{b}g} 
+	    P|Q\{f/w\}
+      \\
+	\inferrule* [left=\bf{Pref}]{
+	}{
+	  b(y).R\; 
+	    \xrightarrow{b(y)} 
+	      R
+	}
+      \\
+	\inferrule* [left=\bf{S1R}]{
+	}{
+	  Sync(\overline{b}g, b(y), \tau, \emptyset, \{g/y\})
+	}
+    }{
+       (\underline{\overline{a}f}.\overline{b}g.P
+	|a(w).Q)
+	|b(y).R\; 
+	  \xrightarrow{\tau} 
+	    (P|Q\{f/w\})|R\{g/y\}
+    }
+  $\end{center}
+
+  \begin{center}$
+    \inferrule* [left=\tiny{\bf{LCom}}]{
+	\underline{\overline{a}f}.\overline{b}g.P
+	  \xrightarrow{\overline{a}f \cdot \overline{b}g} 
+	    P
+      \\
+	\inferrule* [left=\bf{Pref}]{
+	}{
+	  a(w).Q
+	    \xrightarrow{a(w)} 
+	      Q
+	}
+      \\
+	\inferrule* [left=\bf{S2R}]{
+	}{
+	  Sync(\overline{a}f \cdot \overline{b}g, a(w), \overline{b}g, \emptyset, \{f/w\})
+	}
+    }{
+	\underline{\overline{a}f}.\overline{b}g.P|a(w).Q
+	  \xrightarrow{\overline{b}g} 
+	    P|Q\{f/w\}
+    }
+  $\end{center}
+
+
+  \begin{center}$
+    \inferrule* [left=\bf{SOut}]{
+	\inferrule* [left=\bf{Out}]{
+	}{
+	  \overline{b}g.P
+	    \xrightarrow{\overline{b}g} 
+	      P
+	}
+    }{
+	\underline{\overline{a}f}.\overline{b}g.P
+	  \xrightarrow{\overline{a}f \cdot \overline{b}g} 
+	    P
+    }
+  $\end{center}
+
+
+\end{example}
+
+
+\begin{example}[Cigarette smokers' problem]
+  In this problem there are four processes: an agent and three smokers. Each smoker continuously makes a cigarette and smokes it. To make a cigarette each smoker needs three ingredients: tobacco, paper and matches. One of the smokers has paper, another tobacco and the third matches. The agent has an infinite supply of the ingredients. The agent places two of the ingredients on the table. The smoker who has the remaining ingredient take the others from the table, make a cigarette and smokes. Then the cycle repeats. A solution to the problem is the following:
+  \begin{center}
+    \begin{tabular}{l}
+	$Agent \stackrel{def}{=} 
+	  \underline{\overline{tob}}.\overline{mat}.end.Agent + 
+	  \underline{\overline{mat}}.\overline{pap}.end.Agent + 
+	  \underline{\overline{pap}}.\overline{tob}.end.Agent$
+    \\
+	$S_{pap} \stackrel{def}{=} 
+	\underline{tob()}.mat().smoke.\overline{end}.S_{pap}$
+    \\
+	$S_{tab} \stackrel{def}{=} 
+	\underline{mat()}.pap().smoke.\overline{end}.S_{tab}$
+    \\
+	$S_{mat} \stackrel{def}{=} 
+	\underline{pap()}.tob().smoke.\overline{end}.S_{mat}$
+    \end{tabular}
+  \end{center}
+\end{example}
+
+
+
+
+
+
 
 \begin{example}
+  This example combines both multi-party synchronization and transactional synchronization. Here we used a linear notation for derivation trees because they are too big:
 \begin{equation*}
   \begin{fitch}
     \fa (\underline{\overline{a}f}.\overline{b}g.P
@@ -667,6 +766,9 @@ In what follows, the names $\delta, \delta_{1}, \delta_{2}$ represents substitut
   \end{fitch}
 \end{equation*}
 \end{example}
+
+
+
 
 
 

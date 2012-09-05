@@ -139,56 +139,51 @@ In this case, a label can be a sequence of prefixes, whether in the original $\p
 \end{definition}
 
 
+
 \begin{example}[Multi-party synchronization]
   We show an example of a derivation of three processes that synchronize.
   \begin{center}
-  $\inferrule* [left=\bf{Res}]{
-      x\notin n(\tau)
-    \\
-      \inferrule* [left=\bf{EComSeq}]{
-	\underline{x(y)}.x(y).0|\overline{x}y.0)
-	  \xrightarrow{xy}
-	    0|0
+  $
+      \inferrule* [left=\bf{EComSng}]{
+	\underline{x(a)}.x(b).P|\overline{x}y.Q)
+	  \xrightarrow{xz}
+	    P\{y/a\}\{z/b\}|Q
 	\\
 	  \inferrule* [left=\bf{Out}]{
 	  }{
-	    \overline{x}y.0	
-	      \xrightarrow{\overline{x}y} 
-		0
+	    \overline{x}z.R	
+	      \xrightarrow{\overline{x}z} 
+		R
 	  }
       }{
-	(\underline{x(y)}.x(y).0|\overline{x}y.0)|\overline{x}y.0
+	(\underline{x(a)}.x(b).P|\overline{x}y.Q)|\overline{x}z.R
 	  \xrightarrow{\tau}
-	    (0|0)|0
+	    (P\{y/a\}\{z/b\}|Q)|R
       }
-  }{
-      (\nu x)((\underline{x(y)}.x(y).0|\overline{x}y.0)|\overline{x}y.0)
-	\xrightarrow{\tau}
-	  (\nu x)((0|0)|0)
-  }$
+  $
   \end{center}
   
   \begin{center}
-  $\inferrule* [left=\bf{EComSng}]{
+  $\inferrule* [left=\bf{EComSeq}]{
       \inferrule* [left=\bf{SInp}]{
 	\inferrule* [left=\bf{EInp}]{
 	}{
-	  x(y).0 \xrightarrow{x(y)} 0
+	  (x(b).P)\{y/a\} \xrightarrow{xz} P\{y/a\}\{z/b\}
 	}
       }{
-	\underline{x(y)}.x(y).0 
-	  \xrightarrow{x(y)\cdot x(y)} 
-	    0
+	\underline{x(a)}.(x(b).P) 
+	  \xrightarrow{xy \cdot xz} 
+	    P\{y/a\}\{z/b\}
       }
     \\
       \inferrule* [left=\bf{Out}]{
       }{
-	\overline{x}y.0\; \;\xrightarrow{\overline{x}y}\; 0
+	\overline{x}y.Q\; \;\xrightarrow{\overline{x}y}\; Q
       }
   }{
-	\underline{x(y)}.x(y).0|\overline{x}y.0)
-	  \xrightarrow{xy}
-	    0|0
+	\underline{x(a)}.x(b).P|\overline{x}y.Q)
+	  \xrightarrow{xz}
+	    P\{y/a\}\{z/b\}|Q
   }$
   \end{center}
 
@@ -564,4 +559,54 @@ In this case, a label can be a sequence of prefixes, whether in the original $\p
     \label{multipisoloinputlateywith}
   \end{table}
 \end{definition}
+
+\begin{example}[Multi-party synchronization]
+  We show an example of a derivation of three processes that synchronize.
+  \begin{center}
+  $
+      \inferrule* [left=\bf{LComSng}]{
+	\underline{x(a)}.x(b).P|\overline{x}y.Q)
+	  \xrightarrow{x(b)}
+	    P\{y/a\}|Q
+	\\
+	  \inferrule* [left=\bf{Pref}]{
+	  }{
+	    \overline{x}z.R	
+	      \xrightarrow{\overline{x}z} 
+		R
+	  }
+      }{
+	(\underline{x(a)}.x(b).P|\overline{x}y.Q)|\overline{x}z.R
+	  \xrightarrow{\tau}
+	    (P\{y/a\}|Q)\{z/b\}|R
+      }
+  $
+  \end{center}
+  
+  \begin{center}
+  $\inferrule* [left=\bf{LComSeq}]{
+      \inferrule* [left=\bf{SInp}]{
+	\inferrule* [left=\bf{Pref}]{
+	}{
+	  x(b).P \xrightarrow{x(b)} P
+	}
+      }{
+	\underline{x(a)}.x(b).P
+	  \xrightarrow{x(a) \cdot x(b)} 
+	    P
+      }
+    \\
+      \inferrule* [left=\bf{Out}]{
+      }{
+	\overline{x}y.Q\; \;\xrightarrow{\overline{x}y}\; Q
+      }
+  }{
+	\underline{x(a)}.x(b).P|\overline{x}y.Q)
+	  \xrightarrow{x(b)}
+	    P\{y/a\}|Q
+  }$
+  \end{center}
+  $a\notin fn(x(b))\cup fn (\underline{x(a)}.x(b).P)$
+  $b\notin fn(\underline{x(a)}.x(b).P|\overline{x}y.Q))$
+\end{example}
 
