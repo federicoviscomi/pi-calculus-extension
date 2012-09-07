@@ -561,11 +561,19 @@ In this case, a label can be a sequence of prefixes, whether in the original $\p
 \end{definition}
 
 \begin{example}[Multi-party synchronization]
-  We show an example of a derivation of three processes that synchronize.
+  We show an example of a derivation of three processes that synchronize with the late semantic. The three processes are $\underline{x(a)}.x(b).P$, $\overline{x}y.Q$ and $\overline{x}z.R$. We assume that:
+  \begin{center}
+      $a\notin fn(x(b))\cup fn (\underline{x(a)}.x(b).P)$
+  \end{center}
+  and
+  \begin{center}
+      $b\notin fn(\underline{x(a)}.x(b).P|\overline{x}y.Q)$
+  \end{center}
+
   \begin{center}
   $
       \inferrule* [left=\bf{LComSng}]{
-	\underline{x(a)}.x(b).P|\overline{x}y.Q)
+	\underline{x(a)}.x(b).P|\overline{x}y.Q
 	  \xrightarrow{x(b)}
 	    P\{y/a\}|Q
 	\\
@@ -606,7 +614,12 @@ In this case, a label can be a sequence of prefixes, whether in the original $\p
 	    P\{y/a\}|Q
   }$
   \end{center}
-  $a\notin fn(x(b))\cup fn (\underline{x(a)}.x(b).P)$
-  $b\notin fn(\underline{x(a)}.x(b).P|\overline{x}y.Q))$
+
 \end{example}
+
+
+\begin{example}[Transactional synchronization]
+  In this setting two process cannot synchronize on a sequence of actions with length greater than one.
+\end{example}
+
 

@@ -41,7 +41,7 @@ The semantic of a multi $\pi$ process is labeled transition system such that
 In this case, a label can be a sequence of prefixes, whether in the original $\pi$ calculus a label can be only a prefix. We use the symbol $\cdot$ to denote the concatenation operator.
 
 \begin{definition}\index{transition relation! multipi! output only! early! with structural congruence}
-  The \emph{early transition relation without structural congruence} is the smallest relation induced by the rules in table \ref{multipiearlywith}
+  The \emph{early transition relation without structural congruence} is the smallest relation induced by the rules in table \ref{multipiearlywith}. The relation $opn$ is defined in table \ref{opn}.
   \begin{table}
     \begin{tabular}{ll}
       \hline\\
@@ -123,9 +123,16 @@ In this case, a label can be a sequence of prefixes, whether in the original $\p
 	  }{
 	      (\nu z)P \xrightarrow{opn(\sigma,z)}\; P^{'}
 	  }$
-      \\\\
-	\multicolumn{2}{l}{where $opn$ is defined:}
-      \\\\
+      \\\\\hline
+    \end{tabular}
+    \caption{Multi $\pi$ early semantic with structural congruence}
+    \label{multipiearlywith}
+  \end{table}
+
+
+  \begin{table}
+    \begin{tabular}{lll}
+      \hline\\
 	  $\inferrule* {
 	      x\neq z
 	  }{
@@ -137,6 +144,11 @@ In this case, a label can be a sequence of prefixes, whether in the original $\p
 	  }{
 	      opn(\overline{x}z\cdot \sigma,z)=\overline{x}(z)\cdot opn(\sigma,z)
 	  }$
+	&
+	  $\inferrule* {
+	  }{
+	      opn(xy,z)=xy
+	  }$
       \\\\
 	  $\inferrule* {
 	  }{
@@ -147,18 +159,14 @@ In this case, a label can be a sequence of prefixes, whether in the original $\p
 	  }{
 	      opn(\overline{x}y\cdot \sigma,z)=\overline{x}y\cdot opn(\sigma,z)
 	  }$
-      \\\\
-	  $\inferrule* {
-	  }{
-	      opn(xy,z)=xy
-	  }$
 	&
-
-      \\\hline
+      \\\\\hline
     \end{tabular}
-    \caption{Multi $\pi$ early semantic with structural congruence}
-    \label{multipiearlywith}
+    \caption{relation $opn$}
+    \label{opn}
   \end{table}
+
+
 \end{definition}
 
 
@@ -218,76 +226,81 @@ $\inferrule* [left=\bf{EComSng}]{
 
 \end{example}
 
-
-\begin{example}
-  We want to prove that 
-  \[
-    (\underline{\overline{a}x}.c(x).0|b(x).0)|(a(x).0|\underline{\overline{b}x}.\overline{c}x.0)\;
-      \;\xrightarrow{\tau}\; 
-	(0|0)|(0|0)
-  \]
-
-
-
-  \begin{description}
-    \item[Str]
-      $(\underline{\overline{a}x}.c(x).0|b(x).0)|(a(x).0|\underline{\overline{b}x}.\overline{c}x.0)\;
-	\;\xrightarrow{\tau}\; 
-	  (0|0)|(0|0)$
-      \begin{description}
-	\item[EComSng] 
-	  $(\underline{\overline{a}x}.c(x).0|a(x).0)|(b(x).0|\underline{\overline{b}x}.\overline{c}x.0)\;
-	    \;\xrightarrow{\tau}\;
-	      (0|0)|(0|0)$
-	  \begin{description}
-	    \item[EComSeq]
-	      $b(x).0|\underline{\overline{b}x}.\overline{c}x.0\;
-		\;\xrightarrow{\overline{c}x}\;
-		  0|0$
-	      \begin{description}
-		\item[EInp]
-		  $b(x).0
-		    \;\xrightarrow{bx}\;
-		      0$
-		\item[SOut]
-		  $\underline{\overline{b}x}.\overline{c}x.0\;
-		    \;\xrightarrow{\overline{b}x\cdot \overline{c}x}\;
-		      0$
-		  \begin{description}
-		    \item[Out]
-		      $\overline{c}x.0\;
-			\;\xrightarrow{\overline{c}x}\;
-			  0$
-		  \end{description}
-	      \end{description}
-	    \item[EComSeq]
-	      $\underline{\overline{a}x}.c(x).0|a(x).0\;
-		\;\xrightarrow{cx}\;
-		  0|0$
-	      \begin{description}
-		\item[SOut]
-		  $\underline{\overline{a}x}.c(x).0\;
-		    \;\xrightarrow{\overline{a}x\cdot cx}\;
-		      0$
-		  \begin{description}
-		    \item[Inp]
-		      $c(x).0\;
-			\;\xrightarrow{cx}\;
-			  0$
-		  \end{description}
-		\item[Inp]
-		  $a(x).0\;
-		    \;\xrightarrow{ax}\;
-		      0$
-	      \end{description}
-	  \end{description}
-	\item[]
-	  $(\underline{\overline{a}x}.c(x).0|b(x).0)|(a(x).0|\underline{\overline{b}x}.\overline{c}x.0)\;
-	    \equiv\;
-	      (\underline{\overline{a}x}.c(x).0|a(x).0)|(b(x).0|\underline{\overline{b}x}.\overline{c}x.0)$
-      \end{description}
-  \end{description}
+\begin{example}[Transactional synchronization]
+  In this setting two process cannot synchronize on a sequence of actions with length greater than one. This is because of the rules $EComSng$ and $EComSeq$.
 \end{example}
+
+
+
+% \begin{example}
+%   We want to prove that 
+%   \[
+%     (\underline{\overline{a}x}.c(x).0|b(x).0)|(a(x).0|\underline{\overline{b}x}.\overline{c}x.0)\;
+%       \;\xrightarrow{\tau}\; 
+% 	(0|0)|(0|0)
+%   \]
+% 
+% 
+% 
+%   \begin{description}
+%     \item[Str]
+%       $(\underline{\overline{a}x}.c(x).0|b(x).0)|(a(x).0|\underline{\overline{b}x}.\overline{c}x.0)\;
+% 	\;\xrightarrow{\tau}\; 
+% 	  (0|0)|(0|0)$
+%       \begin{description}
+% 	\item[EComSng] 
+% 	  $(\underline{\overline{a}x}.c(x).0|a(x).0)|(b(x).0|\underline{\overline{b}x}.\overline{c}x.0)\;
+% 	    \;\xrightarrow{\tau}\;
+% 	      (0|0)|(0|0)$
+% 	  \begin{description}
+% 	    \item[EComSeq]
+% 	      $b(x).0|\underline{\overline{b}x}.\overline{c}x.0\;
+% 		\;\xrightarrow{\overline{c}x}\;
+% 		  0|0$
+% 	      \begin{description}
+% 		\item[EInp]
+% 		  $b(x).0
+% 		    \;\xrightarrow{bx}\;
+% 		      0$
+% 		\item[SOut]
+% 		  $\underline{\overline{b}x}.\overline{c}x.0\;
+% 		    \;\xrightarrow{\overline{b}x\cdot \overline{c}x}\;
+% 		      0$
+% 		  \begin{description}
+% 		    \item[Out]
+% 		      $\overline{c}x.0\;
+% 			\;\xrightarrow{\overline{c}x}\;
+% 			  0$
+% 		  \end{description}
+% 	      \end{description}
+% 	    \item[EComSeq]
+% 	      $\underline{\overline{a}x}.c(x).0|a(x).0\;
+% 		\;\xrightarrow{cx}\;
+% 		  0|0$
+% 	      \begin{description}
+% 		\item[SOut]
+% 		  $\underline{\overline{a}x}.c(x).0\;
+% 		    \;\xrightarrow{\overline{a}x\cdot cx}\;
+% 		      0$
+% 		  \begin{description}
+% 		    \item[Inp]
+% 		      $c(x).0\;
+% 			\;\xrightarrow{cx}\;
+% 			  0$
+% 		  \end{description}
+% 		\item[Inp]
+% 		  $a(x).0\;
+% 		    \;\xrightarrow{ax}\;
+% 		      0$
+% 	      \end{description}
+% 	  \end{description}
+% 	\item[]
+% 	  $(\underline{\overline{a}x}.c(x).0|b(x).0)|(a(x).0|\underline{\overline{b}x}.\overline{c}x.0)\;
+% 	    \equiv\;
+% 	      (\underline{\overline{a}x}.c(x).0|a(x).0)|(b(x).0|\underline{\overline{b}x}.\overline{c}x.0)$
+%       \end{description}
+%   \end{description}
+% \end{example}
 
 
 % \begin{example}
@@ -422,8 +435,6 @@ $\inferrule* [left=\bf{EComSng}]{
 % \end{example}
 
 
-\begin{example}[Transactional synchronization]
-  In this setting two process cannot synchronize on a sequence of actions with length greater then one.
 % \begin{center}
 % $\inferrule* [left=\bf{EComSeq}]{
 %       \underline{\overline{x}y}.\overline{x}y.0
@@ -476,7 +487,6 @@ $\inferrule* [left=\bf{EComSng}]{
 % }$
 % \end{center}
 
-\end{example}
 
 
 
@@ -539,7 +549,7 @@ $\inferrule* [left=\bf{EComSng}]{
 	      P\; \;\xrightarrow{\alpha}\; Q
 	  }$
       \\\\
-	  $\inferrule* [left=Res]{
+	  $\inferrule* [left=\bf{Res}]{
 	    P \;\xrightarrow{\sigma} P^{'}\;\; z\notin n(\alpha)
 	  }{
 	    (\nu) z P \;\xrightarrow{\sigma} (\nu) z P^{'}
@@ -561,3 +571,59 @@ $\inferrule* [left=\bf{EComSng}]{
   \end{table}
 \end{definition}
 
+\begin{example}[Multi-party synchronization]
+  We show an example of a derivation of three processes that synchronize in the late semantic.
+\begin{center}
+$\inferrule* [left=\bf{Res}]{
+    x\notin n(\tau)
+   \\
+    \inferrule* [left=\bf{LComSeq}]{
+	  \underline{\overline{x}y}.\overline{x}y.0|x(y).0
+	    \xrightarrow{\overline{x}y}
+	      0|0
+      \\
+	\inferrule* [left=\bf{Pref}]{
+	}{
+	  x(y).0	
+	    \xrightarrow{x(y)} 
+	      0
+	}
+    }{
+      ((\underline{\overline{x}y}.\overline{x}y.0|x(y).0)|x(y).0)
+	\xrightarrow{\tau}
+	  ((0|0)|0)
+    }
+  }{
+    (\nu x)((\underline{\overline{x}y}.\overline{x}y.0|x(y).0)|x(y).0)
+      \xrightarrow{\tau}
+	(\nu x)((0|0)|0)
+}$
+\end{center}
+
+\begin{center}
+$\inferrule* [left=\bf{LComSng}]{
+  \inferrule* [left=\bf{SOut}]{
+    \inferrule* [left=\bf{Pref}]{
+    }{
+      \overline{x}y.0
+	\xrightarrow{\overline{x}y}
+	  0
+    }
+  }{
+    \underline{\overline{x}y}.\overline{x}y.0
+      \xrightarrow{\overline{x}y\cdot \overline{x}y}
+	0
+  }
+  \\
+    \inferrule* [left=\bf{Pref}]{
+    }{
+      x(y).0\; \;\xrightarrow{x(y)}\; 0
+    }
+}{
+  \underline{\overline{x}y}.\overline{x}y.0|x(y).0
+    \xrightarrow{\overline{x}y}
+      0|0
+}$
+\end{center}
+
+\end{example}
