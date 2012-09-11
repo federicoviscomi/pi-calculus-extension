@@ -18,7 +18,7 @@ The process are defined by the following grammar:
 and they have the following intuitive meaning:
 \begin{description}
   \item[$0$] 
-    is the empty process, which cannot perform any actions
+    is the empty process which cannot perform any actions
   \item[$\pi.P$] 
     is an action prefixing, this process can perform action $\pi$ e then behave like $P$, the action can be:
     \begin{description}
@@ -35,16 +35,16 @@ and they have the following intuitive meaning:
   \item[$P|Q$] 
     is the parallel composition, $P$ and $Q$ can execute concurrently and also synchronize with each other
   \item[$(\nu z) P$] 
-    is the scope restriction. This process behave as $P$ but the name $z$ is local. This process cannot use the name $z$ to interact with other process but it can for communication within it.
+    is the scope restriction. This process behave as $P$ but the name $z$ is local. This process cannot use the name $z$ to interact with other processes.
   \item[$A(x_{1}, \cdots, x_{n})$] 
     is an identifier. Every identifier has a definition
     \begin{center}
       $A(x_{1}, \cdots, x_{n})=P$
     \end{center}
-    the $x_{i}$s must be pairwise disjoint. The intuition is that we can substitute for some of the $x_{i}$s in $P$ to get a $\pi$ calculus process. 
+    the $x_{i}$s must be pairwise different. The intuition is that we can substitute for some of the $x_{i}$s in $P$ to get a $\pi$ calculus process. 
 \end{description}
 
-To resolve ambiguity we can use parentheses and observe the conventions that prefixing and restriction bind more tightly than composition and prefixing binds more tightly than sum. 
+To resolve ambiguity we can use parenthesis and observe the conventions that prefixing and restriction bind more tightly than composition and prefixing binds more tightly than sum. 
 
 \begin{definition} \index{binder} \index{bind} \index{name occurrence! bound} \index{scope}
   We say that the input prefix $x(z).P$ \emph{binds} $z$ in $P$ or is a \emph{binder} for $z$ in $P$. We also say that $P$ is the \emph{scope} of the binder and that any occurrence of $z$ in $P$ are \emph{bound} by the binder. Also the restriction operator $(\nu z)P$ is a binder for $z$ in $P$. 
@@ -52,7 +52,7 @@ To resolve ambiguity we can use parentheses and observe the conventions that pre
 
 
 \begin{definition} \index{$bn$}
-  $bn(P)$ is the set of names that have a bound occurrence in $P$ and is defined as $B(P, \emptyset)$, where $B(P, I)$, with $I$ a set of process constants, is defined in table \ref{table:B}
+  $bn(P)$ is the set of names that have a bound occurrence in $P$ and is defined as $B(P, \emptyset)$, where $B(P, I)$, with $I$ a set of identifiers, is defined in table \ref{table:B}
 \end{definition}
 
   \begin{table}
@@ -929,7 +929,7 @@ We can make some clarification on the axioms of the structural congruence:
 % 	\begin{center}
 % 	  \begin{tabular}{ll}
 % 	    $fn(Q_{1}\{b/a\})=(fn(Q_{1})-\{a\})\cup \{b\}$ &inductive hypothesis\\
-% 	    $\Rightarrow fn(Q_{1}\{b/a\})\cup \{x,y\}=((fn(Q_{1})-\{a\})\cup \{b\})\cup \{x,y\}$ & $x, y, a, b$ pairwise disjoint\\
+% 	    $\Rightarrow fn(Q_{1}\{b/a\})\cup \{x,y\}=((fn(Q_{1})-\{a\})\cup \{b\})\cup \{x,y\}$ & $x, y, a, b$ pairwise different\\
 % 	    $\Rightarrow fn(\overline{x}y.(Q_{1}\{b/a\}))=((fn(Q_{1})-\{a\})\cup \{b\})\cup \{x,y\}$ &\\
 % 	  \end{tabular}
 % 	\end{center}
@@ -1017,30 +1017,60 @@ We can make some clarification on the axioms of the structural congruence:
 	  \end{tabular}
 	\end{center}
       \item[$AlpRes1$]:
-	\begin{center}
-	  \begin{tabular}{ll}
-	    &rule premise\\
-	    $P\equiv_{\alpha}Q\{x/y\}$&inductive hypothesis\\
-	    $\Rightarrow fn(P)=fn(Q\{x/y\})$&\\
-	    $\Rightarrow fn(P)-\{x\}=fn(Q\{x/y\})-\{x\}$&\\
-	    $\Rightarrow fn(P)-\{x\}=(fn(Q)-\{y\}\cup \{x\})-\{x\}$&\\
-	    $\Rightarrow fn(P)-\{x\}=fn(Q)-\{y\}$&definition of $fn$\\
-	    $\Rightarrow fn((\nu x)P)=fn((\nu y)Q)$&\\
-	  \end{tabular}
-	\end{center}
+	we consider two cases:
+	\begin{description}
+	  \item[$y\notin fn(Q)$]:
+	    \begin{center}
+	      \begin{tabular}{ll}
+		&rule premise\\
+		$P\equiv_{\alpha}Q\{x/y\}$&inductive hypothesis\\
+		$\Rightarrow fn(P)=fn(Q\{x/y\})$&$y\notin fn(Q)$ and def of substitution\\
+		$\Rightarrow fn(P)=fn(Q)$&$x\notin fn(Q)$\\
+		$\Rightarrow fn(P)=fn(Q)\; and\; x\notin fn(P)$&\\
+	      \end{tabular}
+	    \end{center}
+	    Since $x\notin fn(P)$ then $fn(P)=fn(P)-\{x\}$. Since $y\notin fn(Q)$ then $fn(Q)=fn(Q)-\{y\}$. From $fn(P)=fn(P)-\{x\}$, $fn(Q)=fn(Q)-\{y\}$, $fn(P)=fn(Q)$ and the definition of substitution it follows that $fn((\nu x)P)=fn((\nu y)Q)$
+	  \item[$y\in fn(Q)$]:
+	    \begin{center}
+	      \begin{tabular}{ll}
+		&rule premise\\
+		$P\equiv_{\alpha}Q\{x/y\}$&inductive hypothesis\\
+		$\Rightarrow fn(P)=fn(Q\{x/y\})$&\\
+		$\Rightarrow fn(P)-\{x\}=fn(Q\{x/y\})-\{x\}$&\\
+		$\Rightarrow fn(P)-\{x\}=(fn(Q)-\{y\}\cup \{x\})-\{x\}$&\\
+		$\Rightarrow fn(P)-\{x\}=fn(Q)-\{y\}$&definition of $fn$\\
+		$\Rightarrow fn((\nu x)P)=fn((\nu y)Q)$&\\
+	      \end{tabular}
+	    \end{center}
+	\end{description}
       \item[$AlpInp1$]:
-	\begin{center}
-	  \begin{tabular}{ll}
-	    &rule premise\\
-	    $P\equiv_{\alpha}Q\{x/y\}$&inductive hypothesis\\
-	    $\Rightarrow fn(P)=fn(Q\{x/y\})$&\\
-	    $\Rightarrow fn(P)-\{x\}=fn(Q\{x/y\})-\{x\}$&lemma \ref{freenamesandsubstitution}\\
-	    $\Rightarrow fn(P)-\{x\}=(fn(Q)-\{y\}\cup \{x\})-\{x\}$&\\
-	    $\Rightarrow fn(P)-\{x\}=fn(Q)-\{y\}$&\\
-	    $\Rightarrow (fn(P)-\{x\})\cup \{z\}=(fn(Q)-\{y\})\cup \{z\}$&definition of $fn$\\
-	    $\Rightarrow fn(z(x).P)=fn(z(y).Q)$&\\
-	  \end{tabular}
-	\end{center}
+	we consider two cases:
+	\begin{description}
+	  \item[$y\notin fn(Q)$]:
+	    \begin{center}
+	      \begin{tabular}{ll}
+		&rule premise\\
+		$P\equiv_{\alpha}Q\{x/y\}$&inductive hypothesis\\
+		$\Rightarrow fn(P)=fn(Q\{x/y\})$&$y\notin fn(Q)$ and def of substitution\\
+		$\Rightarrow fn(P)=fn(Q)$&$x\notin fn(Q)$\\
+		$\Rightarrow fn(P)=fn(Q)\; and\; x\notin fn(P)$&\\
+	      \end{tabular}
+	    \end{center}
+	    Since $x\notin fn(P)$ then $fn(P)=fn(P)-\{x\}$. Since $y\notin fn(Q)$ then $fn(Q)=fn(Q)-\{y\}$. From $fn(P)=fn(P)-\{x\}$, $fn(Q)=fn(Q)-\{y\}$ and $fn(P)=fn(Q)$ it follows that $fn(P)-\{x\}=fn(Q)-\{y\}$ and so $(fn(P)-\{x\})\cup \{z\}=(fn(Q)-\{y\})\cup \{z\}$ which gives $fn(z(x).P)=fn(z(y).Q)$.
+	  \item[$y\in fn(Q)$]:
+	    \begin{center}
+	      \begin{tabular}{ll}
+		&rule premise\\
+		$P\equiv_{\alpha}Q\{x/y\}$&inductive hypothesis\\
+		$\Rightarrow fn(P)=fn(Q\{x/y\})$&\\
+		$\Rightarrow fn(P)-\{x\}=fn(Q\{x/y\})-\{x\}$&lemma \ref{freenamesandsubstitution}\\
+		$\Rightarrow fn(P)-\{x\}=(fn(Q)-\{y\}\cup \{x\})-\{x\}$&\\
+		$\Rightarrow fn(P)-\{x\}=fn(Q)-\{y\}$&\\
+		$\Rightarrow (fn(P)-\{x\})\cup \{z\}=(fn(Q)-\{y\})\cup \{z\}$&definition of $fn$\\
+		$\Rightarrow fn(z(x).P)=fn(z(y).Q)$&\\
+	      \end{tabular}
+	    \end{center}
+	\end{description}
       \item[$AlpSum$]:
 	\begin{center}
 	  \begin{tabular}{ll}
@@ -1099,6 +1129,7 @@ We can make some clarification on the axioms of the structural congruence:
   \]
   with the same length.
   \begin{proof}:
+    If $a$ and $b$ are the same name then the substitution has no effect and the lemma holds. Otherwise:
     \begin{center}
       \begin{tabular}{ll}
 	&lemma hypothesis\\
@@ -1107,7 +1138,7 @@ We can make some clarification on the axioms of the structural congruence:
 	$\Rightarrow a\notin fn(P) \wedge a\notin fn(Q)$ or $a\in fn(P) \wedge a\in fn(Q)$&\\
       \end{tabular}
     \end{center}
-    In the former case $a$ is not a free name in $P$ and $Q$ so the substitutions have no effects and the lemma holds. In the latter case $a$ is a free names in both processes: the proof goes by induction on the length of the proof tree of $P\equiv_{\alpha}Q$ and then by cases on the last rule of the proof tree.
+    In the former case $a$ is not a free name in $P$ and $Q$ so the substitutions have no effects and the lemma holds. In the latter case $a$ is a free names in both processes: the proof goes by induction on the length of the proof tree of $P\equiv_{\alpha}Q$ and then by cases on the last rule of the proof tree. 
     \begin{description}
       \item[$base\; case$]
     \end{description}
@@ -1152,7 +1183,7 @@ We can make some clarification on the axioms of the structural congruence:
 	      \end{tabular}
 	    \end{center}
 	  \item[$AlpInp$]
-	    where $y$ $a$ and $b$ are pairwise disjoint. 
+	    where $y$ $a$ and $b$ are pairwise different. 
 	    \begin{center}
 	      \begin{tabular}{ll}
 		&rule premise\\
@@ -1182,7 +1213,7 @@ We can make some clarification on the axioms of the structural congruence:
 	      \end{tabular}
 	    \end{center}	    	    
 	  \item[$AlpInp1$]:
-	    Let $x,y,z,a$ and $b$ be pairwise disjoint, then we have various cases:
+	    Let $x,y,z,a$ and $b$ be pairwise different, then we have various cases:
 	    \begin{itemize}
 	      \item 
 		the last part of the proof tree of $P\equiv_{\alpha}Q$ is
@@ -1316,7 +1347,7 @@ We can make some clarification on the axioms of the structural congruence:
 	    \end{center}	    	    
 
 	  \item[$AlpRes$]:
-	    where $x, a$ and $b$ are pairwise disjoint. 
+	    where $x, a$ and $b$ are pairwise different. 
 	    \begin{center}
 	      \begin{tabular}{ll}
 		&rule premise\\
@@ -1337,7 +1368,7 @@ We can make some clarification on the axioms of the structural congruence:
 	      \end{tabular}
 	    \end{center}	    	    
 	  \item[$AlpRes1$]:
-	    Since $a$ is in the free names of both $P$ and $Q$ then $a$ cannot be in the restriction at the top level of $P$ or $Q$. So let $x,y,b$ and $a$ be pairwise disjoint. We have three different cases:
+	    Since $a$ is in the free names of both $P$ and $Q$ then $a$ cannot be in the restriction at the top level of $P$ or $Q$. So let $x,y,b$ and $a$ be pairwise different. We have three different cases:
 
 	    \begin{description}
 	      \item[$1$]
