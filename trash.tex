@@ -1,3 +1,232 @@
+  \begin{proof}
+    ALTERNATIVA
+    If $a$ and $b$ are the same name then the substitution has no effect and the lemma holds. Otherwise:
+    \begin{center}
+      \begin{tabular}{ll}
+	&lemma hypothesis\\
+	$P \equiv_{\alpha} Q$&lemma \ref{alphaequivalentsamefreenames}\\
+	$\Rightarrow fn(P) = fn(Q)$&\\
+	$\Rightarrow a\notin fn(P) \wedge a\notin fn(Q)$ or $a\in fn(P) \wedge a\in fn(Q)$&\\
+      \end{tabular}
+    \end{center}
+    In the former case $a$ is not a free name in $P$ and $Q$ so the substitutions have no effects and the lemma holds. So suppose we are in the latter case where $a$ is a free names in both processes.
+    The proof is by structural induction on $P$:
+    \begin{description}
+      \item[$0$]
+	for the inversion lemma then also $Q$ is $0$ and hence the lemma holds
+      \item[$A(\tilde{x})$]
+	for the inversion lemma then also $Q$ is $A(\tilde{x})$ and hence the lemma holds
+      \item[$\tau.P_{1}$]:
+	\begin{center}
+	  \begin{tabular}{ll}
+	      &
+		inversion lemma 
+	    \\
+		$Q=\tau.Q_{1}$ and $P_{1}\equiv_{\alpha} Q_{1}$
+	      &
+		inductive hypothesis
+	    \\
+		$P_{1}\{b/a\}\equiv_{\alpha} Q_{1}\{b/a\}$
+	      &
+		rule $AlpTau$
+	    \\
+		$\tau.(P_{1}\{b/a\})\equiv_{\alpha} \tau.(Q_{1}\{b/a\})$
+	      &
+		definition of substitution
+	    \\
+		$(\tau.P_{1})\{b/a\}\equiv_{\alpha} (\tau.Q_{1})\{b/a\}$
+	      &
+	    \\
+	  \end{tabular}
+	\end{center}
+      \item[$\overline{x}y.P_{1}$]:
+	\begin{center}
+	  \begin{tabular}{ll}
+	      &
+		inversion lemma 
+	    \\
+		$Q=\overline{x}y.Q_{1}$ and $P_{1}\equiv_{\alpha} Q_{1}$
+	      &
+		inductive hypothesis
+	    \\
+		$P_{1}\{b/a\}\equiv_{\alpha} Q_{1}\{b/a\}$
+	      &
+		rule $AlpOut$
+	    \\
+		$\overline{x}\{b/a\}y\{b/a\}.(P_{1}\{b/a\})\equiv_{\alpha} \overline{x}\{b/a\}y\{b/a\}.(Q_{1}\{b/a\})$
+	      &
+		definition of substitution
+	    \\
+		$(\overline{x}y.P_{1})\{b/a\}\equiv_{\alpha} (\overline{x}y.Q_{1})\{b/a\}$
+	      &
+	    \\
+	  \end{tabular}
+	\end{center}
+      \item[$x(y).P_{1}$]:
+      \item[$a(y).P_{1}$]:
+      \item[$b(y).P_{1}$]:
+      \item[$x(b).P_{1}$]:
+      \item[$a(b).P_{1}$]:
+      \item[$b(b).P_{1}$]:
+      \item[$P_{1}+P_{2}$]:
+	\begin{center}
+	  \begin{tabular}{ll}
+	      &
+		inversion lemma 
+	    \\
+		$Q=Q_{1}+Q_{2}$ and $P_{1}\equiv_{\alpha} Q_{1}$ and $P_{2}\equiv_{\alpha} Q_{2}$
+	      &
+		inductive hypothesis
+	    \\
+		$P_{1}\{b/a\}\equiv_{\alpha} Q_{1}\{b/a\}$ and $P_{2}\{b/a\}\equiv_{\alpha} Q_{2}\{b/a\}$
+	      &
+		rule $AlpSum$
+	    \\
+		$P_{1}\{b/a\} + P_{2}\{b/a\}\equiv_{\alpha} Q_{1}\{b/a\} + Q_{2}\{b/a\}$
+	      &
+		definition of substitution
+	    \\
+		$(P_{1} + P_{2})\{b/a\}\equiv_{\alpha} (Q_{1} + Q_{2})\{b/a\}$
+	      &
+	    \\
+	  \end{tabular}
+	\end{center}	
+      \item[$P_{1}|P_{2}$]:
+	this case is similar to the previous one.
+      \item[$(\nu x)P_{1}$]:
+	for the inversion lemma we have two cases:
+	\begin{itemize}
+	  \item:
+	    \begin{center}
+	      \begin{tabular}{ll}
+		  &
+		    inversion lemma 
+		\\
+		    $Q=(\nu x) Q_{1}$ and $P_{1}\equiv_{\alpha}Q_{1}$ 
+		  &
+		    inductive hypothesis
+		\\
+		    $P_{1}\{b/a\}\equiv_{\alpha} Q_{1}\{b/a\}$
+		  &
+		    rule $AlpRes$
+		\\
+		    $(\nu x)(P_{1}\{b/a\})\equiv_{\alpha} (\nu x)(Q_{1}\{b/a\})$
+		  &
+		    definition of substitution
+		\\
+		    $((\nu x)P_{1})\{b/a\}\equiv_{\alpha} ((\nu x)Q_{1})\{b/a\}$
+		  &
+		\\
+	      \end{tabular}
+	    \end{center}	
+	  \item:
+	    \begin{center}
+	      \begin{tabular}{ll}
+		  &
+		    inversion lemma 
+		\\
+		    $Q=(\nu y) Q_{1}$ and $P_{1}\equiv_{\alpha}Q_{1}\{x/y\}$ 
+		  &
+		    inductive hypothesis
+		\\
+		    $P_{1}\{b/a\}\equiv_{\alpha} Q_{1}\{x/y\}\{b/a\}$
+		  &
+		    lemma \ref{alphaequivalencecommutativity}
+		\\
+		    $P_{1}\{b/a\}\equiv_{\alpha} Q_{1}\{b/a\}\{x/y\}$
+		  &
+		    rule $AlpRes$
+		\\
+		    $(\nu x)(P_{1}\{b/a\})\equiv_{\alpha} (\nu y)(Q_{1}\{b/a\})$
+		  &
+		    definition of substitution
+		\\
+		    $((\nu x)P_{1})\{b/a\}\equiv_{\alpha} ((\nu x)Q_{1})\{b/a\}$
+		  &
+		\\
+	      \end{tabular}
+	    \end{center}	
+	\end{itemize}
+      \item[$(\nu b)P_{1}$]:
+	for the inversion lemma we have two cases:
+	\begin{itemize}
+	  \item:
+	    \begin{center}
+	      \begin{tabular}{ll}
+		  &
+		    inversion lemma 
+		\\
+		    $Q=(\nu b) Q_{1}$ and $P_{1}\equiv_{\alpha}Q_{1}$ 
+		  &
+		    inductive hypothesis
+		\\
+		    $P_{1}\{b/a\}\equiv_{\alpha} Q_{1}\{b/a\}$
+		  &
+		    rule $AlpRes$
+		\\
+		    $(\nu x)(P_{1}\{b/a\})\equiv_{\alpha} (\nu x)(Q_{1}\{b/a\})$
+		  &
+		    definition of substitution
+		\\
+		    $(\nu b)(P_{1}\{\}\{b/a\})\equiv_{\alpha} (\nu x)(Q_{1}\{b/a\})$
+		  &
+		    definition of substitution
+		\\
+		    $((\nu b)P_{1})\{b/a\}\equiv_{\alpha} ((\nu b)Q_{1})\{b/a\}$
+		  &
+		\\
+	      \end{tabular}
+	    \end{center}	
+	  \item:
+	    \begin{center}
+	      \begin{tabular}{ll}
+		  &
+		    inversion lemma 
+		\\
+		    $Q=(\nu y) Q_{1}$ and $P_{1}\equiv_{\alpha}Q_{1}\{x/y\}$ 
+		  &
+		    inductive hypothesis
+		\\
+		    $P_{1}\{b/a\}\equiv_{\alpha} Q_{1}\{x/y\}\{b/a\}$
+		  &
+		    lemma \ref{alphaequivalencecommutativity}
+		\\
+		    $P_{1}\{b/a\}\equiv_{\alpha} Q_{1}\{b/a\}\{x/y\}$
+		  &
+		    rule $AlpRes$
+		\\
+		    $(\nu x)(P_{1}\{b/a\})\equiv_{\alpha} (\nu y)(Q_{1}\{b/a\})$
+		  &
+		    definition of substitution
+		\\
+		    $((\nu x)P_{1})\{b/a\}\equiv_{\alpha} ((\nu x)Q_{1})\{b/a\}$
+		  &
+		\\
+	      \end{tabular}
+	    \end{center}	
+	\end{itemize}
+    \end{description}
+  \end{proof}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 	\begin{description}
 	  \item[base case] 
 	    if the length of the derivation is one, then the last and only rule used in the derivation have to be one of $Out,\; EInp,\; Tau$. This rules are also contained in $R_{1}$
