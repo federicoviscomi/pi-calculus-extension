@@ -1,7 +1,7 @@
 
 \section{Syntax}
 
-As we did whit multi $\pi$ calculus, we suppose that we have a countable set of names $\mathbb{N}$, ranged over by lower case letters $a,b, \cdots, z$. This names are used for communication channels and values. Furthermore we have a set of identifiers, ranged over by $A$. We represent the agents or processes by upper case letters $P,Q, \cdots $. A multi $\pi$ process, in addiction to the same actions of a $\pi$ process, can perform also a strong prefix input:
+As we did whit $\pi$ calculus, we suppose that we have a countable set of names $\mathbb{N}$, ranged over by lower case letters $a,b, \cdots, z$. This names are used for communication channels and values. Furthermore we have a set of identifiers, ranged over by $A$. We represent the agents or processes by upper case letters $P,Q, \cdots $. A multi $\pi$ process, in addiction to the same actions of a $\pi$ process, can perform also a strong prefix input:
 \begin{center}
   $\pi$ ::= $\overline{x}y$ | $x(z)$ | $\underline{x(y)}$ | $\tau$ 
 \end{center}
@@ -107,7 +107,7 @@ In this case, a label can be a sequence of prefixes, whether in the original $\p
 	    \\
 	      z\notin n(\alpha)
 	  }{
-	    (\nu) z P \;\xrightarrow{\sigma} (\nu) z P^{'}
+	    (\nu z) P \;\xrightarrow{\sigma} (\nu z) P^{'}
 	  }$
 	&
 	  $\inferrule* [left=\bf{SInpTau}]{
@@ -534,7 +534,7 @@ In this case, a label can be a sequence of prefixes, whether in the original $\p
 	    \\
 	      z\notin n(\alpha)
 	  }{
-	    (\nu) z P \;\xrightarrow{\sigma} (\nu) z P^{'}
+	    (\nu z) P \;\xrightarrow{\sigma} (\nu z) P^{'}
 	  }$
 	&
 	  $\inferrule* [left=\bf{Par}]{
@@ -621,5 +621,141 @@ In this case, a label can be a sequence of prefixes, whether in the original $\p
 \begin{example}[Transactional synchronization]
   In this setting two process cannot synchronize on a sequence of actions with length greater than one.
 \end{example}
+
+
+\subsection{low level semantic}
+This section contains the definition of an alternative semantic for multi $\pi$. First we define a low level version of the multi $\pi$ calculus(here with strong prefixing on input only), we call this language low multi $\pi$. The low multi $\pi$ is the multi $\pi$ enriched with a marked or intermediate process $*P$:
+\begin{center}
+   \begin{tabular}{l}
+     $P,Q$ ::= $0$ | $\pi.P$ | $P|Q$ | $P+Q$ | $(\nu x) P$ | $A(x_{1}, \cdots, x_{n})$ | $*P$
+   \\\\
+     $\pi$ ::= $\overline{x}y$ | $x(z)$ | $\underline{x(y)}$ | $\tau$ 
+   \end{tabular}
+\end{center}
+\begin{definition}
+  The low level transition relation is the smallest relation induced by the rules in table \ref{lowleveltransitionrelation} in which $P$ stands for a process without mark, $L$ stands for a process with mark and $S$ can stand for both. 
+  \begin{table}
+    \begin{tabular}{ll}
+	  \hline\\
+	  $\inferrule* [left=\bf{Out}]{
+	  }{
+	    \overline{x}y.P \stackrel{\overline{x}y}{\longmapsto} P
+	  }$
+	&
+	  $\inferrule* [left=\bf{EInp}]{
+	    y\notin fn(P)-\{z\}
+	  }{
+	    x(z).P \stackrel{xy}{\longmapsto} P\{y/z\}
+	  }$
+      \\\\
+	  $\inferrule* [left=\bf{Tau}]{
+	  }{
+	    \tau.P \stackrel{\tau}{\longmapsto} P
+	  }$
+	&
+	  $\inferrule* [left=\bf{SInp}]{
+ 	      y\notin fn(P)-\{z\}
+	  }{
+	    \underline{x(z)}.P \stackrel{xy}{\longmapsto} * P\{y/z\}
+	  }$
+      \\\\
+	  $\inferrule* [left=\bf{Sum}]{
+	    P \stackrel{\gamma}{\longmapsto} S
+	  }{
+	    P+Q \stackrel{\gamma}{\longmapsto} S
+	  }$
+	&
+	  $\inferrule* [left=\bf{Str}]{
+	      P\equiv P^{'}
+	    \\
+	      P^{'} \stackrel{\gamma}{\longmapsto} Q^{'}
+	  }{
+	      P \stackrel{\gamma}{\longmapsto} Q
+	  }$
+      \\\\
+	  $\inferrule* [left=\bf{Com1}]{
+	      P \stackrel{\overline{x}y}{\longmapsto} P^{'}
+	    \\
+	      Q \stackrel{xy}{\longmapsto} Q^{'}
+	  }{
+	    P|Q \stackrel{\tau}{\longmapsto} P^{'}|Q^{'}
+	  }$
+	&
+	  $\inferrule* [left=\bf{Com2}]{
+	      L_{1} \stackrel{\overline{x}y}{\longmapsto} L_{1}^{'}
+	    \\
+	      L_{2} \stackrel{xy}{\longmapsto} L_{2}^{'}
+	  }{
+	    L_{1}|L_{2} \stackrel{\epsilon}{\longmapsto} L_{1}^{'}|L_{2}^{'}
+	  }$
+      \\\\
+	  $\inferrule* [left=\bf{Com3}]{
+	      P \stackrel{\overline{x}y}{\longmapsto} L
+	    \\
+	      Q \stackrel{xy}{\longmapsto} S
+	  }{
+	    P|Q \stackrel{\epsilon}{\longmapsto} L|S
+	  }$
+	&
+	  $\inferrule* [left=\bf{Com4}]{
+	      L_{1} \stackrel{\overline{x}y}{\longmapsto} P
+	    \\
+	      L_{2} \stackrel{xy}{\longmapsto} Q
+	  }{
+	    L_{1}|L_{2} \stackrel{\tau}{\longmapsto} P|Q
+	  }$
+      \\\\
+	  $\inferrule* [left=\bf{Res}]{
+	      S \stackrel{\gamma}{\longmapsto} S^{'}
+	    \\
+	      y\notin n(\gamma)
+	  }{
+	    (\nu y) S \stackrel{\gamma}{\longmapsto} (\nu y) S^{'}
+	  }$
+	&
+	  $\inferrule* [left=\bf{Opn}]{
+	      S \stackrel{\overline{x}y}{\longmapsto} S^{'}
+	    \\ 
+	      y\neq x
+	    \\
+	      w\notin fn(S^{'})
+	  }{
+	      (\nu y)S \stackrel{\overline{x}(w)}{\longmapsto} S^{'}\{w/y\}
+	  }$
+      \\\\
+	  $\inferrule* [left=\bf{Par1}]{
+	      S \stackrel{\gamma}{\longmapsto} S^{'}
+	    \\ 
+	      bn(\gamma)\cap fn(Q)=\emptyset
+	  }{
+	      S|Q \stackrel{\gamma}{\longmapsto} S^{'}|Q
+	  }$
+	&
+	  $\inferrule* [left=\bf{Par2}]{
+	     P \stackrel{\gamma}{\longmapsto} L
+	    \\ 
+	      bn(\gamma)\cap fn(Q)=\emptyset
+	  }{
+	      P|Q \stackrel{\gamma}{\longmapsto} L|*Q
+	  }$
+      \\\\
+	  $\inferrule* [left=\bf{Par3}]{
+	      S \stackrel{\gamma}{\longmapsto} S^{'}
+	    \\ 
+	      bn(\gamma)\cap fn(Q)=\emptyset
+	  }{
+	      S|Q \stackrel{\gamma}{\longmapsto} S^{'}|Q
+	  }$
+	&
+      \\\\\hline
+    \end{tabular}
+    \caption{Low multi $\pi$ ?early? semantic ?with structural congruence?}
+    \label{lowleveltransitionrelation}
+  \end{table}
+\end{definition}
+
+  
+
+
 
 

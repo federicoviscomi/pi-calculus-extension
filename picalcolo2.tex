@@ -749,6 +749,15 @@ Structural congruences are a set of equations defining equality and congruence r
 	  }{
 	    0\equiv_{\alpha}0
 	  }$
+    \\\\
+	  $\inferrule*[left=AlpSub]{
+	      P\equiv_{\alpha}Q
+	    \\
+	      x<y
+	  }{
+	    P\{x/y\}\equiv_{\alpha}Q\{x/y\}
+	  }$
+	&
       \\\\\hline
     \end{tabular}
     \caption{$\alpha$ equivalence laws}
@@ -758,7 +767,15 @@ Structural congruences are a set of equations defining equality and congruence r
 
 
 It remains the problem of proving that $\alpha$ equivalence is well defined, i.e. if we change only some bound names in a process $P$ then we get a process $\alpha$ equivalent to $P$. 
-% We assume that there is a well order relation $\leq$ between the names. The condition $a\leq b$ in rule $AlpSubst$ ensure that we can apply this rule only a finite amount of times thus any proof tree of $\alpha$ equivalence is finite. 
+We assume that there is a well order relation $\leq$ between the names. The condition $x<y$ in rule $AlpSub$ ensure that we can apply this rule only a finite amount of times thus any proof tree of $\alpha$ equivalence is finite. 
+
+\begin{lemma}
+  If $P\equiv_{\alpha}Q$ then there exists a proof of $P\equiv_{\alpha}Q$ such that $AlpSub$ is not the last rule used.
+  \begin{proof}
+    Suppose we have a proof of $P\equiv_{\alpha}Q$, if the last rule used is $AlpSub$ then 
+  \end{proof}
+\end{lemma}
+
 
 
 \begin{lemma}
@@ -1477,9 +1494,7 @@ In the proof of equivalence of the semantics in the next section we need the fol
 
 
 \begin{lemma}
-  $P\{x/y\}\equiv_{\alpha}Q$ if and only if $P\equiv_{\alpha}Q\{y/x\}$. 
-
-  NON FUNZIONA LA DIMOSTRAZIONE! staro' forse esagerando?
+  $P\{x/y\}\equiv_{\alpha}Q$ if and only if $P\equiv_{\alpha}Q\{y/x\}$. NON FUNZIONA LA DIMOSTRAZIONE! staro' forse esagerando?
   \begin{proof}
     The proof is an induction on the length of the proof tree of $P\{x/y\}\equiv_{\alpha}Q$ and then by cases on the last rule:
     \begin{description}
@@ -2949,7 +2964,7 @@ which is not want we want. So we prove a weaker version
 	      \item 
 		the last rule used can be one in $R_{2}\cap R_{3}=\{Res, Opn\}$, this goes like in the previous proof for the opposite direction with the transition numbers swapped.
 	      \item
-		the last rule used can be one of $Par$, $Sum$ or $ECom$, in this case we apply the inductive hypothesis to the premises and the apply the appropriate rule: $ParL$, $SumL$ or $EComL$. For example
+		the last rule used can be one in $\{Par, Sum, ECom\}$, in this case we apply the inductive hypothesis to the premises and the apply the appropriate rule in $\{ParL, SumL, EComL\}$. For example
 		\[
 		  \inferrule* [left=Par]{
 		      P\xrightarrow{\alpha}_{3}P^{'}
