@@ -83,11 +83,9 @@ In this case, a label can be a sequence of prefixes, whether in the original $\p
 	  $\inferrule* [left=\bf{Str}]{
 	      P\equiv P^{'}
 	    \\
-	      P^{'}\; \xrightarrow{\alpha}\; Q^{'}
-	    \\
-	      Q\equiv Q^{'}
+	      P^{'} \xrightarrow{\alpha} Q
 	  }{
-	      P\; \xrightarrow{\alpha}\; Q
+	      P \xrightarrow{\alpha} Q
 	  }$
       \\\\
 	  $\inferrule* [left=\bf{Com}]{
@@ -109,7 +107,7 @@ In this case, a label can be a sequence of prefixes, whether in the original $\p
 	  $\inferrule* [left=\bf{Res}]{
 	      P\; \xrightarrow{\sigma}\; P^{'}
 	    \\
-	      z\notin n(\alpha)
+	      z\notin n(\sigma)
 	  }{
 	    (\nu z) P \;\xrightarrow{\sigma} (\nu z) P^{'}
 	  }$
@@ -643,9 +641,8 @@ This section contains the definition of an alternative semantic for multi $\pi$.
 	  }$
 	&
 	  $\inferrule* [left=\bf{EInp}]{
-	    y\notin fn(P)-\{z\}
 	  }{
-	    x(z).P \stackrel{xy}{\longmapsto} P\{y/z\}
+	    x(y).P \stackrel{xz}{\longmapsto} P\{z/y\}
 	  }$
       \\\\
 	  $\inferrule* [left=\bf{Tau}]{
@@ -653,8 +650,8 @@ This section contains the definition of an alternative semantic for multi $\pi$.
 	    \tau.P \stackrel{\tau}{\longmapsto} P
 	  }$
 	&
-	  $\inferrule* [left=\bf{SInp}]{
- 	      y\notin fn(P)-\{z\}
+	  $\inferrule* [left=\bf{SInpLow}]{
+%	      y\notin fn(P)-\{z\}
 	  }{
 	    \underline{x(z)}.P \stackrel{xy}{\longmapsto} * P\{y/z\}
 	  }$
@@ -665,12 +662,10 @@ This section contains the definition of an alternative semantic for multi $\pi$.
 	    P+Q \stackrel{\gamma}{\longmapsto} S
 	  }$
 	&
-	  $\inferrule* [left=\bf{Str}]{
-	      P\equiv P^{'}
-	    \\
-	      P^{'} \stackrel{\gamma}{\longmapsto} Q^{'}
+	  $\inferrule* [left=\bf{Star}]{
+	      S \stackrel{\gamma}{\longmapsto} S^{'}
 	  }{
-	      P \stackrel{\gamma}{\longmapsto} Q
+	      *S \stackrel{\gamma}{\longmapsto} S^{'}
 	  }$
       \\\\
 	  $\inferrule* [left=\bf{Com1}]{
@@ -770,13 +765,6 @@ This section contains the definition of an alternative semantic for multi $\pi$.
 	  }{
 	      L \stackrel{\gamma}{\longmapsto} P
 	  }$
-      \\\\
-	  $\inferrule* [left=\bf{Star}]{
-	      S \stackrel{\gamma}{\longmapsto} S^{'}
-	  }{
-	      *S \stackrel{\gamma}{\longmapsto} S^{'}
-	  }$
-	&
       \\\\\hline
     \end{tabular}
     \caption{Low multi $\pi$ early semantic with structural congruence}
@@ -785,7 +773,7 @@ This section contains the definition of an alternative semantic for multi $\pi$.
 \end{definition}
 
   
-\begin{definition}
+\begin{definition}\ref{low}
   Let $P, Q$ be unmarked processes and $L_{1}, \cdots, L_{k-1}$ marked processes. We define the derivation relation $\rightarrow_{s}$ in the following way:
   \begin{center}
     $\inferrule* [left=\bf{Low}]{
@@ -808,9 +796,93 @@ This section contains the definition of an alternative semantic for multi $\pi$.
     The proof of $\Rightarrow$ direction is by induction on the depth of the derivation tree of $P\xrightarrow{\sigma} Q$:
     \begin{description}
       \item[base case]
-	
+	If the depth is one then the rule used have to be one of: $EInp$, $Out$, $Tau$. This rule are also in table \ref{lowleveltransitionrelation} so we can derive $P \stackrel{\sigma}{\longmapsto} Q$ and then apply $Low$ to get the result $P\xrightarrow{\sigma}_{s} Q$.
       \item[inductive case]
-	
+	If the depth is greater than one then the last rule used in the derivation can be:
+	\begin{description}
+	  \item[$SInp$]: 
+	    the last part of the derivation tree looks like this:
+	    \begin{center}
+	      $\inferrule* [left=\bf{SInp}]{
+		  P_{1}\{y/z\} \xrightarrow{\sigma} Q
+		\\
+		  \sigma\neq \tau
+%		\\
+%	  	  y\notin fn((\nu z) P)
+	      }{
+		\underline{x(z)}.P_{1} \xrightarrow{xy \cdot \sigma} Q
+	      }$	      
+	    \end{center}
+	    for inductive hypothesis $P_{1}\{y/z\} \xrightarrow{\sigma}_{s} Q$ which implies that there exist $L_{1}, \cdots, L_{k}$ and $\gamma_{1}, \cdots, \gamma_{k+1}$ with $k\geq 0$ such that 
+	    \begin{center}
+	      $P_{1}\{y/z\} \stackrel{\gamma_{1}}{\longmapsto} L_{1}  \stackrel{\gamma_{2}}{\longmapsto} L_{2} \cdots L_{k-1} \stackrel{\gamma_{k}}{\longmapsto} L_{k} \stackrel{\gamma_{k+1}}{\longmapsto} Q$ 
+	    \end{center}
+	    and 
+	    \begin{center}
+	      $\gamma_{1} \cdot \cdots \cdot \gamma_{k+1} = \sigma$
+	    \end{center}
+	    since
+	    \begin{center}
+	      \begin{tabular}{ll}
+		$\inferrule* [left=\bf{SInpLow}]{
+ 		}{
+ 		  \underline{x(z)}.P_{1} \stackrel{xy}{\longmapsto} *P_{1}\{y/z\}
+ 		}$
+	      &
+		$\inferrule* [left=\bf{Star}]{
+ 		  P_{1}\{y/z\} \stackrel{\gamma_{1}}{\longmapsto} L_{1}
+ 		}{
+ 		  *P_{1}\{y/z\} \stackrel{\gamma_{1}}{\longmapsto} L_{1}
+ 		}$
+	      \end{tabular}
+	    \end{center}
+	    then a proof of $P\xrightarrow{\sigma}_{s} Q$ is:
+	    \begin{center}
+	      $\inferrule* [left=\bf{Low}]{
+		    \underline{x(z)}.P_{1} \stackrel{xy}{\longmapsto} *P_{1}\{y/z\} \stackrel{\gamma_{1}}{\longmapsto} L_{1}  \stackrel{\gamma_{2}}{\longmapsto} L_{2} \cdots L_{k-1} \stackrel{\gamma_{k}}{\longmapsto} L_{k} \stackrel{\gamma_{k+1}}{\longmapsto} Q
+	      }{
+		\underline{x(z)}.P_{1} \xrightarrow{xy \cdot \sigma}_{s} Q
+	      }$
+	    \end{center}
+	\end{description}
+      \item[$Sum$]: 
+	the last part of the derivation tree looks like this:
+	\begin{center}
+	  $\inferrule* [left=\bf{Sum}]{
+	    P_{1} \xrightarrow{\sigma} Q
+	  }{
+	    P_{1}+P_{2} \xrightarrow{\sigma} Q
+	  }$
+	\end{center}
+	for the inductive hypothesis $P_{1} \xrightarrow{\sigma}_{s} Q$ which implies that there exist $L_{1}, \cdots, L_{k}$ and $\gamma_{1}, \cdots, \gamma_{k+1}$ with $k\geq 0$ such that 
+	\begin{center}
+	  $P_{1} \stackrel{\gamma_{1}}{\longmapsto} L_{1}  \stackrel{\gamma_{2}}{\longmapsto} L_{2} \cdots L_{k-1} \stackrel{\gamma_{k}}{\longmapsto} L_{k} \stackrel{\gamma_{k+1}}{\longmapsto} Q$ 
+	\end{center}
+	and 
+	\begin{center}
+	  $\gamma_{1} \cdot \cdots \cdot \gamma_{k+1} = \sigma$
+	\end{center}
+	A proof of the conclusion is:
+	\begin{center}
+	  $\inferrule* [left=\bf{Low}]{
+	    \inferrule* [left=\bf{Sum}]{
+	      P_{1} \stackrel{\gamma_{1}}{\longmapsto} L_{1}
+	    }{
+	      P_{1}+P_{2} \stackrel{\gamma_{1}}{\longmapsto} L_{1}
+	    }
+	    \\
+	      L_{1}  \stackrel{\gamma_{2}}{\longmapsto} L_{2} \cdots L_{k-1} \stackrel{\gamma_{k}}{\longmapsto} L_{k} \stackrel{\gamma_{k+1}}{\longmapsto} Q
+	  }{
+	    P+R \xrightarrow{\sigma}_{s} Q
+	  }$
+	\end{center}
+      \item[$Str$]: this case is similar to the previous.
+      \item[$Com$]: 
+      \item[$Res$]: 
+      \item[$Par$]: 
+      \item[$ComSeq$]:
+      \item[$SInpTau$]:
+      \item[$Opn$]:
     \end{description}
 
     
