@@ -24,6 +24,10 @@ We have to extend the following definition to deal with the strong prefix:
   \end{tabular}
 \end{center}
 
+
+In this setting two process cannot synchronize on a sequence of actions with length greater than one so we cannot have transactional synchronization but we can have multi-party synchronization.
+
+
 \section{Operational semantic}
 
 \subsection{Early operational semantic with structural congruence}
@@ -618,12 +622,8 @@ In this case, a label can be a sequence of prefixes, whether in the original $\p
 \end{example}
 
 
-\begin{example}[Transactional synchronization]
-  In this setting two process cannot synchronize on a sequence of actions with length greater than one.
-\end{example}
 
-
-\subsection{low level semantic}
+\subsection{Low level semantic}
 This section contains the definition of an alternative semantic for multi $\pi$. First we define a low level version of the multi $\pi$ calculus(here with strong prefixing on input only), we call this language low multi $\pi$. The low multi $\pi$ is the multi $\pi$ enriched with a marked or intermediate process $*P$:
 \begin{center}
    \begin{tabular}{l}
@@ -684,9 +684,9 @@ This section contains the definition of an alternative semantic for multi $\pi$.
 	  $\inferrule* [left=\bf{Com2}]{
 	      L_{1} \stackrel{\overline{x}y}{\longmapsto} L_{1}^{'}
 	    \\
-	      L_{2} \stackrel{xy}{\longmapsto} L_{2}^{'}
+	      L_{2} \stackrel{xy}{\longmapsto} S^{'}
 	  }{
-	    L_{1}|L_{2} \stackrel{\epsilon}{\longmapsto} L_{1}^{'}|L_{2}^{'}
+	    L_{1}|L_{2} \stackrel{\epsilon}{\longmapsto} L_{1}^{'}|S^{'}
 	  }$
       \\\\
 	  $\inferrule* [left=\bf{Com3}]{
@@ -740,21 +740,84 @@ This section contains the definition of an alternative semantic for multi $\pi$.
 	  }$
       \\\\
 	  $\inferrule* [left=\bf{Par3}]{
-	      S \stackrel{\gamma}{\longmapsto} S^{'}
+	      L_{1} \stackrel{\gamma}{\longmapsto} L_{1}^{'}
 	    \\ 
-	      bn(\gamma)\cap fn(Q)=\emptyset
+	      bn(\gamma)\cap fn(L_{2})=\emptyset
 	  }{
-	      S|Q \stackrel{\gamma}{\longmapsto} S^{'}|Q
+	      L_{1}|L_{2} \stackrel{\gamma}{\longmapsto} L_{1}^{'}|L_{2}
+	  }$
+	&
+	  $\inferrule* [left=\bf{Cong1}]{
+	      P\equiv P^{'}
+	    \\
+	      P^{'} \stackrel{\gamma}{\longmapsto} Q^{'}
+	  }{
+	      P \stackrel{\gamma}{\longmapsto} Q^{'}
+	  }$
+      \\\\
+	  $\inferrule* [left=\bf{Cong2}]{
+	      P\equiv Q
+	    \\
+	      Q \stackrel{\gamma}{\longmapsto} L
+	  }{
+	      P \stackrel{\gamma}{\longmapsto} L
+	  }$
+	&
+	  $\inferrule* [left=\bf{Cong3}]{
+	      L \stackrel{\gamma}{\longmapsto} Q
+	    \\
+	      Q\equiv P
+	  }{
+	      L \stackrel{\gamma}{\longmapsto} P
+	  }$
+      \\\\
+	  $\inferrule* [left=\bf{Star}]{
+	      S \stackrel{\gamma}{\longmapsto} S^{'}
+	  }{
+	      *S \stackrel{\gamma}{\longmapsto} S^{'}
 	  }$
 	&
       \\\\\hline
     \end{tabular}
-    \caption{Low multi $\pi$ ?early? semantic ?with structural congruence?}
+    \caption{Low multi $\pi$ early semantic with structural congruence}
     \label{lowleveltransitionrelation}
   \end{table}
 \end{definition}
 
   
+\begin{definition}
+  Let $P, Q$ be unmarked processes and $L_{1}, \cdots, L_{k-1}$ marked processes. We define the derivation relation $\rightarrow_{s}$ in the following way:
+  \begin{center}
+    $\inferrule* [left=\bf{Low}]{
+	P \stackrel{\gamma_{1}}{\longmapsto} L_{1} \stackrel{\gamma_{2}}{\longmapsto} L_{2} \cdots L_{k-1} \stackrel{\gamma_{k}}{\longmapsto} Q
+      \\
+	k\geq 1
+    }{
+      P \xrightarrow{\gamma_{1} \cdots \gamma_{k}}_{s}  Q
+    }$
+  \end{center}
+\end{definition}
+
+
+\begin{proposition}
+  Let $\rightarrow$ be the relation defined in table \ref{multipisoloinputearlywith} and let $P$ be a multi $\pi$ process. Then 
+  \begin{center}
+    $P\xrightarrow{\sigma} Q \Leftrightarrow P\xrightarrow{\sigma}_{s} Q$
+  \end{center}
+  \begin{proof}
+    The proof of $\Rightarrow$ direction is by induction on the depth of the derivation tree of $P\xrightarrow{\sigma} Q$:
+    \begin{description}
+      \item[base case]
+	
+      \item[inductive case]
+	
+    \end{description}
+
+    
+    The proof of $\Leftarrow$ direction is by induction on the length of the sequence of transitions used to derive $P\xrightarrow{\sigma}_{s} Q$ and on the depth of the proof tree of the first transition in such a sequence:
+  \end{proof}
+\end{proposition}
+
 
 
 
