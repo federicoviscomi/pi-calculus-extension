@@ -784,7 +784,23 @@ This section contains the definition of an alternative semantic for multi $\pi$.
       P \xrightarrow{\gamma_{1} \cdots \gamma_{k}}_{s}  Q
     }$
   \end{center}
+  We need to be precise about the concatenation operator $\cdot$ since we have introduced the new label $\epsilon$. Let $a$ be an action such that $a\neq \tau$ and $a\neq \epsilon$ then the following rules hold:
+  \begin{center}
+      \begin{tabular}{lll}
+	  $\epsilon \cdot a = a \cdot \epsilon = a$
+	&
+	  $\epsilon \cdot \epsilon = \epsilon$
+	&
+	  $\tau \cdot \epsilon = \epsilon \cdot \tau = \tau$
+	\\
+	  $\tau \cdot a = a \cdot \tau = a$
+	&
+	  $\tau \cdot \tau = \tau$
+	&
+      \end{tabular}
+  \end{center}
 \end{definition}
+
 
 
 \begin{proposition}
@@ -796,8 +812,11 @@ This section contains the definition of an alternative semantic for multi $\pi$.
     The proof of $\Rightarrow$ direction is by induction on the depth of the derivation tree of $P\xrightarrow{\sigma} Q$:
     \begin{description}
       \item[base case]
+    \end{description}
 	If the depth is one then the rule used have to be one of: $EInp$, $Out$, $Tau$. This rule are also in table \ref{lowleveltransitionrelation} so we can derive $P \stackrel{\sigma}{\longmapsto} Q$ and then apply $Low$ to get the result $P\xrightarrow{\sigma}_{s} Q$.
+    \begin{description}
       \item[inductive case]
+    \end{description}
 	If the depth is greater than one then the last rule used in the derivation can be:
 	\begin{description}
 	  \item[$SInp$]: 
@@ -819,7 +838,7 @@ This section contains the definition of an alternative semantic for multi $\pi$.
 	    \end{center}
 	    and 
 	    \begin{center}
-	      $\gamma_{1} \cdot \cdots \cdot \gamma_{k+1} = \sigma$
+	      $\gamma_{1} \cdot \ldots \cdot \gamma_{k+1} =  \sigma$
 	    \end{center}
 	    since
 	    \begin{center}
@@ -841,11 +860,12 @@ This section contains the definition of an alternative semantic for multi $\pi$.
 	      $\inferrule* [left=\bf{Low}]{
 		    \underline{x(z)}.P_{1} \stackrel{xy}{\longmapsto} *P_{1}\{y/z\} \stackrel{\gamma_{1}}{\longmapsto} L_{1}  \stackrel{\gamma_{2}}{\longmapsto} L_{2} \cdots L_{k-1} \stackrel{\gamma_{k}}{\longmapsto} L_{k} \stackrel{\gamma_{k+1}}{\longmapsto} Q
 	      }{
-		\underline{x(z)}.P_{1} \xrightarrow{xy \cdot \sigma}_{s} Q
+		\underline{x(z)}.P_{1} \xrightarrow{xy \cdot \gamma_{1} \cdot \ldots \cdot \gamma_{k+1}}_{s} Q
 	      }$
 	    \end{center}
-	\end{description}
-      \item[$Sum$]: 
+	    and $xy \cdot \gamma_{1} \cdot \ldots \cdot \gamma_{k+1}=xy \cdot \sigma$
+	  \item[$SInpTau$]: this case is similar to the previous.
+	  \item[$Sum$]: 
 	the last part of the derivation tree looks like this:
 	\begin{center}
 	  $\inferrule* [left=\bf{Sum}]{
@@ -860,7 +880,7 @@ This section contains the definition of an alternative semantic for multi $\pi$.
 	\end{center}
 	and 
 	\begin{center}
-	  $\gamma_{1} \cdot \cdots \cdot \gamma_{k+1} = \sigma$
+	  $\gamma_{1} \cdot \ldots \cdot \gamma_{k+1} =  \sigma$
 	\end{center}
 	A proof of the conclusion is:
 	\begin{center}
@@ -878,13 +898,266 @@ This section contains the definition of an alternative semantic for multi $\pi$.
 	\end{center}
       \item[$Str$]: this case is similar to the previous.
       \item[$Com$]: 
+	the last part of the derivation tree looks like this:
+	\begin{center}
+	  $\inferrule* [left=\bf{Com}]{
+	      P_{1} \xrightarrow{\overline{x}y} P_{1}^{'}
+	    \\
+	      Q_{1} \xrightarrow{xy} Q_{1}^{'}
+	  }{
+	    P_{1}|Q_{1} \xrightarrow{\tau} P_{1}^{'}|Q_{1}^{'}
+	  }$
+	\end{center}
+	for inductive hypothesis $P_{1} \xrightarrow{\overline{x}y}_{s} P_{1}^{'}$ and $Q_{1} \xrightarrow{xy}_{s} Q_{1}^{'}$ which imply that there exist $L_{1}, \cdots, L_{k}$ and $\gamma_{1}, \cdots, \gamma_{k+1}$ with $k\geq 0$ such that 
+	\begin{center}
+	  $P_{1} \stackrel{\gamma_{1}}{\longmapsto} L_{1}  \stackrel{\gamma_{2}}{\longmapsto} L_{2} \cdots L_{k-1} \stackrel{\gamma_{k}}{\longmapsto} L_{k} \stackrel{\gamma_{k+1}}{\longmapsto} P_{1}^{'}$ 
+	\end{center}
+	and 
+	\begin{center}
+	  $\gamma_{1} \cdot \ldots \cdot \gamma_{k+1} = \overline{x}y$
+	\end{center}
+	and there exist $R_{1}, \cdots, R_{h}$ and $\delta_{1}, \cdots, \delta_{h+1}$ with $h\geq 0$ such that 
+	\begin{center}
+	  $Q_{1} \stackrel{\delta_{1}}{\longmapsto} R_{1}  \stackrel{\delta_{2}}{\longmapsto} R_{2} \cdots R_{h-1} \stackrel{\delta_{h}}{\longmapsto} R_{h} \stackrel{\delta_{h+1}}{\longmapsto} Q_{1}^{'}$ 
+	\end{center}
+	and 
+	\begin{center}
+	  $\delta_{1} \cdot \ldots \cdot \delta_{k+1} = xy$
+	\end{center}
+	we can have nine different cases now: 
+	\begin{center}
+	$\{\gamma_{1}=\overline{x}y,\; \gamma_{i}=\overline{x}y\; 1<i\leq k, \gamma_{k+1}=\overline{x}y\} \times \{\delta_{1}=xy,\; \delta_{j}=xy\; 1<j\leq h, \delta_{h+1}=xy\}$
+	\end{center}
+	We show just the first three since the others are similar:
+	\begin{description}
+	  \item[$\gamma_{1}=\overline{x}y$ $and$ $\delta_{1}=xy$]:
+	    in this case: $\gamma_{k+1}=\tau$ and the other $\gamma$s are $\epsilon$; $\delta_{h+1}=\tau$ and the other $\delta$s are $\epsilon$. A proof of the conclusion is:
+	    \begin{center}
+	      $\inferrule* [left=\bf{Low}]{
+		  P_{1}|Q_{1} \stackrel{\tau}{\longmapsto} L_{1}|R_{1} 
+			      \stackrel{\epsilon}{\longmapsto} L_{2}|R_{1}
+		  \cdots
+		\\
+		  L_{k-1}|R_{1} \stackrel{\epsilon}{\longmapsto} L_{k}|R_{1}
+				\stackrel{\epsilon}{\longmapsto} L_{k}|R_{2}
+		  \cdots 
+				\stackrel{\epsilon}{\longmapsto} L_{k}|R_{h}
+				\stackrel{\tau}{\longmapsto} P_{1}^{'}|R_{h}
+				\stackrel{\tau}{\longmapsto} P_{1}^{'}|Q_{1}^{'}
+	      }{
+		P_{1}|Q_{1} \xrightarrow{\tau}_{s} P_{1}^{'}|Q_{1}^{'}
+	      }$	  
+	    \end{center}
+	    we derive the first transaction of the premises with rule $Com3$, whether for the other transactions we use the rule $Par1$ and when necessary $Cong1$.
+	  \item[$\gamma_{i}=\overline{x}y$ $and$ $\delta_{1}=xy$]:
+	    in this case: $\gamma_{1}=\gamma_{k+1}=\tau$ and the other $\gamma$s are $\epsilon$; $\delta_{h+1}=\tau$ and the other $\delta$s are $\epsilon$. A proof of the conclusion is:
+	    \begin{center}
+	      $\inferrule* [left=\bf{Low}]{
+		  P_{1}|Q_{1} \stackrel{\tau}{\longmapsto} L_{1}|Q_{1} 
+			      \stackrel{\epsilon}{\longmapsto} L_{2}|Q_{1}
+		  \cdots
+			      \stackrel{\epsilon}{\longmapsto} L_{i-1}|Q_{1} 
+			      \stackrel{\tau}{\longmapsto} L_{i}|R_{1}
+			      \stackrel{\epsilon}{\longmapsto} L_{i+1}|R_{1}
+		  \\\cdots 
+			      \stackrel{\epsilon}{\longmapsto} L_{k}|R_{1}
+			      \stackrel{\epsilon}{\longmapsto} L_{k}|R_{2}
+		  \cdots 
+			      \stackrel{\epsilon}{\longmapsto} L_{k}|R_{h}
+			      \stackrel{\tau}{\longmapsto} P_{1}^{'}|R_{h}
+			      \stackrel{\tau}{\longmapsto} P_{1}^{'}|Q_{1}^{'}
+	      }{
+		P_{1}|Q_{1} \xrightarrow{\tau}_{s} P_{1}^{'}|Q_{1}^{'}
+	      }$	  
+	    \end{center}
+	    we derive the transaction $ L_{i-1}|Q_{1} \stackrel{\tau}{\longmapsto} L_{i}|R_{1}$ with rule $Com3$, whether for the other transactions of the premises we use the rule $Par1$ and when necessary $Cong1$.
+	  \item[$\gamma_{k+1}=\overline{x}y$ $and$ $\delta_{1}=xy$]:
+	    in this case: $\gamma_{1}=\tau$ and the other $\gamma$s are $\epsilon$; $\delta_{h+1}=\tau$ and the other $\delta$s are $\epsilon$. A proof of the conclusion is:
+	    \begin{center}
+	      $\inferrule* [left=\bf{Low}]{
+		  P_{1}|Q_{1} \stackrel{\tau}{\longmapsto} L_{1}|Q_{1} 
+			      \stackrel{\epsilon}{\longmapsto} L_{2}|Q_{1}
+		  \cdots
+			      \stackrel{\epsilon}{\longmapsto} L_{k}|Q_{1} 
+		\\	      \stackrel{\tau}{\longmapsto} P_{1}^{'}|R_{1}
+			      \stackrel{\epsilon}{\longmapsto} P_{1}^{'}|R_{2}
+		  \cdots 
+			      \stackrel{\epsilon}{\longmapsto} P_{1}^{'}|R_{h}
+			      \stackrel{\tau}{\longmapsto} P_{1}^{'}|Q_{1}^{'}
+	      }{
+		P_{1}|Q_{1} \xrightarrow{\tau}_{s} P_{1}^{'}|Q_{1}^{'}
+	      }$	  
+	    \end{center}
+	    we derive the transaction $L_{k}|Q_{1} \stackrel{\tau}{\longmapsto} P_{1}^{'}|R_{1}$ with rule $Com3$, whether for the other transactions of the premises we use the rule $Par1$ and when necessary $Cong1$.
+	\end{description}
       \item[$Res$]: 
-      \item[$Par$]: 
-      \item[$ComSeq$]:
-      \item[$SInpTau$]:
-      \item[$Opn$]:
+	the last part of the derivation tree looks like this:
+	\begin{center}
+	  $\inferrule* [left=\bf{Res}]{
+	      P_{1}\; \xrightarrow{\sigma}\; Q_{1}
+	    \\
+	      z\notin n(\sigma)
+	  }{
+	    (\nu z) P_{1} \;\xrightarrow{\sigma} (\nu z) Q_{1}
+	  }$
+	\end{center}
+	for the inductive hypothesis $P_{1} \xrightarrow{\sigma}_{s} Q_{1}$ which implies that there exist $L_{1}, \cdots, L_{k}$ and $\gamma_{1}, \cdots, \gamma_{k+1}$ with $k\geq 0$ such that 
+	\begin{center}
+	  $P_{1} \stackrel{\gamma_{1}}{\longmapsto} L_{1}  \stackrel{\gamma_{2}}{\longmapsto} L_{2} \cdots L_{k-1} \stackrel{\gamma_{k}}{\longmapsto} L_{k} \stackrel{\gamma_{k+1}}{\longmapsto} Q_{1}$ 
+	\end{center}
+	and 
+	\begin{center}
+	  $\gamma_{1} \cdot \ldots \cdot \gamma_{k+1} =  \sigma$
+	\end{center}
+	We can apply the rule $Res$ to each of the previous transitions because 
+	\begin{center}
+	  $z\notin n(\sigma)$ implies $z\notin n(\gamma_{i})$ for each $i$
+	\end{center}
+	and then apply the rule $Low$ to get a proof of the conclusion:
+	\begin{center}
+	  $\inferrule* [left=\bf{Low}]{
+	    (\nu z)P_{1} \stackrel{\gamma_{1}}{\longmapsto} (\nu z)L_{1}  \stackrel{\gamma_{2}}{\longmapsto} (\nu z)L_{2} \cdots (\nu z)L_{k-1} \stackrel{\gamma_{k}}{\longmapsto} (\nu z)L_{k} \stackrel{\gamma_{k+1}}{\longmapsto} (\nu z)Q_{1}
+	  }{
+	    (\nu z)P_{1} \xrightarrow{\sigma}_{s} (\nu z)Q_{1}
+	  }$
+	\end{center}
+      \item[$Par$]: this case is similar to the previous.
+      \item[$ComSeq$]: 
+	the last part of the derivation tree looks like this:
+	\begin{center}
+	  $\inferrule* [left=\bf{Com}]{
+	      P_{1} \xrightarrow{xy \cdot \sigma} P_{1}^{'}
+	    \\
+	      Q_{1} \xrightarrow{\overline{x}y} Q_{1}^{'}
+	  }{
+	    P_{1}|Q_{1} \xrightarrow{\sigma} P_{1}^{'}|Q_{1}^{'}
+	  }$
+	\end{center}
+	for inductive hypothesis $P_{1} \xrightarrow{xy \cdot \sigma}_{s} P_{1}^{'}$ which implies that there exist $L_{1}, \cdots, L_{k}$ and $\gamma_{1}, \cdots, \gamma_{k+1}$ with $k\geq 0$ such that 
+	\begin{center}
+	  $P_{1} \stackrel{\gamma_{1}}{\longmapsto} L_{1}  \stackrel{\gamma_{2}}{\longmapsto} L_{2} \cdots L_{k-1} \stackrel{\gamma_{k}}{\longmapsto} L_{k} \stackrel{\gamma_{k+1}}{\longmapsto} P_{1}^{'}$ 
+	\end{center}
+	and 
+	\begin{center}
+	  $\gamma_{1} \cdot \ldots \cdot \gamma_{k+1} = xy \cdot \sigma$
+	\end{center}
+	Again for inductive hypothesis $Q_{1} \xrightarrow{xy}_{s} Q_{1}^{'}$ which implies that there exist $R_{1}, \cdots, R_{h}$ and $\delta_{1}, \cdots, \delta_{h+1}$ with $h\geq 0$ such that 
+	\begin{center}
+	  $Q_{1} \stackrel{\delta_{1}}{\longmapsto} R_{1}  \stackrel{\delta_{2}}{\longmapsto} R_{2} \cdots R_{h-1} \stackrel{\delta_{h}}{\longmapsto} R_{h} \stackrel{\delta_{h+1}}{\longmapsto} Q_{1}^{'}$ 
+	\end{center}
+	and 
+	\begin{center}
+	  $\delta_{1} \cdot \ldots \cdot \delta_{k+1} = \overline{x}y$
+	\end{center}
+	We assume that $\sigma$ is not $\tau$ otherwise we can replace this instance of the rule $ComSeq$ with an instance of the rule $Com$ and proceed as in the previous case. We can have six different cases now: 
+	\begin{center}
+	$\{\gamma_{1}=xy,\; \gamma_{i}=\overline{x}y\; 1<i\leq k\} \times \{\delta_{1}=\overline{x}y,\; \delta_{j}=\overline{x}y\; 1<j\leq h, \delta_{h+1}=\overline{x}y\}$
+	\end{center}
+	We show just the first two since the others are similar:
+	\begin{description}
+	  \item[$\gamma_{1}=xy$ $and$ $\delta_{1}=\overline{x}y$]:
+	    in this case: $\delta_{h+1}=\tau$ and the other $\delta$s are $\epsilon$. A proof of the conclusion is:
+	    \begin{center}
+	      $\inferrule* [left=\bf{Low}]{
+		  P_{1}|Q_{1} \stackrel{\tau}{\longmapsto} L_{1}|R_{1} 
+			      \stackrel{\gamma_{2}}{\longmapsto} L_{2}|R_{1}
+		  \cdots
+			      \stackrel{\gamma_{k}}{\longmapsto} L_{k}|R_{1}
+			\\      \stackrel{\gamma_{k+1}}{\longmapsto} P_{1}^{'}|R_{1}
+			      \stackrel{\epsilon}{\longmapsto} P_{1}^{'}|R_{2}
+		  \cdots 
+			      \stackrel{\epsilon}{\longmapsto} P_{1}^{'}|R_{h}
+			      \stackrel{\tau}{\longmapsto} P_{1}^{'}|Q_{1}^{'}
+	      }{
+		P_{1}|Q_{1} \xrightarrow{\tau \cdot \gamma_{2}\cdot \ldots \cdot \gamma_{k+1}\cdot \epsilon \cdot \ldots \epsilon \cdot \tau}_{s} P_{1}^{'}|Q_{1}^{'}
+	      }$	  
+	    \end{center}
+	    we derive the first transaction of the premises with rule $Com3$, whether for the other transactions we use the rule $Par1$ and when necessary $Cong1$. Since $\gamma_{1} \cdot \ldots \cdot \gamma_{k+1} = xy \cdot \sigma$ and $\gamma_{1}=xy$ then $\tau \cdot \gamma_{2}\cdot \ldots \cdot \gamma_{k+1}\cdot \epsilon \cdot \ldots \epsilon \cdot \tau=\sigma$
+	  \item[$\gamma_{i}=xy$ $and$ $\delta_{1}=\overline{x}y$]:
+	    in this case: $\gamma_{1}=\gamma_{k+1}=\tau$, $\gamma_{j}=\epsilon$ if $1<j<i$ and $\gamma_{i+1}\cdot \ldots \cdot \gamma_{k+1}=\sigma$; $\delta_{h+1}=\tau$ and the other $\delta$s are $\epsilon$. A proof of the conclusion is:
+	    \begin{center}
+	      $\inferrule* [left=\bf{Low}]{
+		  P_{1}|Q_{1} \stackrel{\tau}{\longmapsto} L_{1}|Q_{1} 
+			      \stackrel{\epsilon}{\longmapsto} L_{2}|Q_{1}
+		  \cdots
+			      \stackrel{\epsilon}{\longmapsto} L_{i-1}|Q_{1} 
+			      \stackrel{\tau}{\longmapsto} L_{i}|R_{1}
+			      \stackrel{\gamma_{i+1}}{\longmapsto} L_{i+1}|R_{1}
+		  \\\cdots 
+			      \stackrel{\gamma_{k}}{\longmapsto} L_{k}|R_{1}
+			      \stackrel{\gamma_{k+1}}{\longmapsto} P_{1}^{'}|R_{1}
+			      \stackrel{\epsilon}{\longmapsto} P_{1}^{'}|R_{2}
+		  \cdots 
+			      \stackrel{\epsilon}{\longmapsto} P_{1}^{'}|R_{h}
+			      \stackrel{\tau}{\longmapsto} P_{1}^{'}|Q_{1}^{'}
+	      }{
+		P_{1}|Q_{1} \xrightarrow{\tau \cdot \epsilon \cdot \ldots \cdot \epsilon \cdot \tau \cdot \gamma_{i+1}\cdot \ldots \cdot \gamma_{k+1} \cdot \epsilon \cdot \ldots \cdot \epsilon \cdot \tau}_{s} P_{1}^{'}|Q_{1}^{'}
+	      }$	  
+	    \end{center}
+	    we derive the transaction $ L_{i-1}|Q_{1} \stackrel{\tau}{\longmapsto} L_{i}|R_{1}$ with rule $Com3$ and $Cong1$, whether for the other transactions of the premises we use the rule $Par1$ and when necessary $Cong1$.
+	\end{description}
+      \item[$Opn$]: 
+	the last part of the derivation tree looks like this:
+	\begin{center}
+	  $\inferrule* [left=\bf{Opn}]{
+	      P_{1} \xrightarrow{\overline{x}z}\; Q
+	    \\ 
+	      z\neq x
+	  }{
+	      (\nu z)P \xrightarrow{\overline{x}(z)}\; Q
+	  }$	 
+	\end{center}
+	for the inductive hypothesis $P_{1} \xrightarrow{\sigma}_{s} Q$ which implies that there exist $L_{1}, \cdots, L_{k}$ and $\gamma_{1}, \cdots, \gamma_{k+1}$ with $k\geq 0$ such that 
+	\begin{center}
+	  $P_{1} \stackrel{\gamma_{1}}{\longmapsto} L_{1}  \stackrel{\gamma_{2}}{\longmapsto} L_{2} \cdots L_{k-1} \stackrel{\gamma_{k}}{\longmapsto} L_{k} \stackrel{\gamma_{k+1}}{\longmapsto} Q$ 
+	\end{center}
+	and 
+	\begin{center}
+	  $\gamma_{1} \cdot \ldots \cdot \gamma_{k+1} =  \overline{x}y$
+	\end{center}
+	We can have three different cases now: 
+	\begin{description}
+	  \item[$\gamma_{1}=\overline{x}z$]:
+	    in this case $\gamma_{h+1}=\tau$ and the other $\gamma$s are $\epsilon$. A proof of the conclusion is:
+	    \begin{center}
+	      $\inferrule* [left=\bf{Low}]{
+		  \inferrule* [left=\bf{Open}]{
+		      P_{1} \stackrel{\overline{x}(z)}{\longmapsto} L_{1}
+		  }{
+		    (\nu z)P_{1} \stackrel{\overline{x}(z)}{\longmapsto} L_{1}
+		  }
+		  \\
+			      L_{1} \stackrel{\epsilon}{\longmapsto} L_{2}
+		  \cdots
+			      \stackrel{\epsilon}{\longmapsto} L_{k}
+			      \stackrel{\epsilon}{\longmapsto} Q
+	      }{
+		(\nu z)P_{1} \xrightarrow{\overline{x}(z) \cdot \epsilon \cdot \ldots \cdot \epsilon}_{s} Q
+	      }$	  
+	    \end{center}
+	  \item[$\gamma_{i}=\overline{x}z$]:
+	    in this case $\gamma_{1}=\gamma_{k+1}=\tau$ and the other $\gamma$s are $\epsilon$. A proof of the conclusion is:
+	    \begin{center}
+	      $\inferrule* [left=\bf{Low}]{
+		  (\nu z)P_{1}\stackrel{\tau}{\longmapsto} (\nu z)L_{1}
+			      \stackrel{\epsilon}{\longmapsto} (\nu z)L_{2}
+		  \cdots
+			      \stackrel{\epsilon}{\longmapsto} (\nu z) L_{i-1}
+		\\
+		(\nu z) L_{i-1} \stackrel{\overline{x}(z)}{\longmapsto} L_{i}
+		\\
+			      L_{i} \stackrel{\epsilon}{\longmapsto} L_{i+1}
+		  \cdots 
+			      \stackrel{\epsilon}{\longmapsto} L_{k}
+			      \stackrel{\tau}{\longmapsto} Q
+	      }{
+		(\nu z)P_{1} \xrightarrow{\tau \cdot \epsilon \cdot \ldots \cdot \epsilon \cdot \tau \cdot \gamma_{i+1}\cdot \ldots \cdot \gamma_{k+1} \cdot \epsilon \cdot \ldots \cdot \epsilon \cdot \tau}_{s} Q
+	      }$	  
+	    \end{center}
+	    we derive the transition $ (\nu z) L_{i-1} \stackrel{\overline{x}(z)}{\longmapsto} L_{i}$ with rule $Open$ and the transitions $(\nu z)P_{1}\stackrel{\tau}{\longmapsto}(\nu z)L_{1} \stackrel{\epsilon}{\longmapsto} (\nu z)L_{2}\cdots \stackrel{\epsilon}{\longmapsto} (\nu z) L_{i-1}$ with rule $Res$.
+	\end{description}
     \end{description}
-
+    
     
     The proof of $\Leftarrow$ direction is by induction on the length of the sequence of transitions used to derive $P\xrightarrow{\sigma}_{s} Q$ and on the depth of the proof tree of the first transition in such a sequence:
   \end{proof}
