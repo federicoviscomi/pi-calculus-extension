@@ -1184,7 +1184,9 @@ This section contains the definition of an alternative semantic for multi $\pi$.
 	\end{center}
 	We proceed by induction on the depth of the derivation of $P \stackrel{\gamma_{1}}{\longmapsto} L_{1}$. Let us call $R$ the last instance of a rule used to derive $P\stackrel{\gamma_{1}}{\longmapsto} L_{1}$. $R$ cannot be $Out$, $EInp$, $Tau$, $Com1$, $Cong1$ because $L_{1}$ is a marked process but these rules lead to a non marked process. Also $R$ cannot be $Star$, $Com2$, $Com4$, $Cong3$ because $P$ is not marked whether the head of the conclusion of these rules is marked.
 	\begin{description}
-	  \item[base case] $R$ can be only $SInpLow$, so 
+	  \item[base case] 
+	\end{description}
+	    $R$ can be only $SInpLow$, so 
 	    \begin{center}
 	      $\underline{x(z)}.P_{1} \stackrel{xy}{\longmapsto} *P_{1}\{y/z\} \stackrel{\gamma_{2}}{\longmapsto} L_{2} \cdots L_{k-1} \stackrel{\gamma_{k}}{\longmapsto} L_{k} \stackrel{\gamma_{k+1}}{\longmapsto} Q$ 
 	    \end{center}
@@ -1212,7 +1214,10 @@ This section contains the definition of an alternative semantic for multi $\pi$.
 		\underline{x(z)}.P_{1} \xrightarrow{xy} Q
 	      }$
 	    \end{center}
-	  \item[inductive case] $R$ can be:
+	\begin{description}
+	  \item[inductive case] 
+	\end{description}
+	    $R$ can be:
 	    \begin{description}
 	      \item[$Sum$] the first transition is:
 		\begin{center}
@@ -1244,39 +1249,121 @@ This section contains the definition of an alternative semantic for multi $\pi$.
 		      (\nu z) P_{1} \stackrel{\gamma_{1}}{\longmapsto} (\nu z)L_{1}^{'}
 		  }$ 
 		\end{center}
-		given that $L_{1}$ has a restriction at the top level, all the other intermediate processes $L_{2}, \cdots, L_{k}$ have the same restriction at the top level. So the last rule used to prove $L_{i}\stackrel{\gamma_{i+1}}{\longmapsto} L_{i+1}$ for each $1\leq i \leq k-1$ and we can build the following chain of transitions:
-		\begin{center}
-		  $P_{1} \stackrel{\gamma_{1}}{\longmapsto} L_{1}^{'} \stackrel{\gamma_{2}}{\longmapsto} L_{2}^{'} \cdots L_{k-1}^{'} \stackrel{\gamma_{k}}{\longmapsto} L_{k}^{'}$ 
-		\end{center}
-		then apply the rule $Low$ and the inductive hypothesis to get $P_{1} \xrightarrow{\gamma_{1}\cdot \ldots \cdot \gamma_{k}} L_{k}^{'}$. The last rule used to derive $L_{k} \stackrel{\gamma_{k+1}}{\longmapsto} Q$ can be one of: $Cong3$, $Res$ or $Open$. Suppose it is $Cong3$(the other cases are similar)NO NO NO
-		\begin{center}
-		  $\inferrule* [left=\bf{Cong3}]{
-		      (\nu z)L_{k}^{'} \stackrel{\gamma_{k+1}}{\longmapsto} T
-		    \\
-		      T \equiv Q
-		  }{
-		    (\nu z)L_{k}^{'} \stackrel{\gamma_{k+1}}{\longmapsto} Q
-		  }$
-		\end{center}
-		a proof of the conclusion can be
-		\begin{center}
-		  $\inferrule* [left=\bf{Res}]{
-			P_{1} \xrightarrow{\gamma_{1}\cdot \ldots \cdot \gamma_{k}} L_{k}^{'}
-		      \\
-			z\notin n(\gamma_{1}\cdot \ldots \cdot \gamma_{k})
-		    }{
-		      (\nu z)P_{1} \xrightarrow{\gamma_{1}\cdot \ldots \cdot \gamma_{k}} (\nu z)L_{k}^{'}
-		  }$
-		\end{center}
-	      \item[$Opn$]
-	      \item[$Par1$]
-	      \item[$Com3$]
-	      \item[$Par2$]
-	      \item[$Par3$]
-	      \item[$Cong2$]
+		given that $L_{1}$ has a restriction at the top level, all the other intermediate processes $L_{2}, \cdots, L_{k}$ have the same restriction at the top level. So the last rule used to prove $L_{i}\stackrel{\gamma_{i+1}}{\longmapsto} L_{i+1}$ for each $1\leq i \leq k-1$ is $Res$. The last rule used to derive $L_{k} \stackrel{\gamma_{k+1}}{\longmapsto} Q$ can be one of: 
+		\begin{description}
+		  \item[$Res$]:
+		    \begin{center}
+		      $\inferrule* [left=\bf{Res}]{
+			  L_{k}^{'} \stackrel{\gamma_{k+1}}{\longmapsto} Q^{'}
+			\\
+			  z\notin n(Q^{'})
+		      }{
+			(\nu z)L_{k}^{'} \stackrel{\gamma_{k+1}}{\longmapsto} (\nu z)Q^{'}
+		      }$
+		    \end{center}
+		    we can build the following chain of transitions:
+		    \begin{center}
+		      $P_{1} \stackrel{\gamma_{1}}{\longmapsto} L_{1}^{'} \stackrel{\gamma_{2}}{\longmapsto} L_{2}^{'} \cdots L_{k-1}^{'} \stackrel{\gamma_{k}}{\longmapsto} L_{k}^{'}\stackrel{\gamma_{k+1}}{\longmapsto} Q^{'}$ 
+		    \end{center}
+		    then apply the rule $Low$ and the inductive hypothesis to get $P_{1} \xrightarrow{\gamma_{1}\cdot \ldots \cdot \gamma_{k+1}} Q^{'}$. A proof of the conclusion can be
+		    \begin{center}
+		      $\inferrule* [left=\bf{Res}]{
+			  P_{1} \xrightarrow{\gamma_{1}\cdot \ldots \cdot \gamma_{k+1}} Q^{'}
+			\\
+			  z\notin n(\gamma_{1}\cdot \ldots \cdot \gamma_{k+1})
+		      }{
+			(\nu z)P_{1} \xrightarrow{\gamma_{1}\cdot \ldots \cdot \gamma_{k+1}} (\nu z)Q^{'}
+		    }$
+		    \end{center}
+		  \item[$Cong3$]: 
+		    \begin{center}
+		      $\inferrule* [left=\bf{Cong3}]{
+			  (\nu z)L_{k}^{'} \stackrel{\gamma_{k+1}}{\longmapsto} Q^{'}
+			\\
+			  Q^{'} \equiv Q
+		      }{
+			(\nu z)L_{k}^{'} \stackrel{\gamma_{k+1}}{\longmapsto} Q
+		      }$
+		    \end{center}
+		    for transitivity of $\equiv$ we can assume that there is a derivation of $(\nu z)L_{k}^{'} \stackrel{\gamma_{k+1}}{\longmapsto} Q^{'}$ that does not end with an instance of $Cong3$ and so it does end with $Res$ or $Opn$:
+		    \begin{description}
+		    \item[$Res$]:
+		    \begin{center}
+		      $\inferrule* [left=\bf{Cong3}]{
+			  \inferrule* [left=\bf{Res}]{
+			    L_{k}^{'} \stackrel{\gamma_{k+1}}{\longmapsto} Q^{''}
+			  }{
+			    (\nu z)L_{k}^{'} \stackrel{\gamma_{k+1}}{\longmapsto} (\nu z)Q^{''}
+			  }
+			\\
+			  (\nu z)Q^{''} \equiv Q
+		      }{
+			(\nu z)L_{k}^{'} \stackrel{\gamma_{k+1}}{\longmapsto} Q
+		      }$
+		    \end{center}
+		    we can derive the following chain of transition:
+		    \begin{center}
+		      $P_{1} \stackrel{\gamma_{1}}{\longmapsto} L_{1}^{'} \stackrel{\gamma_{2}}{\longmapsto} L_{2}^{'} \cdots L_{k-1}^{'} \stackrel{\gamma_{k}}{\longmapsto} L_{k}^{'}\stackrel{\gamma_{k+1}}{\longmapsto} Q^{''}$ 
+		    \end{center}
+		    and then apply the rule $Low$ and the inductive hypothesis to get 
+		    \begin{center}
+		      $P_{1} \xrightarrow{\gamma_{1}\cdot \cdots \cdot \gamma_{k+1}} Q^{''}$ 
+		    \end{center}
+		    A proof of the conclusion is
+		    \begin{center}
+		      $\inferrule* [left=\bf{Cong}]{
+			  \inferrule* [left=\bf{Res}]{
+			    P_{1} \xrightarrow{\gamma_{1}\cdot \cdots \cdot \gamma_{k+1}} Q^{''}
+			  }{
+			    (\nu z)P_{1} \xrightarrow{\gamma_{1}\cdot \ldots \cdot \gamma_{k+1}} (\nu z)Q^{''}
+			  }
+			\\
+			  (\nu z)Q^{''} \equiv Q
+		      }{
+			(\nu z)P_{1} \xrightarrow{\gamma_{1}\cdot \ldots \cdot \gamma_{k+1}} Q
+		      }$
+		    \end{center}
+		    \item[$Opn$]:
+		    \end{description}
+		    
+		  \item[$Opn$]: NOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
+		    \begin{center}
+		      $\inferrule* [left=\bf{Opn}]{
+			  L_{k}^{'} \stackrel{\overline{x}y}{\longmapsto} Q
+			\\
+			  z\notin n(Q^{'})
+		      }{
+			(\nu z)L_{k}^{'} \stackrel{\overline{x}(y)}{\longmapsto} Q
+		      }$
+		    \end{center}
+		    we can build the following chain of transitions:
+		    \begin{center}
+		      $P_{1} \stackrel{\gamma_{1}}{\longmapsto} L_{1}^{'} \stackrel{\gamma_{2}}{\longmapsto} L_{2}^{'} \cdots L_{k-1}^{'} \stackrel{\gamma_{k}}{\longmapsto} L_{k}^{'}\stackrel{\gamma_{k+1}}{\longmapsto} Q^{'}$ 
+		    \end{center}
+		    then apply the rule $Low$ and the inductive hypothesis to get $P_{1} \xrightarrow{\gamma_{1}\cdot \ldots \cdot \gamma_{k+1}} Q^{'}$. A proof of the conclusion can be
+		    \begin{center}
+		      $\inferrule* [left=\bf{Res}]{
+			  P_{1} \xrightarrow{\gamma_{1}\cdot \ldots \cdot \gamma_{k+1}} Q^{'}
+			\\
+			  z\notin n(\gamma_{1}\cdot \ldots \cdot \gamma_{k+1})
+		      }{
+			(\nu z)P_{1} \xrightarrow{\gamma_{1}\cdot \ldots \cdot \gamma_{k+1}} (\nu z)Q^{'}
+		    }$
+		    \end{center}
+		\end{description}
+	      \item[$Opn$]: 
+		
+	      \item[$Par1$]: 
+		
+	      \item[$Com3$]: 
+		
+	      \item[$Par2$]: 
+		
+	      \item[$Par3$]: 
+		
+	      \item[$Cong2$]: 
+		
 	    \end{description}	    
-	\end{description}
-
   \end{proof}
 \end{proposition}
 
