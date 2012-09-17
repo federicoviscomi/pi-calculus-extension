@@ -799,6 +799,9 @@ This section contains the definition of an alternative semantic for multi $\pi$.
 	&
       \end{tabular}
   \end{center}
+
+  HA PIU' SENSO DIRE $a \cdot \tau \neq a$ e $\tau \cdot \tau \neq \tau$? e se si vale la stessa cosa per le epsilon oppure no?
+
 \end{definition}
 
 
@@ -813,7 +816,7 @@ This section contains the definition of an alternative semantic for multi $\pi$.
     \begin{description}
       \item[base case]
     \end{description}
-	If the depth is one then the rule used have to be one of: $EInp$, $Out$, $Tau$. This rule are also in table \ref{lowleveltransitionrelation} so we can derive $P \stackrel{\sigma}{\longmapsto} Q$ and then apply $Low$ to get the result $P\xrightarrow{\sigma}_{s} Q$.
+	If the depth is one then the rule used have to be one of: $EInp$, $Out$, $Tau$. These rules are also in table \ref{lowleveltransitionrelation} so we can derive $P \stackrel{\sigma}{\longmapsto} Q$ and then apply $Low$ to get the result $P\xrightarrow{\sigma}_{s} Q$.
     \begin{description}
       \item[inductive case]
     \end{description}
@@ -1160,6 +1163,120 @@ This section contains the definition of an alternative semantic for multi $\pi$.
     
     
     The proof of $\Leftarrow$ direction is by induction on the length of the sequence of transitions used to derive $P\xrightarrow{\sigma}_{s} Q$ and on the depth of the proof tree of the first transition in such a sequence:
+    \begin{description}
+      \item[base case]
+    \end{description}
+	in this case $P\stackrel{\sigma}{\longmapsto} Q$. Let us call $R$ the last instance of a rule used to derive $P\stackrel{\sigma}{\longmapsto} Q$. $R$ can be: 
+	\begin{description}
+	  \item[$Out$, $EInp$, $Tau$] these rules are also in table \ref{multipisoloinputearlywith} so we can derive $P\xrightarrow{\sigma} Q$.
+	  \item[$Sum$, $Com1$, $Res$, $Opn$, $Par1$, $Cong1$] these rules are also in table \ref{multipisoloinputearlywith} so first we apply the inductive hypothesis on the premises of $R$ and then apply the same rule.
+	\end{description}
+    \begin{description}
+      \item[inductive case]
+    \end{description}
+	in this case there exist $L_{1}, \cdots, L_{k}$ and $\gamma_{1}, \cdots, \gamma_{k+1}$ with $k\geq 0$ such that 
+	\begin{center}
+	  $P \stackrel{\gamma_{1}}{\longmapsto} L_{1}  \stackrel{\gamma_{2}}{\longmapsto} L_{2} \cdots L_{k-1} \stackrel{\gamma_{k}}{\longmapsto} L_{k} \stackrel{\gamma_{k+1}}{\longmapsto} Q$ 
+	\end{center}
+	and 
+	\begin{center}
+	  $\gamma_{1} \cdot \ldots \cdot \gamma_{k+1} = \sigma$ and $k\geq 1$
+	\end{center}
+	We proceed by induction on the depth of the derivation of $P \stackrel{\gamma_{1}}{\longmapsto} L_{1}$. Let us call $R$ the last instance of a rule used to derive $P\stackrel{\gamma_{1}}{\longmapsto} L_{1}$. $R$ cannot be $Out$, $EInp$, $Tau$, $Com1$, $Cong1$ because $L_{1}$ is a marked process but these rules lead to a non marked process. Also $R$ cannot be $Star$, $Com2$, $Com4$, $Cong3$ because $P$ is not marked whether the head of the conclusion of these rules is marked.
+	\begin{description}
+	  \item[base case] $R$ can be only $SInpLow$, so 
+	    \begin{center}
+	      $\underline{x(z)}.P_{1} \stackrel{xy}{\longmapsto} *P_{1}\{y/z\} \stackrel{\gamma_{2}}{\longmapsto} L_{2} \cdots L_{k-1} \stackrel{\gamma_{k}}{\longmapsto} L_{k} \stackrel{\gamma_{k+1}}{\longmapsto} Q$ 
+	    \end{center}
+	    Since $*P_{1}\{y/z\}$ has a mark on top, the last rule used in a derivation of $ *P_{1}\{y/z\} \stackrel{\gamma_{2}}{\longmapsto} L_{2}$ has to be $Star$. This means that $P_{1}\{y/z\} \stackrel{\gamma_{2}}{\longmapsto} L_{2}$ and so
+	    \begin{center}
+	      $P_{1}\{y/z\} \stackrel{\gamma_{2}}{\longmapsto} L_{2} \cdots L_{k-1} \stackrel{\gamma_{k}}{\longmapsto} L_{k} \stackrel{\gamma_{k+1}}{\longmapsto} Q$ 
+	    \end{center} 
+	    which for rule $Low$ and inductive hypothesis implies $P_{1}\{y/z\} \xrightarrow{\gamma_{2}\cdot \ldots \cdot \gamma_{k+1}} Q$. A proof of the conclusion is:
+	    \begin{center}
+	      $\inferrule* [left=\bf{SInp}]{
+		  P_{1}\{y/z\} \xrightarrow{\gamma_{2}\cdot \ldots \cdot \gamma_{k+1}} Q
+		\\
+		  \gamma_{2}\cdot \ldots \cdot \gamma_{k+1} \neq \tau
+	      }{
+		\underline{x(z)}.P_{1} \xrightarrow{xy \cdot \gamma_{2}\cdot \ldots \cdot \gamma_{k+1}} Q
+	      }$
+	    \end{center}
+	    or
+	    \begin{center}
+	      $\inferrule* [left=\bf{SInpTau}]{
+		  P_{1}\{y/z\} \xrightarrow{\gamma_{2}\cdot \ldots \cdot \gamma_{k+1}} Q
+		\\
+		  \gamma_{2}\cdot \ldots \cdot \gamma_{k+1} = \tau
+	      }{
+		\underline{x(z)}.P_{1} \xrightarrow{xy} Q
+	      }$
+	    \end{center}
+	  \item[inductive case] $R$ can be:
+	    \begin{description}
+	      \item[$Sum$] the first transition is:
+		\begin{center}
+		  $\inferrule* [left=\bf{Sum}]{
+		      P_{1} \stackrel{\gamma_{1}}{\longmapsto} L_{1}
+		    }{
+		      P_{1}+P_{2} \stackrel{\gamma_{1}}{\longmapsto} L_{1}
+		  }$ 
+		\end{center}
+		so we can build the following chain of transition:
+		\begin{center}
+		  $P_{1} \stackrel{\gamma_{1}}{\longmapsto} L_{1} \stackrel{\gamma_{2}}{\longmapsto} L_{2} \cdots L_{k-1} \stackrel{\gamma_{k}}{\longmapsto} L_{k} \stackrel{\gamma_{k+1}}{\longmapsto} Q$ 
+		\end{center}
+		apply the rule $Low$ and the inductive hypothesis to get $P_{1} \xrightarrow{\gamma_{1}\cdot \ldots \cdot \gamma_{k+1}} Q$. Now a proof of the conclusion can be
+		\begin{center}
+		  $\inferrule* [left=\bf{Sum}]{
+		      P_{1} \xrightarrow{\gamma_{1}\cdot \ldots \cdot \gamma_{k+1}} Q
+		    }{
+		      P_{1}+P_{2} \xrightarrow{\gamma_{1}\cdot \ldots \cdot \gamma_{k+1}} Q
+		  }$
+		\end{center}
+	      \item[$Res$] the first transition is:
+		\begin{center}
+		  $\inferrule* [left=\bf{Res}]{
+			P_{1} \stackrel{\gamma_{1}}{\longmapsto} L_{1}^{'}
+		      \\
+			z\notin n(\gamma_{1})
+		    }{
+		      (\nu z) P_{1} \stackrel{\gamma_{1}}{\longmapsto} (\nu z)L_{1}^{'}
+		  }$ 
+		\end{center}
+		given that $L_{1}$ has a restriction at the top level, all the other intermediate processes $L_{2}, \cdots, L_{k}$ have the same restriction at the top level. So the last rule used to prove $L_{i}\stackrel{\gamma_{i+1}}{\longmapsto} L_{i+1}$ for each $1\leq i \leq k-1$ and we can build the following chain of transitions:
+		\begin{center}
+		  $P_{1} \stackrel{\gamma_{1}}{\longmapsto} L_{1}^{'} \stackrel{\gamma_{2}}{\longmapsto} L_{2}^{'} \cdots L_{k-1}^{'} \stackrel{\gamma_{k}}{\longmapsto} L_{k}^{'}$ 
+		\end{center}
+		then apply the rule $Low$ and the inductive hypothesis to get $P_{1} \xrightarrow{\gamma_{1}\cdot \ldots \cdot \gamma_{k}} L_{k}^{'}$. The last rule used to derive $L_{k} \stackrel{\gamma_{k+1}}{\longmapsto} Q$ can be one of: $Cong3$, $Res$ or $Open$. Suppose it is $Cong3$(the other cases are similar)NO NO NO
+		\begin{center}
+		  $\inferrule* [left=\bf{Cong3}]{
+		      (\nu z)L_{k}^{'} \stackrel{\gamma_{k+1}}{\longmapsto} T
+		    \\
+		      T \equiv Q
+		  }{
+		    (\nu z)L_{k}^{'} \stackrel{\gamma_{k+1}}{\longmapsto} Q
+		  }$
+		\end{center}
+		a proof of the conclusion can be
+		\begin{center}
+		  $\inferrule* [left=\bf{Res}]{
+			P_{1} \xrightarrow{\gamma_{1}\cdot \ldots \cdot \gamma_{k}} L_{k}^{'}
+		      \\
+			z\notin n(\gamma_{1}\cdot \ldots \cdot \gamma_{k})
+		    }{
+		      (\nu z)P_{1} \xrightarrow{\gamma_{1}\cdot \ldots \cdot \gamma_{k}} (\nu z)L_{k}^{'}
+		  }$
+		\end{center}
+	      \item[$Opn$]
+	      \item[$Par1$]
+	      \item[$Com3$]
+	      \item[$Par2$]
+	      \item[$Par3$]
+	      \item[$Cong2$]
+	    \end{description}	    
+	\end{description}
+
   \end{proof}
 \end{proposition}
 
