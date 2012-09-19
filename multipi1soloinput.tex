@@ -45,7 +45,7 @@ The semantic of a multi $\pi$ process is labeled transition system such that
 In this case, a label can be a sequence of prefixes, whether in the original $\pi$ calculus a label can be only a prefix. We use the symbol $\cdot$ to denote the concatenation operator.
 
 \begin{definition}\index{transition relation! multipi! input only! early! with structural congruence}
-  The \emph{early transition relation with structural congruence} is the smallest relation induced by the rules in table \ref{multipisoloinputearlywith}.
+  The \emph{early transition relation with structural congruence} is the smallest relation induced by the rules in table \ref{multipisoloinputearlywith} where $inpSeq$ is a non empty sequence of input actions and $\sigma$ is a sequence of any action.
   \begin{table}
     \begin{tabular}{ll}
 	  \hline\\
@@ -133,6 +133,15 @@ In this case, a label can be a sequence of prefixes, whether in the original $\p
 	  }{
 	      (\nu z)P \xrightarrow{\overline{x}(z)}\; P^{'}
 	  }$
+      \\\\
+	&
+	  $\inferrule* [left=\bf{OpnSeq}]{
+	      P \xrightarrow{inpSeq \cdot \overline{x}z}\; P^{'}
+	    \\ 
+	      z\neq x
+	  }{%lo strong prefixing e' solo sull'input e quindi ci puo' essere un solo output e deve essere alla fine
+	      (\nu z)P \xrightarrow{inpSeq \cdot \overline{x}(z)}\; P^{'}
+	  }$
       \\\hline
     \end{tabular}
     \caption{Multi $\pi$ early semantic with structural congruence}
@@ -191,6 +200,15 @@ In this case, a label can be a sequence of prefixes, whether in the original $\p
 
 \end{example}
 
+\begin{lemma}\ref{lemmastrongsequence}
+  If $P\xrightarrow{\sigma} Q$ then only one of the following cases hold: 
+  \begin{itemize}
+    \item 
+      $|\sigma|=1$
+    \item
+      $|\sigma|>1$, the first $|\sigma|-1$ actions are input and the last actions can be an input or an output.
+  \end{itemize}
+\end{lemma}
 
 
 
@@ -555,6 +573,13 @@ In this case, a label can be a sequence of prefixes, whether in the original $\p
 	      (\nu z)P \xrightarrow{\overline{x}(z)}\; P^{'}
 	  }$
 	&
+	  $\inferrule* [left=\bf{OpnSeq}]{
+	      P \xrightarrow{inpSeq \cdot \overline{x}z}\; P^{'}
+	    \\ 
+	      z\neq x
+	  }{
+	      (\nu z)P \xrightarrow{inpSeq \cdot \overline{x}(z)}\; P^{'}
+	  }$
       \\\hline
     \end{tabular}
     \caption{Multi $\pi$ late semantic with structural congruence}
@@ -677,19 +702,19 @@ This section contains the definition of an alternative semantic for multi $\pi$.
 	  }$
 	&
 	  $\inferrule* [left=\bf{Com2}]{
-	      L_{1} \stackrel{\overline{x}y}{\longmapsto} L_{1}^{'}
+	      L_{1} \stackrel{xy}{\longmapsto} L_{1}^{'}
 	    \\
-	      L_{2} \stackrel{xy}{\longmapsto} S^{'}
+	      L_{2} \stackrel{\overline{x}y}{\longmapsto} P
 	  }{
-	    L_{1}|L_{2} \stackrel{\epsilon}{\longmapsto} L_{1}^{'}|S^{'}
+	    L_{1}|L_{2} \stackrel{\epsilon}{\longmapsto} L_{1}^{'}|P
 	  }$
       \\\\
 	  $\inferrule* [left=\bf{Com3}]{
-	      P \stackrel{\overline{x}y}{\longmapsto} L
+	      P \stackrel{xy}{\longmapsto} L
 	    \\
-	      Q \stackrel{xy}{\longmapsto} S
+	      Q \stackrel{\overline{x}y}{\longmapsto} Q^{'}
 	  }{
-	    P|Q \stackrel{\epsilon}{\longmapsto} L|S
+	    P|Q \stackrel{\epsilon}{\longmapsto} L|Q^{'}
 	  }$
 	&
 	  $\inferrule* [left=\bf{Com4}]{
@@ -698,6 +723,22 @@ This section contains the definition of an alternative semantic for multi $\pi$.
 	      L_{2} \stackrel{xy}{\longmapsto} Q
 	  }{
 	    L_{1}|L_{2} \stackrel{\tau}{\longmapsto} P|Q
+	  }$
+      \\\\
+	  $\inferrule* [left=\bf{Com3R}]{
+	      P \stackrel{xy}{\longmapsto} L
+	    \\%serve questa regola???
+	      Q \stackrel{\overline{x}y}{\longmapsto} Q^{'}
+	  }{
+	    Q|P \stackrel{\epsilon}{\longmapsto} Q^{'}|L
+	  }$
+	&
+	  $\inferrule* [left=\bf{Com2R}]{
+	      L_{1} \stackrel{xy}{\longmapsto} L_{1}^{'}
+	    \\
+	      L_{2} \stackrel{\overline{x}y}{\longmapsto} P
+	  }{
+	    L_{2}|L_{1} \stackrel{\epsilon}{\longmapsto} P|L_{1}^{'}
 	  }$
       \\\\
 	  $\inferrule* [left=\bf{Res}]{
@@ -772,6 +813,18 @@ This section contains the definition of an alternative semantic for multi $\pi$.
   \end{table}
 \end{definition}
 
+\begin{lemma}\label{lemmacom3}
+  :\begin{itemize}
+    \item
+      It cannot happen that there exist an unmarked process $P$, a marked process $L$ and an action $\overline{x}y$ such that: $P\stackrel{\overline{x}y}{\longmapsto}L$. 
+    \item
+      Also it cannot be the case that there exist two unmarked processes $L_{1}, L_{2}$ and an action $\overline{x}y$ such that: $L_{1}\stackrel{\overline{x}y}{\longmapsto}L_{2}$
+  \end{itemize}
+  \begin{proof}
+    we prove the first 
+  \end{proof}
+\end{lemma}
+
   
 \begin{definition}\ref{low}
   Let $P, Q$ be unmarked processes and $L_{1}, \cdots, L_{k-1}$ marked processes. We define the derivation relation $\rightarrow_{s}$ in the following way:
@@ -800,9 +853,95 @@ This section contains the definition of an alternative semantic for multi $\pi$.
       \end{tabular}
   \end{center}
 
-  HA PIU' SENSO DIRE $a \cdot \tau \neq a$ e $\tau \cdot \tau \neq \tau$? e se si vale la stessa cosa per le epsilon oppure no?
+  HA PIU' SENSO DIRE $a \cdot \tau \neq a$ e $\tau \cdot \tau \neq \tau$?
 
 \end{definition}
+
+\begin{example}[Multi-party synchronization]
+  We show an example of a derivation of three processes that synchronize.
+ 
+  \begin{center}
+  $\inferrule* [left=\bf{Par2}]{\inferrule* [left=\bf{Com3}]{
+      \inferrule* [left=\bf{SInpLow}]{
+      }{
+	\underline{x(a)}.x(b).P
+	  \stackrel{xy}{\longmapsto}
+	    *(x(b).P\{y/a\})
+      }
+    \\
+      \inferrule* [left=\bf{Out}]{
+      }{
+	\overline{x}y.Q \stackrel{\overline{x}y}{\longmapsto} Q
+      }
+  }{
+	\underline{x(a)}.x(b).P|\overline{x}y.Q
+	  \stackrel{\epsilon}{\longmapsto}
+	    *(x(b).P\{y/a\})|Q
+  }}{
+	(\underline{x(a)}.x(b).P|\overline{x}y.Q) | \overline{x}z.R
+	  \stackrel{\epsilon}{\longmapsto}
+	    (*(x(b).P\{y/a\})|Q)|*(\overline{x}z.R)
+  }$
+  \end{center}
+
+  \begin{center}
+    $\inferrule* [left=\bf{Par1}]{
+      \inferrule*[left=\bf{Star}]{
+	\inferrule* [left=\bf{EInp}]{
+	}{
+	  x(b).P\{y/a\} \stackrel{xz}{\longmapsto} P\{y/a\}\{z/b\}
+	}
+      }{
+	*(x(b).P\{y/a\}) \stackrel{xz}{\longmapsto} P\{y/a\}\{z/b\}      
+      }
+    }{
+      *(x(b).P\{y/a\}) | Q \stackrel{xz}{\longmapsto} P\{y/a\}\{z/b\} | Q
+    }$
+  \end{center}
+
+  \begin{center}
+  $
+      \inferrule* [left=\bf{Com4}]{
+	  *(x(b).P\{y/a\}) | Q \stackrel{xz}{\longmapsto} P\{y/a\}\{z/b\} | Q
+	\\
+	  \inferrule* [left=\bf{Star}]{
+	    \inferrule* [left=\bf{Out}]{
+	    }{
+	      \overline{x}z.R	
+		\stackrel{\overline{x}z}{\longmapsto}
+		  R
+	    }
+	  }{
+	    *\overline{x}z.R	
+	      \stackrel{\overline{x}z}{\longmapsto}
+		R
+	  }
+      }{
+	(\underline{x(a)}.x(b).P|\overline{x}y.Q)|*(\overline{x}z.R)
+	  \stackrel{\tau}{\longmapsto}
+	    (P\{y/a\}\{z/b\}|Q)|R
+      }
+  $
+  \end{center}
+
+  \begin{center}
+  $
+      \inferrule* [left=\bf{Low}]{
+	(\underline{x(a)}.x(b).P|\overline{x}y.Q) | \overline{x}z.R
+	  \stackrel{\epsilon}{\longmapsto}
+	    (*(x(b).P\{y/a\})|Q)|*(\overline{x}z.R)
+	      \xrightarrow{\tau}
+		(P\{y/a\}\{z/b\}|Q)|R
+      }{
+	(\underline{x(a)}.x(b).P|\overline{x}y.Q)|\overline{x}z.R
+	  \xrightarrow{\tau}_{s}
+	    (P\{y/a\}\{z/b\}|Q)|R
+      }
+  $
+  \end{center}
+
+\end{example}
+
 
 
 
@@ -812,6 +951,7 @@ This section contains the definition of an alternative semantic for multi $\pi$.
     $P\xrightarrow{\sigma} Q \Leftrightarrow P\xrightarrow{\sigma}_{s} Q$
   \end{center}
   \begin{proof}
+    DA MODIFICARE PERCHE' LE REGOLE COM2 E COM3 SONO CAMBIATE 
     The proof of $\Rightarrow$ direction is by induction on the depth of the derivation tree of $P\xrightarrow{\sigma} Q$:
     \begin{description}
       \item[base case]
@@ -1116,7 +1256,7 @@ This section contains the definition of an alternative semantic for multi $\pi$.
 	\end{center}
 	and 
 	\begin{center}
-	  $\gamma_{1} \cdot \ldots \cdot \gamma_{k+1} =  \overline{x}y$
+	  $\gamma_{1} \cdot \ldots \cdot \gamma_{k+1} =  \overline{x}z$
 	\end{center}
 	We can have three different cases now: 
 	\begin{description}
@@ -1159,6 +1299,79 @@ This section contains the definition of an alternative semantic for multi $\pi$.
 	    \end{center}
 	    we derive the transition $ (\nu z) L_{i-1} \stackrel{\overline{x}(z)}{\longmapsto} L_{i}$ with rule $Open$ and the transitions $(\nu z)P_{1}\stackrel{\tau}{\longmapsto}(\nu z)L_{1} \stackrel{\epsilon}{\longmapsto} (\nu z)L_{2}\cdots \stackrel{\epsilon}{\longmapsto} (\nu z) L_{i-1}$ with rule $Res$.
 	\end{description}
+      \item[$OpnSeq$]: 
+	the last part of the derivation tree looks like this:
+	\begin{center}
+	  $\inferrule* [left=\bf{OpnSeq}]{
+	      P_{1} \xrightarrow{inpSeq \cdot \overline{x}z} Q
+	    \\ 
+	      z\neq x
+	  }{
+	      (\nu z)P_{1} \xrightarrow{inpSeq \cdot \overline{x}(z)} Q
+	  }$	 
+	\end{center}
+	for the inductive hypothesis $P_{1} \xrightarrow{\sigma}_{s} Q$ which implies that there exist $L_{1}, \cdots, L_{k}$ and $\gamma_{1}, \cdots, \gamma_{k+1}$ with $k\geq 0$ such that 
+	\begin{center}
+	  $P_{1} \stackrel{\gamma_{1}}{\longmapsto} L_{1}  \stackrel{\gamma_{2}}{\longmapsto} L_{2} \cdots L_{k-1} \stackrel{\gamma_{k}}{\longmapsto} L_{k} \stackrel{\gamma_{k+1}}{\longmapsto} Q$ 
+	\end{center}
+	and 
+	\begin{center}
+	  $\gamma_{1} \cdot \ldots \cdot \gamma_{k+1} =  inpSeq \cdot \overline{x}z$
+	\end{center}
+	We can have three different cases now: 
+	\begin{description}
+	  \item[$\gamma_{1}=\overline{x}z$]: 
+	    A proof of the conclusion is:
+	    \begin{center}
+	      $\inferrule* [left=\bf{Low}]{
+		  \inferrule* [left=\bf{Opn}]{
+		    P_{1}\stackrel{\overline{x}z}{\longmapsto} L_{1}
+		  }{
+		    (\nu z)P_{1}\stackrel{\overline{x}(z)}{\longmapsto} L_{1}
+		  }
+		  \\
+			      L_{1} \stackrel{\gamma_{2}}{\longmapsto} L_{2}
+		  \cdots
+			      \stackrel{\gamma_{k}}{\longmapsto} L_{k}
+			      \stackrel{\gamma_{k+1}}{\longmapsto} Q
+	      }{
+		(\nu z)P_{1} \xrightarrow{\overline{x}(z) \cdot \gamma_{2}\cdot \ldots \cdot \gamma_{k+1}}_{s} Q
+	      }$	  
+	    \end{center}
+	  \item[$\gamma_{i}=\overline{x}z$]:
+	    with $1<i\leq k$ in this case $\gamma_{i+1}= \cdot = \gamma_{k}=\epsilon$, $\gamma_{k+1}=\tau$ and $\gamma_{1}\cdot \ldots \cdot \gamma_{i-1}=inpSeq$. A proof of the conclusion is:
+	    \begin{center}
+	      $\inferrule* [left=\bf{Low}]{
+		  (\nu z)P_{1}\stackrel{\gamma_{1}}{\longmapsto} (\nu z)L_{1}
+			      \stackrel{\gamma_{2}}{\longmapsto} (\nu z)L_{2}
+		  \cdots
+			      \stackrel{\gamma_{i-1}}{\longmapsto} (\nu z) L_{i-1}
+			      \stackrel{\overline{x}(z)}{\longmapsto} L_{i}
+			      \stackrel{\epsilon}{\longmapsto} L_{i+1}
+		  \cdots 
+			      \stackrel{\epsilon}{\longmapsto} L_{k}
+			      \stackrel{\tau}{\longmapsto} Q
+	      }{
+		(\nu z)P_{1} \xrightarrow{\gamma_{1}\cdot \ldots \cdot \gamma_{i-1} \cdot \overline{x}(z) \cdot \epsilon \cdot \ldots \cdot \epsilon \cdot \cdot \tau}_{s} Q
+	      }$	  
+	    \end{center}
+	    we derive the transition $ (\nu z) L_{i-1} \stackrel{\overline{x}(z)}{\longmapsto} L_{i}$ with rule $Open$ and the transitions $(\nu z)P_{1}\stackrel{\gamma_{1}}{\longmapsto}(\nu z)L_{1} \stackrel{\gamma_{2}}{\longmapsto} (\nu z)L_{2}\cdots \stackrel{\gamma_{i-1}}{\longmapsto} (\nu z) L_{i-1}$ with rule $Res$.
+	  \item[$\gamma_{k+1}=\overline{x}z$]:
+	    in this case $\gamma_{1}\cdot \ldots \cdot \gamma_{k}=inpSeq$. A proof of the conclusion is:
+	    \begin{center}
+	      $\inferrule* [left=\bf{Low}]{
+		  (\nu z)P_{1}\stackrel{\gamma_{1}}{\longmapsto} (\nu z)L_{1}
+			      \stackrel{\gamma_{2}}{\longmapsto} (\nu z)L_{2}
+		  \cdots
+			      \stackrel{\gamma_{k}}{\longmapsto} (\nu z)L_{k}
+			      \stackrel{\overline{x}(z)}{\longmapsto} Q
+	      }{
+		(\nu z)P_{1} \xrightarrow{\gamma_{1}\cdot \ldots \cdot \gamma_{k} \cdot \overline{x}(z)}_{s} Q
+	      }$	  
+	    \end{center}
+	    we derive the transition $ (\nu z) L_{k} \stackrel{\overline{x}(z)}{\longmapsto} L_{i}$ with rule $Open$ and the others with rule $Res$.
+	\end{description}
+
     \end{description}
     
     
@@ -1287,87 +1500,296 @@ This section contains the definition of an alternative semantic for multi $\pi$.
 		    \end{center}
 		    for transitivity of $\equiv$ we can assume that there is a derivation of $(\nu z)L_{k}^{'} \stackrel{\gamma_{k+1}}{\longmapsto} Q^{'}$ that does not end with an instance of $Cong3$ and so it does end with $Res$ or $Opn$:
 		    \begin{description}
-		    \item[$Res$]:
-		    \begin{center}
-		      $\inferrule* [left=\bf{Cong3}]{
-			  \inferrule* [left=\bf{Res}]{
-			    L_{k}^{'} \stackrel{\gamma_{k+1}}{\longmapsto} Q^{''}
+		      \item[$Res$]:
+			\begin{center}
+			  $\inferrule* [left=\bf{Cong3}]{
+			      \inferrule* [left=\bf{Res}]{
+				L_{k}^{'} \stackrel{\gamma_{k+1}}{\longmapsto} Q^{''}
+			      }{
+				(\nu z)L_{k}^{'} \stackrel{\gamma_{k+1}}{\longmapsto} (\nu z)Q^{''}
+			      }
+			    \\
+			      (\nu z)Q^{''} \equiv Q
 			  }{
-			    (\nu z)L_{k}^{'} \stackrel{\gamma_{k+1}}{\longmapsto} (\nu z)Q^{''}
-			  }
-			\\
-			  (\nu z)Q^{''} \equiv Q
-		      }{
-			(\nu z)L_{k}^{'} \stackrel{\gamma_{k+1}}{\longmapsto} Q
-		      }$
-		    \end{center}
-		    we can derive the following chain of transition:
-		    \begin{center}
-		      $P_{1} \stackrel{\gamma_{1}}{\longmapsto} L_{1}^{'} \stackrel{\gamma_{2}}{\longmapsto} L_{2}^{'} \cdots L_{k-1}^{'} \stackrel{\gamma_{k}}{\longmapsto} L_{k}^{'}\stackrel{\gamma_{k+1}}{\longmapsto} Q^{''}$ 
-		    \end{center}
-		    and then apply the rule $Low$ and the inductive hypothesis to get 
-		    \begin{center}
-		      $P_{1} \xrightarrow{\gamma_{1}\cdot \cdots \cdot \gamma_{k+1}} Q^{''}$ 
-		    \end{center}
-		    A proof of the conclusion is
-		    \begin{center}
-		      $\inferrule* [left=\bf{Cong}]{
-			  \inferrule* [left=\bf{Res}]{
-			    P_{1} \xrightarrow{\gamma_{1}\cdot \cdots \cdot \gamma_{k+1}} Q^{''}
+			    (\nu z)L_{k}^{'} \stackrel{\gamma_{k+1}}{\longmapsto} Q
+			  }$
+			\end{center}
+			we can derive the following chain of transition:
+			\begin{center}
+			  $P_{1} \stackrel{\gamma_{1}}{\longmapsto} L_{1}^{'} \stackrel{\gamma_{2}}{\longmapsto} L_{2}^{'} \cdots L_{k-1}^{'} \stackrel{\gamma_{k}}{\longmapsto} L_{k}^{'}\stackrel{\gamma_{k+1}}{\longmapsto} Q^{''}$ 
+			\end{center}
+			and then apply the rule $Low$ and the inductive hypothesis to get 
+			\begin{center}
+			  $P_{1} \xrightarrow{\gamma_{1}\cdot \cdots \cdot \gamma_{k+1}} Q^{''}$ 
+			\end{center}
+			A proof of the conclusion is
+			\begin{center}
+			  $\inferrule* [left=\bf{Cong}]{
+			      \inferrule* [left=\bf{Res}]{
+				P_{1} \xrightarrow{\gamma_{1}\cdot \cdots \cdot \gamma_{k+1}} Q^{''}
+			      }{
+				(\nu z)P_{1} \xrightarrow{\gamma_{1}\cdot \ldots \cdot \gamma_{k+1}} (\nu z)Q^{''}
+			      }
+			    \\
+			      (\nu z)Q^{''} \equiv Q
 			  }{
-			    (\nu z)P_{1} \xrightarrow{\gamma_{1}\cdot \ldots \cdot \gamma_{k+1}} (\nu z)Q^{''}
-			  }
-			\\
-			  (\nu z)Q^{''} \equiv Q
-		      }{
-			(\nu z)P_{1} \xrightarrow{\gamma_{1}\cdot \ldots \cdot \gamma_{k+1}} Q
-		      }$
-		    \end{center}
-		    \item[$Opn$]:
+			    (\nu z)P_{1} \xrightarrow{\gamma_{1}\cdot \ldots \cdot \gamma_{k+1}} Q
+			  }$
+			\end{center}
+		      \item[$Opn$]:
+			\begin{center}
+			  $\inferrule* [left=\bf{Cong3}]{
+			      \inferrule* [left=\bf{Opn}]{
+				L_{k}^{'} \stackrel{\overline{x}z}{\longmapsto} Q^{'}
+			      }{
+				(\nu z)L_{k}^{'} \stackrel{\overline{x}(z)}{\longmapsto} Q^{'}
+			      }
+			    \\
+			      Q^{'} \equiv Q
+			  }{
+			    (\nu z)L_{k}^{'} \stackrel{\overline{x}(z)}{\longmapsto} Q
+			  }$
+			\end{center}
+			we can derive the following chain of transition:
+			\begin{center}
+			  $P_{1} \stackrel{\gamma_{1}}{\longmapsto} L_{1}^{'} \stackrel{\gamma_{2}}{\longmapsto} L_{2}^{'} \cdots L_{k-1}^{'} \stackrel{\gamma_{k}}{\longmapsto} L_{k}^{'}\stackrel{\overline{x}z}{\longmapsto} Q^{'}$ 
+			\end{center}
+			and then apply the rule $Low$ and the inductive hypothesis to get 
+			\begin{center}
+			  $P_{1} \xrightarrow{\gamma_{1}\cdot \cdots \cdot \gamma_{k}\cdot \overline{x}z} Q^{'}$ 
+			\end{center}
+			A proof of the conclusion is
+			\begin{center}
+			  $\inferrule* [left=\bf{Cong}]{
+			      \inferrule* [left=\bf{OpnSeq}]{
+				P_{1} \xrightarrow{\gamma_{1}\cdot \cdots \cdot \gamma_{k}\cdot \overline{x}z} Q^{'}
+			      }{
+				(\nu z)P_{1} \xrightarrow{\gamma_{1}\cdot \ldots \cdot \gamma_{k}\cdot \overline{x}(z)} Q^{'}
+			      }
+			    \\
+			      Q^{'} \equiv Q
+			  }{
+			    (\nu z)P_{1} \xrightarrow{\gamma_{1}\cdot \ldots \cdot \gamma_{k}\cdot \overline{x}(z)} Q
+			  }$
+			\end{center}			
 		    \end{description}
-		    
-		  \item[$Opn$]: NOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
+		  \item[$Opn$]:
 		    \begin{center}
 		      $\inferrule* [left=\bf{Opn}]{
-			  L_{k}^{'} \stackrel{\overline{x}y}{\longmapsto} Q
+			  L_{k}^{'} \stackrel{\overline{x}z}{\longmapsto} Q
 			\\
-			  z\notin n(Q^{'})
+			  z\notin n(Q)
 		      }{
-			(\nu z)L_{k}^{'} \stackrel{\overline{x}(y)}{\longmapsto} Q
+			(\nu z)L_{k}^{'} \stackrel{\overline{x}(z)}{\longmapsto} Q
 		      }$
 		    \end{center}
 		    we can build the following chain of transitions:
 		    \begin{center}
-		      $P_{1} \stackrel{\gamma_{1}}{\longmapsto} L_{1}^{'} \stackrel{\gamma_{2}}{\longmapsto} L_{2}^{'} \cdots L_{k-1}^{'} \stackrel{\gamma_{k}}{\longmapsto} L_{k}^{'}\stackrel{\gamma_{k+1}}{\longmapsto} Q^{'}$ 
+		      $P_{1} \stackrel{\gamma_{1}}{\longmapsto} L_{1}^{'} \stackrel{\gamma_{2}}{\longmapsto} L_{2}^{'} \cdots L_{k-1}^{'} \stackrel{\gamma_{k}}{\longmapsto} L_{k}^{'}\stackrel{\overline{x}z}{\longmapsto} Q$ 
 		    \end{center}
-		    then apply the rule $Low$ and the inductive hypothesis to get $P_{1} \xrightarrow{\gamma_{1}\cdot \ldots \cdot \gamma_{k+1}} Q^{'}$. A proof of the conclusion can be
+		    then apply the rule $Low$ and the inductive hypothesis to get $P_{1} \xrightarrow{\gamma_{1}\cdot \ldots \cdot \gamma_{k} \cdot \overline{x}z} Q$. A proof of the conclusion can be
 		    \begin{center}
-		      $\inferrule* [left=\bf{Res}]{
-			  P_{1} \xrightarrow{\gamma_{1}\cdot \ldots \cdot \gamma_{k+1}} Q^{'}
+		      $\inferrule* [left=\bf{OpnSeq}]{
+			  P_{1} \xrightarrow{\gamma_{1}\cdot \ldots \cdot \gamma_{k} \cdot \overline{x}z} Q
 			\\
-			  z\notin n(\gamma_{1}\cdot \ldots \cdot \gamma_{k+1})
+			  z\notin n(\gamma_{1}\cdot \ldots \cdot \gamma_{k})
 		      }{
-			(\nu z)P_{1} \xrightarrow{\gamma_{1}\cdot \ldots \cdot \gamma_{k+1}} (\nu z)Q^{'}
-		    }$
+			(\nu z)P_{1} \xrightarrow{\gamma_{1}\cdot \ldots \cdot \gamma_{k} \cdot \overline{x}(z)} Q
+		      }$
 		    \end{center}
 		\end{description}
-	      \item[$Opn$]: 
-		
+	      \item[$Opn$] the first transition is:
+		\begin{center}
+		  $\inferrule* [left=\bf{Opn}]{
+			P_{1} \stackrel{\overline{x}z}{\longmapsto} L_{1}
+		      \\
+			z\notin n(\overline{x}(z))
+		    }{
+		      (\nu z) P_{1} \stackrel{\overline{x}(z)}{\longmapsto} L_{1}
+		  }$ 
+		\end{center}		
+		since $\gamma_{1}$ is an output for lemma \ref{lemmastrongsequence} $\gamma_{2}\cdot \ldots \cdot \gamma_{k+1}=\tau$ and $\sigma=\overline{x}(z)$. We derive the following chain of transition:
+		\begin{center}
+		  $P_{1} \stackrel{\overline{x}z}{\longmapsto} L_{1} \stackrel{\gamma_{2}}{\longmapsto} L_{2} \cdots L_{k-1} \stackrel{\gamma_{k}}{\longmapsto} L_{k}\stackrel{\gamma_{k+1}}{\longmapsto} Q$ 
+		\end{center}
+		for rule $Low$ and inductive hypothesis
+		\begin{center}
+		  $P_{1} \xrightarrow{\overline{x}z} Q$ 
+		\end{center}
+		A proof of the conclusion is
+		\begin{center}
+		  $\inferrule* [left=\bf{Opn}]{
+		    P_{1} \xrightarrow{\overline{x}z} Q
+		  }{
+		    (\nu z)P_{1} \xrightarrow{\overline{x}(z)} Q
+		  }$ 
+		\end{center}
 	      \item[$Par1$]: 
-		
-	      \item[$Com3$]: 
-		
-	      \item[$Par2$]: 
-		
-	      \item[$Par3$]: 
-		
+		the first transition is:
+		\begin{center}
+		  $\inferrule* [left=\bf{Par1}]{
+			P_{1} \stackrel{\gamma_{1}}{\longmapsto} L_{1}^{'}
+		      \\
+			bn(\gamma_{1})\cap fn(P_{2})=\emptyset
+		    }{
+		      P_{1}|P_{2} \stackrel{\gamma_{1}}{\longmapsto} L_{1}^{'}|P_{2}
+		  }$
+		\end{center}
+		the transitions 
+		\begin{center}
+		  $P \stackrel{\gamma_{1}}{\longmapsto} L_{1} \stackrel{\gamma_{2}}{\longmapsto} \cdots \stackrel{\gamma_{k}}{\longmapsto} L_{k}$ 
+		\end{center}
+		are such that the last rule used in their derivation is $Par1$. Whether the derivation of the last transition can end with $Par1$ or $Cong3$:
+		\begin{description}
+		  \item[$Par1$]
+		    We derive the following chain of transition:
+		    \begin{center}
+		      $P_{1} \stackrel{\gamma_{1}}{\longmapsto} L_{1}^{'} \stackrel{\gamma_{2}}{\longmapsto} L_{2}^{'} \cdots L_{k-1}^{'} \stackrel{\gamma_{k}}{\longmapsto} L_{k}^{'}\stackrel{\gamma_{k+1}}{\longmapsto} Q_{1}$ 
+		    \end{center}
+		    for rule $Low$ and inductive hypothesis
+		    \begin{center}
+		      $P_{1} \xrightarrow{\sigma} Q_{1}$ 
+		    \end{center}
+		    A proof of the conclusion is
+		    \begin{center}
+		      $\inferrule* [left=\bf{Par}]{
+			  P_{1} \xrightarrow{\sigma} Q_{1}
+			\\
+			  bn(\sigma)\cap fn(P_{2})=\emptyset
+		      }{
+			P_{1}|P_{2} \xrightarrow{\sigma} Q_{1}|P_{2}
+		      }$ 
+		    \end{center}
+		  \item[$Cong3$]
+		    the last part of the derivation of the last transition is
+		    \begin{center}
+		      $\inferrule* [left=\bf{Cong3}]{
+			  L_{k}^{'}|P_{2} \stackrel{\gamma_{k+1}}{\longmapsto} Q^{'}
+			\\
+			  Q^{'} \equiv Q
+		      }{
+			L_{k}^{'}|P_{2} \stackrel{\gamma_{k+1}}{\longmapsto} Q
+		      }$ 		      
+		    \end{center}
+		    because of the transitivity of $\equiv$ we can assume that there is a derivation of $L_{k}^{'}|P_{2} \stackrel{\gamma_{k+1}}{\longmapsto} Q^{'}$ which does not use $Cong3$ as its last instance. So this last instance can only be $Par1$ so $Q^{'}=Q^{''}|P_{2}$. We derive the following chain of transition:
+		    \begin{center}
+		      $P_{1} \stackrel{\gamma_{1}}{\longmapsto} L_{1}^{'} \stackrel{\gamma_{2}}{\longmapsto} L_{2}^{'} \cdots L_{k-1}^{'} \stackrel{\gamma_{k}}{\longmapsto} L_{k}^{'}\stackrel{\gamma_{k+1}}{\longmapsto} Q^{''}$ 
+		    \end{center}
+		    for rule $Low$ and inductive hypothesis
+		    \begin{center}
+		      $P_{1} \xrightarrow{\sigma} Q^{''}$ 
+		    \end{center}
+		    A proof of the conclusion is
+		    \begin{center}
+		      $\inferrule*[left=\bf{Cong3}]{
+			  \inferrule* [left=\bf{Par}]{
+			      P_{1} \xrightarrow{\sigma} Q^{''}
+			    \\
+			      bn(\sigma)\cap fn(P_{2})=\emptyset
+			  }{
+			    P_{1}|P_{2} \xrightarrow{\sigma} Q^{''}|P_{2}
+			  }
+			\\
+			  Q^{''}|P_{2} \equiv Q
+		      }{
+			P_{1}|P_{2} \xrightarrow{\sigma} Q
+		      }$ 
+		    \end{center}
+		\end{description}
 	      \item[$Cong2$]: 
-		
+		the last rule of the derivation of the first transition is:
+		\begin{center}
+		  $\inferrule* [left=\bf{Cong2}]{
+		      P^{'} \stackrel{\gamma_{1}}{\longmapsto} L_{1}
+		    \\
+		      P^{'} \equiv P
+		  }{
+		    P \stackrel{\gamma_{1}}{\longmapsto} L_{1}
+		  }$ 		      
+		\end{center}
+		We derive the following chain of transition:
+		\begin{center}
+		  $P^{'} \stackrel{\gamma_{1}}{\longmapsto} L_{1} \stackrel{\gamma_{2}}{\longmapsto} L_{2} \cdots L_{k-1} \stackrel{\gamma_{k}}{\longmapsto} L_{k}\stackrel{\gamma_{k+1}}{\longmapsto} Q$
+		\end{center}
+		for rule $Low$ and inductive hypothesis
+		\begin{center}
+		  $P^{'} \xrightarrow{\sigma} Q$ 
+		\end{center}
+		A proof of the conclusion is
+		\begin{center}
+		  $\inferrule* [left=\bf{Cong2}]{
+			P^{'} \xrightarrow{\sigma} Q
+		    \\
+		      P^{'} \equiv P
+		  }{
+		    P \xrightarrow{\sigma} Q
+		  }$ 
+		\end{center}
+	      \item[$Com3$]: 
+		the last part of the derivation of the first transition, having in mind lemma \ref{lemmacom3}, is:
+		\begin{center}
+		  $\inferrule* [left=\bf{Com3}]{
+		      P_{1} \stackrel{xy}{\longmapsto} L_{1}^{'}
+		    \\
+		      P_{2} \stackrel{\overline{x}y}{\longmapsto} P_{2}^{'}
+		  }{
+		    P_{1}|P_{2} \stackrel{\epsilon}{\longmapsto} L_{1}^{'}|P_{2}^{'}
+		  }$ 		      
+		\end{center}
+		the derivations of the transitions $L_{1} \stackrel{\gamma_{2}}{\longmapsto} L_{2} \cdots L_{k-1} \stackrel{\gamma_{k}}{\longmapsto} L_{k}$ can end only with an instance of $Par1$ so 
+		\begin{center}
+		  $\inferrule* [left=\bf{Par1}]{
+		      L_{i}^{'} \stackrel{\gamma_{i+1}}{\longmapsto} L_{i+1}^{'}
+		    \\
+		      bn(\gamma_{i+1})\cap fn(P_{2}^{'})=\emptyset
+		  }{
+		    L_{i}^{'}|P_{2}^{'} \stackrel{\gamma_{i+1}}{\longmapsto} L_{i+1}^{'}|P_{2}^{'}
+		  }$ 		      		  
+		\end{center}
+		The derivation of the last transition $L_{k}\stackrel{\gamma_{k+1}}{\longmapsto} Q$ can end with $Par1$ or with $Cong3$:
+		\begin{description}
+		  \item[$Par1$]:
+		    We derive the following chain of transition:
+		    \begin{center}
+		      $P_{1} \stackrel{xy}{\longmapsto} L_{1}^{'} \stackrel{\gamma_{2}}{\longmapsto} L_{2}^{'} \cdots L_{k-1}^{'} \stackrel{\gamma_{k}}{\longmapsto} L_{k}^{'}\stackrel{\gamma_{k+1}}{\longmapsto} Q_{1}$
+		    \end{center}
+		    for rule $Low$ and inductive hypothesis
+		    \begin{center}
+		      $P_{1} \xrightarrow{\sigma} Q_{1}$ 
+		    \end{center}
+		    A proof of the conclusion is
+		    \begin{center}
+		      $\inferrule* [left=\bf{EComSeq}]{
+			  P_{1} \xrightarrow{xy \cdot \gamma_{2}\cdot \ldots \cdot \gamma_{k+1}} Q_{1}
+			\\
+			  P_{2}\xrightarrow{\overline{x}y} P_{2}^{'}
+		      }{
+			P_{1}|P_{2} \xrightarrow{\gamma_{2}\cdot \ldots \cdot \gamma_{k+1}} Q_{1}|P_{2}^{'}
+		      }$ 
+		    \end{center}
+		    and $\gamma_{2}\cdot \ldots \cdot \gamma_{k+1}=\sigma$ because the first action $\gamma_{1}$ is $\epsilon$.
+		  \item[$Cong3$]: e' facile da scrivere a questo punto
+		    
+		\end{description}
+	      \item[$Par2$]: 
+		the last part of the derivation of the first transition is:
+		\begin{center}
+		  $\inferrule* [left=\bf{Par2}]{
+		      P_{1} \stackrel{\gamma_{1}}{\longmapsto} L_{1}^{'}
+		    \\
+		      bn(\gamma_{1})\cap fn(P_{2})=\emptyset
+		  }{
+		    P_{1}|P_{2} \stackrel{\gamma_{1}}{\longmapsto} L_{1}^{'}|*P_{2}
+		  }$ 		      
+		\end{center}
+		caso1: sequenza(eventualmente vuota) di par3 terminata da una com4
+		caso2: sequenza(eventualmente vuota) di par3 seguita da com2 seguita da ?
 	    \end{description}	    
   \end{proof}
 \end{proposition}
 
 
+da sistemare la parte sulle regole simmetriche di com? par? e sum?
 
 
 
