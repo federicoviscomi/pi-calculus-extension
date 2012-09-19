@@ -659,20 +659,27 @@ This section contains the definition of an alternative semantic for multi $\pi$.
   The low level transition relation is the smallest relation induced by the rules in table \ref{lowleveltransitionrelation} in which $P$ stands for a process without mark, $L$ stands for a process with mark and $S$ can stand for both. 
   \begin{table}
     \begin{tabular}{ll}
-	  \hline\\
+      \hline\\
 	  $\inferrule* [left=\bf{Out}]{
 	  }{
 	    \overline{x}y.P \stackrel{\overline{x}y}{\longmapsto} P
 	  }$
-	&
+	  &
 	  $\inferrule* [left=\bf{EInp}]{
 	  }{
 	    x(y).P \stackrel{xz}{\longmapsto} P\{z/y\}
 	  }$
       \\\\
+	  &
 	  $\inferrule* [left=\bf{Tau}]{
 	  }{
 	    \tau.P \stackrel{\tau}{\longmapsto} P
+	  }$
+      \\\\
+	  $\inferrule* [left=\bf{Star}]{
+	      S \stackrel{\gamma}{\longmapsto} S^{'}
+	  }{
+	      *S \stackrel{\gamma}{\longmapsto} S^{'}
 	  }$
 	&
 	  $\inferrule* [left=\bf{SInpLow}]{
@@ -680,19 +687,19 @@ This section contains the definition of an alternative semantic for multi $\pi$.
 	  }{
 	    \underline{x(z)}.P \stackrel{xy}{\longmapsto} * P\{y/z\}
 	  }$
-      \\\\
-	  $\inferrule* [left=\bf{Sum}]{
+      \\\\\\
+	  $\inferrule* [left=\bf{Sum1}]{
 	    P \stackrel{\gamma}{\longmapsto} S
 	  }{
 	    P+Q \stackrel{\gamma}{\longmapsto} S
 	  }$
 	&
-	  $\inferrule* [left=\bf{Star}]{
-	      S \stackrel{\gamma}{\longmapsto} S^{'}
+	  $\inferrule* [left=\bf{Sum2}]{
+	    P \stackrel{\gamma}{\longmapsto} S
 	  }{
-	      *S \stackrel{\gamma}{\longmapsto} S^{'}
+	    Q+P \stackrel{\gamma}{\longmapsto} S
 	  }$
-      \\\\
+      \\\\\\
 	  $\inferrule* [left=\bf{Com1}]{
 	      P \stackrel{\overline{x}y}{\longmapsto} P^{'}
 	    \\
@@ -701,36 +708,13 @@ This section contains the definition of an alternative semantic for multi $\pi$.
 	    P|Q \stackrel{\tau}{\longmapsto} P^{'}|Q^{'}
 	  }$
 	&
+      \\\\
 	  $\inferrule* [left=\bf{Com2}]{
 	      L_{1} \stackrel{xy}{\longmapsto} L_{1}^{'}
 	    \\
 	      L_{2} \stackrel{\overline{x}y}{\longmapsto} P
 	  }{
 	    L_{1}|L_{2} \stackrel{\epsilon}{\longmapsto} L_{1}^{'}|P
-	  }$
-      \\\\
-	  $\inferrule* [left=\bf{Com3}]{
-	      P \stackrel{xy}{\longmapsto} L
-	    \\
-	      Q \stackrel{\overline{x}y}{\longmapsto} Q^{'}
-	  }{
-	    P|Q \stackrel{\epsilon}{\longmapsto} L|Q^{'}
-	  }$
-	&
-	  $\inferrule* [left=\bf{Com4}]{
-	      L_{1} \stackrel{\overline{x}y}{\longmapsto} P
-	    \\
-	      L_{2} \stackrel{xy}{\longmapsto} Q
-	  }{
-	    L_{1}|L_{2} \stackrel{\tau}{\longmapsto} P|Q
-	  }$
-      \\\\
-	  $\inferrule* [left=\bf{Com3R}]{
-	      P \stackrel{xy}{\longmapsto} L
-	    \\%serve questa regola???
-	      Q \stackrel{\overline{x}y}{\longmapsto} Q^{'}
-	  }{
-	    Q|P \stackrel{\epsilon}{\longmapsto} Q^{'}|L
 	  }$
 	&
 	  $\inferrule* [left=\bf{Com2R}]{
@@ -741,6 +725,31 @@ This section contains the definition of an alternative semantic for multi $\pi$.
 	    L_{2}|L_{1} \stackrel{\epsilon}{\longmapsto} P|L_{1}^{'}
 	  }$
       \\\\
+	  $\inferrule* [left=\bf{Com3}]{
+	      P \stackrel{xy}{\longmapsto} L
+	    \\
+	      Q \stackrel{\overline{x}y}{\longmapsto} Q^{'}
+	  }{
+	    P|Q \stackrel{\epsilon}{\longmapsto} L|Q^{'}
+	  }$
+	&
+	  $\inferrule* [left=\bf{Com3R}]{
+	      P \stackrel{xy}{\longmapsto} L
+	    \\%serve questa regola???
+	      Q \stackrel{\overline{x}y}{\longmapsto} Q^{'}
+	  }{
+	    Q|P \stackrel{\epsilon}{\longmapsto} Q^{'}|L
+	  }$
+      \\\\
+	  $\inferrule* [left=\bf{Com4}]{
+	      L_{1} \stackrel{\overline{x}y}{\longmapsto} P
+	    \\
+	      L_{2} \stackrel{xy}{\longmapsto} Q
+	  }{
+	    L_{1}|L_{2} \stackrel{\tau}{\longmapsto} P|Q
+	  }$
+	&
+      \\\\\\
 	  $\inferrule* [left=\bf{Res}]{
 	      S \stackrel{\gamma}{\longmapsto} S^{'}
 	    \\
@@ -750,15 +759,15 @@ This section contains the definition of an alternative semantic for multi $\pi$.
 	  }$
 	&
 	  $\inferrule* [left=\bf{Opn}]{
-	      S \stackrel{\overline{x}y}{\longmapsto} S^{'}
+	      S \stackrel{\overline{x}y}{\longmapsto} P
 	    \\ 
 	      y\neq x
 	    \\
-	      w\notin fn(S^{'})
+	      w\notin fn(P)
 	  }{
-	      (\nu y)S \stackrel{\overline{x}(w)}{\longmapsto} S^{'}\{w/y\}
+	      (\nu y)S \stackrel{\overline{x}(w)}{\longmapsto} P\{w/y\}
 	  }$
-      \\\\
+      \\\\\\
 	  $\inferrule* [left=\bf{Par1}]{
 	      S \stackrel{\gamma}{\longmapsto} S^{'}
 	    \\ 
@@ -782,6 +791,8 @@ This section contains the definition of an alternative semantic for multi $\pi$.
 	  }{
 	      L_{1}|L_{2} \stackrel{\gamma}{\longmapsto} L_{1}^{'}|L_{2}
 	  }$
+	&
+      \\\\\\
 	&
 	  $\inferrule* [left=\bf{Cong1}]{
 	      P\equiv P^{'}
@@ -821,7 +832,14 @@ This section contains the definition of an alternative semantic for multi $\pi$.
       Also it cannot be the case that there exist two unmarked processes $L_{1}, L_{2}$ and an action $\overline{x}y$ such that: $L_{1}\stackrel{\overline{x}y}{\longmapsto}L_{2}$
   \end{itemize}
   \begin{proof}
-    we prove the first 
+    DA FARE
+  \end{proof}
+\end{lemma}
+
+\begin{lemma}\label{lemmalabellowhigh}
+  If $P\stackrel{\gamma_{1}}{\longmapsto} L_{1} \stackrel{\gamma_{2}}{\longmapsto} \cdots  \stackrel{\gamma_{k}}{\longmapsto} L_{k} \stackrel{\gamma_{k+1}}{\longmapsto} Q$ and $\sigma = \gamma_{1}\cdot \ldots \cdot \gamma_{k+1}$ with $k\geq 1$ then $\sigma$ is a sequence of input and the last action in $\sigma$ is an input or an output.
+  \begin{proof}
+    DA FARE
   \end{proof}
 \end{lemma}
 
@@ -948,11 +966,11 @@ This section contains the definition of an alternative semantic for multi $\pi$.
 \begin{proposition}
   Let $\rightarrow$ be the relation defined in table \ref{multipisoloinputearlywith} and let $P$ be a multi $\pi$ process. Then 
   \begin{center}
-    $P\xrightarrow{\sigma} Q \Leftrightarrow P\xrightarrow{\sigma}_{s} Q$
+    $P\xrightarrow{\sigma} Q \Rightarrow P\xrightarrow{\sigma}_{s} Q$
   \end{center}
   \begin{proof}
     DA MODIFICARE PERCHE' LE REGOLE COM2 E COM3 SONO CAMBIATE 
-    The proof of $\Rightarrow$ direction is by induction on the depth of the derivation tree of $P\xrightarrow{\sigma} Q$:
+    The proof is by induction on the depth of the derivation tree of $P\xrightarrow{\sigma} Q$:
     \begin{description}
       \item[base case]
     \end{description}
@@ -1375,27 +1393,48 @@ This section contains the definition of an alternative semantic for multi $\pi$.
     \end{description}
     
     
-    The proof of $\Leftarrow$ direction is by induction on the length of the sequence of transitions used to derive $P\xrightarrow{\sigma}_{s} Q$ and on the depth of the proof tree of the first transition in such a sequence:
+  \end{proof}
+\end{proposition}
+
+
+\begin{proposition}
+  Let $\rightarrow$ be the relation defined in table \ref{multipisoloinputearlywith} and let $P$ be a multi $\pi$ process. Then 
+  \begin{center}
+    $P\xrightarrow{\sigma}_{s} Q  \Rightarrow P\xrightarrow{\sigma} Q$
+  \end{center}
+  \begin{proof}
+    DA MODIFICARE PERCHE' LE REGOLE COM2 E COM3 SONO CAMBIATE     
+    The proof is by induction on the sum of the length of the sequence of transitions used to derive $P\xrightarrow{\sigma}_{s} Q$ and on the depth of the proof tree of the first transition in such a sequence:
     \begin{description}
       \item[base case]
     \end{description}
-	in this case $P\stackrel{\sigma}{\longmapsto} Q$. Let us call $R$ the last instance of a rule used to derive $P\stackrel{\sigma}{\longmapsto} Q$. $R$ can be: 
-	\begin{description}
-	  \item[$Out$, $EInp$, $Tau$] these rules are also in table \ref{multipisoloinputearlywith} so we can derive $P\xrightarrow{\sigma} Q$.
-	  \item[$Sum$, $Com1$, $Res$, $Opn$, $Par1$, $Cong1$] these rules are also in table \ref{multipisoloinputearlywith} so first we apply the inductive hypothesis on the premises of $R$ and then apply the same rule.
-	\end{description}
+	in this case $P\stackrel{\sigma}{\longmapsto} Q$ and the derivation of this transition has depth one. The last(and only) rule used to derive $P\stackrel{\sigma}{\longmapsto} Q$ can be: $Out$, $EInp$ or $Tau$; these rules are also in table \ref{multipisoloinputearlywith} so we can derive $P\xrightarrow{\sigma} Q$.
     \begin{description}
       \item[inductive case]
     \end{description}
-	in this case there exist $L_{1}, \cdots, L_{k}$ and $\gamma_{1}, \cdots, \gamma_{k+1}$ with $k\geq 0$ such that 
+	we have two cases: the first is $P\stackrel{\sigma}{\longmapsto} Q$ and the depth of the derivation is greater than one. In this case the last rule in the derivation can be: $Sum$, $Com1$, $Res$, $Opn$, $Par1$, $Cong1$:
+	\begin{description}
+	  \item[$Sum$]:
+		\begin{center}
+		  $\inferrule* [left=\bf{Sum}]{
+		      P_{1} \stackrel{\gamma_{1}}{\longmapsto} Q
+		    }{
+		      P_{1}+P_{2} \stackrel{\gamma_{1}}{\longmapsto} Q
+		  }$ 
+		\end{center}
+	    for rule $Low$ $P_{1} \xrightarrow{\gamma_{1}}_{s} Q$, for inductive hypothesis $P_{1} \xrightarrow{\gamma_{1}} Q$ and finally for rule $Sum$ $P_{1}+P_{2} \xrightarrow{\gamma_{1}} Q$.
+	  \item[$others$] 
+	    the other cases are similar to the previous since these rules are in common. 
+	\end{description}
+	The second case is that there exist $L_{1}, \cdots, L_{k}$ and $\gamma_{1}, \cdots, \gamma_{k+1}$ with $k\geq 1$ such that 
 	\begin{center}
 	  $P \stackrel{\gamma_{1}}{\longmapsto} L_{1}  \stackrel{\gamma_{2}}{\longmapsto} L_{2} \cdots L_{k-1} \stackrel{\gamma_{k}}{\longmapsto} L_{k} \stackrel{\gamma_{k+1}}{\longmapsto} Q$ 
 	\end{center}
 	and 
 	\begin{center}
 	  $\gamma_{1} \cdot \ldots \cdot \gamma_{k+1} = \sigma$ and $k\geq 1$
-	\end{center}
-	We proceed by induction on the depth of the derivation of $P \stackrel{\gamma_{1}}{\longmapsto} L_{1}$. Let us call $R$ the last instance of a rule used to derive $P\stackrel{\gamma_{1}}{\longmapsto} L_{1}$. $R$ cannot be $Out$, $EInp$, $Tau$, $Com1$, $Cong1$ because $L_{1}$ is a marked process but these rules lead to a non marked process. Also $R$ cannot be $Star$, $Com2$, $Com4$, $Cong3$ because $P$ is not marked whether the head of the conclusion of these rules is marked.
+	\end{center} 
+	we proceed by induction on the depth of the derivation of $P \stackrel{\gamma_{1}}{\longmapsto} L_{1}$. Let us call $R$ the last instance of a rule used to derive $P\stackrel{\gamma_{1}}{\longmapsto} L_{1}$. $R$ cannot be $Out$, $EInp$, $Tau$, $Com1$, $Cong1$ because $L_{1}$ is a marked process but these rules lead to a non marked process. Also $R$ cannot be $Star$, $Com2$, $Com4$, $Cong3$ because $P$ is not marked whether the head of the conclusion of these rules is marked.
 	\begin{description}
 	  \item[base case] 
 	\end{description}
