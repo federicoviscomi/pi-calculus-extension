@@ -650,7 +650,7 @@ This section contains the definition of an alternative semantic for multi $\pi$.
    \begin{tabular}{l}
      $P,Q$ ::= $0$ | $\pi.P$ | $P|Q$ | $P+Q$ | $(\nu x) P$ | $A(x_{1}, \cdots, x_{n})$ | $*P$
    \\\\
-     $\pi$ ::= $\overline{x}y$ | $x(y)$ | $\underline{\overline{x}(y)}$ | $\tau$ 
+     $\pi$ ::= $\overline{x}y$ | $x(y)$ | $\underline{\overline{x}y}$ | $\tau$ 
    \end{tabular}
 \end{center}
 \begin{definition}
@@ -670,7 +670,7 @@ This section contains the definition of an alternative semantic for multi $\pi$.
       \\\\
 	  $\inferrule* [left=\bf{SOutLow}]{
 	  }{
-	    \underline{\overline{x}y}.P \stackrel{xy}{\longmapsto} * P
+	    \underline{\overline{x}y}.P \stackrel{\overline{x}y}{\longmapsto} * P
 	  }$
 	  &
 	  $\inferrule* [left=\bf{Tau}]{
@@ -755,12 +755,10 @@ This section contains the definition of an alternative semantic for multi $\pi$.
 	    (\nu y) S \stackrel{\gamma}{\longmapsto} (\nu y) S^{'}
 	  }$
 	&
-	  $\inferrule* [left=\bf{OpnSeq}]{
-	      P \xrightarrow{\sigma}\; P^{'}
-	    \\ 
-	      \exists \overline{x}z\in \sigma:\; x\neq z
+	  $\inferrule* [left=\bf{Opn}]{
+	      S \xrightarrow{\overline{x}y}\; S^{'}
 	  }{
-	      (\nu z)P \xrightarrow{opn(\sigma,z)}\; P^{'}
+	      (\nu y)P \xrightarrow{\overline{x}(y)}\; P^{'}
 	  }$
       \\\\\\
 	  $\inferrule* [left=\bf{Par1L}]{
@@ -827,11 +825,12 @@ This section contains the definition of an alternative semantic for multi $\pi$.
 \end{definition}
 
 \begin{lemma}\label{lemmacom3}
-  :\begin{itemize}
+  For all unmarked processes $P,Q$ and marked process $L_{1}, L_{2}$.
+  \begin{itemize}
     \item
-      It cannot happen that there exist an unmarked process $P$, a marked process $L$ and an action $\overline{x}y$ such that: $P\stackrel{\overline{x}y}{\longmapsto}L$. 
+      if $P\stackrel{\alpha}{\longmapsto}L_{1}$ or $L_{1}\stackrel{\alpha}{\longmapsto}L_{2}$ then $\alpha$ can only be a free output or an $\epsilon$
     \item
-      Also it cannot be the case that there exist two unmarked processes $L_{1}, L_{2}$ and an action $\overline{x}y$ such that: $L_{1}\stackrel{\overline{x}y}{\longmapsto}L_{2}$
+      if $L_{1}\stackrel{\alpha}{\longmapsto}P$ of $P\stackrel{\alpha}{\longmapsto}Q$ then $\alpha$ is not an $\epsilon$
   \end{itemize}
   \begin{proof}
     DA FARE
