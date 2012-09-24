@@ -236,16 +236,7 @@ The semantic of a $\pi$ calculus process is a labeled transition system such tha
   \item
     the transition relations is $\rightarrow\subseteq \mathbb{P}\times \mathbb{A}\times \mathbb{P}$
 \end{itemize}
-In the following section we present the early semantic without structural congruence and without $alpha$ conversion. We call this semantic early because in the rule $ECom$
-\begin{center}
-  \begin{tabular}{c}
-    $P \xrightarrow{xy} P^{'}\;\; Q\xrightarrow{\overline{x}y} Q^{'}$\\
-    \hline
-    $P|Q \xrightarrow{\tau} P^{'}|Q^{'}$
-  \end{tabular}
-\end{center}
-there is no substitution, instead the substitution occurs at an early point in the inference of this translation, namely during the inference of the input action. 
-
+In the following section we present the early semantic without structural congruence and without $alpha$ conversion. 
 
 \begin{definition}\index{transition relation! early! without structural congruence}
   The \emph{early transition relation} $\rightarrow\subseteq \mathbb{P}\times \mathbb{A} \times \mathbb{P}$ is the smallest relation induced by the rules in table \ref{transitionrelationearlywithoutstructuralcongruence}. Where with $\tilde{x}$ we mean a sequence of names $x_{1}, \cdots, x_{n}$.
@@ -647,6 +638,22 @@ In this case the set of actions $\mathbb{A}$ contains
   \end{table}
 \end{definition}
 
+
+
+\subsection{Distinction between late and early semantics}
+
+There are some differences between late and early semantics:
+\begin{description}
+  \item[Communication]
+    da scrivere
+  \item[Input]
+    da scrivere
+  \item[Parallel composition]
+    the side condition in the rule $Par$ for the late sematic is important because:
+    $(x(z).P|Q)|\overline{x}y.R \xrightarrow{\tau} (P\{w/z\}|Q)\{y/w\}|R$ 
+    
+    da scrivere
+\end{description}
 
 
 
@@ -3343,10 +3350,7 @@ which is not want we want. So we prove a weaker version
 
 \section{Bisimilarity, congruence and equivalence}
 
-We present here some behavioural equivalences and some of their properties. 
-
-\subsection{Late bisimilarity}
-In the following we will use the phrase $bn(\alpha)$ is fresh in a definition to mean that the name in $bn(\alpha)$, if any, is different from any free name occurring in any of the agents in the definition. We write 
+We present here some behavioural equivalences and some of their properties. In the following we will use the phrase $bn(\alpha)$ is fresh in a definition to mean that the name in $bn(\alpha)$, if any, is different from any free name occurring in any of the agents in the definition. We write 
 \[
   \rightarrow_{E}
 \]
@@ -3357,39 +3361,22 @@ for the early semantic and
 for the late semantic. % with $\alpha$ conversion but without structural congruence.
 It's not a concern which late semantic we are talking about because we have proved them equivalent.
 
+
+\subsection{Late bisimilarity}
+
 \begin{definition}
-  A \emph{strong late ground simulation}(according to \cite{milnerparrowwalker}) is a binary relation $\mathbf{S}$ on processes such that for each process $P$ and $Q$, $P\mathbf{S}Q$ implies:
+  A \emph{strong late bisimulation}(according to \cite{parrow}) is a binary simmetric relation $\mathbf{S}$ on processes such that for each process $P$ and $Q$, $P\mathbf{S}Q$ implies:
   \begin{itemize}
+    \item
+      if $P \xrightarrow{a(x)}_{L} P^{'}$ and $x\notin n(P)\cup n(Q)$ then there exists a process $Q^{'}$ such that $Q \xrightarrow{a(x)}_{L} Q^{'}$ and for all $u$ $P^{'}\{u/x\}\mathbf{S}Q^{'}\{u/x\}$
     \item 
-      if $P \xrightarrow{\alpha}_{L} P^{'}$ and $\alpha$ is $\tau$ or a free output then there exists a process $Q^{'}$ such that $Q \xrightarrow{\alpha}_{L} Q^{'}$ and $P^{'}\mathbf{S}Q^{'}$
-    \item
-      if $P \xrightarrow{x(y)}_{L} P^{'}$ and $y\notin n(P)\cup n(Q)$ then there exists a process $Q^{'}$ such that $Q \xrightarrow{x(y)}_{L} Q^{'}$ and for all $w$ $P^{'}\{w/y\}\mathbf{S}Q^{'}\{w/y\}$
-    \item
-      if $P \xrightarrow{\overline{x}(y)}_{L} P^{'}$ and $y\notin n(P)\cup n(Q)$ then there exists a process $Q^{'}$ such that $Q \xrightarrow{\overline{x}(y)}_{L} Q^{'}$
+      if $P \xrightarrow{\alpha}_{L} P^{'}$, $\alpha$ is not an input and $bn(\alpha) \cap (n(P)\cup n(Q)) = \emptyset$ then there exists a process $Q^{'}$ such that $Q \xrightarrow{\alpha}_{L} Q^{'}$ and $P^{'}\mathbf{S}Q^{'}$
   \end{itemize}
+  $P$ and $Q$ are \emph{late bisimilar} written $P\dot{\sim}_{L}Q$ if there exists a strong late bisimulation $\mathbf{S}$ such that $P\mathbf{S}Q$.
 \end{definition}
-
-
-\begin{definition}
-  A \emph{strong late ground bisimulation} is a binary relation $\mathbf{S}$ on processes such that both $\mathbf{S}$ and its inverse are strong late ground simulations. $P$ and $Q$ are \emph{late ground bisimilar} written $P\dot{\sim}_{L}Q$ if there exists a strong ground late bisimulation $\mathbf{S}$ such that $P\mathbf{S}Q$.
-\end{definition}
-
-
-
-% \begin{definition}
-%   A \emph{strong (late) bisimulation} is a symmetric binary relation $\mathbb{R}$ on agents satisfying the following: $P\mathbb{R} Q$ and $P\; \xrightarrow{\alpha}_{L}\; P^{'}$ where $bn(\alpha)$ is fresh implies that
-%   \begin{itemize}
-%     \item
-%       if $\alpha=a(x)$ then $\exists Q^{'}: Q\xrightarrow{a(x)}_{L}Q^{'}\; \wedge\; \forall u:\; P^{'}\{u/x\}\mathbb{R}Q^{'}\{u/x\}$
-%     \item
-%       if $\alpha$ is not an input the $\exists Q^{'}: Q\xrightarrow{\alpha}_{L}Q^{'}\; \wedge\; P^{'}\mathbb{R}Q^{'}$
-%   \end{itemize}
-%   $P$ and $Q$ are strongly bisimilar, written $P\; \dot{\sim}\; Q$, if they are related by a bisimulation. 
-% \end{definition}
-
 
 \begin{example}
-  Strong late ground bisimulation is not closed under substitution in general:
+  Strong late bisimulation is not closed under substitution in general:
   \[
     a(u).0|\overline{b}v.0\; \dot{\sim}_{L}\; a(u).\overline{b}v.0 + \overline{b}v.a(u).0
   \]
@@ -3399,6 +3386,8 @@ It's not a concern which late semantic we are talking about because we have prov
   \]
   If we apply the substitution $\{a/b\}$ to each process then they are not strongly bisimilar anymore because $(a(u).0|\overline{b}v.0)\{a/b\}$ is $a(u).0|\overline{a}v.0$ and this process can perform an invisible action whether $(a(u).\overline{b}v.0 + \overline{b}v.a(u).0)\{a/b\}$ cannot.
 \end{example}
+
+We refer to strong late bisimulation as strong \emph{ground} late bisimulation, because it is not preserved by substitution.
 
 \begin{proposition}
   If $P \dot{\sim} Q$ and $\sigma$ is injective then $P\sigma \dot{\sim} Q\sigma$
@@ -3436,7 +3425,6 @@ It's not a concern which late semantic we are talking about because we have prov
   Two processes $P$ and $Q$ are \emph{strong late equivalent} written $P\sim_{L}Q$ is for each substitution $\sigma$ $P\sigma \dot{\sim}_{L}Q\sigma$
 \end{definition}
 
-
 \begin{example}
   If $z\notin fn(R)\cup \{x\}$ then $x(y).R \dot{\sim}_{L} (z)x(y).R$
 \end{example}
@@ -3446,16 +3434,7 @@ It's not a concern which late semantic we are talking about because we have prov
 \subsection{Early bisimilarity}
 
 \begin{definition}\index{bisimulation! strong! early! with early semantic}
-  A \emph{strong early ground bisimulation}(according to \cite{milnerparrowwalker})is a symmetric binary relation $\mathbf{S}$ on processes such that for each $P,Q$ $P\mathbf{S} Q$ implies that
-  \begin{itemize}
-    \item 
-      if $P \xrightarrow{\alpha}_{L} P^{'}$ with $\alpha \neq x(y)$ and $bn(\alpha)\notin fn(P) \cup fn(Q)$ then there exists $Q^{'}$ such that $Q \xrightarrow{\alpha}_{L} Q^{'}$ and $P^{'}\mathbf{S}Q^{'}$ 
-    \item
-      if $P \xrightarrow{x(y)}_{L} P^{'}$ with $y\notin fn(P) \cup fn(Q)$ then for each $w$ there exists $Q^{'}$ such that $Q \xrightarrow{x(y)}_{L} Q^{'}$ and $P^{'}\{w/y\}\mathbf{S}Q^{'}\{w/y\}$ 
-    \item
-      if $P \xrightarrow{\overline{x}(y)}_{L} P^{'}$ and $y\notin n(P)\cup n(Q)$ then there exists a process $Q^{'}$ such that $Q \xrightarrow{\overline{x}(L)}_{E} Q^{'}$
-  \end{itemize}
-  $P$ and $Q$ are \emph{early ground bisimilar} written $P\dot{\sim}_{E}Q$ if there exists a strong ground early bisimulation $\mathbf{S}$ such that $P\mathbf{S}Q$
+  A \emph{strong early bisimulation}(according to \cite{parrow})is a symmetric binary relation $\mathbf{S}$ on processes such that for each process $P$ and $Q$: $P\mathbf{S} Q$, $P \xrightarrow{\alpha}_{E} P^{'}$ and $bn(\alpha) \cap (fn(P) \cup fn(Q))=\emptyset$ implies that there exists $Q^{'}$ such that $Q \xrightarrow{\alpha}_{E} Q^{'}$ and $P^{'}\mathbf{S}Q^{'}$. $P$ and $Q$ are \emph{early bisimilar} written $P\dot{\sim}_{E}Q$ if there exists a strong early bisimulation $\mathbf{S}$ such that $P\mathbf{S}Q$
 \end{definition}
 
 \begin{definition}
@@ -3463,31 +3442,26 @@ It's not a concern which late semantic we are talking about because we have prov
 \end{definition}
 
 
-\begin{proposition}
-  Early bisimilarity is preserved by all operators except input prefix. 
-\end{proposition}
+% \begin{proposition}
+%   Early bisimilarity is preserved by all operators except input prefix. 
+% \end{proposition}
+% 
+% \begin{proposition}
+%   The early congruence is the largest congruence in $\dot{\sim}_{E}$.  
+% \end{proposition}
 
-\begin{proposition}
-  The early congruence is the largest congruence in $\dot{\sim}_{E}$.  
-\end{proposition}
-
-In the following definition we consider a subcalculus without restriction. 
-\begin{definition}\index{bisimulation! strong! open! early}
-  A \emph{strong open bisimulation} is a symmetric binary relation $\mathbb{R}$ on agents satisfying the following for all substitutions $\sigma$: $P\mathbb{R} Q$ and $P\sigma\; \xrightarrow{\alpha}_{E}\; P^{'}$ where $bn(\alpha)$ is fresh implies that
-  \begin{center}
-    $\exists Q^{'}:\;\; Q\sigma\xrightarrow{\alpha}_{E}Q^{'}\; \wedge\; P^{'}\mathbb{R}Q^{'}$
-  \end{center}
-  $P$ and $Q$ are strongly open bisimilar, written $P\; \dot{\sim}_{O}\; Q$ if they are related by an open bisimulation.
-\end{definition}
-
-\begin{proposition}
-  strong open bisimulation is also a late bisimulation, is closed under substitution, is an equivalence and a congruence
-\end{proposition}
-
-
-
-
-
+% In the following definition we consider a subcalculus without restriction. 
+% \begin{definition}\index{bisimulation! strong! open! early}
+%   A \emph{strong open bisimulation} is a symmetric binary relation $\mathbb{R}$ on agents satisfying the following for all substitutions $\sigma$: $P\mathbb{R} Q$ and $P\sigma\; \xrightarrow{\alpha}_{E}\; P^{'}$ where $bn(\alpha)$ is fresh implies that
+%   \begin{center}
+%     $\exists Q^{'}:\;\; Q\sigma\xrightarrow{\alpha}_{E}Q^{'}\; \wedge\; P^{'}\mathbb{R}Q^{'}$
+%   \end{center}
+%   $P$ and $Q$ are strongly open bisimilar, written $P\; \dot{\sim}_{O}\; Q$ if they are related by an open bisimulation.
+% \end{definition}
+% 
+% \begin{proposition}
+%   strong open bisimulation is also a late bisimulation, is closed under substitution, is an equivalence and a congruence
+% \end{proposition}
 
 
 \subsection{Congruence}
@@ -3502,4 +3476,41 @@ In the following definition we consider a subcalculus without restriction.
 \begin{proposition}
   Strong congruence is the largest congruence in bisimilarity.
 \end{proposition}
+
+
+\subsection{Open bisimilarity}
+
+\begin{definition}
+  A \emph{distinction} is a finite symmetric and irreflexive binary relation on names. A substitution $\sigma$ \emph{respects} a distinction $D$ if for each name $a,b$ $aDb$ implies $\sigma(a)\neq \sigma(b)$. We write $D\sigma$ for the composition of the two relation.
+\end{definition}
+
+
+\begin{definition}
+  An \emph{strong open simulation}(according to \cite{parrow}) is $\{S_{D}\}_{D\in \mathbb{D}}$ a family of binary relations on processes such that for each process $P, Q$, for each distinction $D\in \mathbb{D}$, for each name substitution $\sigma$ which respects $D$ if $P S_{D} Q$, $P\sigma \xrightarrow{\alpha} P^{'}$ and $bn(\alpha)\cap (fn(P\sigma)\cup fn(Q\sigma))=\emptyset$ then:
+  \begin{itemize}
+    \item 
+      if $\alpha=\overline{a}(x)$ then there exists $Q^{'}$ such that $Q\sigma \xrightarrow{\overline{a}(x)} Q^{'}$ and $P^{'} S_{D^{'}} Q^{'}$ where $D^{'}=D\sigma \cup \{x\}\times (fn(P\sigma)\cup fn(Q\sigma)) \cup  (fn(P\sigma)\cup fn(Q\sigma))\times\{x\}$
+    \item
+      if $\alpha$ is not a bound output then there exists $Q^{'}$ such that $Q\sigma \xrightarrow{\alpha} Q^{'}$ and $P^{'} S_{D\sigma} Q^{'}$
+  \end{itemize}
+  $P$ and $Q$ are \emph{open D bisimilar}, written $P \dot{\sim}_{O}^{D} Q$ if there exists a member $S_{D}$ of an open bisimulation such that $P S_{D} Q$; they are \emph{open bisimilar} if they are open $\emptyset$ bisimilar, written $P \dot{\sim}_{O} D$.
+
+
+\end{definition}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
