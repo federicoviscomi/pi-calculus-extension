@@ -627,3 +627,213 @@ $\inferrule* [left=\bf{LComSng}]{
 \end{center}
 
 \end{example}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\subsection{Low level semantic}
+This section contains the definition of an alternative semantic for multi $\pi$. First we define a low level version of the multi $\pi$ calculus(here with strong prefixing on output only), we call this language low multi $\pi$. The low multi $\pi$ is the multi $\pi$ enriched with a marked or intermediate process $*P$:
+\begin{center}
+   \begin{tabular}{l}
+     $P,Q$ ::= $0$ | $\pi.P$ | $P|Q$ | $P+Q$ | $(\nu x) P$ | $A(x_{1}, \cdots, x_{n})$ | $*P$
+   \\\\
+     $\pi$ ::= $\overline{x}y$ | $x(y)$ | $\underline{\overline{x}(y)}$ | $\tau$ 
+   \end{tabular}
+\end{center}
+\begin{definition}
+  The low level transition relation is the smallest relation induced by the rules in table \ref{lowleveltransitionrelation} in which $P$ stands for a process without mark, $L$ stands for a process with mark and $S$ can stand for both. 
+  \begin{table}
+    \begin{tabular}{ll}
+      \hline\\
+	  $\inferrule* [left=\bf{Out}]{
+	  }{
+	    \overline{x}y.P \stackrel{\overline{x}y}{\longmapsto} P
+	  }$
+	  &
+	  $\inferrule* [left=\bf{EInp}]{
+	  }{
+	    x(y).P \stackrel{xz}{\longmapsto} P\{z/y\}
+	  }$
+      \\\\
+	  $\inferrule* [left=\bf{SOutLow}]{
+	  }{
+	    \underline{\overline{x}y}.P \stackrel{xy}{\longmapsto} * P
+	  }$
+	  &
+	  $\inferrule* [left=\bf{Tau}]{
+	  }{
+	    \tau.P \stackrel{\tau}{\longmapsto} P
+	  }$
+      \\\\
+	  $\inferrule* [left=\bf{Sum}]{
+	    P \stackrel{\gamma}{\longmapsto} S
+	  }{
+	    P+Q \stackrel{\gamma}{\longmapsto} S
+	  }$
+	  &
+	  $\inferrule* [left=\bf{Star}]{
+	      S \stackrel{\gamma}{\longmapsto} S^{'}
+	  }{
+	      *S \stackrel{\gamma}{\longmapsto} S^{'}
+	  }$
+      \\\\\\
+	  $\inferrule* [left=\bf{Com1}]{
+	      P \stackrel{\overline{x}y}{\longmapsto} P^{'}
+	    \\
+	      Q \stackrel{xy}{\longmapsto} Q^{'}
+	  }{
+	    P|Q \stackrel{\tau}{\longmapsto} P^{'}|Q^{'}
+	  }$
+	&
+      \\\\
+	  $\inferrule* [left=\bf{Com2L}]{
+	      L_{1} \stackrel{xy}{\longmapsto} L_{1}^{'}
+	    \\
+	      L_{2} \stackrel{\overline{x}y}{\longmapsto} S
+	  }{
+	    L_{1}|L_{2} \stackrel{\epsilon}{\longmapsto} L_{1}^{'}|S
+	  }$
+	&
+	  $\inferrule* [left=\bf{Com2R}]{
+	      L_{1} \stackrel{\overline{x}y}{\longmapsto} L_{1}^{'}
+	    \\
+	      L_{2} \stackrel{xy}{\longmapsto} S
+	  }{
+	    L_{1}|L_{2} \stackrel{\epsilon}{\longmapsto} L_{1}^{'}|S
+	  }$
+      \\\\
+	  $\inferrule* [left=\bf{Com3L}]{
+	      P \stackrel{xy}{\longmapsto} L
+	    \\
+	      Q \stackrel{\overline{x}y}{\longmapsto} S
+	  }{
+	    P|Q \stackrel{\epsilon}{\longmapsto} L|S
+	  }$
+	&
+	  $\inferrule* [left=\bf{Com3R}]{
+	      P \stackrel{\overline{x}y}{\longmapsto} L
+	    \\
+	      Q \stackrel{xy}{\longmapsto} S
+	  }{
+	    P|Q \stackrel{\epsilon}{\longmapsto} L|S
+	  }$
+      \\\\
+	  $\inferrule* [left=\bf{Com4L}]{
+	      L_{1} \stackrel{\overline{x}y}{\longmapsto} P
+	    \\
+	      L_{2} \stackrel{xy}{\longmapsto} Q
+	  }{
+	    L_{1}|L_{2} \stackrel{\tau}{\longmapsto} P|Q
+	  }$
+	&
+	  $\inferrule* [left=\bf{Com4L}]{
+	      L_{1} \stackrel{xy}{\longmapsto} P
+	    \\
+	      L_{2} \stackrel{\overline{x}y}{\longmapsto} Q
+	  }{
+	    L_{1}|L_{2} \stackrel{\tau}{\longmapsto} P|Q
+	  }$
+      \\\\\\
+	  $\inferrule* [left=\bf{Res}]{
+	      S \stackrel{\gamma}{\longmapsto} S^{'}
+	    \\
+	      y\notin n(\gamma)
+	  }{
+	    (\nu y) S \stackrel{\gamma}{\longmapsto} (\nu y) S^{'}
+	  }$
+	&
+	  $\inferrule* [left=\bf{OpnSeq}]{
+	      P \xrightarrow{\sigma}\; P^{'}
+	    \\ 
+	      \exists \overline{x}z\in \sigma:\; x\neq z
+	  }{
+	      (\nu z)P \xrightarrow{opn(\sigma,z)}\; P^{'}
+	  }$
+      \\\\\\
+	  $\inferrule* [left=\bf{Par1L}]{
+	      S \stackrel{\gamma}{\longmapsto} S^{'}
+% 	    \\ 
+% 	      bn(\gamma)\cap fn(Q)=\emptyset
+	  }{
+	      S|Q \stackrel{\gamma}{\longmapsto} S^{'}|Q
+	  }$
+	&
+	  $\inferrule* [left=\bf{Par1R}]{
+	      S \stackrel{\gamma}{\longmapsto} S^{'}
+% 	    \\ 
+% 	      bn(\gamma)\cap fn(Q)=\emptyset
+	  }{
+	      Q|S \stackrel{\gamma}{\longmapsto} Q|S^{'}
+	  }$
+      \\\\\\
+	  $\inferrule* [left=\bf{Par2L}]{
+	     P \stackrel{\gamma}{\longmapsto} L
+% 	    \\ 
+% 	      bn(\gamma)\cap fn(Q)=\emptyset
+	  }{
+	      P|Q \stackrel{\gamma}{\longmapsto} L|*Q
+	  }$
+	&
+	  $\inferrule* [left=\bf{Par2R}]{
+	     P \stackrel{\gamma}{\longmapsto} L
+% 	    \\ 
+% 	      bn(\gamma)\cap fn(Q)=\emptyset
+	  }{
+	      Q|P \stackrel{\gamma}{\longmapsto} *Q|L
+	  }$
+      \\\\
+	  $\inferrule* [left=\bf{Par3L}]{
+	      L_{1} \stackrel{\gamma}{\longmapsto} L_{1}^{'}
+% 	    \\ 
+% 	      bn(\gamma)\cap fn(L_{2})=\emptyset
+	  }{
+	      L_{1}|L_{2} \stackrel{\gamma}{\longmapsto} L_{1}^{'}|L_{2}
+	  }$
+	&
+	  $\inferrule* [left=\bf{Par3R}]{
+	      L_{2} \stackrel{\gamma}{\longmapsto} L_{2}^{'}
+% 	    \\ 
+% 	      bn(\gamma)\cap fn(L_{2})=\emptyset
+	  }{
+	      L_{1}|L_{2} \stackrel{\gamma}{\longmapsto} L_{1}|L_{2}^{'}
+	  }$
+      \\\\\\
+	&
+	  $\inferrule* [left=\bf{Cong}]{
+	      P\equiv P^{'}
+	    \\
+	      P^{'} \stackrel{\gamma}{\longmapsto} S
+	  }{
+	      P \stackrel{\gamma}{\longmapsto} S
+	  }$
+      \\\\\hline
+    \end{tabular}
+    \caption{Low multi $\pi$ early semantic with structural congruence}
+    \label{lowleveltransitionrelation}
+  \end{table}
+\end{definition}
+
+\begin{lemma}\label{lemmacom3}
+  :\begin{itemize}
+    \item
+      It cannot happen that there exist an unmarked process $P$, a marked process $L$ and an action $\overline{x}y$ such that: $P\stackrel{\overline{x}y}{\longmapsto}L$. 
+    \item
+      Also it cannot be the case that there exist two unmarked processes $L_{1}, L_{2}$ and an action $\overline{x}y$ such that: $L_{1}\stackrel{\overline{x}y}{\longmapsto}L_{2}$
+  \end{itemize}
+  \begin{proof}
+    DA FARE
+  \end{proof}
+\end{lemma}
