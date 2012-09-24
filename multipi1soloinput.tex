@@ -200,7 +200,7 @@ In this case, a label can be a sequence of prefixes, whether in the original $\p
 
 \end{example}
 
-\begin{lemma}\ref{lemmastrongsequence}
+\begin{lemma}\label{lemmastrongsequence}
   If $P\xrightarrow{\sigma} Q$ then only one of the following cases hold: 
   \begin{itemize}
     \item 
@@ -844,7 +844,7 @@ This section contains the definition of an alternative semantic for multi $\pi$.
 \end{lemma}
 
   
-\begin{definition}\ref{low}
+\begin{definition}\label{low}
   Let $P, Q$ be unmarked processes and $L_{1}, \cdots, L_{k-1}$ marked processes. We define the derivation relation $\rightarrow_{s}$ in the following way:
   \begin{center}
     $\inferrule* [left=\bf{Low}]{
@@ -1035,7 +1035,7 @@ This section contains the definition of an alternative semantic for multi $\pi$.
 	    P_{1}+P_{2} \xrightarrow{\sigma} Q
 	  }$
 	\end{center}
-	for the inductive hypothesis $P_{1} \xrightarrow{\sigma}_{s} Q$ which implies that there exist $L_{1}, \cdots, L_{k}$ and $\gamma_{1}, \cdots, \gamma_{k+1}$ with $k\geq 0$ such that 
+	for the inductive hypothesis $P_{1} \xrightarrow{\sigma}_{s} Q$ which implies that there exist $L_{1}$, $\cdots$, $L_{k}$ and $\gamma_{1}$, $\cdots$, $\gamma_{k+1}$ with $k\geq 0$ such that 
 	\begin{center}
 	  $P_{1} \stackrel{\gamma_{1}}{\longmapsto} L_{1}  \stackrel{\gamma_{2}}{\longmapsto} L_{2} \cdots L_{k-1} \stackrel{\gamma_{k}}{\longmapsto} L_{k} \stackrel{\gamma_{k+1}}{\longmapsto} Q$ 
 	\end{center}
@@ -1194,7 +1194,7 @@ This section contains the definition of an alternative semantic for multi $\pi$.
 	    P_{1}|Q_{1} \xrightarrow{\sigma} P_{1}^{'}|Q_{1}^{'}
 	  }$
 	\end{center}
-	for inductive hypothesis $P_{1} \xrightarrow{xy \cdot \sigma}_{s} P_{1}^{'}$ which implies that there exist $L_{1}, \cdots, L_{k}$ and $\gamma_{1}, \cdots, \gamma_{k+1}$ with $k\geq 0$ such that 
+	for inductive hypothesis $P_{1} \xrightarrow{xy \cdot \sigma}_{s} P_{1}^{'}$ which implies that there exist $L_{1}$, $\cdots$, $L_{k}$ and $\gamma_{1}$, $\cdots$, $\gamma_{k+1}$ with $k\geq 0$ such that 
 	\begin{center}
 	  $P_{1} \stackrel{\gamma_{1}}{\longmapsto} L_{1}  \stackrel{\gamma_{2}}{\longmapsto} L_{2} \cdots L_{k-1} \stackrel{\gamma_{k}}{\longmapsto} L_{k} \stackrel{\gamma_{k+1}}{\longmapsto} P_{1}^{'}$ 
 	\end{center}
@@ -1268,7 +1268,7 @@ This section contains the definition of an alternative semantic for multi $\pi$.
 	      (\nu z)P \xrightarrow{\overline{x}(z)}\; Q
 	  }$	 
 	\end{center}
-	for the inductive hypothesis $P_{1} \xrightarrow{\sigma}_{s} Q$ which implies that there exist $L_{1}, \cdots, L_{k}$ and $\gamma_{1}, \cdots, \gamma_{k+1}$ with $k\geq 0$ such that 
+	for the inductive hypothesis $P_{1} \xrightarrow{\sigma}_{s} Q$ which implies that there exist $L_{1}$, $\cdots$, $L_{k}$ and $\gamma_{1}$, $\cdots$, $\gamma_{k+1}$ with $k\geq 0$ such that 
 	\begin{center}
 	  $P_{1} \stackrel{\gamma_{1}}{\longmapsto} L_{1}  \stackrel{\gamma_{2}}{\longmapsto} L_{2} \cdots L_{k-1} \stackrel{\gamma_{k}}{\longmapsto} L_{k} \stackrel{\gamma_{k+1}}{\longmapsto} Q$ 
 	\end{center}
@@ -1328,7 +1328,7 @@ This section contains the definition of an alternative semantic for multi $\pi$.
 	      (\nu z)P_{1} \xrightarrow{inpSeq \cdot \overline{x}(z)} Q
 	  }$	 
 	\end{center}
-	for the inductive hypothesis $P_{1} \xrightarrow{\sigma}_{s} Q$ which implies that there exist $L_{1}, \cdots, L_{k}$ and $\gamma_{1}, \cdots, \gamma_{k+1}$ with $k\geq 0$ such that 
+	for the inductive hypothesis $P_{1} \xrightarrow{\sigma}_{s} Q$ which implies that there exist $L_{1}$, $\cdots$, $L_{k}$ and $\gamma_{1}$, $\cdots$, $\gamma_{k+1}$ with $k\geq 0$ such that 
 	\begin{center}
 	  $P_{1} \stackrel{\gamma_{1}}{\longmapsto} L_{1}  \stackrel{\gamma_{2}}{\longmapsto} L_{2} \cdots L_{k-1} \stackrel{\gamma_{k}}{\longmapsto} L_{k} \stackrel{\gamma_{k+1}}{\longmapsto} Q$ 
 	\end{center}
@@ -1821,8 +1821,8 @@ This section contains the definition of an alternative semantic for multi $\pi$.
 		    P_{1}|P_{2} \stackrel{\gamma_{1}}{\longmapsto} L_{1}^{'}|*P_{2}
 		  }$ 		      
 		\end{center}
-		caso1: sequenza(eventualmente vuota) di par3 terminata da una com4
-		caso2: sequenza(eventualmente vuota) di par3 seguita da com2 seguita da ?
+% 		caso1: sequenza(eventualmente vuota) di par3 terminata da una com4
+% 		caso2: sequenza(eventualmente vuota) di par3 seguita da com2 seguita da ?
 	    \end{description}	    
   \end{proof}
 \end{proposition}
