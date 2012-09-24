@@ -762,32 +762,30 @@ This section contains the definition of an alternative semantic for multi $\pi$.
 	      S \stackrel{\overline{x}y}{\longmapsto} P
 	    \\ 
 	      y\neq x
-	    \\
-	      w\notin fn(P)
 	  }{
-	      (\nu y)S \stackrel{\overline{x}(w)}{\longmapsto} P\{w/y\}
+	      (\nu y)S \stackrel{\overline{x}(y)}{\longmapsto} P
 	  }$
       \\\\\\
 	  $\inferrule* [left=\bf{Par1}]{
 	      S \stackrel{\gamma}{\longmapsto} S^{'}
-	    \\ 
-	      bn(\gamma)\cap fn(Q)=\emptyset
+% 	    \\ 
+% 	      bn(\gamma)\cap fn(Q)=\emptyset
 	  }{
 	      S|Q \stackrel{\gamma}{\longmapsto} S^{'}|Q
 	  }$
 	&
 	  $\inferrule* [left=\bf{Par2}]{
 	     P \stackrel{\gamma}{\longmapsto} L
-	    \\ 
-	      bn(\gamma)\cap fn(Q)=\emptyset
+% 	    \\ 
+% 	      bn(\gamma)\cap fn(Q)=\emptyset
 	  }{
 	      P|Q \stackrel{\gamma}{\longmapsto} L|*Q
 	  }$
       \\\\
 	  $\inferrule* [left=\bf{Par3}]{
 	      L_{1} \stackrel{\gamma}{\longmapsto} L_{1}^{'}
-	    \\ 
-	      bn(\gamma)\cap fn(L_{2})=\emptyset
+% 	    \\ 
+% 	      bn(\gamma)\cap fn(L_{2})=\emptyset
 	  }{
 	      L_{1}|L_{2} \stackrel{\gamma}{\longmapsto} L_{1}^{'}|L_{2}
 	  }$
