@@ -1240,6 +1240,7 @@ Since it's important to give a low level semantic which is equivalent to the hig
 	  }$
   \end{tabular}
 \end{center}
+where $stop(P)$ is a multi $\pi$ process which cannot make any transition.
 
 
 \begin{definition}
@@ -1278,250 +1279,308 @@ Since it's important to give a low level semantic which is equivalent to the hig
     \item 
       If there exist $L_{1}$, $\cdots$, $L_{k}$ with $k\geq 1$ such that
       \begin{center}
-	$P \stackrel{\epsilon}{\longmapsto} L_{1}  \stackrel{\epsilon}{\longmapsto} L_{2} \cdots L_{k-1} \stackrel{\epsilon}{\longmapsto} L_{k} \stackrel{\tau}{\longmapsto} Q$ 
+	  $P 
+	    \stackrel{\gamma_{1}}{\longmapsto} 
+	      L_{1}  
+		\stackrel{\gamma_{2}}{\longmapsto} 
+		  L_{2} 
+		    \cdots 
+		      L_{k-1} 
+			\stackrel{\gamma_{k}}{\longmapsto} 
+			  L_{k} 
+			    \stackrel{\gamma_{k+1}}{\longmapsto} 
+			      Q$ 
       \end{center}
-      then $P\xrightarrow{\tau} er(Q)$. 
+      where at most one $\gamma$ is an output whether all the other $\gamma$s are $\epsilon$ or $\tau$ then $P\xrightarrow{\tau} er(Q)$ or if there is an output $\overline{x}y$ in the $\gamma$s then $P\xrightarrow{\overline{x}y} er(Q)$. 
   \end{itemize}
   \begin{proof}
-    The proof of the first part of this proposition is almost exactly as the proof of \ref{equivalencehightolow} DA VERIFICARE. The proof of the second part is by induction on $k$ plus the depth of the derivation of the first transition:
-%     \begin{description}
-%       \item[base case $k=1$]
-%     \end{description}
-%  
-%     \begin{description}
-%       \item[inductive case $k>1$]
-%     \end{description}
-% 	The last rule in the derivation of $P \stackrel{\gamma_{1}}{\longmapsto} L_{1}$ can be:
-% 	\begin{description}
-% 	      \item[$Sum$] the first transition is:
-% 		\begin{center}
-% 		  $\inferrule* [left=\bf{Sum}]{
-% 		      P_{1} \stackrel{\epsilon}{\longmapsto} L_{1}
-% 		    }{
-% 		      P_{1}+P_{2} \stackrel{\epsilon}{\longmapsto} L_{1}
-% 		  }$ 
-% 		\end{center}
-% 		so we can build the following chain of transition:
-% 		\begin{center}
-% 		  $P_{1} \stackrel{\epsilon}{\longmapsto} L_{1} \stackrel{\epsilon}{\longmapsto} L_{2} \cdots L_{k-1} \stackrel{\epsilon}{\longmapsto} L_{k} \stackrel{\tau}{\longmapsto} Q$ 
-% 		\end{center}
-% 		apply the inductive hypothesis to get $P_{1} \xrightarrow{\tau} Q$. Now a proof of the conclusion can be
-% 		\begin{center}
-% 		  $\inferrule* [left=\bf{Sum}]{
-% 		      P_{1} \xrightarrow{\tau} Q
-% 		    }{
-% 		      P_{1}+P_{2} \xrightarrow{\tau} Q
-% 		  }$
-% 		\end{center}
-% 	      \item[$Res$] the first transition is:
-% 		\begin{center}
-% 		  $\inferrule* [left=\bf{Res}]{
-% 			P_{1} \stackrel{\epsilon}{\longmapsto} L_{1}^{'}
-% 		      \\
-% 			z\notin n(\epsilon)
-% 		    }{
-% 		      (\nu z) P_{1} \stackrel{\epsilon}{\longmapsto} (\nu z)L_{1}^{'}
-% 		  }$ 
-% 		\end{center}
-% 		given that $L_{1}$ has a restriction at the top level, all the other intermediate processes $L_{2}, \cdots, L_{k}$ and $Q$ have the same restriction at the top level. This is because the only rule whose conclusion is a transition that start from a possibly marked process with a restriction at its top level is $Res$. So the last rule used to prove all transition is $Res$.
-% 		\begin{center}
-% 		\begin{tabular}{ll}
-% 		    $\inferrule* [left=\bf{Res}]{
-% 			L_{k}^{'} \stackrel{\tau}{\longmapsto} Q^{'}
-% 		      \\
-% 			z\notin n(\tau)
-% 		    }{
-% 		      (\nu z)L_{k}^{'} \stackrel{\tau}{\longmapsto} (\nu z)Q^{'}
-% 		    }$
-% 		  &
-% 		    $\inferrule* [left=\bf{Res}]{
-% 			L_{i}^{'} \stackrel{\epsilon}{\longmapsto} L_{i+1}^{'}
-% 		      \\
-% 			z\notin n(\epsilon)
-% 		    }{
-% 		      (\nu z)L_{i}^{'} \stackrel{\epsilon}{\longmapsto} (\nu z)L_{i+1}^{'}
-% 		    }$
-% 		\end{tabular}
-% 		\end{center}
-% 		we can build the following chain of transitions:
-% 		\begin{center}
-% 		  $P_{1} 
-% 		    \stackrel{\epsilon}{\longmapsto} 
-% 		      L_{1}^{'} 
-% 			\stackrel{\epsilon}{\longmapsto} 
-% 			  L_{2}^{'} 
-% 			    \cdots 
-% 			      L_{k-1}^{'} 
-% 				\stackrel{\epsilon}{\longmapsto} 
-% 				  L_{k}^{'}
-% 				    \stackrel{\tau}{\longmapsto} 
-% 				      Q^{'}$ 
-% 		\end{center}
-% 		then apply the inductive hypothesis to get $P_{1} \xrightarrow{\tau} Q^{'}$. A proof of the conclusion can be
-% 		\begin{center}
-% 		  $\inferrule* [left=\bf{Res}]{
-% 			  P_{1} \xrightarrow{\tau} Q^{'}
-% 			\\
-% 			  z\notin n(\tau)
-% 		  }{
-% 			(\nu z)P_{1} \xrightarrow{\tau} (\nu z)Q^{'}
-% 		  }$
-% 		\end{center}
-% 	      \item[$Cong$]: 
-% 		the last rule of the derivation of the first transition is:
-% 		\begin{center}
-% 		  $\inferrule* [left=\bf{Cong}]{
-% 		      P^{'} \equiv P
-% 		    \\
-% 		      P^{'} \stackrel{\epsilon}{\longmapsto} L_{1}
-% 		  }{
-% 		    P \stackrel{\epsilon}{\longmapsto} L_{1}
-% 		  }$ 		      
-% 		\end{center}
-% 		We derive the following chain of transition:
-% 		\begin{center}
-% 		  $P^{'} 
-% 		    \stackrel{\epsilon}{\longmapsto} 
-% 		      L_{1} 
-% 			\stackrel{\epsilon}{\longmapsto} 
-% 			  L_{2} 
-% 			    \cdots 
-% 			      L_{k-1} 
-% 				\stackrel{\epsilon}{\longmapsto} 
-% 				  L_{k}
-% 				    \stackrel{\tau}{\longmapsto} 
-% 				      Q$
-% 		\end{center}
-% 		for inductive hypothesis $P^{'} \xrightarrow{\tau} Q$. A proof of the conclusion is
-% 		\begin{center}
-% 		  $\inferrule* [left=\bf{Cong}]{
-% 		      P^{'} \equiv P
-% 		    \\
-% 		      P^{'} \xrightarrow{\tau} Q
-% 		  }{
-% 		    P \xrightarrow{\tau} Q
-% 		  }$ 
-% 		\end{center}
-% 	      \item[$Com3L$]: 
-% 		the last part of the derivation of the first transition is:
-% 		\begin{center}
-% 		  $\inferrule* [left=\bf{Com3L}]{
-% 		      P_{1} \stackrel{\overline{x}y}{\longmapsto} L_{1}^{'}
-% 		    \\
-% 		      P_{2} \stackrel{xy}{\longmapsto} P_{2}^{'}
-% 		  }{
-% 		    P_{1}|P_{2} \stackrel{\epsilon}{\longmapsto} L_{1}^{'}|P_{2}^{'}
-% 		  }$ 		      
-% 		\end{center}
-% 		the derivations of all the transitions $L_{1} \stackrel{\epsilon}{\longmapsto} L_{2} \cdots L_{k-1} \stackrel{\epsilon}{\longmapsto} L_{k}$ can end with an instance of $Par1L$ or $Com2L$ so for each $1 < i \leq k$ we have one of the following:
-% 		\begin{center}
-% 		\begin{tabular}{ll}
-% 		  $\inferrule* [left=\bf{Par1L}]{
-% 		      L_{i}^{'} \stackrel{\epsilon}{\longmapsto} L_{i+1}^{'}
-% 		  }{
-% 		    L_{i}^{'}|P_{i}^{'} \stackrel{\epsilon}{\longmapsto} L_{i+1}^{'}|P_{i}^{'}
-% 		  }$ 		      		  
-% 		&
-% 		  $\inferrule* [left=\bf{Com2L}]{
-% 		      L_{i}^{'} \stackrel{\overline{a}b}{\longmapsto} L_{i+1}^{'}
-% 		    \\
-% 		      P_{i}^{'} \stackrel{ab}{\longmapsto} P_{i+1}^{'}
-% 		  }{
-% 		    L_{i}^{'}|P_{i}^{'} \stackrel{\epsilon}{\longmapsto} L_{i+1}^{'}|P_{i+1}^{'}
-% 		  }$ 		      		  
-% 		\end{tabular}
-% 		\end{center}
-% 		    We derive the following chain of transition:
-% 		    \begin{center}
-% 		      $P_{1} \stackrel{xy}{\longmapsto} L_{1}^{'} \stackrel{\gamma_{2}}{\longmapsto} L_{2}^{'} \cdots L_{k-1}^{'} \stackrel{\gamma_{k}}{\longmapsto} L_{k}^{'}\stackrel{\gamma_{k+1}}{\longmapsto} Q_{1}$
-% 		    \end{center}
-% 		    for inductive hypothesis $P_{1} \xrightarrow{\sigma} Q_{1}$. A proof of the conclusion is
-% 		    \begin{center}
-% 		      $\inferrule* [left=\bf{EComSeq}]{
-% 			  P_{1} \xrightarrow{xy \cdot \gamma_{2}\cdot \ldots \cdot \gamma_{k+1}} Q_{1}
-% 			\\
-% 			  P_{2}\xrightarrow{\overline{x}y} P_{2}^{'}
-% 		      }{
-% 			P_{1}|P_{2} \xrightarrow{\gamma_{2}\cdot \ldots \cdot \gamma_{k+1}} Q_{1}|P_{2}^{'}
-% 		      }$ 
-% 		    \end{center}
-% 		    and $\gamma_{2}\cdot \ldots \cdot \gamma_{k+1}=\sigma$ because the first action $\gamma_{1}$ is $\epsilon$.
-% 	      \item[$Par1L$]: 
-% 		the last part of the derivation of the first transition is:
-% 		\begin{center}
-% 		  $\inferrule* [left=\bf{Par1L}]{
-% 		      P_{1} \stackrel{\epsilon}{\longmapsto} L_{1}^{'}
-% 		  }{
-% 		    P_{1}|P_{2} \stackrel{\epsilon}{\longmapsto} L_{1}^{'}|P_{2}
-% 		  }$ 		      
-% 		\end{center}
-% 		the derivations of all the transitions $L_{1} \stackrel{\epsilon}{\longmapsto} L_{2} \cdots L_{k-1} \stackrel{\epsilon}{\longmapsto} L_{k}$ can end with an instance of $Par1L$ or $Com2L$ so for each $1 < i \leq k$ we have one of the following:
-% 		\begin{center}
-% 		\begin{tabular}{ll}
-% 		  $\inferrule* [left=\bf{Par1L}]{
-% 		      L_{i}^{'} \stackrel{\epsilon}{\longmapsto} L_{i+1}^{'}
-% 		  }{
-% 		    L_{i}^{'}|P_{i}^{'} \stackrel{\epsilon}{\longmapsto} L_{i+1}^{'}|P_{i}^{'}
-% 		  }$ 		      		  
-% 		&
-% 		  $\inferrule* [left=\bf{Com2L}]{
-% 		      L_{i}^{'} \stackrel{\overline{a}b}{\longmapsto} L_{i+1}^{'}
-% 		    \\
-% 		      P_{i}^{'} \stackrel{ab}{\longmapsto} P_{i+1}^{'}
-% 		  }{
-% 		    L_{i}^{'}|P_{i}^{'} \stackrel{\epsilon}{\longmapsto} L_{i+1}^{'}|P_{i+1}^{'}
-% 		  }$ 		      		  
-% 		\end{tabular}
-% 		\end{center}
-% 		the last rule used to derive $L_{k} \xrightarrow{\tau} Q$ can be $Par1L$ or $Com4$:
-% 		\begin{center}
-% 		\begin{tabular}{ll}
-% 		  $\inferrule* [left=\bf{Par1L}]{
-% 		      L_{k}^{'} \stackrel{\tau}{\longmapsto} Q_{1}
-% 		  }{
-% 		    L_{k}^{'}|Q_{2} \stackrel{\tau}{\longmapsto} Q_{1}|Q_{2}
-% 		  }$ 		      		  
-% 		&
-% 		  $\inferrule* [left=\bf{Com4L}]{
-% 		      L_{k}^{'} \stackrel{\overline{a}b}{\longmapsto} Q_{1}
-% 		    \\
-% 		      P_{k}^{'} \stackrel{ab}{\longmapsto} Q_{2}
-% 		  }{
-% 		    L_{k}^{'}|P_{k}^{'}
-% 		      \stackrel{\tau}{\longmapsto} 
-% 			Q_{1}|Q_{2}
-% 		  }$ 		      		  
-% 		\end{tabular}
-% 		\end{center}
-% 
-% 		    We derive the following chain of transition:
-% 		    \begin{center}
-% 		      $P_{1} 
-% 			\stackrel{\epsilon}{\longmapsto} 
-% 			  L_{1}^{'} 
-% 			    \stackrel{\epsilon}{\longmapsto} 
-% 			      L_{2}^{'} 
-% 				\cdots 
-% 				  L_{k-1}^{'} 
-% 				    \stackrel{\epsilon}{\longmapsto} 
-% 				      L_{k}^{'}
-% 					\stackrel{\tau}{\longmapsto} 
-% 					  Q_{1}$
-% 		    \end{center}
-% 		    for inductive hypothesis $P_{1} \xrightarrow{\sigma} Q_{1}$. A proof of the conclusion is
-% 		    \begin{center}
-% 		      $\inferrule* [left=\bf{EComSeq}]{
-% 			  P_{1} \xrightarrow{xy \cdot \gamma_{2}\cdot \ldots \cdot \gamma_{k+1}} Q_{1}
-% 			\\
-% 			  P_{2}\xrightarrow{\overline{x}y} P_{2}^{'}
-% 		      }{
-% 			P_{1}|P_{2} \xrightarrow{\gamma_{2}\cdot \ldots \cdot \gamma_{k+1}} Q_{1}|P_{2}^{'}
-% 		      }$ 
-% 		    \end{center}
-% 		    and $\gamma_{2}\cdot \ldots \cdot \gamma_{k+1}=\sigma$ because the first action $\gamma_{1}$ is $\epsilon$.
-% 		
-% 	    \end{description}	    
-   \end{proof}
+    The proof of the first part of this proposition is almost exactly as the proof of \ref{equivalencehightolow} DA VERIFICARE. The proof of the second part is by induction on the depth of the derivation of the first transition:
+    \begin{description}
+      \item[base case]
+ 	The last rule in the derivation of $P \stackrel{\gamma_{1}}{\longmapsto} L_{1}$ can be only $SOutLow$:
+	    \begin{center}
+ 		  $\inferrule* [left=\bf{SOutLow}]{
+ 		    }{
+ 		      \underbrace{\underline{\overline{x}y}.P_{1}}_{P} \stackrel{\overline{x}y}{\longmapsto} \underbrace{* P_{1}}_{L_{1}}
+ 		  }$ 
+	    \end{center}
+	    since $*P_{1}$ has a mark at the top level, the last rule used to derive $*P_{1}\stackrel{\gamma_{2}}{\longmapsto}$ has to be $Star$ so we have $P_{1}\stackrel{\gamma_{2}}{\longmapsto}L_{2}$ or $P_{1}\stackrel{\gamma_{2}}{\longmapsto}Q$ depending on $k$. We can build the following chain of transition:
+	    \begin{center}
+	      $P_{1} \stackrel{\gamma_{2}}{\longmapsto} L_{2} \cdots L_{k-1} \stackrel{\gamma_{k}}{\longmapsto} L_{k} \stackrel{\gamma_{k+1}}{\longmapsto} Q$ 
+	    \end{center}
+	    since $\gamma_{1}$ is an output, the other $\gamma$s are $\epsilon$ or $\tau$, then we can apply the inductive hypothesis to get $P_{1} \xrightarrow{\tau} er(Q)$. Now a proof of the conclusion is
+	    \begin{center}
+	    $\inferrule* [left=\bf{SOutTau}]{
+	      P_{1} \xrightarrow{\tau} er(Q)
+	    }{
+	      \underline{\overline{x}y}.P_{1} \xrightarrow{\overline{x}y} er(Q)
+	    }$
+	    \end{center}
+      \item[inductive case]
+	The last rule in the derivation of $P \stackrel{\gamma_{1}}{\longmapsto} L_{1}$ can be:
+	\begin{description}
+	  \item[$Sum$] the first transition is:
+	    \begin{center}
+		  $\inferrule* [left=\bf{Sum}]{
+		      P_{1} \stackrel{\gamma_{1}}{\longmapsto} L_{1}
+		    }{
+		      P_{1}+P_{2} \stackrel{\gamma_{1}}{\longmapsto} L_{1}
+		  }$ 
+	    \end{center}
+	    so we can build the following chain of transition:
+	    \begin{center}
+	      $P_{1} \stackrel{\gamma_{1}}{\longmapsto} L_{1} \stackrel{\gamma_{2}}{\longmapsto} L_{2} \cdots L_{k-1} \stackrel{\gamma_{k}}{\longmapsto} L_{k} \stackrel{\gamma_{k+1}}{\longmapsto} Q$ 
+	    \end{center}
+	    apply the inductive hypothesis to get $P_{1} \xrightarrow{\alpha} er(Q)$ where $\alpha$ is $\tau$ or an output. Now a proof of the conclusion is
+	    \begin{center}
+	    $\inferrule* [left=\bf{Sum}]{
+	      P_{1} \xrightarrow{\alpha} er(Q)
+	    }{
+	      P_{1}+P_{2} \xrightarrow{\alpha} er(Q)
+	    }$
+	    \end{center}
+	  \item[$Res$] the first transition is:
+	    \begin{center}
+	      $\inferrule* [left=\bf{Res}]{
+		  P_{1} \stackrel{\gamma_{1}}{\longmapsto} L_{1}^{'}
+		\\
+		  z\notin n(\gamma_{1})
+	      }{
+		(\nu z) P_{1} \stackrel{\gamma_{1}}{\longmapsto} (\nu z)L_{1}^{'}
+	      }$ 
+	    \end{center}
+	    given that $L_{1}$ has a restriction at the top level, all the other intermediate processes $L_{2}, \cdots, L_{k}$ and $Q$ have the same restriction at the top level. This is because the only rule whose conclusion is a transition that start from a possibly marked process with a restriction at its top level is $Res$. So the last rule used to prove all transition is $Res$.
+	    \begin{center}
+	      \begin{tabular}{ll}
+		$\inferrule* [left=\bf{Res}]{
+ 			L_{k}^{'} \stackrel{\gamma_{k+1}}{\longmapsto} Q^{'}
+ 		      \\
+ 			z\notin n(\tau)
+ 		    }{
+ 		      (\nu z)L_{k}^{'} \stackrel{\gamma_{k+1}}{\longmapsto} (\nu z)Q^{'}
+ 		}$
+		&
+		$\inferrule* [left=\bf{Res}]{
+ 			L_{i}^{'} \stackrel{\gamma_{i}}{\longmapsto} L_{i+1}^{'}
+ 		      \\
+ 			z\notin n(\epsilon)
+ 		}{
+ 		      (\nu z)L_{i}^{'} \stackrel{\gamma_{i}}{\longmapsto} (\nu z)L_{i+1}^{'}
+ 		}$
+	      \end{tabular}
+	    \end{center}
+	    we can build the following chain of transitions:
+	    \begin{center}
+	      $P_{1} 
+		\stackrel{\gamma_{1}}{\longmapsto} 
+		  L_{1}^{'} 
+		    \stackrel{\gamma_{2}}{\longmapsto} 
+		      L_{2}^{'} 
+			\cdots 
+			  L_{k-1}^{'} 
+			    \stackrel{\gamma_{k}}{\longmapsto} 
+			      L_{k}^{'}
+				\stackrel{\gamma_{k+1}}{\longmapsto} 
+				  Q^{'}$ 
+	    \end{center}
+	    then apply the inductive hypothesis to get $P_{1} \xrightarrow{\alpha} er(Q^{'})$. A proof of the conclusion can be
+	    \begin{center}
+	      $\inferrule* [left=\bf{Res}]{
+		  P_{1} \xrightarrow{\alpha} er(Q^{'})
+		\\
+		  z\notin n(\tau)
+	      }{
+		(\nu z)P_{1} \xrightarrow{\alpha} (\nu z)er(Q^{'})=er((\nu z)Q^{'})
+	      }$
+	    \end{center}
+	  \item[$Cong$]
+	    the last rule of the derivation of the first transition is:
+	    \begin{center}
+	      $\inferrule* [left=\bf{Cong}]{
+		  P^{'} \equiv P
+		\\
+		  \stackrel{\gamma_{1}}{\longmapsto} L_{1}
+	      }{
+		P \stackrel{\gamma_{1}}{\longmapsto} L_{1}
+	      }$ 		      
+	    \end{center}
+	    We derive the following chain of transition:
+	    \begin{center}
+ 		  $P^{'} 
+ 		    \stackrel{\gamma_{1}}{\longmapsto} 
+ 		      L_{1} 
+ 			\stackrel{\gamma_{2}}{\longmapsto} 
+ 			  L_{2} 
+ 			    \cdots 
+ 			      L_{k-1} 
+ 				\stackrel{\gamma_{k}}{\longmapsto} 
+ 				  L_{k}
+ 				    \stackrel{\gamma_{k+1}}{\longmapsto} 
+ 				      Q$
+	    \end{center}
+	    for inductive hypothesis $P^{'} \xrightarrow{\alpha} er(Q)$. A proof of the conclusion is
+	    \begin{center}
+	      $\inferrule* [left=\bf{Cong}]{
+		  P^{'} \equiv P
+		\\
+		  P^{'} \xrightarrow{\alpha} er(Q)
+	      }{
+		P \xrightarrow{\alpha} er(Q)
+	      }$ 
+	    \end{center}
+	  \item[$Com3LStop$]: 
+	    the last part of the derivation of the first transition is:
+	    \begin{center}
+	    $\inferrule* [left=\bf{Com3L}]{
+		P_{1} \stackrel{\overline{x}y}{\longmapsto} L_{1}^{'}
+	      \\
+		P_{2} \stackrel{xy}{\longmapsto} Q_{2}
+	    }{
+	      P_{1}|P_{2} \stackrel{\epsilon}{\longmapsto} L_{1}^{'}|stop(Q_{2})
+	    }$ 		      
+	    \end{center}
+	    the derivations of all other transitions can end only with an instance of $Par1L$ so we have:
+	    \begin{center}
+	      \begin{tabular}{ll}
+		  $\inferrule* [left=\bf{Par1L}]{
+		    L_{i}^{'} \stackrel{\gamma_{i}}{\longmapsto} L_{i+1}^{'}
+		  }{
+		    L_{i}^{'}|stop(Q_{2})
+		      \stackrel{\gamma_{i}}{\longmapsto} 
+			L_{i+1}^{'}|stop(Q_{2})
+		  }$ 	
+		&
+		  $\inferrule* [left=\bf{Par1L}]{
+		    L_{k}^{'} \stackrel{\gamma_{k+1}}{\longmapsto} Q_{1}
+		  }{
+		    L_{i}^{'}|stop(Q_{2})
+		      \stackrel{\gamma_{k+1}}{\longmapsto} 
+			Q_{1}|stop(Q_{2})
+		  }$ 	
+	      \end{tabular}
+	    \end{center}
+	    We derive the following chain of transition:
+	    \begin{center}
+	      $P_{1} 
+		\stackrel{\overline{x}y}{\longmapsto} 
+		  L_{1}^{'} 
+		    \stackrel{\gamma_{2}}{\longmapsto} 
+		      L_{2}^{'} 
+			\cdots 
+			  L_{k-1}^{'} 
+			    \stackrel{\gamma_{k}}{\longmapsto} 
+			      L_{k}^{'}
+				\stackrel{\gamma_{k+1}}{\longmapsto} 
+				  Q_{1}$
+	    \end{center}
+	    for inductive hypothesis $P_{1} \xrightarrow{\overline{x}y} Q_{1}$. A proof of the conclusion is
+	    \begin{center}
+	    $\inferrule* [left=\bf{EComSeq}]{
+		P_{1} \xrightarrow{\overline{x}} Q_{1}
+	      \\
+		P_{2}\xrightarrow{\overline{x}y} Q_{2}
+	    }{
+	      P_{1}|P_{2} \xrightarrow{\tau} Q_{1}|Q_{2}
+	    }$ 
+	    \end{center}
+	  \item[$Par1L$]: 
+	    the last part of the derivation of the first transition is:
+	    \begin{center}
+	      $\inferrule* [left=\bf{Par1L}]{
+		      P_{1} \stackrel{\gamma_{1}}{\longmapsto} L_{1}^{'}
+		  }{
+		    P_{1}|P_{2} \stackrel{\gamma_{1}}{\longmapsto} L_{1}^{'}|P_{2}
+	      }$
+	    \end{center}
+	    there can be three cases:
+	    \begin{itemize}
+	      \item 
+		the derivations of all the other transitions end with an instance of $Par1L$. We derive the following chain of transition:
+ 		    \begin{center}
+ 		      $P_{1} 
+ 			\stackrel{\gamma_{1}}{\longmapsto} 
+ 			  L_{1}^{'} 
+ 			    \stackrel{\gamma_{2}}{\longmapsto} 
+ 			      L_{2}^{'} 
+ 				\cdots 
+ 				  L_{k-1}^{'} 
+ 				    \stackrel{\gamma_{k}}{\longmapsto} 
+ 				      L_{k}^{'}
+ 					\stackrel{\gamma_{k}}{\longmapsto} 
+ 					  Q_{1}$
+ 		    \end{center}
+ 		    for inductive hypothesis $P_{1} \xrightarrow{\alpha} er(Q_{1})$. A proof of the conclusion is
+ 		    \begin{center}
+ 		      $\inferrule* [left=\bf{Par}]{
+			  P_{1} \xrightarrow{\alpha} er(Q_{1})
+ 		      }{
+ 			P_{1}|P_{2} \xrightarrow{\alpha} er(Q_{1})|P_{2}^{'}
+ 		      }$ 
+ 		    \end{center}
+	      \item 
+		there is one derivation that ends with an instance of $Com2LStop$ and the derivations of all the other transitions end with an instance of $Par1L$. We present here the case when the second transition ends with a $Com2LStop$, the other cases are similar. So  
+ 		    \begin{center}
+ 		      $\inferrule* [left=\bf{Com2LStop}]{
+ 			  L_{2}^{'} \xrightarrow{\overline{x}y} L_{2}^{'}
+ 			\\
+ 			  P_{2}\xrightarrow{xy} P_{2}^{'}
+ 		      }{
+ 			L_{2}^{'}|P_{2} \xrightarrow{\epsilon} L_{2}^{'}|stop(P_{2}^{'})
+ 		      }$ 
+ 		    \end{center}
+		We derive the following chain of transition:
+ 		    \begin{center}
+ 		      $P_{1} 
+ 			\stackrel{\epsilon}{\longmapsto} 
+ 			  L_{1}^{'} 
+ 			    \stackrel{\overline{x}y}{\longmapsto} 
+ 			      L_{2}^{'} \stackrel{\epsilon}{\longmapsto} 
+ 				\cdots 
+ 				  \stackrel{\epsilon}{\longmapsto}  L_{k-1}^{'} 
+ 				    \stackrel{\epsilon}{\longmapsto} 
+ 				      L_{k}^{'}
+ 					\stackrel{\tau}{\longmapsto} 
+ 					  Q_{1}$
+ 		    \end{center}
+ 		    for inductive hypothesis $P_{1} \xrightarrow{\overline{x}y} er(Q_{1})$. A proof of the conclusion is
+ 		    \begin{center}
+ 		      $\inferrule* [left=\bf{EComSeq}]{
+ 			  P_{1} \xrightarrow{\overline{x}y} er(Q_{1})
+ 			\\
+ 			  P_{2}\xrightarrow{xy} P_{2}^{'}
+ 		      }{
+ 			P_{1}|P_{2} \xrightarrow{\tau} er(Q_{1})|P_{2}^{'}
+ 		      }$ 
+ 		    \end{center}
+	      \item 
+		the derivation of the last transition ends with an instance of $Com4L$ and the derivations of all the other transitions end with an instance of $Par1L$. We derive the following chain of transition:
+ 		    \begin{center}
+ 		      $P_{1} 
+ 			\stackrel{\epsilon}{\longmapsto} 
+ 			  L_{1}^{'} 
+ 			    \stackrel{\epsilon}{\longmapsto} 
+ 			      L_{2}^{'} 
+ 				\cdots 
+ 				  L_{k-1}^{'} 
+ 				    \stackrel{\epsilon}{\longmapsto} 
+ 				      L_{k}^{'}
+ 					\stackrel{\overline{x}y}{\longmapsto} 
+ 					  Q_{1}$
+ 		    \end{center}
+ 		    for inductive hypothesis $P_{1} \xrightarrow{\overline{x}y} er(Q_{1})$. A proof of the conclusion is
+ 		    \begin{center}
+ 		      $\inferrule* [left=\bf{EComSeq}]{
+ 			  P_{1} \xrightarrow{\overline{x}y} er(Q_{1})
+ 			\\
+ 			  P_{2}\xrightarrow{xy} P_{2}^{'}
+ 		      }{
+ 			P_{1}|P_{2} \xrightarrow{\tau} er(Q_{1})|P_{2}^{'}
+ 		      }$ 
+ 		    \end{center}
+	    \end{itemize} 		
+      \end{description}
+    \end{description}
+  \end{proof}
 \end{proposition}
 
 
