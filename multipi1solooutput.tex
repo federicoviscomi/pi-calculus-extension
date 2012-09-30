@@ -453,7 +453,7 @@ This section contains the definition of an alternative semantic for multi $\pi$.
 	    (\nu y) S \stackrel{\gamma}{\longmapsto} (\nu y) S^{'}
 	  }$
 	  &
-	  $\inferrule* [left=\bf{Star}]{
+	  $\inferrule* [left=\bf{StarInp}]{
 	      S \stackrel{\overline{x}y}{\longmapsto} S^{'}
 	  }{
 	      *S \stackrel{\overline{x}y}{\longmapsto} S^{'}
@@ -545,6 +545,11 @@ This section contains the definition of an alternative semantic for multi $\pi$.
 	    P|L_{1} \stackrel{\epsilon}{\longmapsto} Q|L_{1}^{'}
 	  }$
 	  &
+	  $\inferrule* [left=\bf{StarEps}]{
+	      S \stackrel{\epsilon}{\longmapsto} S^{'}
+	  }{
+	      *S \stackrel{\epsilon}{\longmapsto} S^{'}
+	  }$
 % 	  $\inferrule* [left=\bf{Opn}]{
 % 	      S \xrightarrow{\overline{x}y} S^{'}
 % 	  }{
@@ -861,7 +866,7 @@ This section contains the definition of an alternative semantic for multi $\pi$.
 	    $\delta_{1} \cdot \ldots \cdot \delta_{h+1} = xy$
 	  \end{tabular}
 	\end{center}
-	For lemma \ref{multioutconstraintswithmarked} there cannot be an input action in a transition involving marked processes so $h$ must be $0$ and $Q_{1} \stackrel{\delta_{1}}{\longmapsto} Q_{1}^{'}$ with $\delta_{1}=xy$. For the same lemma just one of the $\gamma$s is $\overline{x}y$ and the others are $\epsilon$. We can have three different cases now: 
+	For lemma \ref{multioutconstraintswithmarked} there cannot be an input action in a transition involving marked processes so $h$ must be $0$ and $Q_{1} \stackrel{\delta_{1}}{\longmapsto} Q_{1}^{'}$ with $\delta_{1}=xy$. Just one of the $\gamma$s is $\overline{x}y$ and the others are $\epsilon$ or $\tau$. We can have three different cases now: 
 	\begin{description}
 	  \item[$\gamma_{1}=\overline{x}y$]:
 	    A proof of the conclusion is:
@@ -886,7 +891,7 @@ This section contains the definition of an alternative semantic for multi $\pi$.
 			      \stackrel{\epsilon}{\longmapsto} L_{k}|Q_{1}^{'}
 			      \stackrel{\epsilon}{\longmapsto} P_{1}^{'}|Q_{1}^{'}$	  
 	    \end{center}
-	    we derive the transaction $ L_{i-1}|Q_{1} \stackrel{\tau}{\longmapsto} L_{i}|Q_{1}^{'}$ with rule $Com3L$, whether for the other transactions  we use the rule $Par1L$.
+	    we derive the transaction $ L_{i-1}|Q_{1} \stackrel{\tau}{\longmapsto} L_{i}|Q_{1}^{'}$ with rule $Com2L$, whether for the other transactions  we use the rule $Par1L$.
 	  \item[$\gamma_{k+1}=\overline{x}y$] similar.
 	\end{description}
       \item[$Res$]: 
@@ -964,7 +969,7 @@ This section contains the definition of an alternative semantic for multi $\pi$.
 			      \stackrel{\gamma_{k}}{\longmapsto} L_{k}|Q_{1}^{'}
 			      \stackrel{\gamma_{k+1}}{\longmapsto} P_{1}^{'}|Q_{1}^{'}$	  
 	    \end{center}
-	    we derive the transition $ L_{i-1}|Q_{1} \stackrel{\tau}{\longmapsto} L_{i}|Q_{1}^{'}$ with rule $Com3L$, whether for the other transactions of the premises we use the rule $Par1L$.
+	    we derive the transition $ L_{i-1}|Q_{1} \stackrel{\tau}{\longmapsto} L_{i}|Q_{1}^{'}$ with rule $Com2L$, whether for the other transactions of the premises we use the rule $Par1L$.
 	  \item[$\gamma_{k+1}=\overline{x}y$]: cannot happen because $\sigma$ is not empty.
 	\end{description}
     \end{description}
@@ -1157,7 +1162,7 @@ We would like to prove the converse of the previous proposition, namely: if ther
 
 There is a much weaker propositions we can prove:
 \begin{proposition}
-  Let $\rightarrow$ be the relation defined in table \ref{lowleveltransitionrelationearlyoutonly}. Let $\alpha$ be an action. If $P \stackrel{\alpha}{\longmapsto} Q$ then $P\xrightarrow{\alpha} Q$.
+  Let $\rightarrow$ be the relation defined in table \ref{multipiearlywith}. Let $\alpha$ be an action. If $P \stackrel{\alpha}{\longmapsto} Q$ then $P\xrightarrow{\alpha} Q$.
   \begin{proof}
     The proof is by induction the depth of the derivation of $P \stackrel{\alpha}{\longmapsto} Q$:
     \begin{description}
