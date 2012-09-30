@@ -16,19 +16,270 @@ and they have the same intuitive meaning as for the $\pi$ calculus. The strong p
 We have to extend the following definition to deal with the strong prefix:
 \begin{center}
   \begin{tabular}{ll}
-	$B(\underline{x(y)}.Q, I)\; =\; \{y,\overline{y}\}\cup B(Q, I)$
+	$B(\underline{x(y)}.Q, I) = \{y,\overline{y}\}\cup B(Q, I)$
       &
-	$F(\underline{x(y)}.Q, I)\; =\; \{x,\overline{x}\}\cup (F(Q, I)-\{y,\overline{y}\})$
+	$F(\underline{x(y)}.Q, I) = \{x,\overline{x}\}\cup (F(Q, I)-\{y,\overline{y}\})$
     \\
-	$B(\underline{\overline{x}y}.Q, I)\; =\; B(Q,I)$
+	$B(\underline{\overline{x}y}.Q, I) = B(Q,I)$
       &
-	$F(\underline{\overline{x}y}.Q, I)\; =\; \{x,\overline{x},y,\overline{y}\}\cup F(Q, I)$
+	$F(\underline{\overline{x}y}.Q, I) = \{x,\overline{x},y,\overline{y}\}\cup F(Q, I)$
     \\
   \end{tabular}
 \end{center}
 
 \section{Operational semantic}
 \subsection{Early operational semantic with structural congruence}
+
+\begin{definition}\index{transition relation! multipi! early! with structural congruence}
+  The \emph{early transition relation with structural congruence} is the smallest relation induced by the rules in table \ref{multiIOearly}:
+  \begin{table}
+    \begin{tabular}{ll}
+	  \hline\\
+	  $\inferrule* [left=\bf{Inp}]{
+	  }{
+	    x(y).P \xrightarrow{xz} P\{z/x\}
+	  }$
+	&
+	  $\inferrule* [left=\bf{Tau}]{
+	  }{
+	    \tau.P \xrightarrow{\tau} P
+	  }$
+      \\\\
+	  $\inferrule* [left=\bf{Out}]{
+	  }{
+	    \overline{x}y.P \xrightarrow{\overline{x}y} P
+	  }$
+	&
+	  $\inferrule* [left=\bf{SInp}]{
+	      \{z/y\}P \xrightarrow{\sigma} P^{'} 
+	    \\
+	      \sigma\neq \tau
+	  }{
+	    \underline{x(y)}.P \xrightarrow{xz \cdot \sigma} P^{'}
+	  }$
+      \\\\
+	  $\inferrule* [left=\bf{SOut}]{
+	      P \xrightarrow{\sigma} P^{'} 
+	    \\
+	      \sigma\neq \tau
+	  }{
+	    \underline{\overline{x}y}.P \xrightarrow{\overline{x}y \cdot \sigma} P^{'}
+	  }$
+	&
+	  $\inferrule* [left=\bf{ECom}]{
+	      P \xrightarrow{\sigma_{1}} P^{'}
+	    \\
+	      Q\xrightarrow{\sigma_{2}} Q^{'}
+	    \\
+	      ESync(\sigma_{1}, \sigma_{2}, \sigma_{3})
+	  }{
+	    P|Q \xrightarrow{\sigma_{3}} P^{'}|Q^{'}
+	  }$
+      \\\\
+	  $\inferrule* [left=\bf{Sum}]{
+	    P \xrightarrow{\sigma} P^{'}
+	  }{
+	    P+Q \xrightarrow{\sigma} P^{'}
+	  }$
+	&
+	$\inferrule* [left=\bf{Cong}]{
+	    P\equiv P^{'}
+	  \\
+	    P^{'} \xrightarrow{\alpha} Q
+	}{
+	    P \xrightarrow{\alpha} Q
+	}$
+      \\\\
+	  $\inferrule* [left=\bf{Res}]{
+	      P \xrightarrow{\sigma} P^{'}
+	    \\
+	      z\notin n(\alpha)
+	  }{
+	    (\nu z) P \xrightarrow{\sigma} (\nu z) P^{'}
+	  }$
+	&
+	  $\inferrule* [left=\bf{Par}]{
+	      P \xrightarrow{\sigma} P^{'} 
+	    \\
+	      bn(\sigma)\cap fn(Q)=\emptyset
+	  }{
+	    P|Q \xrightarrow{\sigma} P^{'}|Q
+	  }$
+      \\\\\hline
+    \end{tabular}
+    \caption{Multi $\pi$ early semantic with structural congruence}
+    \label{multiIOearly}
+  \end{table}
+\end{definition}
+
+The names $\sigma, \sigma_{1}, \sigma_{2}, \sigma_{3}$ are non empty sequences of actions. The relation $ESync$ is defined by the axioms in table \ref{syncEarly}
+\begin{table}
+  \begin{tabular}{ll}
+      \hline\\
+	$\inferrule* [left=S1L]{
+	}{
+	  ESync(xy,\overline{x}y,\tau)
+	}$
+      &
+	$\inferrule* [left=S1R]{
+	}{
+	  ESync(\overline{x}y, xy, \tau)
+	}$
+    \\\\
+	$\inferrule* [left=S2L]{
+	}{
+	  ESync(xy,\overline{x}y\cdot \sigma,\sigma)
+	}$
+      &
+	$\inferrule* [left=S2R]{
+	}{
+	  ESync(\overline{x}y\cdot \sigma, xy, \sigma)
+	}$
+    \\\\  
+	$\inferrule* [left=S3L]{
+	}{
+	  ESync(xy\cdot \sigma, \overline{x}y, \sigma)
+	}$	
+      &
+	$\inferrule* [left=S3R]{
+	}{
+	  ESync(\overline{x}y,xy\cdot \sigma,\sigma)
+	}$	
+    \\\\
+	$\inferrule* [left=S4L]{
+	  ESync(\sigma_{1}, \sigma_{2}, \sigma_{3})
+	}{
+	  ESync(xy\cdot \sigma_{1}, \overline{x}y\cdot\sigma_{2}, \sigma_{3})
+	}$		
+      &
+	$\inferrule* [left=S4R]{
+	  ESync(\sigma_{1}, \sigma_{2}, \sigma_{3})
+	}{
+	  ESync(\overline{x}y\cdot\sigma_{1},xy\cdot \sigma_{2}, \sigma_{3})
+	}$
+    \\\\\hline
+  \end{tabular}
+  \caption{Synchronization relation}
+  \label{syncEarly}
+\end{table}
+
+
+\begin{example}\emph{Transactional synchronization.}
+  This is an example of two processes that synchronize over a sequence of actions of length two:
+  \[
+    \underline{\overline{a}x}.\overline{a}y.P|\underline{a(w)}.a(z).Q \xrightarrow{\tau} P|Q\{x/w\}\{y/z\}
+  \]
+  We start first noticing that
+  \[
+    \inferrule* [left=S4R]{
+      \inferrule* [left=S1R]{
+      }{
+	Sync(\overline{a}y, ay, \tau)
+      }
+    }{
+      Sync(\overline{a}x \cdot \overline{a}y, ax \cdot ay, \tau)
+    }
+  \]
+  and that 
+  \begin{center}
+    \begin{tabular}{ll}
+	  $\inferrule* [left=SOut]{
+	    \inferrule* [left=Out]{
+	    }{
+	      \overline{a}y.P \xrightarrow{\overline{a}y} P
+	    }
+	  }{
+	    \underline{\overline{a}x}.\overline{a}y.P 
+	      \xrightarrow{\overline{a}x \cdot \overline{a}y} 
+		P
+	  }$  
+	&
+	  $\inferrule* [left=SInp]{
+	    \inferrule* [left=Inp]{
+	    }{
+	      (a(z).Q)\{x/w\} \xrightarrow{ay} Q\{x/w\}\{y/z\}
+	    }
+	  }{
+	    \underline{a(w)}.a(z).Q \xrightarrow{ax\cdot ay} Q
+	  }$
+    \end{tabular}
+  \end{center}
+  and in the end we just need to apply the rule $\bf{LCom}$
+\end{example}
+
+
+\begin{example}\emph{Multi-party synchronization.}
+  In this example we have three processes that want to synchronize:
+  \begin{center}
+    $\inferrule* [left=\tiny{\bf{ECom}}]{
+	\underline{\overline{a}f}.\overline{b}g.P|a(w).Q
+	  \xrightarrow{\overline{b}g} 
+	    P|Q\{f/w\}
+      \\
+	\inferrule* [left=\bf{Inp}]{
+	}{
+	  b(y).R 
+	    \xrightarrow{bg} 
+	      R\{g/y\}
+	}
+      \\
+	\inferrule* [left=\bf{S1R}]{
+	}{
+	  Sync(\overline{b}g, bg, \tau)
+	}
+    }{
+       (\underline{\overline{a}f}.\overline{b}g.P
+	|a(w).Q)
+	|b(y).R 
+	  \xrightarrow{\tau} 
+	    (P|Q\{f/w\})|R\{g/y\}
+    }$
+  \end{center}
+
+  \begin{center}$
+    \inferrule* [left=\tiny{\bf{LCom}}]{
+	\underline{\overline{a}f}.\overline{b}g.P
+	  \xrightarrow{\overline{a}f \cdot \overline{b}g} 
+	    P
+      \\
+	\inferrule* [left=\bf{Inp}]{
+	}{
+	  a(w).Q
+	    \xrightarrow{af} 
+	      Q\{f/w\}
+	}
+      \\
+	\inferrule* [left=\bf{S2R}]{
+	}{
+	  Sync(\overline{a}f \cdot \overline{b}g, af, \overline{b}g)
+	}
+    }{
+	\underline{\overline{a}f}.\overline{b}g.P|a(w).Q
+	  \xrightarrow{\overline{b}g} 
+	    P|Q\{f/w\}
+    }
+  $\end{center}
+
+
+  \begin{center}$
+    \inferrule* [left=\bf{SOut}]{
+	\inferrule* [left=\bf{Out}]{
+	}{
+	  \overline{b}g.P
+	    \xrightarrow{\overline{b}g} 
+	      P
+	}
+    }{
+	\underline{\overline{a}f}.\overline{b}g.P
+	  \xrightarrow{\overline{a}f \cdot \overline{b}g} 
+	    P
+    }
+  $
+  \end{center}
+\end{example}
+
+
+
 
 \subsection{Late operational semantic with structural congruence}
 
@@ -53,170 +304,73 @@ The semantic of a multi $\pi$ process is labeled transition system such that
 
 In this case, a label can be a sequence of prefixes, whether in the original $\pi$ calculus a label can be only a prefix. We use the symbol $\cdot$ to denote the concatenation operator.
 
-% \begin{definition}\index{transition relation! multipi! late! with structural congruence}
-%   The \emph{late transition relation with structural congruence} is the smallest relation induced by the rules in table \ref{multiIOlatewith1}
-%   \begin{table}
-%     \begin{tabular}{ll}
-% 	  \hline\\
-%  	  \bf{Pref}
-%  	  \begin{tabular}{c}
-%  	      $\alpha\; not\; a\; strong\; prefix$
-%  	    \\\hline
-%  	      $\alpha.P \;\xrightarrow{\alpha} P$
-%  	  \end{tabular}
-% 	&
-% 	  \bf{Par}
-% 	  \begin{tabular}{c}
-% 	      $P \;\xrightarrow{\sigma} P^{'}\;\; bn(\sigma)\cap fn(Q)=\emptyset$
-% 	    \\\hline
-% 	      $P|Q \;\xrightarrow{\sigma} P^{'}|Q$
-% 	  \end{tabular}
-%       \\\\
-% 	  \bf{SOut}
-% 	  \begin{tabular}{c}
-% 	      $P \;\xrightarrow{\sigma} P^{'}\;\; \sigma\neq \tau$
-% 	    \\\hline
-% 	      $\underline{\overline{x}y}.P \;\xrightarrow{\overline{x}y \cdot \sigma} P^{'}$
-% 	  \end{tabular}
-% 	&
-% 	  $\inferrule* [left=\bf{LComSeq1}]{
-% 	      P \;\xrightarrow{x(y)}\; P^{'}
-% 	    \\
-% 	      Q\;\xrightarrow{\overline{x}z\cdot \sigma} Q^{'}
-% 	    \\
-% 	      z\notin fn(P)
-% 	  }{
-% 	    P|Q \;\xrightarrow{\sigma} P^{'}\{z/y\}|Q^{'}
-% 	  }$
-%       \\\\
-% 	  \bf{Sum}
-% 	  \begin{tabular}{c}
-% 	      $P \;\xrightarrow{\sigma} P^{'}$
-% 	    \\\hline
-% 	      $P+Q \;\xrightarrow{\sigma} P^{'}$
-% 	  \end{tabular}
-% 	&
-% 	$\inferrule* [left=\bf{Str}]{
-% 	    P\equiv P^{'}
-% 	  \\
-% 	    P^{'}\; \;\xrightarrow{\alpha}\; Q^{'}
-% 	  \\
-% 	    Q\equiv Q^{'}
-% 	}{
-% 	    P\; \;\xrightarrow{\alpha}\; Q
-% 	}$
-%       \\\\
-% 	  \bf{Res}
-% 	  \begin{tabular}{c}
-% 	      $P \;\xrightarrow{\sigma} P^{'}\;\; z\notin n(\alpha)$
-% 	    \\\hline
-% 	      $(\nu z) P \;\xrightarrow{\sigma} (\nu z) P^{'}$
-% 	  \end{tabular}
-% 	&
-% 	  $\inferrule* [left=\bf{LComSng}]{
-% 	      P \;\xrightarrow{x(y)} P^{'}
-% 	    \\
-% 	      Q\;\xrightarrow{\overline{x}z} Q^{'}
-% 	    \\
-% 	      z\notin fn(P)
-% 	  }{
-% 	    P|Q \;\xrightarrow{\tau} P^{'}\{z/y\}|Q^{'}
-% 	  }$
-%       \\\\
-% 	  $\inferrule* [left=\bf{SInp}]{
-% 	      P \;\xrightarrow{\sigma}\; P^{'}
-% 	    \\
-% 	      \sigma\neq \tau
-% 	  }{
-% 	    \underline{x(y)}.P \;\xrightarrow{x(y) \cdot \sigma} P^{'}
-% 	  }$
-% 	&
-% 	  $\inferrule* [left=\bf{LComSeq2}]{
-% 	      P \;\xrightarrow{\overline{x}z}\; P^{'}
-% 	    \\
-% 	      Q\;\xrightarrow{x(y)\cdot \sigma}\; Q^{'}
-% 	    \\
-% 	      z\notin fn(P)
-% 	  }{
-% 	    P|Q \;\xrightarrow{\sigma\{z/y\}}\; P^{'}|Q^{'}\{z/y\}
-% 	  }$
-%       \\\hline
-%     \end{tabular}
-%     \caption{Multi $\pi$ late semantic with structural congruence}
-%     \label{multiIOlatewith1}
-%   \end{table}
-% \end{definition}
-
-
-% \subsection{Another attemp to late operational semantic with structural congruence}
-
 \begin{definition}\index{transition relation! multipi! late! with structural congruence}
   The \emph{late transition relation with structural congruence} is the smallest relation induced by the rules in table \ref{multiIOlatewith2}:
   \begin{table}
     \begin{tabular}{ll}
 	  \hline\\
- 	  \bf{Pref}
- 	  \begin{tabular}{c}
- 	      $\alpha\; not\; a\; strong\; prefix$
- 	    \\\hline
- 	      $\alpha.P \;\xrightarrow{\alpha} P$
- 	  \end{tabular}
+	  $\inferrule* [left=\bf{Pref}]{
+	    \alpha\; not\; a\; strong\; prefix
+	  }{
+	    \alpha.P \xrightarrow{\alpha} P
+	  }$
 	&
-	  \bf{Par}
-	  \begin{tabular}{c}
-	      $P \;\xrightarrow{\sigma} P^{'}\;\; bn(\sigma)\cap fn(Q)=\emptyset$
-	    \\\hline
-	      $P|Q \;\xrightarrow{\sigma} P^{'}|Q$
-	  \end{tabular}
+	  $\inferrule* [left=\bf{Par}]{
+	      P \xrightarrow{\sigma} P^{'} 
+	    \\
+	      bn(\sigma)\cap fn(Q)=\emptyset
+	  }{
+	    P|Q \xrightarrow{\sigma} P^{'}|Q
+	  }$
       \\\\
-	  \bf{SOut}
-	  \begin{tabular}{c}
-	      $P \;\xrightarrow{\sigma} P^{'}\;\; \sigma\neq \tau$
-	    \\\hline
-	      $\underline{\overline{x}y}.P \;\xrightarrow{\overline{x}y \cdot \sigma} P^{'}$
-	  \end{tabular}
+	  $\inferrule* [left=\bf{SOut}]{
+	      P \xrightarrow{\sigma} P^{'} 
+	    \\
+	      \sigma\neq \tau
+	  }{
+	    \underline{\overline{x}y}.P \xrightarrow{\overline{x}y \cdot \sigma} P^{'}
+	  }$
 	&
 	  $\inferrule* [left=\bf{LCom}]{
-	      P \;\xrightarrow{\sigma_{1}}\; P^{'}
+	      P \xrightarrow{\sigma_{1}} P^{'}
 	    \\
-	      Q\;\xrightarrow{\sigma_{2}} Q^{'}
+	      Q\xrightarrow{\sigma_{2}} Q^{'}
 	    \\
 	      Sync(\sigma_{1}, \sigma_{2}, \sigma_{3}, \delta_{1}, \delta_{2})
 	  }{
-	    P|Q \;\xrightarrow{\sigma_{3}} P^{'}\delta_{1}|Q^{'}\delta_{2}
+	    P|Q \xrightarrow{\sigma_{3}} P^{'}\delta_{1}|Q^{'}\delta_{2}
 	  }$
       \\\\
-	  \bf{Sum}
-	  \begin{tabular}{c}
-	      $P \;\xrightarrow{\sigma} P^{'}$
-	    \\\hline
-	      $P+Q \;\xrightarrow{\sigma} P^{'}$
-	  \end{tabular}
+	  $\inferrule* [left=\bf{Sum}]{
+	    P \xrightarrow{\sigma} P^{'}
+	  }{
+	    P+Q \xrightarrow{\sigma} P^{'}
+	  }$
 	&
-	$\inferrule* [left=\bf{Str}]{
+	$\inferrule* [left=\bf{Cong}]{
 	    P\equiv P^{'}
 	  \\
-	    P^{'}\; \;\xrightarrow{\alpha}\; Q^{'}
-	  \\
-	    Q\equiv Q^{'}
+	    P^{'} \xrightarrow{\alpha} Q
 	}{
-	    P\; \;\xrightarrow{\alpha}\; Q
+	    P \xrightarrow{\alpha} Q
 	}$
       \\\\
-	  \bf{Res}
-	  \begin{tabular}{c}
-	      $P \;\xrightarrow{\sigma} P^{'}\;\; z\notin n(\alpha)$
-	    \\\hline
-	      $(\nu z) P \;\xrightarrow{\sigma} (\nu z) P^{'}$
-	  \end{tabular}
+	  $\inferrule* [left=\bf{Res}]{
+	      P \xrightarrow{\sigma} P^{'}
+	    \\
+	      z\notin n(\alpha)
+	  }{
+	    (\nu z) P \xrightarrow{\sigma} (\nu z) P^{'}
+	  }$
 	&
-	  \bf{SInp}
-	  \begin{tabular}{c}
-	      $P \;\xrightarrow{\sigma} P^{'}\;\; \sigma\neq \tau$
-	    \\\hline
-	      $\underline{x(y)}.P \;\xrightarrow{x(y) \cdot \sigma} P^{'}$
-	  \end{tabular}
-      \\\hline
+	  $\inferrule* [left=\bf{SInp}]{
+	      P \xrightarrow{\sigma} P^{'} 
+	    \\
+	      \sigma\neq \tau
+	  }{
+	    \underline{x(y)}.P \xrightarrow{x(y) \cdot \sigma} P^{'}
+	  }$
+      \\\\\hline
     \end{tabular}
     \caption{Multi $\pi$ late semantic with structural congruence}
     \label{multiIOlatewith2}
@@ -268,247 +422,61 @@ In what follows, the names $\delta, \delta_{1}, \delta_{2}$ represents substitut
 	}{
 	  Sync(\overline{x}z\cdot\sigma_{1},x(y)\cdot \sigma_{2}, \sigma_{3}, \delta_{1}, \{z/y\}\delta_{2})
 	}$		
-    \\\\
-	$\inferrule* [left=I1L]{
-	  Sync(\sigma_{1}, \sigma_{2}, \tau, \delta_{1}, \delta_{2})
-	}{
-	  Sync(\alpha \cdot \sigma_{1}, \sigma_{2}, \alpha, \delta_{1}, \delta_{2})
-	}$		
-      &
-	$\inferrule* [left=I1R]{
-	  Sync(\sigma_{1}, \sigma_{2}, \tau, \delta_{1}, \delta_{2})
-	}{
-	  Sync(\sigma_{1}, \alpha \cdot \sigma_{2}, \alpha, \delta_{1}, \delta_{2})
-	}$		
-    \\\\
-	$\inferrule* [left=I2L]{
-	  Sync(\sigma_{1}, \sigma_{2}, \sigma_{3}, \delta_{1}, \delta_{2})
-	}{
-	  Sync(\alpha \cdot \sigma_{1}, \sigma_{2}, \alpha \cdot \sigma_{3}, \delta_{1}, \delta_{2})
-	}$			
-      &
-	$\inferrule* [left=I2R]{
-	  Sync(\sigma_{1}, \sigma_{2}, \sigma_{3}, \delta_{1}, \delta_{2})
-	}{
-	  Sync(\sigma_{1}, \alpha \cdot \sigma_{2}, \alpha \cdot \sigma_{3}, \delta_{1}, \delta_{2})
-	}$			
-    \\\\
-	$\inferrule* [left=I3L]{
-	}{
-	  Sync(\alpha, \sigma, \alpha \cdot \sigma, \delta_{1}, \delta_{2})
-	}$			
-      &
-	$\inferrule* [left=I3R]{
-	}{
-	  Sync(\sigma, \alpha, \alpha \cdot \sigma, \delta_{1}, \delta_{2})
-	}$
-    \\\\
-	$\inferrule* [left=I4L]{
-	}{
-	  Sync(\epsilon, \sigma, \sigma, \delta_{1}, \delta_{2})
-	}$			
-      &
-	$\inferrule* [left=I4R]{
-	}{
-	  Sync(\sigma, \epsilon, \sigma, \delta_{1}, \delta_{2})
-	}$
-    \\\hline
+%     \\\\
+% 	$\inferrule* [left=I1L]{
+% 	  Sync(\sigma_{1}, \sigma_{2}, \tau, \delta_{1}, \delta_{2})
+% 	}{
+% 	  Sync(\alpha \cdot \sigma_{1}, \sigma_{2}, \alpha, \delta_{1}, \delta_{2})
+% 	}$		
+%       &
+% 	$\inferrule* [left=I1R]{
+% 	  Sync(\sigma_{1}, \sigma_{2}, \tau, \delta_{1}, \delta_{2})
+% 	}{
+% 	  Sync(\sigma_{1}, \alpha \cdot \sigma_{2}, \alpha, \delta_{1}, \delta_{2})
+% 	}$		
+%     \\\\
+% 	$\inferrule* [left=I2L]{
+% 	  Sync(\sigma_{1}, \sigma_{2}, \sigma_{3}, \delta_{1}, \delta_{2})
+% 	}{
+% 	  Sync(\alpha \cdot \sigma_{1}, \sigma_{2}, \alpha \cdot \sigma_{3}, \delta_{1}, \delta_{2})
+% 	}$			
+%       &
+% 	$\inferrule* [left=I2R]{
+% 	  Sync(\sigma_{1}, \sigma_{2}, \sigma_{3}, \delta_{1}, \delta_{2})
+% 	}{
+% 	  Sync(\sigma_{1}, \alpha \cdot \sigma_{2}, \alpha \cdot \sigma_{3}, \delta_{1}, \delta_{2})
+% 	}$			
+%     \\\\
+% 	$\inferrule* [left=I3L]{
+% 	}{
+% 	  Sync(\alpha, \sigma, \alpha \cdot \sigma, \delta_{1}, \delta_{2})
+% 	}$			
+%       &
+% 	$\inferrule* [left=I3R]{
+% 	}{
+% 	  Sync(\sigma, \alpha, \alpha \cdot \sigma, \delta_{1}, \delta_{2})
+% 	}$
+%     \\\\
+% 	$\inferrule* [left=I4L]{
+% 	}{
+% 	  Sync(\epsilon, \sigma, \sigma, \delta_{1}, \delta_{2})
+% 	}$			
+%       &
+% 	$\inferrule* [left=I4R]{
+% 	}{
+% 	  Sync(\sigma, \epsilon, \sigma, \delta_{1}, \delta_{2})
+% 	}$
+    \\\\\hline
   \end{tabular}
   \caption{Synchronization relation}
   \label{sync}
 \end{table}
 
 
-
-% 
-% ALTERNATIVA $\sigma, \sigma_{1}, \sigma_{2}, \sigma_{3}$ sono sequenze di azioni anche eventualmente vuote
-% \begin{center}
-%   \begin{tabular}{ll}
-% 	$\inferrule* [left=S1L]{
-% 	}{
-% 	  Sync(x(y),\overline{x}z,\tau,\{z/y\},\{\})
-% 	}$
-%       &
-% 	$\inferrule* [left=S1R]{
-% 	}{
-% 	  Sync(\overline{x}z, x(y), \tau, \{\}, \{z/y\})
-% 	}$
-%     \\\\
-% 	$\inferrule* [left=S2L]{
-% 	  Int(\sigma_{1}\{z/y\}, \sigma_{2}, \sigma_{3}, \delta_{1}, \delta_{2})
-% 	}{
-% 	  Sync(x(y)\cdot\sigma_{1}, \overline{x}z\cdot \sigma_{2}, \sigma_{3}, \{z/y\}\delta_{1}, \delta_{2})
-% 	}$
-%       &
-% 	$\inferrule* [left=S2R]{
-% 	  Int(\sigma_{1}, \sigma_{2}\{z/y\}, \sigma_{3}, \delta_{1}, \delta_{2})
-% 	}{
-% 	  Sync(\overline{x}z\cdot\sigma_{1}, x(y)\cdot \sigma_{2}, \sigma_{3}, \delta_{1}, \{z/y\}\delta_{2})
-% 	}$
-%     \\\\  
-% 	$\inferrule* [left=S3In]{
-% 	  Sync(\sigma_{1}, \sigma_{2}, \tau, , )
-% 	}{
-% 	  Sync(x(y)\cdot \sigma_{1}, \sigma_{2}, x(y), , )
-% 	}$	
-%       &
-% 	$\inferrule* [left=S3Out]{
-% 	  Sync(\sigma_{1}, \sigma_{2}, \tau, , )
-% 	}{
-% 	  Sync(\overline{x}y\cdot \sigma_{1}, \sigma_{2}, \overline{x}y, , )
-% 	}$	
-%     \\\\
-% 	$\inferrule* [left=S4In]{
-% 	  Sync(\sigma_{1}, \sigma_{2}, \tau, , )
-% 	}{
-% 	  Sync(\sigma_{1}, x(y)\cdot\sigma_{2}, x(y), , )
-% 	}$		
-%       &
-% 	$\inferrule* [left=S4Out]{
-% 	  Sync(\sigma_{1}, \sigma_{2}, \tau, , )
-% 	}{
-% 	  Sync(\sigma_{1}, \overline{x}z\cdot\sigma_{2}, \overline{x}z, , )
-% 	}$		
-%     \\\\
-% 	$\inferrule* [left=S5In]{
-% 	    Sync(\sigma_{1}, \sigma_{2}, \sigma_{3}, , )
-% 	  \\
-% 	    \sigma_{3}\neq\tau
-% 	}{
-% 	  Sync(x(y)\cdot\sigma_{1}, \sigma_{2}, x(y)\sigma_{3}, , )
-% 	}$		
-%       &
-% 	$\inferrule* [left=S5Out]{
-% 	    Sync(\sigma_{1}, \sigma_{2}, \sigma_{3}, , )
-% 	  \\
-% 	    \sigma_{3}\neq\tau
-% 	}{
-% 	  Sync(\overline{x}z\cdot\sigma_{1}, \sigma_{2}, \overline{x}z\sigma_{3}, , )
-% 	}$		
-%     \\\\
-% 	$\inferrule* [left=S6In]{
-% 	    Sync(\sigma_{1}, \sigma_{2}, \sigma_{3}, , )
-% 	  \\
-% 	    \sigma_{3}\neq\tau
-% 	}{
-% 	  Sync(\sigma_{1}, x(y)\cdot\sigma_{2}, x(y)\cdot\sigma_{3}, , )
-% 	}$		
-%       &
-% 	$\inferrule* [left=S6Out]{
-% 	    Sync(\sigma_{1}, \sigma_{2}, \sigma_{3}, , )
-% 	  \\
-% 	    \sigma_{3}\neq\tau
-% 	}{
-% 	  Sync(\sigma_{1}, \overline{x}z\cdot\sigma_{2}, \overline{x}z\cdot\sigma_{3}, , )
-% 	}$		
-%     \\\\
-% 	$\inferrule* [left=I1L]{
-% 	}{
-% 	  Int(x(y), \overline{x}y, \tau, \delta_{1}, \delta_{2})
-% 	}$		
-%       &
-% 	$\inferrule* [left=I1R]{
-% 	}{
-% 	  Int(\overline{x}y, x(y), \tau, \delta_{1}, \delta_{2})
-% 	}$		
-%     \\\\
-% 	$\inferrule* [left=I2In]{
-% 	}{
-% 	  Int(x(y), \epsilon, x(y), , )
-% 	}$			
-%       &
-% 	$\inferrule* [left=I2Out]{
-% 	}{
-% 	  Int(\overline{x}y, \epsilon, \overline{x}y, , )
-% 	}$			
-%     \\\\
-% 	$\inferrule* [left=I3In]{
-% 	}{
-% 	  Int(\epsilon, x(y), x(y), , )
-% 	}$			
-%       &
-% 	$\inferrule* [left=I3Out]{
-% 	}{
-% 	  Int(\epsilon, \overline{x}z, \overline{x}z, , )
-% 	}$
-%     \\\\
-% 	$\inferrule* [left=I4L]{
-% 	  Int(\sigma_{1}, \sigma_{2}, \sigma_{3}, , )
-% 	}{
-% 	  Int(x(y)\cdot\sigma_{1}, \overline{x}z\cdot \sigma_{2}, \sigma_{3}, , )
-% 	}$			
-%       &
-% 	$\inferrule* [left=I4R]{
-% 	  Int(\sigma_{1}, \sigma_{2}, \sigma_{3}, , )
-% 	}{
-% 	  Int(\overline{x}z\cdot\sigma_{1}, x(y)\cdot \sigma_{2}, \sigma_{3}, , )
-% 	}$
-%     \\\\
-% 	$\inferrule* [left=I5In]{
-% 	  Int(\sigma_{1}, \sigma_{2}, \tau, , )
-% 	}{
-% 	  Int(x(y)\cdot\sigma_{1}, \sigma_{2}, x(y), , )
-% 	}$			
-%       &
-% 	$\inferrule* [left=I5Out]{
-% 	  Int(\sigma_{1}, \sigma_{2}, \tau, , )
-% 	}{
-% 	  Int(\overline{x}z\cdot\sigma_{1}, \sigma_{2}, \overline{x}z, , )
-% 	}$
-%     \\\\
-% 	$\inferrule* [left=I6In]{
-% 	    Int(\sigma_{1}, \sigma_{2}, \sigma_{3}, , )
-% 	  \\
-% 	    \sigma_{3}\neq\tau
-% 	}{
-% 	  Int(x(y)\cdot\sigma_{1}, \sigma_{2}, x(y)\sigma_{3}, , )
-% 	}$			
-%       &
-% 	$\inferrule* [left=I6Out]{
-% 	    Int(\sigma_{1}, \sigma_{2}, \sigma_{3}, , )
-% 	  \\
-% 	    \sigma_{3}\neq\tau
-% 	}{
-% 	  Int(\overline{x}z\cdot\sigma_{1}, \sigma_{2}, \overline{x}z\sigma_{3}, , )
-% 	}$
-%     \\\\
-% 	$\inferrule* [left=I7Out]{
-% 	  Int(\sigma_{1}, \sigma_{2}, \tau, , )
-% 	}{
-% 	  Int(\sigma_{1}, \overline{x}z\cdot \sigma_{2}, \overline{x}z, , )
-% 	}$			
-%       &
-% 	$\inferrule* [left=I7In]{
-% 	  Int(\sigma_{1}, \sigma_{2}, \tau, , )
-% 	}{
-% 	  Int(\sigma_{1}, x(y)\cdot \sigma_{2}, x(y), , )
-% 	}$
-%     \\\\
-% 	$\inferrule* [left=I8In]{
-% 	    Int(\sigma_{1}, \sigma_{2}, \sigma_{3}, , )
-% 	  \\
-% 	    \sigma_{3}\neq\tau
-% 	}{
-% 	  Int(\sigma_{1}, x(y)\cdot \sigma_{2}, x(y)\cdot\sigma_{3}, , )
-% 	}$
-%       &
-% 	$\inferrule* [left=I8Out]{
-% 	    Int(\sigma_{1}, \sigma_{2}, \sigma_{3}, , )
-% 	  \\
-% 	    \sigma_{3}\neq\tau
-% 	}{
-% 	  Int(\sigma_{1}, \overline{x}z\cdot \sigma_{2}, \overline{x}z\cdot\sigma_{3}, , )
-% 	}$			
-%     \\
-%   \end{tabular}
-% \end{center}
-
-
-
-\begin{example}[Transactional synchronization]
+\begin{example}\emph{Transactional synchronization.}
   This is an example of two processes that synchronize over a sequence of actions of length two:
   \[
-    \underline{\overline{a}x}.\overline{a}y.P|\underline{a(w)}.a(z).Q\; \xrightarrow{\tau} P|Q\{x/w\}\{y/z\}
+    \underline{\overline{a}x}.\overline{a}y.P|\underline{a(w)}.a(z).Q \xrightarrow{\tau} P|Q\{x/w\}\{y/z\}
   \]
   We start first noticing that
   \[
@@ -528,10 +496,10 @@ In what follows, the names $\delta, \delta_{1}, \delta_{2}$ represents substitut
 	    \inferrule* [left=SOut]{
 	      \inferrule* [left=Pref]{
 	      }{
-		\overline{a}y.P\; \xrightarrow{\overline{a} y}\; P
+		\overline{a}y.P \xrightarrow{\overline{a} y} P
 	      }
 	    }{
-	      \underline{\overline{a}x}.\overline{a}y.P\; \xrightarrow{\overline{a}x \cdot \overline{a} y}\; P
+	      \underline{\overline{a}x}.\overline{a}y.P \xrightarrow{\overline{a}x \cdot \overline{a} y} P
 	    }
 	  $  
 	&
@@ -539,10 +507,10 @@ In what follows, the names $\delta, \delta_{1}, \delta_{2}$ represents substitut
 	    \inferrule* [left=SInp]{
 	      \inferrule* [left=Pref]{
 	      }{
-		a(z).Q\; \xrightarrow{a(z)} Q
+		a(z).Q \xrightarrow{a(z)} Q
 	      }
 	    }{
-	      \underline{a(w)}.a(z).Q\; \xrightarrow{a(w)\cdot a(z)} Q
+	      \underline{a(w)}.a(z).Q \xrightarrow{a(w)\cdot a(z)} Q
 	    }
 	  $
     \end{tabular}
@@ -551,108 +519,17 @@ In what follows, the names $\delta, \delta_{1}, \delta_{2}$ represents substitut
 \end{example}
 
 
-% \begin{center}
-%   \begin{prooftree}
-%       \AxiomC{
-% 	$Sync(\overline{a}x \cdot \overline{a} y, a(w) \cdot a(z), \tau, \{\}, \{x/w\}\{y/z\})$
-%       }
-%       \AxiomC{
-% 	$\underline{\overline{a}x}.\overline{a}y.P
-% 	  \xrightarrow{\overline{a}x \cdot \overline{a} y}
-% 	    P$
-%       }
-%       \AxiomC{
-% 	$\underline{a(w)}.a(z).Q
-% 	  \xrightarrow{a(w)\cdot a(z)} 
-% 	    Q$
-%       }
-%     \TrinaryInfC{
-%       $\underline{\overline{a}x}.\overline{a}y.P|\underline{a(w)}.a(z).Q\; 
-% 	\xrightarrow{\tau} 
-% 	  P|Q\{x/w\}\{y/z\}$
-%     }
-%   \end{prooftree}
-% \end{center}
-
-
-\begin{center}
-
-% \begin{sideways}
-% \begin{minipage}{12cm}
-\begin{prooftree}
-                    \AxiomC{}
-%
-%                   \LeftLabel{\scriptsize{\mbox{(Pref)}}}
-                  \UnaryInfC{p}
-%
-                  \AxiomC{o}
-%
-%                 \LeftLabel{\scriptsize{\mbox{(S-Pref$_3$)}}}
-                \BinaryInfC{n}
-%
-%               \LeftLabel{\scriptsize{\mbox{(Sum$_1$)}}}
-              \UnaryInfC{m}
-%
-%             \LeftLabel{\scriptsize{\mbox{(Cons)}}}
-%             \RightLabel{$p_0 \eqdef think.p_0 + \underline{up_0}.up_1.p'_0$}
-            \UnaryInfC{l}
-%
-%           \LeftLabel{\scriptsize{\mbox{(Par$_1$)}}}
-          \UnaryInfC{i}
-%
-              \AxiomC{}
-%
-%             \LeftLabel{\scriptsize{\mbox{(Pref)}}}
-            \UnaryInfC{h}
-%
-%           \LeftLabel{\scriptsize{\mbox{(Cons)}}}
-%           \RightLabel{$f_0 \eqdef  \overline{up_0}.f'_0$}
-          \UnaryInfC{g}
-%
-%         \LeftLabel{\scriptsize{\mbox{(S-Com)}}}
-%         \RightLabel{$\Sync(up_0up_1,  \overline{up_0}, up_1)$}
-        \BinaryInfC{f}
-%
-            \AxiomC{}
-%
-%           \LeftLabel{\scriptsize{\mbox{(Pref)}}}
-          \UnaryInfC{e}
-%
-%         \LeftLabel{\scriptsize{\mbox{(Cons)}}}
-%         \RightLabel{$f_1 \eqdef  \overline{up_1}.f'_1$}
-        \UnaryInfC{d}
-%
-%       \LeftLabel{\scriptsize{\mbox{(S-Com)}}}
-%       \RightLabel{$\Sync(up_1,  \overline{up_1}, \tau)$}
-      \BinaryInfC{c}
-%
-%     \LeftLabel{\scriptsize{\mbox{(S-Res)}}}
-%     \RightLabel{$L \cap n(\tau) = \emptyset$}
-    \UnaryInfC{b}
-%
-%   \LeftLabel{\scriptsize{\mbox{(Cons)}}}
-%   \RightLabel{$DP \;  \eqdef \;  \restr{L}(((p_0\para p_1) \para f_0) \para f_1)$}
-  \UnaryInfC{a}
-\end{prooftree}
-% \end{minipage}
-% \end{sideways}
-\fine
-\end{center}
-
-
-
-
-\begin{example}[Multi-party synchronization]
+\begin{example}\emph{Multi-party synchronization.}
   In this example we have three processes that want to synchronize:
-  \begin{center}$
-    \inferrule* [left=\tiny{\bf{LCom}}]{
+  \begin{center}
+    $\inferrule* [left=\tiny{\bf{LCom}}]{
 	\underline{\overline{a}f}.\overline{b}g.P|a(w).Q
 	  \xrightarrow{\overline{b}g} 
 	    P|Q\{f/w\}
       \\
 	\inferrule* [left=\bf{Pref}]{
 	}{
-	  b(y).R\; 
+	  b(y).R 
 	    \xrightarrow{b(y)} 
 	      R
 	}
@@ -664,11 +541,11 @@ In what follows, the names $\delta, \delta_{1}, \delta_{2}$ represents substitut
     }{
        (\underline{\overline{a}f}.\overline{b}g.P
 	|a(w).Q)
-	|b(y).R\; 
+	|b(y).R 
 	  \xrightarrow{\tau} 
 	    (P|Q\{f/w\})|R\{g/y\}
-    }
-  $\end{center}
+    }$
+  \end{center}
 
   \begin{center}$
     \inferrule* [left=\tiny{\bf{LCom}}]{
@@ -708,13 +585,12 @@ In what follows, the names $\delta, \delta_{1}, \delta_{2}$ represents substitut
 	  \xrightarrow{\overline{a}f \cdot \overline{b}g} 
 	    P
     }
-  $\end{center}
-
-
+  $
+  \end{center}
 \end{example}
 
 
-\begin{example}[Cigarette smokers' problem]
+\begin{example}\emph{Cigarette smokers' problem.}
   In this problem there are four processes: an agent and three smokers. Each smoker continuously makes a cigarette and smokes it. To make a cigarette each smoker needs three ingredients: tobacco, paper and matches. One of the smokers has paper, another tobacco and the third matches. The agent has an infinite supply of the ingredients. The agent places two of the ingredients on the table. The smoker who has the remaining ingredient take the others from the table, make a cigarette and smokes. Then the cycle repeats. A solution to the problem is the following:
   \begin{center}
     \begin{tabular}{l}
@@ -812,127 +688,213 @@ In what follows, the names $\delta, \delta_{1}, \delta_{2}$ represents substitut
 
 
 
+\subsection{Low level semantic}
+This section contains the definition of an alternative semantic for multi $\pi$. First we define a low level version of the multi $\pi$ calculus, we call this language low multi $\pi$. The low multi $\pi$ is the multi $\pi$ enriched with a marked or intermediate process $*P$:
+\begin{center}
+   \begin{tabular}{l}
+     $P,Q$ ::= $0$ | $\pi.P$ | $P|Q$ | $P+Q$ | $(\nu x) P$ | $A(x_{1}, \cdots, x_{n})$ | $*P$
+   \\\\
+     $\pi$ ::= $\overline{x}y$ | $x(y)$ | $\underline{\overline{x}y}$ | $\underline{x(y)}$  | $\tau$ 
+   \end{tabular}
+\end{center}
+\begin{definition}
+  The low level transition relation is the smallest relation induced by the rules in table \ref{lowleveltransitionrelationearlyIO} in which $P$ stands for a process without mark, $L$ stands for a process with mark and $S$ can stand for both. 
+  \begin{table}
+    \begin{tabular}{lll}
+      \hline\\
+	  $\inferrule* [left=\bf{Out}]{
+	  }{
+	    \overline{x}y.P \stackrel{\overline{x}y}{\longmapsto} P
+	  }$
+	  &
+	  $\inferrule* [left=\bf{EInp}]{
+	  }{
+	    x(y).P \stackrel{xz}{\longmapsto} P\{z/y\}
+	  }$
+	  &
+	  $\inferrule* [left=\bf{Tau}]{
+	  }{
+	    \tau.P \stackrel{\tau}{\longmapsto} P
+	  }$
+      \\\\
+      \end{tabular}\\
+      \begin{tabular}{ll}
+      \\\\
+	  $\inferrule* [left=\bf{SOutLow}]{
+	  }{
+	    \underline{\overline{x}y}.P \stackrel{\overline{x}y}{\longmapsto} * P
+	  }$
+	  &
+	  $\inferrule* [left=\bf{SInpLow}]{
+	  }{
+	    \underline{x(y)}.P \stackrel{xz}{\longmapsto} * P\{z/y\}
+	  }$
+      \\\\
+      \end{tabular}\\
+      \begin{tabular}{lll}
+      \\\\
+	  $\inferrule* [left=\bf{StarEps}]{
+	      S \stackrel{\epsilon}{\longmapsto} S^{'}
+	  }{
+	      *S \stackrel{\epsilon}{\longmapsto} S^{'}
+	  }$
+	  &
+	  $\inferrule* [left=\bf{StarInp}]{
+	      S \stackrel{xy}{\longmapsto} S^{'}
+	  }{
+	      *S \stackrel{xy}{\longmapsto} S^{'}
+	  }$
+	  &
+	  $\inferrule* [left=\bf{StarOut}]{
+	      S \stackrel{\overline{x}y}{\longmapsto} S^{'}
+	  }{
+	      *S \stackrel{\overline{x}y}{\longmapsto} S^{'}
+	  }$
+      \\\\
+      \end{tabular}\\
+      \begin{tabular}{ll}
+      \\\\
+	  $\inferrule* [left=\bf{Par1R}]{
+	      S \stackrel{\gamma}{\longmapsto} S^{'}
+% 	    \\ 
+% 	      bn(\gamma)\cap fn(Q)=\emptyset
+	  }{
+	      Q|S \stackrel{\gamma}{\longmapsto} Q|S^{'}
+	  }$
+	  &
+	  $\inferrule* [left=\bf{Par1L}]{
+	      S \stackrel{\gamma}{\longmapsto} S^{'}
+% 	    \\ 
+% 	      bn(\gamma)\cap fn(Q)=\emptyset
+	  }{
+	      S|Q \stackrel{\gamma}{\longmapsto} S^{'}|Q
+	  }$
+      \\\\
+      \end{tabular}\\
+	\begin{tabular}{lll}
+	\\\\
+	  $\inferrule* [left=\bf{Sum}]{
+	    P \stackrel{\gamma}{\longmapsto} S
+	  }{
+	    P+Q \stackrel{\gamma}{\longmapsto} S
+	  }$
+	  &
+	  $\inferrule* [left=\bf{Cong}]{
+	      P\equiv P^{'}
+	    \\
+	      P^{'} \stackrel{\gamma}{\longmapsto} S
+	  }{
+	      P \stackrel{\gamma}{\longmapsto} S
+	  }$
+	  &
+	  $\inferrule* [left=\bf{Res}]{
+	      S \stackrel{\gamma}{\longmapsto} S^{'}
+	    \\
+	      y\notin n(\gamma)
+	  }{
+	    (\nu y) S \stackrel{\gamma}{\longmapsto} (\nu y) S^{'}
+	  }$
+      \\\\
+    \end{tabular}\\
+      \begin{tabular}{ll}
+      \\\\
+	  $\inferrule* [left=\bf{Com1}]{
+	      P \stackrel{\overline{x}y}{\longmapsto} P^{'}
+	    \\
+	      Q \stackrel{xy}{\longmapsto} Q^{'}
+	  }{
+	    P|Q \stackrel{\tau}{\longmapsto} P^{'}|Q^{'}
+	  }$
+	  &
+       \\\\
+	  $\inferrule* [left=\bf{Com2LOut}]{
+	      L_{1} \stackrel{\overline{x}y}{\longmapsto} L_{1}^{'}
+	    \\
+	      L_{2} \stackrel{xy}{\longmapsto} S
+	  }{
+	    L_{1}|L_{2} \stackrel{\epsilon}{\longmapsto} L_{1}^{'}|S
+	  }$
+	  &
+	  $\inferrule* [left=\bf{Com2ROut}]{
+	      L_{1} \stackrel{xy}{\longmapsto} S
+	    \\
+	      L_{2} \stackrel{\overline{x}y}{\longmapsto} L_{2}^{'}
+	  }{
+	    L_{1}|L_{2} \stackrel{\epsilon}{\longmapsto} S|L_{2}^{'}
+	  }$
+       \\\\
+	  $\inferrule* [left=\bf{Com2LInp}]{
+	      L_{1} \stackrel{\overline{x}y}{\longmapsto} S
+	    \\
+	      L_{2} \stackrel{xy}{\longmapsto} L_{2}^{'}
+	  }{
+	    L_{1}|L_{2} \stackrel{\epsilon}{\longmapsto} S|L_{2}^{'}
+	  }$
+	  &
+	  $\inferrule* [left=\bf{Com2RInp}]{
+	      L_{1} \stackrel{xy}{\longmapsto} L_{1}^{'}
+	    \\
+	      L_{2} \stackrel{\overline{x}y}{\longmapsto} S
+	  }{
+	    L_{1}|L_{2} \stackrel{\epsilon}{\longmapsto} L_{1}^{'}|S
+	  }$
+       \\\\
+	  $\inferrule* [left=\bf{Com3LOut}]{
+	      Q \stackrel{\overline{x}y}{\longmapsto} S
+	    \\
+	      P \stackrel{xy}{\longmapsto} L
+	  }{
+	    Q|P \stackrel{\epsilon}{\longmapsto} S|L
+	  }$
+	  &
+	  $\inferrule* [left=\bf{Com3ROut}]{
+	      P \stackrel{xy}{\longmapsto} L
+	    \\
+	      Q \stackrel{\overline{x}y}{\longmapsto} S
+	  }{
+	    P|Q \stackrel{\epsilon}{\longmapsto} L|S
+	  }$
+       \\\\
+	  $\inferrule* [left=\bf{Com3LOut}]{
+	      Q \stackrel{xy}{\longmapsto} S
+	    \\
+	      P \stackrel{\overline{x}y}{\longmapsto} L
+	  }{
+	    Q|P \stackrel{\epsilon}{\longmapsto} S|L
+	  }$
+	  &
+	  $\inferrule* [left=\bf{Com3ROut}]{
+	      P \stackrel{\overline{x}y}{\longmapsto} L
+	    \\
+	      Q \stackrel{xy}{\longmapsto} S
+	  }{
+	    P|Q \stackrel{\epsilon}{\longmapsto} L|S
+	  }$
+	\\\\
+	  $\inferrule* [left=\bf{Com4L}]{
+	      L_{1} \stackrel{\overline{x}y}{\longmapsto} P
+	    \\
+	      L_{2} \stackrel{xy}{\longmapsto} Q
+	  }{
+	    L_{1}|L_{2} \stackrel{\tau}{\longmapsto} P|Q
+	  }$
+	  &
+	  $\inferrule* [left=\bf{Com4R}]{
+	      L_{1} \stackrel{xy}{\longmapsto} P
+	    \\
+	      L_{2} \stackrel{\overline{x}y}{\longmapsto} Q
+	  }{
+	    L_{1}|L_{2} \stackrel{\tau}{\longmapsto} P|Q
+	  }$
+	\\\\\hline
+	\end{tabular}
+    \caption{Low multi $\pi$ early semantic with structural congruence}
+    \label{lowleveltransitionrelationearlyIO}
+  \end{table}
+\end{definition}
 
 
 
-% \begin{example}
-%   This example combines both multi-party synchronization and transactional synchronization. Here we used a linear notation for derivation trees because they are too big:
-% \begin{equation*}
-%   \begin{fitch}
-%     \fa (\underline{\overline{a}f}.\overline{b}g.P
-% 	|\underline{a(w)}.a(z).Q)
-% 	|\underline{b(y)}.\overline{a}h.R\; 
-% 	  \xrightarrow{\tau} 
-% 	    (P|Q\{f/w\})\{h/z\}|R\{g/y\}
-%       & 
-% 	LCom        
-%     \\
-%     \fa \fa \underline{\overline{a}f}.\overline{b}g.P
-% 	    |\underline{a(w)}.a(z).Q
-% 	      \xrightarrow{\overline{b}g\cdot a(z)} 
-% 		P |Q\{f/w\}
-%       &  
-% 	LCom
-%     \\
-%     \fa \fa \fa \underline{\overline{a}f}.\overline{b}g.P
-% 		  \xrightarrow{\overline{a}f\cdot \overline{b}g} 
-% 		    P
-%       &  
-% 	SOut
-%     \\    
-%     \fa \fa \fa \fa \overline{b}g.P
-% 		      \xrightarrow{\overline{b}g} 
-% 			P
-%       &  
-%       Pref
-%     \\    
-% 
-%     \fa \fa \fa \underline{a(w)}.a(z).Q
-% 		  \xrightarrow{a(w)\cdot a(z)} 
-% 		    Q
-%       &  
-% 	SInp
-%     \\
-%     \fa \fa \fa \fa a(z).Q
-% 		      \xrightarrow{a(z)} 
-% 			Q
-%       &  
-% 	Pref
-%     \\
-% 
-%     \fa \fa \fa Sync(\overline{a}f\cdot \overline{b}g, a(w)\cdot a(z),\overline{b}g \cdot a(z), \{\}, \{f/w\})
-%       &  
-% 	S4R
-%     \\
-%     \fa \fa \fa \fa Sync(\overline{b}g, a(z)\{f/w\},\overline{b}g \cdot a(z), \{\}, \{\})
-%       &  
-% 	I3L
-%     \\
-%     \fa \fa \fa \fa \fa Sync(\epsilon, a(z), a(z), \{\}, \{\})
-%       &  
-% 	I4R
-%     \\
-%     \fa \fa \underline{b(y)}.\overline{a}h.R\; 
-% 	      \xrightarrow{b(y)\cdot \overline{a}h}
-% 		R
-%       &  
-% 	SInp
-%     \\
-%     \fa \fa \fa \overline{a}h.R\; 
-% 		  \xrightarrow{\overline{a}h}
-% 		    R
-%       &
-% 	Pref
-%     \\
-%     \fa \fa Sync(\overline{b}g\cdot a(z), b(y)\cdot \overline{a}h, \tau, \{h/z\}, \{g/y\})
-%       &  
-% 	S4R
-%     \\
-%     \fa \fa \fa Sync(a(z), \overline{a}h, \tau, \{h/z\}, \{g/y\})
-%       &  
-% 	S1L
-%     \\
-%   \end{fitch}
-% \end{equation*}
-% \end{example}
-% 
-% 
-% \begin{example}
-% \begin{equation*}
-%   \begin{fitch}
-%     \fa \underline{x(a)}.\overline{a}z.P
-% 	|\overline{x}b.Q\; 
-% 	  \xrightarrow{\overline{b}z} 
-% 	    P\{b/a\}|Q
-%       &
-% 	LCom   
-%     \\
-%     \fa \fa \underline{x(a)}.\overline{a}z.P
-% 	      \xrightarrow{x(a)\cdot \overline{a}z} 
-% 		P
-%       &  
-% 	SInp
-%     \\
-%     \fa \fa \fa \overline{a}z.P
-% 	      \xrightarrow{\overline{a}z} 
-% 		P
-%       &  
-% 	Inp
-%     \\
-%     \fa \fa \overline{x}b.Q\; 
-% 	      \xrightarrow{\overline{x}b} 
-% 		Q
-%       &  
-% 	Pref
-%     \\    
-%     \fa \fa Sync(x(a)\cdot \overline{a}z,\overline{x}b,\overline{b}z,\{b/a\},\{\})
-%       &  
-% 	S3L
-%     \\
-%   \end{fitch}
-% \end{equation*}
-% \end{example}
-% 
 
 
 
@@ -940,3 +902,238 @@ In what follows, the names $\delta, \delta_{1}, \delta_{2}$ represents substitut
 
 
 
+
+
+
+\begin{proposition}
+  Let $\rightarrow$ be the relation defined in table \ref{multiIOearly}. If $P\xrightarrow{\sigma} Q$ then there exist $L_{1}, \cdots, L_{k}$ and $\gamma_{1}, \cdots, \gamma_{k+1}$ with $k\geq 0$ such that 
+  \begin{center}
+    \begin{tabular}{lll}
+      $P \stackrel{\gamma_{1}}{\longmapsto} L_{1} \stackrel{\gamma_{2}}{\longmapsto} L_{2} \cdots L_{k-1} \stackrel{\gamma_{k}}{\longmapsto} L_{k} \stackrel{\gamma_{k+1}}{\longmapsto} Q$ 
+    &
+      and
+    &
+      $\gamma_{1} \cdot \ldots \cdot \gamma_{k+1} = \sigma$  
+    \end{tabular}
+  \end{center}
+  \begin{proof}
+    The proof is by induction on the depth of the derivation tree of $P\xrightarrow{\sigma} Q$:
+    \begin{description}
+      \item[base case]
+    \end{description}
+	If the depth is one then the rule used have to be one of: $EInp$, $Out$, $Tau$. These rules are also in table \ref{lowleveltransitionrelationearlyIO} so we can derive $P \stackrel{\sigma}{\longmapsto}Q$.
+    \begin{description}
+      \item[inductive case]
+    \end{description}
+	If the depth is greater than one then the last rule used in the derivation can be:
+	\begin{description}
+	  \item[$SOut$]: 
+	    the last part of the derivation tree looks like this:
+	    \begin{center}
+	      $\inferrule* [left=\bf{SOutSeq}]{
+		  P_{1} \xrightarrow{\sigma} Q
+		\\
+		  \sigma \neq \tau
+	      }{
+		\underline{\overline{x}y}.P_{1} \xrightarrow{\overline{x}y \cdot \sigma} Q
+	      }$	      
+	    \end{center}
+	    for inductive hypothesis there exist $L_{1}, \cdots, L_{k}$ and $\gamma_{1}, \cdots, \gamma_{k+1}$ with $k\geq 0$ such that 
+	    \begin{center}
+	      \begin{tabular}{lll}
+		$P_{1} \stackrel{\gamma_{1}}{\longmapsto} L_{1} \stackrel{\gamma_{2}}{\longmapsto} L_{2} \cdots L_{k-1} \stackrel{\gamma_{k}}{\longmapsto} L_{k} \stackrel{\gamma_{k+1}}{\longmapsto} Q$ 
+	      &
+		and
+	      &
+		$\gamma_{1} \cdot \ldots \cdot \gamma_{k+1} = \sigma$
+	      \end{tabular}
+	    \end{center}
+	    then a proof of the conclusion follows from:
+	    \begin{center}
+	      \begin{tabular}{ll}
+		$\inferrule* [left=\bf{SOutLow}]{
+ 		}{
+ 		  \underline{\overline{x}y}.P_{1} \stackrel{\overline{x}y}{\longmapsto} *P_{1}
+ 		}$
+	      &
+		$\inferrule* [left=\bf{Star}]{
+ 		  P_{1} \stackrel{\gamma_{1}}{\longmapsto} L_{1}
+ 		}{
+ 		  *P_{1} \stackrel{\gamma_{1}}{\longmapsto} L_{1}
+ 		}$
+	      \end{tabular}
+	    \end{center}
+	  \item[$SInp$]: this case is similar to the previous.
+	  \item[$Sum$]: 
+	the last part of the derivation tree looks like this:
+	\begin{center}
+	  $\inferrule* [left=\bf{Sum}]{
+	    P_{1} \xrightarrow{\sigma} Q
+	  }{
+	    P_{1}+P_{2} \xrightarrow{\sigma} Q
+	  }$
+	\end{center}
+	for the inductive hypothesis there exist $L_{1}$, $\cdots$, $L_{k}$ and $\gamma_{1}$, $\cdots$, $\gamma_{k+1}$ with $k\geq 0$ such that 
+	\begin{center}
+	  \begin{tabular}{lll}
+	    $P_{1} \stackrel{\gamma_{1}}{\longmapsto} L_{1}  \stackrel{\gamma_{2}}{\longmapsto} L_{2} \cdots L_{k-1} \stackrel{\gamma_{k}}{\longmapsto} L_{k} \stackrel{\gamma_{k+1}}{\longmapsto} Q$ 
+	  &
+	    and
+	  &
+	    $\gamma_{1} \cdot \ldots \cdot \gamma_{k+1} =  \sigma$  
+	  \end{tabular}
+	\end{center}
+	A proof of the conclusion is:
+	\begin{center}
+	  $\inferrule* [left=\bf{Sum}]{
+	      P_{1} \stackrel{\gamma_{1}}{\longmapsto} L_{1}
+	    }{
+	      P_{1}+P_{2} \stackrel{\gamma_{1}}{\longmapsto} L_{1}
+	    }
+	  $
+	\end{center}
+      \item[$Cong$]: this case is similar to the previous.
+      \item[$Res$]: 
+	the last part of the derivation tree looks like this:
+	\begin{center}
+	  $\inferrule* [left=\bf{Res}]{
+	      P_{1}\; \xrightarrow{\sigma}\; Q_{1}
+	    \\
+	      z\notin n(\sigma)
+	  }{
+	    (\nu z) P_{1} \;\xrightarrow{\sigma} (\nu z) Q_{1}
+	  }$
+	\end{center}
+	for the inductive hypothesis there exist $L_{1}, \cdots, L_{k}$ and $\gamma_{1}, \cdots, \gamma_{k+1}$ with $k\geq 0$ such that 
+	\begin{center}
+	  \begin{tabular}{lll}
+	    $P_{1} \stackrel{\gamma_{1}}{\longmapsto} L_{1}  \stackrel{\gamma_{2}}{\longmapsto} L_{2} \cdots L_{k-1} \stackrel{\gamma_{k}}{\longmapsto} L_{k} \stackrel{\gamma_{k+1}}{\longmapsto} Q_{1}$ 
+	  &
+	    and
+	  &
+	    $\gamma_{1} \cdot \ldots \cdot \gamma_{k+1} =  \sigma$
+	  \end{tabular}
+	\end{center}
+	We can apply the rule $Res$ to each of the previous transitions because 
+	\begin{center}
+	  $z\notin n(\sigma)$ implies $z\notin n(\gamma_{i})$ for each $i$
+	\end{center}
+	and then get a proof of the conclusion:
+	\begin{center}
+	  $(\nu z)P_{1} \stackrel{\gamma_{1}}{\longmapsto} (\nu z)L_{1}  \stackrel{\gamma_{2}}{\longmapsto} (\nu z)L_{2} \cdots (\nu z)L_{k-1} \stackrel{\gamma_{k}}{\longmapsto} (\nu z)L_{k} \stackrel{\gamma_{k+1}}{\longmapsto} (\nu z)Q_{1}$
+	\end{center}
+      \item[$Par$]: this case is similar to the previous.
+      \item[$ECom$]: 
+	the last part of the derivation tree looks like this:
+	\begin{center}
+	  $\inferrule* [left=\bf{ECom}]{
+	      P_{1} \xrightarrow{\sigma_{1}} P_{1}^{'}
+	    \\
+	      Q_{1} \xrightarrow{\sigma_{2}} Q_{1}^{'}
+	    \\
+	      ESync(\sigma_{1}, \sigma_{2}, \sigma_{3})
+	  }{
+	    P_{1}|Q_{1} \xrightarrow{\sigma_{3}} P_{1}^{'}|Q_{1}^{'}
+	  }$
+	\end{center}
+	for inductive hypothesis there exist $L_{1}, \cdots, L_{k}$ and $\gamma_{1}, \cdots, \gamma_{k+1}$ with $k\geq 0$ such that 
+	\begin{center}
+	  \begin{tabular}{lll}
+	    $P_{1} \stackrel{\gamma_{1}}{\longmapsto} L_{1}  \stackrel{\gamma_{2}}{\longmapsto} L_{2} \cdots L_{k-1} \stackrel{\gamma_{k}}{\longmapsto} L_{k} \stackrel{\gamma_{k+1}}{\longmapsto} P_{1}^{'}$ 
+	  &
+	    and
+	  &
+	    $\gamma_{1} \cdot \ldots \cdot \gamma_{k+1} = \sigma_{1}$
+	  \end{tabular}
+	\end{center}
+	and there exist $R_{1}, \cdots, R_{h}$ and $\delta_{1}, \cdots, \delta_{h+1}$ with $h\geq 0$ such that 
+	\begin{center}
+	  \begin{tabular}{lll}
+	    $Q_{1} \stackrel{\delta_{1}}{\longmapsto} R_{1}  \stackrel{\delta_{2}}{\longmapsto} R_{2} \cdots R_{h-1} \stackrel{\delta_{h}}{\longmapsto} R_{h} \stackrel{\delta_{h+1}}{\longmapsto} Q_{1}^{'}$ 
+	  &
+	    and
+	  &
+	    $\delta_{1} \cdot \ldots \cdot \delta_{h+1} = \sigma_{2}$
+	  \end{tabular}
+	\end{center}
+	We proceed by induction on the derivation of $ESync(\sigma_{1}, \sigma_{2}, \sigma_{3})$:
+DA CONTINUARE
+% 	For lemma \ref{multioutconstraintswithmarked} there cannot be an input action in a transition involving marked processes so $h$ must be $0$ and $Q_{1} \stackrel{\delta_{1}}{\longmapsto} Q_{1}^{'}$ with $\delta_{1}=xy$. Just one of the $\gamma$s is $\overline{x}y$ and the others are $\epsilon$ or $\tau$. We can have three different cases now: 
+% 	\begin{description}
+% 	  \item[$\gamma_{1}=\overline{x}y$]:
+% 	    A proof of the conclusion is:
+% 	    \begin{center}
+% 	      $P_{1}|Q_{1} \stackrel{\tau}{\longmapsto} L_{1}|Q_{1}^{'}
+% 			      \stackrel{\epsilon}{\longmapsto} L_{2}|Q_{1}^{'}
+% 		  \cdots
+% 				\stackrel{\epsilon}{\longmapsto} L_{k}|Q_{1}^{'}
+% 				\stackrel{\epsilon}{\longmapsto} P_{1}^{'}|Q_{1}^{'}$	  
+% 	    \end{center}
+% 	    we derive the first transition with rule $Com3L$, whether for the other transition we use the rule $Par1L$.
+% 	  \item[$\gamma_{i}=\overline{x}y$]:
+% 	    A proof of the conclusion is:
+% 	    \begin{center}
+% 	      $
+% 		  P_{1}|Q_{1} \stackrel{\epsilon}{\longmapsto} L_{1}|Q_{1} 
+% 		  \cdots
+% 			      \stackrel{\epsilon}{\longmapsto} L_{i-1}|Q_{1} 
+% 			      \stackrel{\tau}{\longmapsto} L_{i}|Q_{1}^{'}
+% 			      \stackrel{\epsilon}{\longmapsto} L_{i+1}|Q_{1}^{'}
+% 		  \cdots 
+% 			      \stackrel{\epsilon}{\longmapsto} L_{k}|Q_{1}^{'}
+% 			      \stackrel{\epsilon}{\longmapsto} P_{1}^{'}|Q_{1}^{'}$	  
+% 	    \end{center}
+% 	    we derive the transaction $ L_{i-1}|Q_{1} \stackrel{\tau}{\longmapsto} L_{i}|Q_{1}^{'}$ with rule $Com2L$, whether for the other transactions  we use the rule $Par1L$.
+% 	  \item[$\gamma_{k+1}=\overline{x}y$] similar.
+% 	\end{description}
+%       \item[$EComSeq$]: 
+% 	the last part of the derivation tree looks like this:
+% 	\begin{center}
+% 	  $\inferrule* [left=\bf{EComSeq}]{
+% 	      P_{1} \xrightarrow{\overline{x}y \cdot \sigma} P_{1}^{'}
+% 	    \\
+% 	      Q_{1} \xrightarrow{xy} Q_{1}^{'}
+% 	  }{
+% 	    P_{1}|Q_{1} \xrightarrow{\sigma} P_{1}^{'}|Q_{1}^{'}
+% 	  }$
+% 	\end{center}
+% 	for inductive hypothesis there exist $L_{1}$, $\cdots$, $L_{k}$ and $\gamma_{1}$, $\cdots$, $\gamma_{k+1}$ with $k\geq 0$ such that 
+% 	\begin{center}
+% 	  \begin{tabular}{lll}
+% 	    $P_{1} \stackrel{\gamma_{1}}{\longmapsto} L_{1}  \stackrel{\gamma_{2}}{\longmapsto} L_{2} \cdots L_{k-1} \stackrel{\gamma_{k}}{\longmapsto} L_{k} \stackrel{\gamma_{k+1}}{\longmapsto} P_{1}^{'}$ 
+% 	  &
+% 	    and
+% 	  &
+% 	    $\gamma_{1} \cdot \ldots \cdot \gamma_{k+1} = \overline{x}y \cdot \sigma$  
+% 	  \end{tabular}
+% 	\end{center}
+% 	For inductive hypothesis and lemma \ref{multioutconstraintswithmarked} $Q_{1} \stackrel{xy}{\longmapsto} Q_{1}^{'}$. We can have two different cases now depending on where the first $\overline{x}y$ is:
+% 	\begin{description}
+% 	  \item[$\gamma_{1}=\overline{x}y$]:
+% 	    A proof of the conclusion is:
+% 	    \begin{center}
+% 	      $P_{1}|Q_{1} \stackrel{\tau}{\longmapsto} L_{1}|Q_{1}^{'}
+% 			      \stackrel{\gamma_{2}}{\longmapsto} L_{2}|Q_{1}^{'}
+% 		  \cdots
+% 			      \stackrel{\gamma_{k}}{\longmapsto} L_{k}|Q_{1}^{'}
+% 			      \stackrel{\gamma_{k+1}}{\longmapsto} P_{1}^{'}|Q_{1}^{'}$	  
+% 	    \end{center}
+% 	    we derive the first transition with rule $Com3L$, whether for the other transactions we use the rule $Par1L$. Since $\gamma_{1} \cdot \ldots \cdot \gamma_{k+1} = \overline{x}y \cdot \sigma$ and $\gamma_{1}=\overline{x}y$ then $\tau \cdot \gamma_{2}\cdot \ldots \cdot \gamma_{k+1}\cdot \epsilon \cdot \ldots \epsilon \cdot \tau=\sigma$
+% 	  \item[$\gamma_{i}=\overline{x}y$]:
+% 	    A proof of the conclusion is:
+% 	    \begin{center}
+% 	      $P_{1}|Q_{1} \stackrel{\epsilon}{\longmapsto} L_{1}|Q_{1} 
+% 		  \cdots
+% 			      \stackrel{\epsilon}{\longmapsto} L_{i-1}|Q_{1} 
+% 			      \stackrel{\tau}{\longmapsto} L_{i}|Q_{1}^{'}
+% 			      \stackrel{\gamma_{i+1}}{\longmapsto} L_{i+1}|Q_{1}^{'}
+% 		  \cdots 
+% 			      \stackrel{\gamma_{k}}{\longmapsto} L_{k}|Q_{1}^{'}
+% 			      \stackrel{\gamma_{k+1}}{\longmapsto} P_{1}^{'}|Q_{1}^{'}$	  
+% 	    \end{center}
+% 	    we derive the transition $ L_{i-1}|Q_{1} \stackrel{\tau}{\longmapsto} L_{i}|Q_{1}^{'}$ with rule $Com2L$, whether for the other transactions of the premises we use the rule $Par1L$.
+% 	  \item[$\gamma_{k+1}=\overline{x}y$]: cannot happen because $\sigma$ is not empty.
+% 	\end{description}
+    \end{description}
+  \end{proof}
+\end{proposition}
