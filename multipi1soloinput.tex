@@ -11,15 +11,15 @@ The process are defined, just as original $\pi$ calculus, by the following gramm
     $P,Q$ ::= $0$ | $\pi.P$ | $P|Q$ | $P+Q$ | $(\nu x) P$ | $A(y_{1}, \cdots, y_{n})$
   \end{tabular}
 \end{center}
-and they have the same intuitive meaning as for the $\pi$ calculus. The strong prefix input allows a process to make an atomic sequence of actions, so that more than one process can synchronize on this sequence. For the moment we allow the strong prefix to be on input names only. Also one can use the strong prefix only as an action prefixing for processes that can make at least a further action. Since the strong prefix can be on input names only, the only synchronization possible is between a process that executes a sequence of $n$ actions(only the last action can be an output) with $n\geq 1$ and $n$ other processes each executing one single action(at least $n-1$ process execute an output and at most one executes an input).
+and they have the same intuitive meaning as for the $\pi$ calculus. The strong prefix input allows a process to make an atomic sequence of actions, so that more than one process can synchronize on this sequence. For the moment we allow the strong prefix to be on input names only. Also one can use the strong prefix only as an action prefixing for processes that can make at least a further action. 
 
 Multi $\pi$ calculus is a conservative extension of the $\pi$ calculus in the sense that: any $\pi$ calculus process $p$ is also a multi $\pi$ calculus process and the semantic of $p$ according to the SOS rules of $\pi$ calculus is the same as the semantic of $p$ according to the SOS rules of multi $\pi$ calculus. 
 We have to extend the following definition to deal with the strong prefix:
 \begin{center}
   \begin{tabular}{ll}
-	$B(\underline{x(y)}.Q, I)\; =\; \{y,\overline{y}\}\cup B(Q, I)$
+	$B(\underline{x(y)}.Q, I) = \{y,\overline{y}\}\cup B(Q, I)$
       &
-	$F(\underline{x(y)}.Q, I)\; =\; \{x,\overline{x}\}\cup (F(Q, I)-\{y,\overline{y}\})$
+	$F(\underline{x(y)}.Q, I) = \{x,\overline{x}\}\cup (F(Q, I)-\{y,\overline{y}\})$
     \\
   \end{tabular}
 \end{center}
@@ -47,27 +47,41 @@ In this case, a label can be a sequence of prefixes, whether in the original $\p
 \begin{definition}\index{transition relation! multipi! input only! early! with structural congruence}
   The \emph{early transition relation with structural congruence} is the smallest relation induced by the rules in table \ref{multipisoloinputearlywith} where $inpSeq$ is a non empty sequence of input actions and $\sigma$ is a sequence of any action.
   \begin{table}
-    \begin{tabular}{ll}
+    \begin{tabular}{lll}
 	  \hline\\
 	  $\inferrule* [left=\bf{Out}]{
 	  }{
-	    \overline{x}y.P \;\xrightarrow{\overline{x}y} P
+	    \overline{x}y.P \xrightarrow{\overline{x}y} P
 	  }$
 	&
 	  $\inferrule* [left=\bf{EInp}]{
 	  }{
-	    x(y).P \;\xrightarrow{xz} P\{z/y\}
+	    x(y).P \xrightarrow{xz} P\{z/y\}
 	  }$
-      \\\\
+	&
 	  $\inferrule* [left=\bf{Tau}]{
 	  }{
-	    \tau.P \;\xrightarrow{\tau} P
+	    \tau.P \xrightarrow{\tau} P
+	  }$
+      \\\\
+	  $\inferrule* [left=\bf{SInpTau}]{
+	      P\{y/z\} \xrightarrow{\tau} P^{'}
+	  }{
+	    \underline{x(z)}.P \xrightarrow{xy} P^{'}
 	  }$
 	&
 	  $\inferrule* [left=\bf{SInp}]{
+	      P\{y/z\} \xrightarrow{ab} P^{'}
+% 	    \\
+% 	      y\notin fn((\nu z) P)
+	  }{
+	    \underline{x(z)}.P \xrightarrow{xy \cdot ab} P^{'}
+	  }$
+	&
+	  $\inferrule* [left=\bf{SInpSeq}]{
 	      P\{y/z\} \xrightarrow{\sigma} P^{'}
 	    \\
-	      \sigma\neq \tau
+	      |\sigma|>1
 % 	    \\
 % 	      y\notin fn((\nu z) P)
 	  }{
@@ -75,28 +89,52 @@ In this case, a label can be a sequence of prefixes, whether in the original $\p
 	  }$
       \\\\
 	  $\inferrule* [left=\bf{Sum}]{
-	    P \;\xrightarrow{\sigma} P^{'}
+	    P \xrightarrow{\sigma} P^{'}
 	  }{
-	    P+Q \;\xrightarrow{\sigma} P^{'}
+	    P+Q \xrightarrow{\sigma} P^{'}
 	  }$
 	&
-	  $\inferrule* [left=\bf{Str}]{
+	  $\inferrule* [left=\bf{Cong}]{
 	      P\equiv P^{'}
 	    \\
 	      P^{'} \xrightarrow{\alpha} Q
 	  }{
 	      P \xrightarrow{\alpha} Q
 	  }$
-      \\\\
-	  $\inferrule* [left=\bf{Com}]{
-	      P \xrightarrow{\overline{x}y} P^{'}
+	&
+	  $\inferrule* [left=\bf{Res}]{
+	      P \xrightarrow{\sigma} P^{'}
 	    \\
-	      Q \xrightarrow{xy} Q^{'}
+	      z\notin n(\sigma)
+	  }{
+	    (\nu z) P \xrightarrow{\sigma} (\nu z) P^{'}
+	  }$
+      \\\\
+	  $\inferrule* [left=\bf{Par}]{
+	      P \xrightarrow{\sigma} P^{'}
+	  }{
+	      P|Q \xrightarrow{\sigma} P^{'}|Q
+	  }$
+	&
+	  $\inferrule* [left=\bf{Opn}]{
+	      P \xrightarrow{\overline{x}z} P^{'}
+	    \\ 
+	      z\neq x
+	  }{
+	      (\nu z)P \xrightarrow{\overline{x}(z)} P^{'}
+	  }$
+	&
+	  $\inferrule* [left=\bf{ECom}]{
+	      P \xrightarrow{xy} P^{'}
+	    \\
+	      Q \xrightarrow{\overline{x}y} Q^{'}
 	  }{
 	    P|Q \xrightarrow{\tau} P^{'}|Q^{'}
 	  }$
+      \\\\
 	&
-	  $\inferrule* [left=\bf{ComSeq}]{
+	&
+	  $\inferrule* [left=\bf{EComSeq}]{
 	      P \xrightarrow{xy\cdot \sigma} P^{'}
 	    \\
 	      Q \xrightarrow{\overline{x}y} Q^{'}
@@ -104,45 +142,9 @@ In this case, a label can be a sequence of prefixes, whether in the original $\p
 	    P|Q \xrightarrow{\sigma} P^{'}|Q^{'}
 	  }$
       \\\\
-	  $\inferrule* [left=\bf{Res}]{
-	      P\; \xrightarrow{\sigma}\; P^{'}
-	    \\
-	      z\notin n(\sigma)
-	  }{
-	    (\nu z) P \;\xrightarrow{\sigma} (\nu z) P^{'}
-	  }$
 	&
-	  $\inferrule* [left=\bf{SInpTau}]{
-	      P\{y/z\}\; \xrightarrow{\tau}\; P^{'}
-	  }{
-	    \underline{x(z)}.P \;\xrightarrow{xy} P^{'}
-	  }$
-      \\\\
-	  $\inferrule* [left=\bf{Par}]{
-	      P \;\xrightarrow{\sigma}\; P^{'}
-	    \\ 
-	      bn(\sigma)\cap fn(Q)=\emptyset
-	  }{
-	      P|Q \;\xrightarrow{\sigma} P^{'}|Q
-	  }$
 	&
-	  $\inferrule* [left=\bf{Opn}]{
-	      P \xrightarrow{\overline{x}z}\; P^{'}
-	    \\ 
-	      z\neq x
-	  }{
-	      (\nu z)P \xrightarrow{\overline{x}(z)}\; P^{'}
-	  }$
-      \\\\
-	&
-	  $\inferrule* [left=\bf{OpnSeq}]{
-	      P \xrightarrow{inpSeq \cdot \overline{x}z}\; P^{'}
-	    \\ 
-	      z\neq x
-	  }{%lo strong prefixing e' solo sull'input e quindi ci puo' essere un solo output e deve essere alla fine
-	      (\nu z)P \xrightarrow{inpSeq \cdot \overline{x}(z)}\; P^{'}
-	  }$
-      \\\hline
+      \\\\\hline
     \end{tabular}
     \caption{Multi $\pi$ early semantic with structural congruence}
     \label{multipisoloinputearlywith}
@@ -151,7 +153,7 @@ In this case, a label can be a sequence of prefixes, whether in the original $\p
 
 
 
-\begin{example}[Multi-party synchronization]
+\begin{example}Multi-party synchronization
   We show an example of a derivation of three processes that synchronize.
   \begin{center}
   $
@@ -189,7 +191,7 @@ In this case, a label can be a sequence of prefixes, whether in the original $\p
     \\
       \inferrule* [left=\bf{Out}]{
       }{
-	\overline{x}y.Q\; \;\xrightarrow{\overline{x}y}\; Q
+	\overline{x}y.Q \xrightarrow{\overline{x}y} Q
       }
   }{
 	\underline{x(a)}.x(b).P|\overline{x}y.Q)
@@ -206,7 +208,7 @@ In this case, a label can be a sequence of prefixes, whether in the original $\p
     \item 
       $|\sigma|=1$
     \item
-      $|\sigma|>1$, the first $|\sigma|-1$ actions are input and the last actions can be an input or an output.
+      $|\sigma|>1$, the actions in $\sigma$ are input.
   \end{itemize}
 \end{lemma}
 
@@ -220,87 +222,89 @@ In this case, a label can be a sequence of prefixes, whether in the original $\p
     \begin{tabular}{ll}
 	\hline\\
      	  $\inferrule* [left=\bf{Pref}]{
-	    \alpha\; not\; a\; strong\; prefix
+	    \alpha not a strong prefix
 	  }{
-	    \alpha.P \;\xrightarrow{\alpha} P
+	    \alpha.P \xrightarrow{\alpha} P
 	  }$
 	&
 	  $\inferrule* [left=\bf{LComSeq}]{
-	      P \;\xrightarrow{x(y)\cdot \sigma} P^{'}
+	      P \xrightarrow{x(y)\cdot \sigma} P^{'}
 	    \\
-	      Q\;\xrightarrow{\overline{x}z} Q^{'}
+	      Q\xrightarrow{\overline{x}z} Q^{'}
 	    \\
 	      z\notin fn(\sigma)\cup fn(P)
 	  }{
-	    P|Q \;\xrightarrow{\sigma\{z/y\}} P^{'}\{z/y\}|Q^{'}
+	    P|Q \xrightarrow{\sigma\{z/y\}} P^{'}\{z/y\}|Q^{'}
 	  }$
       \\\\
 	  $\inferrule* [left=\bf{SInp}]{
-	      P\; \xrightarrow{\sigma}\; P^{'}
-	    \\
-	      \sigma\neq \tau
+	      P \xrightarrow{a(b)} P^{'}
 	  }{
-	    \underline{x(y)}.P \;\xrightarrow{x(y) \cdot \sigma} P^{'}
+	    \underline{x(y)}.P \xrightarrow{x(y) \cdot a(b)} P^{'}
 	  }$
 	&
-	  $\inferrule* [left=\bf{LComSng}]{
-	      P \;\xrightarrow{x(y)} P^{'}
+	  $\inferrule* [left=\bf{LCom}]{
+	      P \xrightarrow{x(y)} P^{'}
 	    \\
-	      Q\;\xrightarrow{\overline{x}z} Q^{'}
+	      Q\xrightarrow{\overline{x}z} Q^{'}
 	    \\
 	      z\notin fn(P)
 	  }{
-	    P|Q \;\xrightarrow{\tau} P^{'}\{z/y\}|Q^{'}
+	    P|Q \xrightarrow{\tau} P^{'}\{z/y\}|Q^{'}
 	  }$
-
       \\\\
 	  $\inferrule* [left=\bf{Sum}]{
-	    P\; \xrightarrow{\sigma}\; P^{'}
+	    P \xrightarrow{\sigma} P^{'}
 	  }{
-	    P+Q \;\xrightarrow{\sigma} P^{'}
+	    P+Q \xrightarrow{\sigma} P^{'}
 	  }$
 	&
-	  $\inferrule* [left=\bf{Str}]{
+	  $\inferrule* [left=\bf{Cong}]{
 	      P\equiv P^{'}
 	    \\
-	      P^{'}\; \;\xrightarrow{\alpha}\; Q^{'}
-	    \\
-	      Q\equiv Q^{'}
+	      P^{'} \xrightarrow{\sigma} Q
 	  }{
-	      P\; \;\xrightarrow{\alpha}\; Q
+	      P \xrightarrow{\sigma} Q
 	  }$
       \\\\
 	  $\inferrule* [left=\bf{Res}]{
-	      P\; \xrightarrow{\sigma}\; P^{'}
+	      P \xrightarrow{\sigma} P^{'}
 	    \\
 	      z\notin n(\alpha)
 	  }{
-	    (\nu z) P \;\xrightarrow{\sigma} (\nu z) P^{'}
+	    (\nu z) P \xrightarrow{\sigma} (\nu z) P^{'}
 	  }$
 	&
 	  $\inferrule* [left=\bf{Par}]{
-	      P\; \xrightarrow{\sigma}\; P^{'}
+	      P \xrightarrow{\sigma} P^{'}
 	    \\
 	      bn(\sigma)\cup fn(Q)=\emptyset
 	  }{
-	    P|Q \;\xrightarrow{\sigma} P^{'}|Q
+	    P|Q \xrightarrow{\sigma} P^{'}|Q
 	  }$
       \\\\
 	  $\inferrule* [left=\bf{Opn}]{
-	      P \xrightarrow{\overline{x}z}\; P^{'}
+	      P \xrightarrow{\overline{x}z} P^{'}
 	    \\ 
 	      z\neq x
 	  }{
-	      (\nu z)P \xrightarrow{\overline{x}(z)}\; P^{'}
+	      (\nu z)P \xrightarrow{\overline{x}(z)} P^{'}
 	  }$
 	&
-	  $\inferrule* [left=\bf{OpnSeq}]{
-	      P \xrightarrow{inpSeq \cdot \overline{x}z}\; P^{'}
-	    \\ 
-	      z\neq x
+	  $\inferrule* [left=\bf{SInpSeq}]{
+	      P \xrightarrow{\sigma} P^{'}
+	    \\
+	      |\sigma|>1
 	  }{
-	      (\nu z)P \xrightarrow{inpSeq \cdot \overline{x}(z)}\; P^{'}
+	    \underline{x(y)}.P \xrightarrow{x(y) \cdot \sigma} P^{'}
 	  }$
+      \\\\
+	  $\inferrule* [left=\bf{SInpTau}]{
+	      P \xrightarrow{\tau} P^{'}
+	  }{
+	    \underline{x(y)}.P \xrightarrow{x(y)} P^{'}
+	  }$
+	&
       \\\hline
     \end{tabular}
     \caption{Multi $\pi$ late semantic with structural congruence}
@@ -308,7 +312,7 @@ In this case, a label can be a sequence of prefixes, whether in the original $\p
   \end{table}
 \end{definition}
 
-\begin{example}[Multi-party synchronization]
+\begin{example}Multi-party synchronization
   We show an example of a derivation of three processes that synchronize with the late semantic. The three processes are $\underline{x(a)}.x(b).P$, $\overline{x}y.Q$ and $\overline{x}z.R$. We assume that:
   \begin{center}
       $a\notin fn(x(b))\cup fn (\underline{x(a)}.x(b).P)$
@@ -320,7 +324,7 @@ In this case, a label can be a sequence of prefixes, whether in the original $\p
 
   \begin{center}
   $
-      \inferrule* [left=\bf{LComSng}]{
+      \inferrule* [left=\bf{LCom}]{
 	\underline{x(a)}.x(b).P|\overline{x}y.Q
 	  \xrightarrow{x(b)}
 	    P\{y/a\}|Q
@@ -354,7 +358,7 @@ In this case, a label can be a sequence of prefixes, whether in the original $\p
     \\
       \inferrule* [left=\bf{Out}]{
       }{
-	\overline{x}y.Q\; \;\xrightarrow{\overline{x}y}\; Q
+	\overline{x}y.Q \xrightarrow{\overline{x}y} Q
       }
   }{
 	\underline{x(a)}.x(b).P|\overline{x}y.Q)
@@ -379,7 +383,7 @@ This section contains the definition of an alternative semantic for multi $\pi$.
 \begin{definition}
   The low level transition relation is the smallest relation induced by the rules in table \ref{lowleveltransitionrelation} in which $P$ stands for a process without mark, $L$ stands for a process with mark and $S$ can stand for both. 
   \begin{table}
-    \begin{tabular}{ll}
+    \begin{tabular}{lll}
       \hline\\
 	  $\inferrule* [left=\bf{Out}]{
 	  }{
@@ -390,30 +394,41 @@ This section contains the definition of an alternative semantic for multi $\pi$.
 	  }{
 	    x(y).P \stackrel{xz}{\longmapsto} P\{z/y\}
 	  }$
-      \\\\
-	  $\inferrule* [left=\bf{Star}]{
-	      S \stackrel{\gamma}{\longmapsto} S^{'}
-	  }{
-	      *S \stackrel{\gamma}{\longmapsto} S^{'}
-	  }$
 	  &
 	  $\inferrule* [left=\bf{Tau}]{
 	  }{
 	    \tau.P \stackrel{\tau}{\longmapsto} P
 	  }$
       \\\\
-	  $\inferrule* [left=\bf{Sum}]{
-	    P \stackrel{\gamma}{\longmapsto} S
+	  $\inferrule* [left=\bf{StarInp}]{
+	      S \stackrel{xy}{\longmapsto} S^{'}
 	  }{
-	    P+Q \stackrel{\gamma}{\longmapsto} S
+	      *S \stackrel{xy}{\longmapsto} S^{'}
 	  }$
-	&
+	  &
 	  $\inferrule* [left=\bf{SInpLow}]{
 %	      y\notin fn(P)-\{z\}
 	  }{
 	    \underline{x(z)}.P \stackrel{xy}{\longmapsto} * P\{y/z\}
 	  }$
-      \\\\\\
+	  &
+	  $\inferrule* [left=\bf{Sum}]{
+	    P \stackrel{\gamma}{\longmapsto} S
+	  }{
+	    P+Q \stackrel{\gamma}{\longmapsto} S
+	  }$
+      \\\\
+	  $\inferrule* [left=\bf{StarEps}]{
+	      S \stackrel{\epsilon}{\longmapsto} S^{'}
+	  }{
+	      *S \stackrel{\epsilon}{\longmapsto} S^{'}
+	  }$
+	  &
+	  &
+      \\\\
+      \end{tabular}
+      \begin{tabular}{lll}
+      \\\\
 	  $\inferrule* [left=\bf{Com1}]{
 	      P \stackrel{\overline{x}y}{\longmapsto} P^{'}
 	    \\
@@ -421,23 +436,25 @@ This section contains the definition of an alternative semantic for multi $\pi$.
 	  }{
 	    P|Q \stackrel{\tau}{\longmapsto} P^{'}|Q^{'}
 	  }$
-	&
+	  &
+	  &
       \\\\
-	  $\inferrule* [left=\bf{Com2}]{
-	      L_{1} \stackrel{xy}{\longmapsto} L_{1}^{'}
+	  $\inferrule* [left=\bf{Com2L}]{
+	      L_{1} \stackrel{xy}{\longmapsto} L_{2}
 	    \\
-	      L_{2} \stackrel{\overline{x}y}{\longmapsto} P
+	      P \stackrel{\overline{x}y}{\longmapsto} Q
 	  }{
-	    L_{1}|L_{2} \stackrel{\epsilon}{\longmapsto} L_{1}^{'}|P
+	    L_{1}|P \stackrel{\epsilon}{\longmapsto} L_{2}|Q
 	  }$
 	&
 	  $\inferrule* [left=\bf{Com2R}]{
-	      L_{1} \stackrel{xy}{\longmapsto} L_{1}^{'}
+	      P \stackrel{\overline{x}y}{\longmapsto} Q
 	    \\
-	      L_{2} \stackrel{\overline{x}y}{\longmapsto} P
+	      L_{1} \stackrel{xy}{\longmapsto} L_{2}
 	  }{
-	    L_{2}|L_{1} \stackrel{\epsilon}{\longmapsto} P|L_{1}^{'}
+	    P|L_{1} \stackrel{\epsilon}{\longmapsto} Q|L_{2}
 	  }$
+	  &
       \\\\
 	  $\inferrule* [left=\bf{Com3L}]{
 	      P \stackrel{xy}{\longmapsto} L
@@ -448,29 +465,34 @@ This section contains the definition of an alternative semantic for multi $\pi$.
 	  }$
 	&
 	  $\inferrule* [left=\bf{Com3R}]{
+	      Q \stackrel{\overline{x}y}{\longmapsto} Q^{'}	      
+	    \\
 	      P \stackrel{xy}{\longmapsto} L
-	    \\%serve questa regola???
-	      Q \stackrel{\overline{x}y}{\longmapsto} Q^{'}
 	  }{
 	    Q|P \stackrel{\epsilon}{\longmapsto} Q^{'}|L
 	  }$
+	  &
       \\\\
 	  $\inferrule* [left=\bf{Com4L}]{
-	      L_{1} \stackrel{\overline{x}y}{\longmapsto} P
+	      L \stackrel{xy}{\longmapsto} P
 	    \\
-	      L_{2} \stackrel{xy}{\longmapsto} Q
+	      Q \stackrel{\overline{x}y}{\longmapsto} Q^{'}
 	  }{
-	    L_{1}|L_{2} \stackrel{\tau}{\longmapsto} P|Q
+	    L|Q \stackrel{\tau}{\longmapsto} P|Q^{'}
 	  }$
-	&
+	  &
 	  $\inferrule* [left=\bf{Com4R}]{
-	      L_{1} \stackrel{xy}{\longmapsto} P
+	      Q \stackrel{\overline{x}y}{\longmapsto} Q^{'}
 	    \\
-	      L_{2} \stackrel{\overline{x}y}{\longmapsto} Q
+	      L \stackrel{xy}{\longmapsto} P
 	  }{
-	    L_{1}|L_{2} \stackrel{\tau}{\longmapsto} P|Q
+	    L|Q \stackrel{\tau}{\longmapsto} P|Q^{'}
 	  }$
-      \\\\\\
+	  &
+      \\\\
+      \end{tabular}
+      \begin{tabular}{lll}
+      \\\\
 	  $\inferrule* [left=\bf{Res}]{
 	      S \stackrel{\gamma}{\longmapsto} S^{'}
 	    \\
@@ -478,15 +500,26 @@ This section contains the definition of an alternative semantic for multi $\pi$.
 	  }{
 	    (\nu y) S \stackrel{\gamma}{\longmapsto} (\nu y) S^{'}
 	  }$
-	&
+	  &
 	  $\inferrule* [left=\bf{Opn}]{
-	      S \stackrel{\overline{x}y}{\longmapsto} P
+	      P \stackrel{\overline{x}y}{\longmapsto} Q
 	    \\ 
 	      y\neq x
 	  }{
-	      (\nu y)S \stackrel{\overline{x}(y)}{\longmapsto} P
+	      (\nu y)P \stackrel{\overline{x}(y)}{\longmapsto} Q
 	  }$
-      \\\\\\
+	  &
+	  $\inferrule* [left=\bf{Cong}]{
+	      P\equiv P^{'}
+	    \\
+	      P^{'} \stackrel{\gamma}{\longmapsto} S
+	  }{
+	      P \stackrel{\gamma}{\longmapsto} S
+	  }$
+      \\\\
+      \end{tabular}
+      \begin{tabular}{lll}
+      \\\\
 	  $\inferrule* [left=\bf{Par1L}]{
 	      S \stackrel{\gamma}{\longmapsto} S^{'}
 % 	    \\ 
@@ -502,52 +535,11 @@ This section contains the definition of an alternative semantic for multi $\pi$.
 	  }{
 	      Q|S \stackrel{\gamma}{\longmapsto} Q|S^{'}
 	  }$
-      \\\\\\
-	  $\inferrule* [left=\bf{Par2L}]{
-	     P \stackrel{\gamma}{\longmapsto} L
-% 	    \\ 
-% 	      bn(\gamma)\cap fn(Q)=\emptyset
-	  }{
-	      P|Q \stackrel{\gamma}{\longmapsto} L|*Q
-	  }$
-	&
-	  $\inferrule* [left=\bf{Par2R}]{
-	     P \stackrel{\gamma}{\longmapsto} L
-% 	    \\ 
-% 	      bn(\gamma)\cap fn(Q)=\emptyset
-	  }{
-	      Q|P \stackrel{\gamma}{\longmapsto} *Q|L
-	  }$
-
-      \\\\
-	  $\inferrule* [left=\bf{Par3L}]{
-	      L_{1} \stackrel{\gamma}{\longmapsto} L_{1}^{'}
-% 	    \\ 
-% 	      bn(\gamma)\cap fn(L_{2})=\emptyset
-	  }{
-	      L_{1}|L_{2} \stackrel{\gamma}{\longmapsto} L_{1}^{'}|L_{2}
-	  }$
-	&
-	  $\inferrule* [left=\bf{Par3R}]{
-	      L_{2} \stackrel{\gamma}{\longmapsto} L_{2}^{'}
-% 	    \\ 
-% 	      bn(\gamma)\cap fn(L_{2})=\emptyset
-	  }{
-	      L_{1}|L_{2} \stackrel{\gamma}{\longmapsto} L_{1}|L_{2}^{'}
-	  }$
-      \\\\\\
-	&
-	  $\inferrule* [left=\bf{Cong}]{
-	      P\equiv P^{'}
-	    \\
-	      P^{'} \stackrel{\gamma}{\longmapsto} S
-	  }{
-	      P \stackrel{\gamma}{\longmapsto} S
-	  }$
+	  &
       \\\\\hline
     \end{tabular}
     \caption{Low multi $\pi$ early semantic with structural congruence}
-    \label{lowleveltransitionrelation}
+    \label{lowleveltransitionrelationinput}
   \end{table}
 \end{definition}
 
@@ -557,22 +549,17 @@ This section contains the definition of an alternative semantic for multi $\pi$.
   For all unmarked processes $P,Q$ and marked processes $L_{1}, L_{2}$.
   \begin{itemize}
     \item
-      if $P\stackrel{\alpha}{\longmapsto}L_{1}$ or $L_{1}\stackrel{\alpha}{\longmapsto}L_{2}$ then $\alpha$ can only be a free input or an $\epsilon$
+      if $P\stackrel{\alpha}{\longmapsto}L_{1}$ or $L_{1}\stackrel{\alpha}{\longmapsto}L_{2}$ then $\alpha$ can only be an input or an $\epsilon$
     \item
-      if $L_{1}\stackrel{\alpha}{\longmapsto}P$ of $P\stackrel{\alpha}{\longmapsto}Q$ then $\alpha$ is not an $\epsilon$
+      if $L_{1}\stackrel{\alpha}{\longmapsto}P$ then $\alpha$ is an input or a $\tau$
+    \item
+      if $P\stackrel{\alpha}{\longmapsto}Q$ then $\alpha$ is not an $\epsilon$
   \end{itemize}
   \begin{proof}
     DA FARE
   \end{proof}
 \end{lemma}
 
-
-\begin{lemma}\label{lemmalabellowhigh}
-  If $P\stackrel{\gamma_{1}}{\longmapsto} L_{1} \stackrel{\gamma_{2}}{\longmapsto} \cdots  \stackrel{\gamma_{k}}{\longmapsto} L_{k} \stackrel{\gamma_{k+1}}{\longmapsto} Q$ and $\sigma = \gamma_{1}\cdot \ldots \cdot \gamma_{k+1}$ with $k\geq 1$ then $\sigma$ is a sequence of input and the last action in $\sigma$ is an input or an output.
-  \begin{proof}
-    DA FARE
-  \end{proof}
-\end{lemma}
 
   
 \begin{definition}\label{low}
@@ -601,12 +588,9 @@ This section contains the definition of an alternative semantic for multi $\pi$.
 	&
       \end{tabular}
   \end{center}
-
-  HA PIU' SENSO DIRE $a \cdot \tau \neq a$ e $\tau \cdot \tau \neq \tau$?
-
 \end{definition}
 
-\begin{example}[Multi-party synchronization]
+\begin{example}Multi-party synchronization
   We show an example of a derivation of three processes that synchronize.
  
   \begin{center}
@@ -694,69 +678,73 @@ This section contains the definition of an alternative semantic for multi $\pi$.
 
 
 
-\begin{proposition}
-  Let $\rightarrow$ be the relation defined in table \ref{multipisoloinputearlywith} and let $P$ be a multi $\pi$ process. Then 
+
+
+
+
+
+
+\begin{proposition}\label{equivalencehightolowinput}
+  Let $\rightarrow$ be the relation defined in table \ref{multipisoloinputearlywith}. If $P\xrightarrow{\sigma} Q$ then there exist $L_{1}, \cdots, L_{k}$ and $\gamma_{1}, \cdots, \gamma_{k+1}$ with $k\geq 0$ such that 
   \begin{center}
-    $P\xrightarrow{\sigma} Q \Rightarrow P\xrightarrow{\sigma}_{s} Q$
+    \begin{tabular}{lll}
+      $P \stackrel{\gamma_{1}}{\longmapsto} L_{1}  \stackrel{\gamma_{2}}{\longmapsto} L_{2} \cdots L_{k-1} \stackrel{\gamma_{k}}{\longmapsto} L_{k} \stackrel{\gamma_{k+1}}{\longmapsto} Q$ 
+    &
+      and
+    &
+      $\gamma_{1} \cdot \ldots \cdot \gamma_{k+1} = \sigma$  
+    \end{tabular}
   \end{center}
   \begin{proof}
-    DA MODIFICARE PERCHE' LE REGOLE COM2 E COM3 SONO CAMBIATE 
     The proof is by induction on the depth of the derivation tree of $P\xrightarrow{\sigma} Q$:
     \begin{description}
       \item[base case]
     \end{description}
-	If the depth is one then the rule used have to be one of: $EInp$, $Out$, $Tau$. These rules are also in table \ref{lowleveltransitionrelation} so we can derive $P \stackrel{\sigma}{\longmapsto} Q$ and then apply $Low$ to get the result $P\xrightarrow{\sigma}_{s} Q$.
+	If the depth is one then the rule used have to be one of: $EInp$, $Out$, $Tau$. These rules are also in table \ref{lowleveltransitionrelationinput} so we can derive $P \stackrel{\sigma}{\longmapsto}Q$.
     \begin{description}
       \item[inductive case]
     \end{description}
 	If the depth is greater than one then the last rule used in the derivation can be:
 	\begin{description}
-	  \item[$SInp$]: 
+	  \item[$SInpSeq$]: 
 	    the last part of the derivation tree looks like this:
 	    \begin{center}
-	      $\inferrule* [left=\bf{SInp}]{
-		  P_{1}\{y/z\} \xrightarrow{\sigma} Q
+	      $\inferrule* [left=\bf{SInpSeq}]{
+		  P_{1} \xrightarrow{\sigma} Q
 		\\
-		  \sigma\neq \tau
-%		\\
-%	  	  y\notin fn((\nu z) P)
+		  |\sigma|>1
 	      }{
-		\underline{x(z)}.P_{1} \xrightarrow{xy \cdot \sigma} Q
+		\underline{x(y)}.P_{1} \xrightarrow{xy \cdot \sigma} Q
 	      }$	      
 	    \end{center}
-	    for inductive hypothesis $P_{1}\{y/z\} \xrightarrow{\sigma}_{s} Q$ which implies that there exist $L_{1}, \cdots, L_{k}$ and $\gamma_{1}, \cdots, \gamma_{k+1}$ with $k\geq 0$ such that 
+	    for inductive hypothesis there exist $L_{1}, \cdots, L_{k}$ and $\gamma_{1}, \cdots, \gamma_{k+1}$ with $k\geq 0$ such that 
 	    \begin{center}
-	      $P_{1}\{y/z\} \stackrel{\gamma_{1}}{\longmapsto} L_{1}  \stackrel{\gamma_{2}}{\longmapsto} L_{2} \cdots L_{k-1} \stackrel{\gamma_{k}}{\longmapsto} L_{k} \stackrel{\gamma_{k+1}}{\longmapsto} Q$ 
+	      \begin{tabular}{lll}
+		$P_{1} \stackrel{\gamma_{1}}{\longmapsto} L_{1} \stackrel{\gamma_{2}}{\longmapsto} L_{2} \cdots L_{k-1} \stackrel{\gamma_{k}}{\longmapsto} L_{k} \stackrel{\gamma_{k+1}}{\longmapsto} Q$ 
+	      &
+		and
+	      &
+		$\gamma_{1} \cdot \ldots \cdot \gamma_{k+1} = \sigma$
+	      \end{tabular}
 	    \end{center}
-	    and 
-	    \begin{center}
-	      $\gamma_{1} \cdot \ldots \cdot \gamma_{k+1} =  \sigma$
-	    \end{center}
-	    since
+	    then a proof of the conclusion follows from:
 	    \begin{center}
 	      \begin{tabular}{ll}
 		$\inferrule* [left=\bf{SInpLow}]{
  		}{
- 		  \underline{x(z)}.P_{1} \stackrel{xy}{\longmapsto} *P_{1}\{y/z\}
+ 		  \underline{x(y)}.P_{1} \stackrel{xy}{\longmapsto} *P_{1}
  		}$
 	      &
 		$\inferrule* [left=\bf{Star}]{
- 		  P_{1}\{y/z\} \stackrel{\gamma_{1}}{\longmapsto} L_{1}
+ 		  P_{1} \stackrel{\gamma_{1}}{\longmapsto} L_{1}
  		}{
- 		  *P_{1}\{y/z\} \stackrel{\gamma_{1}}{\longmapsto} L_{1}
+ 		  *P_{1} \stackrel{\gamma_{1}}{\longmapsto} L_{1}
  		}$
 	      \end{tabular}
 	    \end{center}
-	    then a proof of $P\xrightarrow{\sigma}_{s} Q$ is:
-	    \begin{center}
-	      $\inferrule* [left=\bf{Low}]{
-		    \underline{x(z)}.P_{1} \stackrel{xy}{\longmapsto} *P_{1}\{y/z\} \stackrel{\gamma_{1}}{\longmapsto} L_{1}  \stackrel{\gamma_{2}}{\longmapsto} L_{2} \cdots L_{k-1} \stackrel{\gamma_{k}}{\longmapsto} L_{k} \stackrel{\gamma_{k+1}}{\longmapsto} Q
-	      }{
-		\underline{x(z)}.P_{1} \xrightarrow{xy \cdot \gamma_{1} \cdot \ldots \cdot \gamma_{k+1}}_{s} Q
-	      }$
-	    \end{center}
-	    and $xy \cdot \gamma_{1} \cdot \ldots \cdot \gamma_{k+1}=xy \cdot \sigma$
-	  \item[$SInpTau$]: this case is similar to the previous.
+	    where $Star$ means $StarInp$ or $StarEps$, note that $\gamma_{1}$ is an input or an $epsilon$ because of \ref{lemmastrongsequence}.
+	  \item[$SInp$]: this case is similar to the previous.
+	  \item[$SInpTau$]: this case is similar to the previous observing that $xy \cdot \tau = xy$.
 	  \item[$Sum$]: 
 	the last part of the derivation tree looks like this:
 	\begin{center}
@@ -766,158 +754,119 @@ This section contains the definition of an alternative semantic for multi $\pi$.
 	    P_{1}+P_{2} \xrightarrow{\sigma} Q
 	  }$
 	\end{center}
-	for the inductive hypothesis $P_{1} \xrightarrow{\sigma}_{s} Q$ which implies that there exist $L_{1}$, $\cdots$, $L_{k}$ and $\gamma_{1}$, $\cdots$, $\gamma_{k+1}$ with $k\geq 0$ such that 
+	for the inductive hypothesis there exist $L_{1}$, $\cdots$, $L_{k}$ and $\gamma_{1}$, $\cdots$, $\gamma_{k+1}$ with $k\geq 0$ such that 
 	\begin{center}
-	  $P_{1} \stackrel{\gamma_{1}}{\longmapsto} L_{1}  \stackrel{\gamma_{2}}{\longmapsto} L_{2} \cdots L_{k-1} \stackrel{\gamma_{k}}{\longmapsto} L_{k} \stackrel{\gamma_{k+1}}{\longmapsto} Q$ 
-	\end{center}
-	and 
-	\begin{center}
-	  $\gamma_{1} \cdot \ldots \cdot \gamma_{k+1} =  \sigma$
+	  \begin{tabular}{lll}
+	    $P_{1} \stackrel{\gamma_{1}}{\longmapsto} L_{1}  \stackrel{\gamma_{2}}{\longmapsto} L_{2} \cdots L_{k-1} \stackrel{\gamma_{k}}{\longmapsto} L_{k} \stackrel{\gamma_{k+1}}{\longmapsto} Q$ 
+	  &
+	    and
+	  &
+	    $\gamma_{1} \cdot \ldots \cdot \gamma_{k+1} = \sigma$  
+	  \end{tabular}
 	\end{center}
 	A proof of the conclusion is:
 	\begin{center}
-	  $\inferrule* [left=\bf{Low}]{
-	    \inferrule* [left=\bf{Sum}]{
+	  $\inferrule* [left=\bf{Sum}]{
 	      P_{1} \stackrel{\gamma_{1}}{\longmapsto} L_{1}
 	    }{
 	      P_{1}+P_{2} \stackrel{\gamma_{1}}{\longmapsto} L_{1}
 	    }
-	    \\
-	      L_{1}  \stackrel{\gamma_{2}}{\longmapsto} L_{2} \cdots L_{k-1} \stackrel{\gamma_{k}}{\longmapsto} L_{k} \stackrel{\gamma_{k+1}}{\longmapsto} Q
-	  }{
-	    P+R \xrightarrow{\sigma}_{s} Q
-	  }$
+	  $
 	\end{center}
-      \item[$Str$]: this case is similar to the previous.
-      \item[$Com$]: 
+      \item[$Cong$]: this case is similar to the previous.
+      \item[$ECom$]: 
 	the last part of the derivation tree looks like this:
 	\begin{center}
 	  $\inferrule* [left=\bf{Com}]{
-	      P_{1} \xrightarrow{\overline{x}y} P_{1}^{'}
+	      P_{1} \xrightarrow{xy} P_{1}^{'}
 	    \\
-	      Q_{1} \xrightarrow{xy} Q_{1}^{'}
+	      Q_{1} \xrightarrow{\overline{x}y} Q_{1}^{'}
 	  }{
 	    P_{1}|Q_{1} \xrightarrow{\tau} P_{1}^{'}|Q_{1}^{'}
 	  }$
 	\end{center}
-	for inductive hypothesis $P_{1} \xrightarrow{\overline{x}y}_{s} P_{1}^{'}$ and $Q_{1} \xrightarrow{xy}_{s} Q_{1}^{'}$ which imply that there exist $L_{1}, \cdots, L_{k}$ and $\gamma_{1}, \cdots, \gamma_{k+1}$ with $k\geq 0$ such that 
+	for inductive hypothesis there exist $L_{1}, \cdots, L_{k}$ and $\gamma_{1}, \cdots, \gamma_{k+1}$ with $k\geq 0$ such that 
 	\begin{center}
-	  $P_{1} \stackrel{\gamma_{1}}{\longmapsto} L_{1}  \stackrel{\gamma_{2}}{\longmapsto} L_{2} \cdots L_{k-1} \stackrel{\gamma_{k}}{\longmapsto} L_{k} \stackrel{\gamma_{k+1}}{\longmapsto} P_{1}^{'}$ 
-	\end{center}
-	and 
-	\begin{center}
-	  $\gamma_{1} \cdot \ldots \cdot \gamma_{k+1} = \overline{x}y$
+	  \begin{tabular}{lll}
+	    $P_{1} \stackrel{\gamma_{1}}{\longmapsto} L_{1}  \stackrel{\gamma_{2}}{\longmapsto} L_{2} \cdots L_{k-1} \stackrel{\gamma_{k}}{\longmapsto} L_{k} \stackrel{\gamma_{k+1}}{\longmapsto} P_{1}^{'}$ 
+	  &
+	    and
+	  &
+	    $\gamma_{1} \cdot \ldots \cdot \gamma_{k+1} = xy$
+	  \end{tabular}
 	\end{center}
 	and there exist $R_{1}, \cdots, R_{h}$ and $\delta_{1}, \cdots, \delta_{h+1}$ with $h\geq 0$ such that 
 	\begin{center}
-	  $Q_{1} \stackrel{\delta_{1}}{\longmapsto} R_{1}  \stackrel{\delta_{2}}{\longmapsto} R_{2} \cdots R_{h-1} \stackrel{\delta_{h}}{\longmapsto} R_{h} \stackrel{\delta_{h+1}}{\longmapsto} Q_{1}^{'}$ 
+	  \begin{tabular}{lll}
+	    $Q_{1} \stackrel{\delta_{1}}{\longmapsto} R_{1}  \stackrel{\delta_{2}}{\longmapsto} R_{2} \cdots R_{h-1} \stackrel{\delta_{h}}{\longmapsto} R_{h} \stackrel{\delta_{h+1}}{\longmapsto} Q_{1}^{'}$ 
+	  &
+	    and
+	  &
+	    $\delta_{1} \cdot \ldots \cdot \delta_{h+1} = \overline{x}y$
+	  \end{tabular}
 	\end{center}
-	and 
-	\begin{center}
-	  $\delta_{1} \cdot \ldots \cdot \delta_{k+1} = xy$
-	\end{center}
-	we can have nine different cases now: 
-	\begin{center}
-	$\{\gamma_{1}=\overline{x}y,\; \gamma_{i}=\overline{x}y\; 1<i\leq k, \gamma_{k+1}=\overline{x}y\} \times \{\delta_{1}=xy,\; \delta_{j}=xy\; 1<j\leq h, \delta_{h+1}=xy\}$
-	\end{center}
-	We show just the first three since the others are similar:
+	For lemma \ref{lemmacom3} there cannot be an output action in a transition involving marked processes so $h$ must be $0$ and $Q_{1} \stackrel{\delta_{1}}{\longmapsto} Q_{1}^{'}$ with $\delta_{1}=\overline{x}y$. We can have three different cases now: 
 	\begin{description}
-	  \item[$\gamma_{1}=\overline{x}y$ $and$ $\delta_{1}=xy$]:
-	    in this case: $\gamma_{k+1}=\tau$ and the other $\gamma$s are $\epsilon$; $\delta_{h+1}=\tau$ and the other $\delta$s are $\epsilon$. A proof of the conclusion is:
+	  \item[$\gamma_{1}=xy$]:
+	    A proof of the conclusion is:
 	    \begin{center}
-	      $\inferrule* [left=\bf{Low}]{
-		  P_{1}|Q_{1} \stackrel{\tau}{\longmapsto} L_{1}|R_{1} 
-			      \stackrel{\epsilon}{\longmapsto} L_{2}|R_{1}
+	      $P_{1}|Q_{1} \stackrel{\tau}{\longmapsto} L_{1}|Q_{1}^{'}
+			      \stackrel{\epsilon}{\longmapsto} L_{2}|Q_{1}^{'}
 		  \cdots
-		\\
-		  L_{k-1}|R_{1} \stackrel{\epsilon}{\longmapsto} L_{k}|R_{1}
-				\stackrel{\epsilon}{\longmapsto} L_{k}|R_{2}
-		  \cdots 
-				\stackrel{\epsilon}{\longmapsto} L_{k}|R_{h}
-				\stackrel{\tau}{\longmapsto} P_{1}^{'}|R_{h}
-				\stackrel{\tau}{\longmapsto} P_{1}^{'}|Q_{1}^{'}
-	      }{
-		P_{1}|Q_{1} \xrightarrow{\tau}_{s} P_{1}^{'}|Q_{1}^{'}
-	      }$	  
+				\stackrel{\epsilon}{\longmapsto} L_{k}|Q_{1}^{'}
+				\stackrel{\epsilon}{\longmapsto} P_{1}^{'}|Q_{1}^{'}$	  
 	    \end{center}
-	    we derive the first transaction of the premises with rule $Com3$, whether for the other transactions we use the rule $Par1$ and when necessary $Cong1$.
-	  \item[$\gamma_{i}=\overline{x}y$ $and$ $\delta_{1}=xy$]:
-	    in this case: $\gamma_{1}=\gamma_{k+1}=\tau$ and the other $\gamma$s are $\epsilon$; $\delta_{h+1}=\tau$ and the other $\delta$s are $\epsilon$. A proof of the conclusion is:
+	    we derive the first transition with rule $Com3L$, whether for the other transition we use the rule $Par1L$.
+	  \item[$\gamma_{i}=xy$]:
+	    A proof of the conclusion is:
 	    \begin{center}
-	      $\inferrule* [left=\bf{Low}]{
-		  P_{1}|Q_{1} \stackrel{\tau}{\longmapsto} L_{1}|Q_{1} 
-			      \stackrel{\epsilon}{\longmapsto} L_{2}|Q_{1}
+	      $
+		  P_{1}|Q_{1} \stackrel{\epsilon}{\longmapsto} L_{1}|Q_{1} 
 		  \cdots
 			      \stackrel{\epsilon}{\longmapsto} L_{i-1}|Q_{1} 
-			      \stackrel{\tau}{\longmapsto} L_{i}|R_{1}
-			      \stackrel{\epsilon}{\longmapsto} L_{i+1}|R_{1}
-		  \\\cdots 
-			      \stackrel{\epsilon}{\longmapsto} L_{k}|R_{1}
-			      \stackrel{\epsilon}{\longmapsto} L_{k}|R_{2}
+			      \stackrel{\tau}{\longmapsto} L_{i}|Q_{1}^{'}
+			      \stackrel{\epsilon}{\longmapsto} L_{i+1}|Q_{1}^{'}
 		  \cdots 
-			      \stackrel{\epsilon}{\longmapsto} L_{k}|R_{h}
-			      \stackrel{\tau}{\longmapsto} P_{1}^{'}|R_{h}
-			      \stackrel{\tau}{\longmapsto} P_{1}^{'}|Q_{1}^{'}
-	      }{
-		P_{1}|Q_{1} \xrightarrow{\tau}_{s} P_{1}^{'}|Q_{1}^{'}
-	      }$	  
+			      \stackrel{\epsilon}{\longmapsto} L_{k}|Q_{1}^{'}
+			      \stackrel{\epsilon}{\longmapsto} P_{1}^{'}|Q_{1}^{'}$	  
 	    \end{center}
-	    we derive the transaction $ L_{i-1}|Q_{1} \stackrel{\tau}{\longmapsto} L_{i}|R_{1}$ with rule $Com3$, whether for the other transactions of the premises we use the rule $Par1$ and when necessary $Cong1$.
-	  \item[$\gamma_{k+1}=\overline{x}y$ $and$ $\delta_{1}=xy$]:
-	    in this case: $\gamma_{1}=\tau$ and the other $\gamma$s are $\epsilon$; $\delta_{h+1}=\tau$ and the other $\delta$s are $\epsilon$. A proof of the conclusion is:
-	    \begin{center}
-	      $\inferrule* [left=\bf{Low}]{
-		  P_{1}|Q_{1} \stackrel{\tau}{\longmapsto} L_{1}|Q_{1} 
-			      \stackrel{\epsilon}{\longmapsto} L_{2}|Q_{1}
-		  \cdots
-			      \stackrel{\epsilon}{\longmapsto} L_{k}|Q_{1} 
-		\\	      \stackrel{\tau}{\longmapsto} P_{1}^{'}|R_{1}
-			      \stackrel{\epsilon}{\longmapsto} P_{1}^{'}|R_{2}
-		  \cdots 
-			      \stackrel{\epsilon}{\longmapsto} P_{1}^{'}|R_{h}
-			      \stackrel{\tau}{\longmapsto} P_{1}^{'}|Q_{1}^{'}
-	      }{
-		P_{1}|Q_{1} \xrightarrow{\tau}_{s} P_{1}^{'}|Q_{1}^{'}
-	      }$	  
-	    \end{center}
-	    we derive the transaction $L_{k}|Q_{1} \stackrel{\tau}{\longmapsto} P_{1}^{'}|R_{1}$ with rule $Com3$, whether for the other transactions of the premises we use the rule $Par1$ and when necessary $Cong1$.
+	    we derive the transaction $ L_{i-1}|Q_{1} \stackrel{\tau}{\longmapsto} L_{i}|Q_{1}^{'}$ with rule $Com2L$, whether for the other transactions  we use the rule $Par1L$.
+	  \item[$\gamma_{k+1}=xy$] similar.
 	\end{description}
       \item[$Res$]: 
 	the last part of the derivation tree looks like this:
 	\begin{center}
 	  $\inferrule* [left=\bf{Res}]{
-	      P_{1}\; \xrightarrow{\sigma}\; Q_{1}
+	      P_{1} \xrightarrow{\sigma} Q_{1}
 	    \\
 	      z\notin n(\sigma)
 	  }{
-	    (\nu z) P_{1} \;\xrightarrow{\sigma} (\nu z) Q_{1}
+	    (\nu z) P_{1} \xrightarrow{\sigma} (\nu z) Q_{1}
 	  }$
 	\end{center}
-	for the inductive hypothesis $P_{1} \xrightarrow{\sigma}_{s} Q_{1}$ which implies that there exist $L_{1}, \cdots, L_{k}$ and $\gamma_{1}, \cdots, \gamma_{k+1}$ with $k\geq 0$ such that 
+	for the inductive hypothesis there exist $L_{1}, \cdots, L_{k}$ and $\gamma_{1}, \cdots, \gamma_{k+1}$ with $k\geq 0$ such that 
 	\begin{center}
-	  $P_{1} \stackrel{\gamma_{1}}{\longmapsto} L_{1}  \stackrel{\gamma_{2}}{\longmapsto} L_{2} \cdots L_{k-1} \stackrel{\gamma_{k}}{\longmapsto} L_{k} \stackrel{\gamma_{k+1}}{\longmapsto} Q_{1}$ 
-	\end{center}
-	and 
-	\begin{center}
-	  $\gamma_{1} \cdot \ldots \cdot \gamma_{k+1} =  \sigma$
+	  \begin{tabular}{lll}
+	    $P_{1} \stackrel{\gamma_{1}}{\longmapsto} L_{1}  \stackrel{\gamma_{2}}{\longmapsto} L_{2} \cdots L_{k-1} \stackrel{\gamma_{k}}{\longmapsto} L_{k} \stackrel{\gamma_{k+1}}{\longmapsto} Q_{1}$ 
+	  &
+	    and
+	  &
+	    $\gamma_{1} \cdot \ldots \cdot \gamma_{k+1} =  \sigma$
+	  \end{tabular}
 	\end{center}
 	We can apply the rule $Res$ to each of the previous transitions because 
 	\begin{center}
 	  $z\notin n(\sigma)$ implies $z\notin n(\gamma_{i})$ for each $i$
 	\end{center}
-	and then apply the rule $Low$ to get a proof of the conclusion:
+	and then get a proof of the conclusion:
 	\begin{center}
-	  $\inferrule* [left=\bf{Low}]{
-	    (\nu z)P_{1} \stackrel{\gamma_{1}}{\longmapsto} (\nu z)L_{1}  \stackrel{\gamma_{2}}{\longmapsto} (\nu z)L_{2} \cdots (\nu z)L_{k-1} \stackrel{\gamma_{k}}{\longmapsto} (\nu z)L_{k} \stackrel{\gamma_{k+1}}{\longmapsto} (\nu z)Q_{1}
-	  }{
-	    (\nu z)P_{1} \xrightarrow{\sigma}_{s} (\nu z)Q_{1}
-	  }$
+	  $(\nu z)P_{1} \stackrel{\gamma_{1}}{\longmapsto} (\nu z)L_{1}  \stackrel{\gamma_{2}}{\longmapsto} (\nu z)L_{2} \cdots (\nu z)L_{k-1} \stackrel{\gamma_{k}}{\longmapsto} (\nu z)L_{k} \stackrel{\gamma_{k+1}}{\longmapsto} (\nu z)Q_{1}$
 	\end{center}
       \item[$Par$]: this case is similar to the previous.
-      \item[$ComSeq$]: 
+      \item[$EComSeq$]: 
 	the last part of the derivation tree looks like this:
 	\begin{center}
-	  $\inferrule* [left=\bf{Com}]{
+	  $\inferrule* [left=\bf{EComSeq}]{
 	      P_{1} \xrightarrow{xy \cdot \sigma} P_{1}^{'}
 	    \\
 	      Q_{1} \xrightarrow{\overline{x}y} Q_{1}^{'}
@@ -925,641 +874,95 @@ This section contains the definition of an alternative semantic for multi $\pi$.
 	    P_{1}|Q_{1} \xrightarrow{\sigma} P_{1}^{'}|Q_{1}^{'}
 	  }$
 	\end{center}
-	for inductive hypothesis $P_{1} \xrightarrow{xy \cdot \sigma}_{s} P_{1}^{'}$ which implies that there exist $L_{1}$, $\cdots$, $L_{k}$ and $\gamma_{1}$, $\cdots$, $\gamma_{k+1}$ with $k\geq 0$ such that 
+	for inductive hypothesis there exist $L_{1}$, $\cdots$, $L_{k}$ and $\gamma_{1}$, $\cdots$, $\gamma_{k+1}$ with $k\geq 0$ such that 
 	\begin{center}
-	  $P_{1} \stackrel{\gamma_{1}}{\longmapsto} L_{1}  \stackrel{\gamma_{2}}{\longmapsto} L_{2} \cdots L_{k-1} \stackrel{\gamma_{k}}{\longmapsto} L_{k} \stackrel{\gamma_{k+1}}{\longmapsto} P_{1}^{'}$ 
+	  \begin{tabular}{lll}
+	    $P_{1} \stackrel{\gamma_{1}}{\longmapsto} L_{1}  \stackrel{\gamma_{2}}{\longmapsto} L_{2} \cdots L_{k-1} \stackrel{\gamma_{k}}{\longmapsto} L_{k} \stackrel{\gamma_{k+1}}{\longmapsto} P_{1}^{'}$ 
+	  &
+	    and
+	  &
+	    $\gamma_{1} \cdot \ldots \cdot \gamma_{k+1} = xy \cdot \sigma$  
+	  \end{tabular}
 	\end{center}
-	and 
-	\begin{center}
-	  $\gamma_{1} \cdot \ldots \cdot \gamma_{k+1} = xy \cdot \sigma$
-	\end{center}
-	Again for inductive hypothesis $Q_{1} \xrightarrow{xy}_{s} Q_{1}^{'}$ which implies that there exist $R_{1}, \cdots, R_{h}$ and $\delta_{1}, \cdots, \delta_{h+1}$ with $h\geq 0$ such that 
-	\begin{center}
-	  $Q_{1} \stackrel{\delta_{1}}{\longmapsto} R_{1}  \stackrel{\delta_{2}}{\longmapsto} R_{2} \cdots R_{h-1} \stackrel{\delta_{h}}{\longmapsto} R_{h} \stackrel{\delta_{h+1}}{\longmapsto} Q_{1}^{'}$ 
-	\end{center}
-	and 
-	\begin{center}
-	  $\delta_{1} \cdot \ldots \cdot \delta_{k+1} = \overline{x}y$
-	\end{center}
-	We assume that $\sigma$ is not $\tau$ otherwise we can replace this instance of the rule $ComSeq$ with an instance of the rule $Com$ and proceed as in the previous case. We can have six different cases now: 
-	\begin{center}
-	$\{\gamma_{1}=xy,\; \gamma_{i}=\overline{x}y\; 1<i\leq k\} \times \{\delta_{1}=\overline{x}y,\; \delta_{j}=\overline{x}y\; 1<j\leq h, \delta_{h+1}=\overline{x}y\}$
-	\end{center}
-	We show just the first two since the others are similar:
+	For inductive hypothesis and lemma \ref{multioutconstraintswithmarked} $Q_{1} \stackrel{\overline{x}y}{\longmapsto} Q_{1}^{'}$. We can have two different cases now depending on where the first $xy$ is:
 	\begin{description}
-	  \item[$\gamma_{1}=xy$ $and$ $\delta_{1}=\overline{x}y$]:
-	    in this case: $\delta_{h+1}=\tau$ and the other $\delta$s are $\epsilon$. A proof of the conclusion is:
-	    \begin{center}
-	      $\inferrule* [left=\bf{Low}]{
-		  P_{1}|Q_{1} \stackrel{\tau}{\longmapsto} L_{1}|R_{1} 
-			      \stackrel{\gamma_{2}}{\longmapsto} L_{2}|R_{1}
-		  \cdots
-			      \stackrel{\gamma_{k}}{\longmapsto} L_{k}|R_{1}
-			\\      \stackrel{\gamma_{k+1}}{\longmapsto} P_{1}^{'}|R_{1}
-			      \stackrel{\epsilon}{\longmapsto} P_{1}^{'}|R_{2}
-		  \cdots 
-			      \stackrel{\epsilon}{\longmapsto} P_{1}^{'}|R_{h}
-			      \stackrel{\tau}{\longmapsto} P_{1}^{'}|Q_{1}^{'}
-	      }{
-		P_{1}|Q_{1} \xrightarrow{\tau \cdot \gamma_{2}\cdot \ldots \cdot \gamma_{k+1}\cdot \epsilon \cdot \ldots \epsilon \cdot \tau}_{s} P_{1}^{'}|Q_{1}^{'}
-	      }$	  
-	    \end{center}
-	    we derive the first transaction of the premises with rule $Com3$, whether for the other transactions we use the rule $Par1$ and when necessary $Cong1$. Since $\gamma_{1} \cdot \ldots \cdot \gamma_{k+1} = xy \cdot \sigma$ and $\gamma_{1}=xy$ then $\tau \cdot \gamma_{2}\cdot \ldots \cdot \gamma_{k+1}\cdot \epsilon \cdot \ldots \epsilon \cdot \tau=\sigma$
-	  \item[$\gamma_{i}=xy$ $and$ $\delta_{1}=\overline{x}y$]:
-	    in this case: $\gamma_{1}=\gamma_{k+1}=\tau$, $\gamma_{j}=\epsilon$ if $1<j<i$ and $\gamma_{i+1}\cdot \ldots \cdot \gamma_{k+1}=\sigma$; $\delta_{h+1}=\tau$ and the other $\delta$s are $\epsilon$. A proof of the conclusion is:
-	    \begin{center}
-	      $\inferrule* [left=\bf{Low}]{
-		  P_{1}|Q_{1} \stackrel{\tau}{\longmapsto} L_{1}|Q_{1} 
-			      \stackrel{\epsilon}{\longmapsto} L_{2}|Q_{1}
-		  \cdots
-			      \stackrel{\epsilon}{\longmapsto} L_{i-1}|Q_{1} 
-			      \stackrel{\tau}{\longmapsto} L_{i}|R_{1}
-			      \stackrel{\gamma_{i+1}}{\longmapsto} L_{i+1}|R_{1}
-		  \\\cdots 
-			      \stackrel{\gamma_{k}}{\longmapsto} L_{k}|R_{1}
-			      \stackrel{\gamma_{k+1}}{\longmapsto} P_{1}^{'}|R_{1}
-			      \stackrel{\epsilon}{\longmapsto} P_{1}^{'}|R_{2}
-		  \cdots 
-			      \stackrel{\epsilon}{\longmapsto} P_{1}^{'}|R_{h}
-			      \stackrel{\tau}{\longmapsto} P_{1}^{'}|Q_{1}^{'}
-	      }{
-		P_{1}|Q_{1} \xrightarrow{\tau \cdot \epsilon \cdot \ldots \cdot \epsilon \cdot \tau \cdot \gamma_{i+1}\cdot \ldots \cdot \gamma_{k+1} \cdot \epsilon \cdot \ldots \cdot \epsilon \cdot \tau}_{s} P_{1}^{'}|Q_{1}^{'}
-	      }$	  
-	    \end{center}
-	    we derive the transaction $ L_{i-1}|Q_{1} \stackrel{\tau}{\longmapsto} L_{i}|R_{1}$ with rule $Com3$ and $Cong1$, whether for the other transactions of the premises we use the rule $Par1$ and when necessary $Cong1$.
-	\end{description}
-      \item[$Opn$]: 
-	the last part of the derivation tree looks like this:
-	\begin{center}
-	  $\inferrule* [left=\bf{Opn}]{
-	      P_{1} \xrightarrow{\overline{x}z}\; Q
-	    \\ 
-	      z\neq x
-	  }{
-	      (\nu z)P \xrightarrow{\overline{x}(z)}\; Q
-	  }$	 
-	\end{center}
-	for the inductive hypothesis $P_{1} \xrightarrow{\sigma}_{s} Q$ which implies that there exist $L_{1}$, $\cdots$, $L_{k}$ and $\gamma_{1}$, $\cdots$, $\gamma_{k+1}$ with $k\geq 0$ such that 
-	\begin{center}
-	  $P_{1} \stackrel{\gamma_{1}}{\longmapsto} L_{1}  \stackrel{\gamma_{2}}{\longmapsto} L_{2} \cdots L_{k-1} \stackrel{\gamma_{k}}{\longmapsto} L_{k} \stackrel{\gamma_{k+1}}{\longmapsto} Q$ 
-	\end{center}
-	and 
-	\begin{center}
-	  $\gamma_{1} \cdot \ldots \cdot \gamma_{k+1} =  \overline{x}z$
-	\end{center}
-	We can have three different cases now: 
-	\begin{description}
-	  \item[$\gamma_{1}=\overline{x}z$]:
-	    in this case $\gamma_{h+1}=\tau$ and the other $\gamma$s are $\epsilon$. A proof of the conclusion is:
-	    \begin{center}
-	      $\inferrule* [left=\bf{Low}]{
-		  \inferrule* [left=\bf{Open}]{
-		      P_{1} \stackrel{\overline{x}(z)}{\longmapsto} L_{1}
-		  }{
-		    (\nu z)P_{1} \stackrel{\overline{x}(z)}{\longmapsto} L_{1}
-		  }
-		  \\
-			      L_{1} \stackrel{\epsilon}{\longmapsto} L_{2}
-		  \cdots
-			      \stackrel{\epsilon}{\longmapsto} L_{k}
-			      \stackrel{\epsilon}{\longmapsto} Q
-	      }{
-		(\nu z)P_{1} \xrightarrow{\overline{x}(z) \cdot \epsilon \cdot \ldots \cdot \epsilon}_{s} Q
-	      }$	  
-	    \end{center}
-	  \item[$\gamma_{i}=\overline{x}z$]:
-	    in this case $\gamma_{1}=\gamma_{k+1}=\tau$ and the other $\gamma$s are $\epsilon$. A proof of the conclusion is:
-	    \begin{center}
-	      $\inferrule* [left=\bf{Low}]{
-		  (\nu z)P_{1}\stackrel{\tau}{\longmapsto} (\nu z)L_{1}
-			      \stackrel{\epsilon}{\longmapsto} (\nu z)L_{2}
-		  \cdots
-			      \stackrel{\epsilon}{\longmapsto} (\nu z) L_{i-1}
-		\\
-		(\nu z) L_{i-1} \stackrel{\overline{x}(z)}{\longmapsto} L_{i}
-		\\
-			      L_{i} \stackrel{\epsilon}{\longmapsto} L_{i+1}
-		  \cdots 
-			      \stackrel{\epsilon}{\longmapsto} L_{k}
-			      \stackrel{\tau}{\longmapsto} Q
-	      }{
-		(\nu z)P_{1} \xrightarrow{\tau \cdot \epsilon \cdot \ldots \cdot \epsilon \cdot \tau \cdot \gamma_{i+1}\cdot \ldots \cdot \gamma_{k+1} \cdot \epsilon \cdot \ldots \cdot \epsilon \cdot \tau}_{s} Q
-	      }$	  
-	    \end{center}
-	    we derive the transition $ (\nu z) L_{i-1} \stackrel{\overline{x}(z)}{\longmapsto} L_{i}$ with rule $Open$ and the transitions $(\nu z)P_{1}\stackrel{\tau}{\longmapsto}(\nu z)L_{1} \stackrel{\epsilon}{\longmapsto} (\nu z)L_{2}\cdots \stackrel{\epsilon}{\longmapsto} (\nu z) L_{i-1}$ with rule $Res$.
-	\end{description}
-      \item[$OpnSeq$]: 
-	the last part of the derivation tree looks like this:
-	\begin{center}
-	  $\inferrule* [left=\bf{OpnSeq}]{
-	      P_{1} \xrightarrow{inpSeq \cdot \overline{x}z} Q
-	    \\ 
-	      z\neq x
-	  }{
-	      (\nu z)P_{1} \xrightarrow{inpSeq \cdot \overline{x}(z)} Q
-	  }$	 
-	\end{center}
-	for the inductive hypothesis $P_{1} \xrightarrow{\sigma}_{s} Q$ which implies that there exist $L_{1}$, $\cdots$, $L_{k}$ and $\gamma_{1}$, $\cdots$, $\gamma_{k+1}$ with $k\geq 0$ such that 
-	\begin{center}
-	  $P_{1} \stackrel{\gamma_{1}}{\longmapsto} L_{1}  \stackrel{\gamma_{2}}{\longmapsto} L_{2} \cdots L_{k-1} \stackrel{\gamma_{k}}{\longmapsto} L_{k} \stackrel{\gamma_{k+1}}{\longmapsto} Q$ 
-	\end{center}
-	and 
-	\begin{center}
-	  $\gamma_{1} \cdot \ldots \cdot \gamma_{k+1} =  inpSeq \cdot \overline{x}z$
-	\end{center}
-	We can have three different cases now: 
-	\begin{description}
-	  \item[$\gamma_{1}=\overline{x}z$]: 
+	  \item[$\gamma_{1}=xy$]:
 	    A proof of the conclusion is:
 	    \begin{center}
-	      $\inferrule* [left=\bf{Low}]{
-		  \inferrule* [left=\bf{Opn}]{
-		    P_{1}\stackrel{\overline{x}z}{\longmapsto} L_{1}
-		  }{
-		    (\nu z)P_{1}\stackrel{\overline{x}(z)}{\longmapsto} L_{1}
-		  }
-		  \\
-			      L_{1} \stackrel{\gamma_{2}}{\longmapsto} L_{2}
+	      $P_{1}|Q_{1} \stackrel{\tau}{\longmapsto} L_{1}|Q_{1}^{'}
+			      \stackrel{\gamma_{2}}{\longmapsto} L_{2}|Q_{1}^{'}
 		  \cdots
-			      \stackrel{\gamma_{k}}{\longmapsto} L_{k}
-			      \stackrel{\gamma_{k+1}}{\longmapsto} Q
-	      }{
-		(\nu z)P_{1} \xrightarrow{\overline{x}(z) \cdot \gamma_{2}\cdot \ldots \cdot \gamma_{k+1}}_{s} Q
-	      }$	  
+			      \stackrel{\gamma_{k}}{\longmapsto} L_{k}|Q_{1}^{'}
+			      \stackrel{\gamma_{k+1}}{\longmapsto} P_{1}^{'}|Q_{1}^{'}$	  
 	    \end{center}
-	  \item[$\gamma_{i}=\overline{x}z$]:
-	    with $1<i\leq k$ in this case $\gamma_{i+1}= \cdot = \gamma_{k}=\epsilon$, $\gamma_{k+1}=\tau$ and $\gamma_{1}\cdot \ldots \cdot \gamma_{i-1}=inpSeq$. A proof of the conclusion is:
+	    we derive the first transition with rule $Com3L$, whether for the other transactions we use the rule $Par1L$. Since $\gamma_{1} \cdot \ldots \cdot \gamma_{k+1} = xy \cdot \sigma$ and $\gamma_{1}=xy$ then $\tau \cdot \gamma_{2}\cdot \ldots \cdot \gamma_{k+1}\cdot \epsilon \cdot \ldots \epsilon \cdot \tau=\sigma$
+	  \item[$\gamma_{i}=xy$]:
+	    A proof of the conclusion is:
 	    \begin{center}
-	      $\inferrule* [left=\bf{Low}]{
-		  (\nu z)P_{1}\stackrel{\gamma_{1}}{\longmapsto} (\nu z)L_{1}
-			      \stackrel{\gamma_{2}}{\longmapsto} (\nu z)L_{2}
+	      $P_{1}|Q_{1} \stackrel{\epsilon}{\longmapsto} L_{1}|Q_{1} 
 		  \cdots
-			      \stackrel{\gamma_{i-1}}{\longmapsto} (\nu z) L_{i-1}
-			      \stackrel{\overline{x}(z)}{\longmapsto} L_{i}
-			      \stackrel{\epsilon}{\longmapsto} L_{i+1}
+			      \stackrel{\epsilon}{\longmapsto} L_{i-1}|Q_{1} 
+			      \stackrel{\tau}{\longmapsto} L_{i}|Q_{1}^{'}
+			      \stackrel{\gamma_{i+1}}{\longmapsto} L_{i+1}|Q_{1}^{'}
 		  \cdots 
-			      \stackrel{\epsilon}{\longmapsto} L_{k}
-			      \stackrel{\tau}{\longmapsto} Q
-	      }{
-		(\nu z)P_{1} \xrightarrow{\gamma_{1}\cdot \ldots \cdot \gamma_{i-1} \cdot \overline{x}(z) \cdot \epsilon \cdot \ldots \cdot \epsilon \cdot \cdot \tau}_{s} Q
-	      }$	  
+			      \stackrel{\gamma_{k}}{\longmapsto} L_{k}|Q_{1}^{'}
+			      \stackrel{\gamma_{k+1}}{\longmapsto} P_{1}^{'}|Q_{1}^{'}$	  
 	    \end{center}
-	    we derive the transition $ (\nu z) L_{i-1} \stackrel{\overline{x}(z)}{\longmapsto} L_{i}$ with rule $Open$ and the transitions $(\nu z)P_{1}\stackrel{\gamma_{1}}{\longmapsto}(\nu z)L_{1} \stackrel{\gamma_{2}}{\longmapsto} (\nu z)L_{2}\cdots \stackrel{\gamma_{i-1}}{\longmapsto} (\nu z) L_{i-1}$ with rule $Res$.
-	  \item[$\gamma_{k+1}=\overline{x}z$]:
-	    in this case $\gamma_{1}\cdot \ldots \cdot \gamma_{k}=inpSeq$. A proof of the conclusion is:
-	    \begin{center}
-	      $\inferrule* [left=\bf{Low}]{
-		  (\nu z)P_{1}\stackrel{\gamma_{1}}{\longmapsto} (\nu z)L_{1}
-			      \stackrel{\gamma_{2}}{\longmapsto} (\nu z)L_{2}
-		  \cdots
-			      \stackrel{\gamma_{k}}{\longmapsto} (\nu z)L_{k}
-			      \stackrel{\overline{x}(z)}{\longmapsto} Q
-	      }{
-		(\nu z)P_{1} \xrightarrow{\gamma_{1}\cdot \ldots \cdot \gamma_{k} \cdot \overline{x}(z)}_{s} Q
-	      }$	  
-	    \end{center}
-	    we derive the transition $ (\nu z) L_{k} \stackrel{\overline{x}(z)}{\longmapsto} L_{i}$ with rule $Open$ and the others with rule $Res$.
+	    we derive the transition $ L_{i-1}|Q_{1} \stackrel{\tau}{\longmapsto} L_{i}|Q_{1}^{'}$ with rule $Com2L$, whether for the other transactions of the premises we use the rule $Par1L$.
+	  \item[$\gamma_{k+1}=xy$]: cannot happen because $\sigma$ is not empty.
 	\end{description}
-
     \end{description}
-    
-    
   \end{proof}
 \end{proposition}
+
+
+
+
 
 
 \begin{proposition}
-  Let $\rightarrow$ be the relation defined in table \ref{multipisoloinputearlywith} and let $P$ be a multi $\pi$ process. Then 
-  \begin{center}
-    $P\xrightarrow{\sigma}_{s} Q  \Rightarrow P\xrightarrow{\sigma} Q$
-  \end{center}
+  Let $\rightarrow$ be the relation defined in table \ref{multipisoloinputearlywith}. Let $\alpha$ be an action. If $P \stackrel{\alpha}{\longmapsto} Q$ then $P\xrightarrow{\alpha} Q$.
   \begin{proof}
-    DA MODIFICARE PERCHE' LE REGOLE COM2 E COM3 SONO CAMBIATE     
-    The proof is by induction on the sum of the length of the sequence of transitions used to derive $P\xrightarrow{\sigma}_{s} Q$ and on the depth of the proof tree of the first transition in such a sequence:
+    The proof is by induction the depth of the derivation of $P \stackrel{\alpha}{\longmapsto} Q$:
     \begin{description}
       \item[base case]
-    \end{description}
-	in this case $P\stackrel{\sigma}{\longmapsto} Q$ and the derivation of this transition has depth one. The last(and only) rule used to derive $P\stackrel{\sigma}{\longmapsto} Q$ can be: $Out$, $EInp$ or $Tau$; these rules are also in table \ref{multipisoloinputearlywith} so we can derive $P\xrightarrow{\sigma} Q$.
-    \begin{description}
+	in this case the derivation of this transition has depth one. The last(and only) rule used can be: $Out$, $EInp$ or $Tau$; these rules are also in table \ref{multipisoloinputearlywith} so we can derive $P\xrightarrow{\alpha} Q$. 
       \item[inductive case]
-    \end{description}
-	we have two cases: the first is $P\stackrel{\sigma}{\longmapsto} Q$ and the depth of the derivation is greater than one. In this case the last rule in the derivation can be: $Sum$, $Com1$, $Res$, $Opn$, $Par1$, $Cong1$:
+	in this case the last rule in the derivation can be: $Sum$, $Com1$, $Res$, $Par1L$, $Par1R$, $Cong$, $Opn$:
 	\begin{description}
+	  \item[$Com1$]:
+	    \begin{center}
+	      $\inferrule* [left=\bf{Com1}]{
+		  P_{1} \stackrel{xy}{\longmapsto} Q_{1}
+		\\
+		  P_{2} \stackrel{\overline{x}y}{\longmapsto} Q_{2}
+	      }{
+		P_{1}|P_{2} \stackrel{\tau}{\longmapsto} Q_{1}|Q_{2}
+	      }$ 
+	    \end{center}
+	    for inductive hypothesis $P_{1} \xrightarrow{xy} Q_{1}$ and $P_{2} \xrightarrow{\overline{x}y} Q_{2}$ so for rule $Com$ $P_{1}|P_{2} \xrightarrow{\tau} Q_{1}|Q_{2}$
 	  \item[$Sum$]:
-		\begin{center}
-		  $\inferrule* [left=\bf{Sum}]{
-		      P_{1} \stackrel{\gamma_{1}}{\longmapsto} Q
-		    }{
-		      P_{1}+P_{2} \stackrel{\gamma_{1}}{\longmapsto} Q
-		  }$ 
-		\end{center}
-	    for rule $Low$ $P_{1} \xrightarrow{\gamma_{1}}_{s} Q$, for inductive hypothesis $P_{1} \xrightarrow{\gamma_{1}} Q$ and finally for rule $Sum$ $P_{1}+P_{2} \xrightarrow{\gamma_{1}} Q$.
-	  \item[$others$] 
-	    the other cases are similar to the previous since these rules are in common. 
-	\end{description}
-	The second case is that there exist $L_{1}, \cdots, L_{k}$ and $\gamma_{1}, \cdots, \gamma_{k+1}$ with $k\geq 1$ such that 
-	\begin{center}
-	  $P \stackrel{\gamma_{1}}{\longmapsto} L_{1}  \stackrel{\gamma_{2}}{\longmapsto} L_{2} \cdots L_{k-1} \stackrel{\gamma_{k}}{\longmapsto} L_{k} \stackrel{\gamma_{k+1}}{\longmapsto} Q$ 
-	\end{center}
-	and 
-	\begin{center}
-	  $\gamma_{1} \cdot \ldots \cdot \gamma_{k+1} = \sigma$ and $k\geq 1$
-	\end{center} 
-	we proceed by induction on the depth of the derivation of $P \stackrel{\gamma_{1}}{\longmapsto} L_{1}$. Let us call $R$ the last instance of a rule used to derive $P\stackrel{\gamma_{1}}{\longmapsto} L_{1}$. $R$ cannot be $Out$, $EInp$, $Tau$, $Com1$, $Cong1$ because $L_{1}$ is a marked process but these rules lead to a non marked process. Also $R$ cannot be $Star$, $Com2$, $Com4$, $Cong3$ because $P$ is not marked whether the head of the conclusion of these rules is marked.
-	\begin{description}
-	  \item[base case] 
-	\end{description}
-	    $R$ can be only $SInpLow$, so 
 	    \begin{center}
-	      $\underline{x(z)}.P_{1} \stackrel{xy}{\longmapsto} *P_{1}\{y/z\} \stackrel{\gamma_{2}}{\longmapsto} L_{2} \cdots L_{k-1} \stackrel{\gamma_{k}}{\longmapsto} L_{k} \stackrel{\gamma_{k+1}}{\longmapsto} Q$ 
-	    \end{center}
-	    Since $*P_{1}\{y/z\}$ has a mark on top, the last rule used in a derivation of $ *P_{1}\{y/z\} \stackrel{\gamma_{2}}{\longmapsto} L_{2}$ has to be $Star$. This means that $P_{1}\{y/z\} \stackrel{\gamma_{2}}{\longmapsto} L_{2}$ and so
-	    \begin{center}
-	      $P_{1}\{y/z\} \stackrel{\gamma_{2}}{\longmapsto} L_{2} \cdots L_{k-1} \stackrel{\gamma_{k}}{\longmapsto} L_{k} \stackrel{\gamma_{k+1}}{\longmapsto} Q$ 
-	    \end{center} 
-	    which for rule $Low$ and inductive hypothesis implies $P_{1}\{y/z\} \xrightarrow{\gamma_{2}\cdot \ldots \cdot \gamma_{k+1}} Q$. A proof of the conclusion is:
-	    \begin{center}
-	      $\inferrule* [left=\bf{SInp}]{
-		  P_{1}\{y/z\} \xrightarrow{\gamma_{2}\cdot \ldots \cdot \gamma_{k+1}} Q
-		\\
-		  \gamma_{2}\cdot \ldots \cdot \gamma_{k+1} \neq \tau
+	      $\inferrule* [left=\bf{Sum}]{
+		P_{1} \stackrel{\alpha}{\longmapsto} Q
 	      }{
-		\underline{x(z)}.P_{1} \xrightarrow{xy \cdot \gamma_{2}\cdot \ldots \cdot \gamma_{k+1}} Q
-	      }$
+		P_{1}+P_{2} \stackrel{\alpha}{\longmapsto} Q
+	      }$ 
 	    \end{center}
-	    or
+	    for inductive hypothesis $P_{1} \xrightarrow{\alpha} Q$ and for rule $Sum$ $P_{1}+P_{2} \xrightarrow{\alpha} Q$.
+	  \item[$Res$] the first transition is:
 	    \begin{center}
-	      $\inferrule* [left=\bf{SInpTau}]{
-		  P_{1}\{y/z\} \xrightarrow{\gamma_{2}\cdot \ldots \cdot \gamma_{k+1}} Q
+	      $\inferrule* [left=\bf{Res}]{
+		  P_{1} \stackrel{\alpha}{\longmapsto} Q_{1}
 		\\
-		  \gamma_{2}\cdot \ldots \cdot \gamma_{k+1} = \tau
+		  z\notin n(\gamma_{1})
 	      }{
-		\underline{x(z)}.P_{1} \xrightarrow{xy} Q
-	      }$
-	    \end{center}
-	\begin{description}
-	  \item[inductive case] 
-	\end{description}
-	    $R$ can be:
-	    \begin{description}
-	      \item[$Sum$] the first transition is:
-		\begin{center}
-		  $\inferrule* [left=\bf{Sum}]{
-		      P_{1} \stackrel{\gamma_{1}}{\longmapsto} L_{1}
-		    }{
-		      P_{1}+P_{2} \stackrel{\gamma_{1}}{\longmapsto} L_{1}
-		  }$ 
-		\end{center}
-		so we can build the following chain of transition:
-		\begin{center}
-		  $P_{1} \stackrel{\gamma_{1}}{\longmapsto} L_{1} \stackrel{\gamma_{2}}{\longmapsto} L_{2} \cdots L_{k-1} \stackrel{\gamma_{k}}{\longmapsto} L_{k} \stackrel{\gamma_{k+1}}{\longmapsto} Q$ 
-		\end{center}
-		apply the rule $Low$ and the inductive hypothesis to get $P_{1} \xrightarrow{\gamma_{1}\cdot \ldots \cdot \gamma_{k+1}} Q$. Now a proof of the conclusion can be
-		\begin{center}
-		  $\inferrule* [left=\bf{Sum}]{
-		      P_{1} \xrightarrow{\gamma_{1}\cdot \ldots \cdot \gamma_{k+1}} Q
-		    }{
-		      P_{1}+P_{2} \xrightarrow{\gamma_{1}\cdot \ldots \cdot \gamma_{k+1}} Q
-		  }$
-		\end{center}
-	      \item[$Res$] the first transition is:
-		\begin{center}
-		  $\inferrule* [left=\bf{Res}]{
-			P_{1} \stackrel{\gamma_{1}}{\longmapsto} L_{1}^{'}
-		      \\
-			z\notin n(\gamma_{1})
-		    }{
-		      (\nu z) P_{1} \stackrel{\gamma_{1}}{\longmapsto} (\nu z)L_{1}^{'}
-		  }$ 
-		\end{center}
-		given that $L_{1}$ has a restriction at the top level, all the other intermediate processes $L_{2}, \cdots, L_{k}$ have the same restriction at the top level. So the last rule used to prove $L_{i}\stackrel{\gamma_{i+1}}{\longmapsto} L_{i+1}$ for each $1\leq i \leq k-1$ is $Res$. The last rule used to derive $L_{k} \stackrel{\gamma_{k+1}}{\longmapsto} Q$ can be one of: 
-		\begin{description}
-		  \item[$Res$]:
-		    \begin{center}
-		      $\inferrule* [left=\bf{Res}]{
-			  L_{k}^{'} \stackrel{\gamma_{k+1}}{\longmapsto} Q^{'}
-			\\
-			  z\notin n(Q^{'})
-		      }{
-			(\nu z)L_{k}^{'} \stackrel{\gamma_{k+1}}{\longmapsto} (\nu z)Q^{'}
-		      }$
-		    \end{center}
-		    we can build the following chain of transitions:
-		    \begin{center}
-		      $P_{1} \stackrel{\gamma_{1}}{\longmapsto} L_{1}^{'} \stackrel{\gamma_{2}}{\longmapsto} L_{2}^{'} \cdots L_{k-1}^{'} \stackrel{\gamma_{k}}{\longmapsto} L_{k}^{'}\stackrel{\gamma_{k+1}}{\longmapsto} Q^{'}$ 
-		    \end{center}
-		    then apply the rule $Low$ and the inductive hypothesis to get $P_{1} \xrightarrow{\gamma_{1}\cdot \ldots \cdot \gamma_{k+1}} Q^{'}$. A proof of the conclusion can be
-		    \begin{center}
-		      $\inferrule* [left=\bf{Res}]{
-			  P_{1} \xrightarrow{\gamma_{1}\cdot \ldots \cdot \gamma_{k+1}} Q^{'}
-			\\
-			  z\notin n(\gamma_{1}\cdot \ldots \cdot \gamma_{k+1})
-		      }{
-			(\nu z)P_{1} \xrightarrow{\gamma_{1}\cdot \ldots \cdot \gamma_{k+1}} (\nu z)Q^{'}
-		    }$
-		    \end{center}
-		  \item[$Cong3$]: 
-		    \begin{center}
-		      $\inferrule* [left=\bf{Cong3}]{
-			  (\nu z)L_{k}^{'} \stackrel{\gamma_{k+1}}{\longmapsto} Q^{'}
-			\\
-			  Q^{'} \equiv Q
-		      }{
-			(\nu z)L_{k}^{'} \stackrel{\gamma_{k+1}}{\longmapsto} Q
-		      }$
-		    \end{center}
-		    for transitivity of $\equiv$ we can assume that there is a derivation of $(\nu z)L_{k}^{'} \stackrel{\gamma_{k+1}}{\longmapsto} Q^{'}$ that does not end with an instance of $Cong3$ and so it does end with $Res$ or $Opn$:
-		    \begin{description}
-		      \item[$Res$]:
-			\begin{center}
-			  $\inferrule* [left=\bf{Cong3}]{
-			      \inferrule* [left=\bf{Res}]{
-				L_{k}^{'} \stackrel{\gamma_{k+1}}{\longmapsto} Q^{''}
-			      }{
-				(\nu z)L_{k}^{'} \stackrel{\gamma_{k+1}}{\longmapsto} (\nu z)Q^{''}
-			      }
-			    \\
-			      (\nu z)Q^{''} \equiv Q
-			  }{
-			    (\nu z)L_{k}^{'} \stackrel{\gamma_{k+1}}{\longmapsto} Q
-			  }$
-			\end{center}
-			we can derive the following chain of transition:
-			\begin{center}
-			  $P_{1} \stackrel{\gamma_{1}}{\longmapsto} L_{1}^{'} \stackrel{\gamma_{2}}{\longmapsto} L_{2}^{'} \cdots L_{k-1}^{'} \stackrel{\gamma_{k}}{\longmapsto} L_{k}^{'}\stackrel{\gamma_{k+1}}{\longmapsto} Q^{''}$ 
-			\end{center}
-			and then apply the rule $Low$ and the inductive hypothesis to get 
-			\begin{center}
-			  $P_{1} \xrightarrow{\gamma_{1}\cdot \cdots \cdot \gamma_{k+1}} Q^{''}$ 
-			\end{center}
-			A proof of the conclusion is
-			\begin{center}
-			  $\inferrule* [left=\bf{Cong}]{
-			      \inferrule* [left=\bf{Res}]{
-				P_{1} \xrightarrow{\gamma_{1}\cdot \cdots \cdot \gamma_{k+1}} Q^{''}
-			      }{
-				(\nu z)P_{1} \xrightarrow{\gamma_{1}\cdot \ldots \cdot \gamma_{k+1}} (\nu z)Q^{''}
-			      }
-			    \\
-			      (\nu z)Q^{''} \equiv Q
-			  }{
-			    (\nu z)P_{1} \xrightarrow{\gamma_{1}\cdot \ldots \cdot \gamma_{k+1}} Q
-			  }$
-			\end{center}
-		      \item[$Opn$]:
-			\begin{center}
-			  $\inferrule* [left=\bf{Cong3}]{
-			      \inferrule* [left=\bf{Opn}]{
-				L_{k}^{'} \stackrel{\overline{x}z}{\longmapsto} Q^{'}
-			      }{
-				(\nu z)L_{k}^{'} \stackrel{\overline{x}(z)}{\longmapsto} Q^{'}
-			      }
-			    \\
-			      Q^{'} \equiv Q
-			  }{
-			    (\nu z)L_{k}^{'} \stackrel{\overline{x}(z)}{\longmapsto} Q
-			  }$
-			\end{center}
-			we can derive the following chain of transition:
-			\begin{center}
-			  $P_{1} \stackrel{\gamma_{1}}{\longmapsto} L_{1}^{'} \stackrel{\gamma_{2}}{\longmapsto} L_{2}^{'} \cdots L_{k-1}^{'} \stackrel{\gamma_{k}}{\longmapsto} L_{k}^{'}\stackrel{\overline{x}z}{\longmapsto} Q^{'}$ 
-			\end{center}
-			and then apply the rule $Low$ and the inductive hypothesis to get 
-			\begin{center}
-			  $P_{1} \xrightarrow{\gamma_{1}\cdot \cdots \cdot \gamma_{k}\cdot \overline{x}z} Q^{'}$ 
-			\end{center}
-			A proof of the conclusion is
-			\begin{center}
-			  $\inferrule* [left=\bf{Cong}]{
-			      \inferrule* [left=\bf{OpnSeq}]{
-				P_{1} \xrightarrow{\gamma_{1}\cdot \cdots \cdot \gamma_{k}\cdot \overline{x}z} Q^{'}
-			      }{
-				(\nu z)P_{1} \xrightarrow{\gamma_{1}\cdot \ldots \cdot \gamma_{k}\cdot \overline{x}(z)} Q^{'}
-			      }
-			    \\
-			      Q^{'} \equiv Q
-			  }{
-			    (\nu z)P_{1} \xrightarrow{\gamma_{1}\cdot \ldots \cdot \gamma_{k}\cdot \overline{x}(z)} Q
-			  }$
-			\end{center}			
-		    \end{description}
-		  \item[$Opn$]:
-		    \begin{center}
-		      $\inferrule* [left=\bf{Opn}]{
-			  L_{k}^{'} \stackrel{\overline{x}z}{\longmapsto} Q
-			\\
-			  z\notin n(Q)
-		      }{
-			(\nu z)L_{k}^{'} \stackrel{\overline{x}(z)}{\longmapsto} Q
-		      }$
-		    \end{center}
-		    we can build the following chain of transitions:
-		    \begin{center}
-		      $P_{1} \stackrel{\gamma_{1}}{\longmapsto} L_{1}^{'} \stackrel{\gamma_{2}}{\longmapsto} L_{2}^{'} \cdots L_{k-1}^{'} \stackrel{\gamma_{k}}{\longmapsto} L_{k}^{'}\stackrel{\overline{x}z}{\longmapsto} Q$ 
-		    \end{center}
-		    then apply the rule $Low$ and the inductive hypothesis to get $P_{1} \xrightarrow{\gamma_{1}\cdot \ldots \cdot \gamma_{k} \cdot \overline{x}z} Q$. A proof of the conclusion can be
-		    \begin{center}
-		      $\inferrule* [left=\bf{OpnSeq}]{
-			  P_{1} \xrightarrow{\gamma_{1}\cdot \ldots \cdot \gamma_{k} \cdot \overline{x}z} Q
-			\\
-			  z\notin n(\gamma_{1}\cdot \ldots \cdot \gamma_{k})
-		      }{
-			(\nu z)P_{1} \xrightarrow{\gamma_{1}\cdot \ldots \cdot \gamma_{k} \cdot \overline{x}(z)} Q
-		      }$
-		    \end{center}
-		\end{description}
-	      \item[$Opn$] the first transition is:
-		\begin{center}
-		  $\inferrule* [left=\bf{Opn}]{
-			P_{1} \stackrel{\overline{x}z}{\longmapsto} L_{1}
-		      \\
-			z\notin n(\overline{x}(z))
-		    }{
-		      (\nu z) P_{1} \stackrel{\overline{x}(z)}{\longmapsto} L_{1}
-		  }$ 
-		\end{center}		
-		since $\gamma_{1}$ is an output for lemma \ref{lemmastrongsequence} $\gamma_{2}\cdot \ldots \cdot \gamma_{k+1}=\tau$ and $\sigma=\overline{x}(z)$. We derive the following chain of transition:
-		\begin{center}
-		  $P_{1} \stackrel{\overline{x}z}{\longmapsto} L_{1} \stackrel{\gamma_{2}}{\longmapsto} L_{2} \cdots L_{k-1} \stackrel{\gamma_{k}}{\longmapsto} L_{k}\stackrel{\gamma_{k+1}}{\longmapsto} Q$ 
-		\end{center}
-		for rule $Low$ and inductive hypothesis
-		\begin{center}
-		  $P_{1} \xrightarrow{\overline{x}z} Q$ 
-		\end{center}
-		A proof of the conclusion is
-		\begin{center}
-		  $\inferrule* [left=\bf{Opn}]{
-		    P_{1} \xrightarrow{\overline{x}z} Q
-		  }{
-		    (\nu z)P_{1} \xrightarrow{\overline{x}(z)} Q
-		  }$ 
-		\end{center}
-	      \item[$Par1$]: 
-		the first transition is:
-		\begin{center}
-		  $\inferrule* [left=\bf{Par1}]{
-			P_{1} \stackrel{\gamma_{1}}{\longmapsto} L_{1}^{'}
-		      \\
-			bn(\gamma_{1})\cap fn(P_{2})=\emptyset
-		    }{
-		      P_{1}|P_{2} \stackrel{\gamma_{1}}{\longmapsto} L_{1}^{'}|P_{2}
-		  }$
-		\end{center}
-		the transitions 
-		\begin{center}
-		  $P \stackrel{\gamma_{1}}{\longmapsto} L_{1} \stackrel{\gamma_{2}}{\longmapsto} \cdots \stackrel{\gamma_{k}}{\longmapsto} L_{k}$ 
-		\end{center}
-		are such that the last rule used in their derivation is $Par1$. Whether the derivation of the last transition can end with $Par1$ or $Cong3$:
-		\begin{description}
-		  \item[$Par1$]
-		    We derive the following chain of transition:
-		    \begin{center}
-		      $P_{1} \stackrel{\gamma_{1}}{\longmapsto} L_{1}^{'} \stackrel{\gamma_{2}}{\longmapsto} L_{2}^{'} \cdots L_{k-1}^{'} \stackrel{\gamma_{k}}{\longmapsto} L_{k}^{'}\stackrel{\gamma_{k+1}}{\longmapsto} Q_{1}$ 
-		    \end{center}
-		    for rule $Low$ and inductive hypothesis
-		    \begin{center}
-		      $P_{1} \xrightarrow{\sigma} Q_{1}$ 
-		    \end{center}
-		    A proof of the conclusion is
-		    \begin{center}
-		      $\inferrule* [left=\bf{Par}]{
-			  P_{1} \xrightarrow{\sigma} Q_{1}
-			\\
-			  bn(\sigma)\cap fn(P_{2})=\emptyset
-		      }{
-			P_{1}|P_{2} \xrightarrow{\sigma} Q_{1}|P_{2}
-		      }$ 
-		    \end{center}
-		  \item[$Cong3$]
-		    the last part of the derivation of the last transition is
-		    \begin{center}
-		      $\inferrule* [left=\bf{Cong3}]{
-			  L_{k}^{'}|P_{2} \stackrel{\gamma_{k+1}}{\longmapsto} Q^{'}
-			\\
-			  Q^{'} \equiv Q
-		      }{
-			L_{k}^{'}|P_{2} \stackrel{\gamma_{k+1}}{\longmapsto} Q
-		      }$ 		      
-		    \end{center}
-		    because of the transitivity of $\equiv$ we can assume that there is a derivation of $L_{k}^{'}|P_{2} \stackrel{\gamma_{k+1}}{\longmapsto} Q^{'}$ which does not use $Cong3$ as its last instance. So this last instance can only be $Par1$ so $Q^{'}=Q^{''}|P_{2}$. We derive the following chain of transition:
-		    \begin{center}
-		      $P_{1} \stackrel{\gamma_{1}}{\longmapsto} L_{1}^{'} \stackrel{\gamma_{2}}{\longmapsto} L_{2}^{'} \cdots L_{k-1}^{'} \stackrel{\gamma_{k}}{\longmapsto} L_{k}^{'}\stackrel{\gamma_{k+1}}{\longmapsto} Q^{''}$ 
-		    \end{center}
-		    for rule $Low$ and inductive hypothesis
-		    \begin{center}
-		      $P_{1} \xrightarrow{\sigma} Q^{''}$ 
-		    \end{center}
-		    A proof of the conclusion is
-		    \begin{center}
-		      $\inferrule*[left=\bf{Cong3}]{
-			  \inferrule* [left=\bf{Par}]{
-			      P_{1} \xrightarrow{\sigma} Q^{''}
-			    \\
-			      bn(\sigma)\cap fn(P_{2})=\emptyset
-			  }{
-			    P_{1}|P_{2} \xrightarrow{\sigma} Q^{''}|P_{2}
-			  }
-			\\
-			  Q^{''}|P_{2} \equiv Q
-		      }{
-			P_{1}|P_{2} \xrightarrow{\sigma} Q
-		      }$ 
-		    \end{center}
-		\end{description}
-	      \item[$Cong2$]: 
-		the last rule of the derivation of the first transition is:
-		\begin{center}
-		  $\inferrule* [left=\bf{Cong2}]{
-		      P^{'} \stackrel{\gamma_{1}}{\longmapsto} L_{1}
-		    \\
-		      P^{'} \equiv P
-		  }{
-		    P \stackrel{\gamma_{1}}{\longmapsto} L_{1}
-		  }$ 		      
-		\end{center}
-		We derive the following chain of transition:
-		\begin{center}
-		  $P^{'} \stackrel{\gamma_{1}}{\longmapsto} L_{1} \stackrel{\gamma_{2}}{\longmapsto} L_{2} \cdots L_{k-1} \stackrel{\gamma_{k}}{\longmapsto} L_{k}\stackrel{\gamma_{k+1}}{\longmapsto} Q$
-		\end{center}
-		for rule $Low$ and inductive hypothesis
-		\begin{center}
-		  $P^{'} \xrightarrow{\sigma} Q$ 
-		\end{center}
-		A proof of the conclusion is
-		\begin{center}
-		  $\inferrule* [left=\bf{Cong2}]{
-			P^{'} \xrightarrow{\sigma} Q
-		    \\
-		      P^{'} \equiv P
-		  }{
-		    P \xrightarrow{\sigma} Q
-		  }$ 
-		\end{center}
-	      \item[$Com3$]: 
-		the last part of the derivation of the first transition, having in mind lemma \ref{lemmacom3}, is:
-		\begin{center}
-		  $\inferrule* [left=\bf{Com3}]{
-		      P_{1} \stackrel{xy}{\longmapsto} L_{1}^{'}
-		    \\
-		      P_{2} \stackrel{\overline{x}y}{\longmapsto} P_{2}^{'}
-		  }{
-		    P_{1}|P_{2} \stackrel{\epsilon}{\longmapsto} L_{1}^{'}|P_{2}^{'}
-		  }$ 		      
-		\end{center}
-		the derivations of the transitions $L_{1} \stackrel{\gamma_{2}}{\longmapsto} L_{2} \cdots L_{k-1} \stackrel{\gamma_{k}}{\longmapsto} L_{k}$ can end only with an instance of $Par1$ so 
-		\begin{center}
-		  $\inferrule* [left=\bf{Par1}]{
-		      L_{i}^{'} \stackrel{\gamma_{i+1}}{\longmapsto} L_{i+1}^{'}
-		    \\
-		      bn(\gamma_{i+1})\cap fn(P_{2}^{'})=\emptyset
-		  }{
-		    L_{i}^{'}|P_{2}^{'} \stackrel{\gamma_{i+1}}{\longmapsto} L_{i+1}^{'}|P_{2}^{'}
-		  }$ 		      		  
-		\end{center}
-		The derivation of the last transition $L_{k}\stackrel{\gamma_{k+1}}{\longmapsto} Q$ can end with $Par1$ or with $Cong3$:
-		\begin{description}
-		  \item[$Par1$]:
-		    We derive the following chain of transition:
-		    \begin{center}
-		      $P_{1} \stackrel{xy}{\longmapsto} L_{1}^{'} \stackrel{\gamma_{2}}{\longmapsto} L_{2}^{'} \cdots L_{k-1}^{'} \stackrel{\gamma_{k}}{\longmapsto} L_{k}^{'}\stackrel{\gamma_{k+1}}{\longmapsto} Q_{1}$
-		    \end{center}
-		    for rule $Low$ and inductive hypothesis
-		    \begin{center}
-		      $P_{1} \xrightarrow{\sigma} Q_{1}$ 
-		    \end{center}
-		    A proof of the conclusion is
-		    \begin{center}
-		      $\inferrule* [left=\bf{EComSeq}]{
-			  P_{1} \xrightarrow{xy \cdot \gamma_{2}\cdot \ldots \cdot \gamma_{k+1}} Q_{1}
-			\\
-			  P_{2}\xrightarrow{\overline{x}y} P_{2}^{'}
-		      }{
-			P_{1}|P_{2} \xrightarrow{\gamma_{2}\cdot \ldots \cdot \gamma_{k+1}} Q_{1}|P_{2}^{'}
-		      }$ 
-		    \end{center}
-		    and $\gamma_{2}\cdot \ldots \cdot \gamma_{k+1}=\sigma$ because the first action $\gamma_{1}$ is $\epsilon$.
-		  \item[$Cong3$]: e' facile da scrivere a questo punto
-		    
-		\end{description}
-	      \item[$Par2$]: 
-		the last part of the derivation of the first transition is:
-		\begin{center}
-		  $\inferrule* [left=\bf{Par2}]{
-		      P_{1} \stackrel{\gamma_{1}}{\longmapsto} L_{1}^{'}
-		    \\
-		      bn(\gamma_{1})\cap fn(P_{2})=\emptyset
-		  }{
-		    P_{1}|P_{2} \stackrel{\gamma_{1}}{\longmapsto} L_{1}^{'}|*P_{2}
-		  }$ 		      
-		\end{center}
-% 		caso1: sequenza(eventualmente vuota) di par3 terminata da una com4
-% 		caso2: sequenza(eventualmente vuota) di par3 seguita da com2 seguita da ?
-	    \end{description}	    
+		(\nu z) P_{1} \stackrel{\alpha}{\longmapsto} (\nu z)Q_{1}
+	      }$ 
+	    \end{center}		
+	    for inductive hypothesis $P_{1} \xrightarrow{\alpha} Q_{1}$ and for rule $Res$ $(\nu z)P_{1} \xrightarrow{\alpha} (\nu z)Q_{1}$.
+	 \item[$others$]: other cases are similar.
+      \end{description}	    
+    \end{description}	    
   \end{proof}
 \end{proposition}
-
-
-da sistemare la parte sulle regole simmetriche di com? par? e sum?
-
-
-
