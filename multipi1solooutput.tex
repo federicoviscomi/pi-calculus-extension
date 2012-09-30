@@ -602,7 +602,7 @@ This section contains the definition of an alternative semantic for multi $\pi$.
     \item
       if $L\stackrel{\alpha}{\longmapsto}P$ then $\alpha$ can only be an output or a $\tau$
     \item
-      if $P\stackrel{\alpha}{\longmapsto}P$ then $\alpha$ cannot be an $\epsilon$
+      if $P\stackrel{\alpha}{\longmapsto}Q$ then $\alpha$ cannot be an $\epsilon$
   \end{itemize}
 %   In other terms:
 %   \begin{center}
@@ -750,11 +750,11 @@ This section contains the definition of an alternative semantic for multi $\pi$.
   Let $\rightarrow$ be the relation defined in table \ref{multipiearlywith}. If $P\xrightarrow{\sigma} Q$ then there exist $L_{1}, \cdots, L_{k}$ and $\gamma_{1}, \cdots, \gamma_{k+1}$ with $k\geq 0$ such that 
   \begin{center}
     \begin{tabular}{lll}
-      $P \stackrel{\gamma_{1}}{\longmapsto} L_{1}  \stackrel{\gamma_{2}}{\longmapsto} L_{2} \cdots L_{k-1} \stackrel{\gamma_{k}}{\longmapsto} L_{k} \stackrel{\gamma_{k+1}}{\longmapsto} Q$ 
+      $P \stackrel{\gamma_{1}}{\longmapsto} L_{1} \stackrel{\gamma_{2}}{\longmapsto} L_{2} \cdots L_{k-1} \stackrel{\gamma_{k}}{\longmapsto} L_{k} \stackrel{\gamma_{k+1}}{\longmapsto} Q$ 
     &
       and
     &
-      $\gamma_{1} \cdot \ldots \cdot \gamma_{k+1} =  \sigma$  
+      $\gamma_{1} \cdot \ldots \cdot \gamma_{k+1} = \sigma$  
     \end{tabular}
   \end{center}
   \begin{proof}
@@ -762,7 +762,7 @@ This section contains the definition of an alternative semantic for multi $\pi$.
     \begin{description}
       \item[base case]
     \end{description}
-	If the depth is one then the rule used have to be one of: $EInp$, $Out$, $Tau$. These rules are also in table \ref{lowleveltransitionrelation} so we can derive $P \stackrel{\sigma}{\longmapsto}Q$.
+	If the depth is one then the rule used have to be one of: $EInp$, $Out$, $Tau$. These rules are also in table \ref{lowleveltransitionrelationearlyoutonly} so we can derive $P \stackrel{\sigma}{\longmapsto}Q$.
     \begin{description}
       \item[inductive case]
     \end{description}
