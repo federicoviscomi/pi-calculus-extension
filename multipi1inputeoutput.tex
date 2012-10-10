@@ -33,7 +33,7 @@ We have to extend the following definition to deal with the strong prefix:
 \begin{definition}\index{transition relation! multipi! early! with structural congruence}
   The \emph{early transition relation with structural congruence} is the smallest relation induced by the rules in table \ref{multiIOearly}:
   \begin{table}
-    \begin{tabular}{ll}
+    \begin{tabular}{lll}
 	  \hline\\
 	  $\inferrule* [left=\bf{Inp}]{
 	  }{
@@ -44,12 +44,15 @@ We have to extend the following definition to deal with the strong prefix:
 	  }{
 	    \tau.P \xrightarrow{\tau} P
 	  }$
-      \\\\
+	&
 	  $\inferrule* [left=\bf{Out}]{
 	  }{
 	    \overline{x}y.P \xrightarrow{\overline{x}y} P
 	  }$
-	&
+      \\\\
+      \end{tabular}\\
+      \begin{tabular}{ll}
+      \\\\
 	  $\inferrule* [left=\bf{SInp}]{
 	      \{z/y\}P \xrightarrow{\sigma} P^{'} 
 	    \\
@@ -57,7 +60,7 @@ We have to extend the following definition to deal with the strong prefix:
 	  }{
 	    \underline{x(y)}.P \xrightarrow{xz \cdot \sigma} P^{'}
 	  }$
-      \\\\
+	&
 	  $\inferrule* [left=\bf{SOut}]{
 	      P \xrightarrow{\sigma} P^{'} 
 	    \\
@@ -65,7 +68,10 @@ We have to extend the following definition to deal with the strong prefix:
 	  }{
 	    \underline{\overline{x}y}.P \xrightarrow{\overline{x}y \cdot \sigma} P^{'}
 	  }$
-	&
+      \\\\
+      \end{tabular}\\
+      \begin{tabular}{l}
+      \\\\
 	  $\inferrule* [left=\bf{ECom}]{
 	      P \xrightarrow{\sigma_{1}} P^{'}
 	    \\
@@ -75,6 +81,9 @@ We have to extend the following definition to deal with the strong prefix:
 	  }{
 	    P|Q \xrightarrow{\sigma_{3}} P^{'}|Q^{'}
 	  }$
+      \\\\
+      \end{tabular}\\
+      \begin{tabular}{ll}
       \\\\
 	  $\inferrule* [left=\bf{Sum}]{
 	    P \xrightarrow{\sigma} P^{'}
@@ -100,8 +109,8 @@ We have to extend the following definition to deal with the strong prefix:
 	&
 	  $\inferrule* [left=\bf{Par}]{
 	      P \xrightarrow{\sigma} P^{'} 
-	    \\
-	      bn(\sigma)\cap fn(Q)=\emptyset
+% 	    \\
+% 	      bn(\sigma)\cap fn(Q)=\emptyset
 	  }{
 	    P|Q \xrightarrow{\sigma} P^{'}|Q
 	  }$
@@ -112,7 +121,7 @@ We have to extend the following definition to deal with the strong prefix:
   \end{table}
 \end{definition}
 
-The names $\sigma, \sigma_{1}, \sigma_{2}, \sigma_{3}$ are non empty sequences of actions. The relation $ESync$ is defined by the axioms in table \ref{syncEarly}
+The names $\sigma, \sigma_{1}, \sigma_{2}, \sigma_{3}$ are non empty sequences of actions and are also not $\tau$. The relation $ESync$ is defined by the axioms in table \ref{syncEarly}
 \begin{table}
   \begin{tabular}{ll}
       \hline\\
@@ -147,13 +156,13 @@ The names $\sigma, \sigma_{1}, \sigma_{2}, \sigma_{3}$ are non empty sequences o
 	}$	
     \\\\
 	$\inferrule* [left=S4L]{
-	  ESync(\sigma_{1}, \sigma_{2}, \sigma_{3})
+	    ESync(\sigma_{1}, \sigma_{2}, \sigma_{3})
 	}{
 	  ESync(xy\cdot \sigma_{1}, \overline{x}y\cdot\sigma_{2}, \sigma_{3})
 	}$		
       &
 	$\inferrule* [left=S4R]{
-	  ESync(\sigma_{1}, \sigma_{2}, \sigma_{3})
+	    ESync(\sigma_{1}, \sigma_{2}, \sigma_{3})
 	}{
 	  ESync(\overline{x}y\cdot\sigma_{1},xy\cdot \sigma_{2}, \sigma_{3})
 	}$
@@ -855,7 +864,7 @@ This section contains the definition of an alternative semantic for multi $\pi$.
 	    P|Q \stackrel{\epsilon}{\longmapsto} L|S
 	  }$
        \\\\
-	  $\inferrule* [left=\bf{Com3LOut}]{
+	  $\inferrule* [left=\bf{Com3LInp}]{
 	      Q \stackrel{xy}{\longmapsto} S
 	    \\
 	      P \stackrel{\overline{x}y}{\longmapsto} L
@@ -863,7 +872,7 @@ This section contains the definition of an alternative semantic for multi $\pi$.
 	    Q|P \stackrel{\epsilon}{\longmapsto} S|L
 	  }$
 	  &
-	  $\inferrule* [left=\bf{Com3ROut}]{
+	  $\inferrule* [left=\bf{Com3RInp}]{
 	      P \stackrel{\overline{x}y}{\longmapsto} L
 	    \\
 	      Q \stackrel{xy}{\longmapsto} S
@@ -893,6 +902,18 @@ This section contains the definition of an alternative semantic for multi $\pi$.
   \end{table}
 \end{definition}
 
+% \begin{proposition}
+%   Let $\rightarrow$ be the relation defined in table \ref{multiIOearly}, let $P$ and $Q$ be processes and $\alpha$ be an action. Then 
+%   \begin{center}
+%     \begin{tabular}{lll}
+%       $P\xrightarrow{\alpha} Q$
+%     &
+%       $\Leftrightarrow$
+%     &
+%       $P\stackrel{\alpha}{\longmapsto} Q$
+%     \end{tabular}
+%   \end{center}
+% \end{proposition}
 
 
 
@@ -904,8 +925,7 @@ This section contains the definition of an alternative semantic for multi $\pi$.
 
 
 
-
-\begin{proposition}
+\begin{proposition}\label{multipiIOloweqright}
   Let $\rightarrow$ be the relation defined in table \ref{multiIOearly}. If $P\xrightarrow{\sigma} Q$ then there exist $L_{1}, \cdots, L_{k}$ and $\gamma_{1}, \cdots, \gamma_{k+1}$ with $k\geq 0$ such that 
   \begin{center}
     \begin{tabular}{lll}
@@ -930,7 +950,7 @@ This section contains the definition of an alternative semantic for multi $\pi$.
 	  \item[$SOut$]: 
 	    the last part of the derivation tree looks like this:
 	    \begin{center}
-	      $\inferrule* [left=\bf{SOutSeq}]{
+	      $\inferrule* [left=\bf{SOut}]{
 		  P_{1} \xrightarrow{\sigma} Q
 		\\
 		  \sigma \neq \tau
@@ -976,7 +996,7 @@ This section contains the definition of an alternative semantic for multi $\pi$.
 	for the inductive hypothesis there exist $L_{1}$, $\cdots$, $L_{k}$ and $\gamma_{1}$, $\cdots$, $\gamma_{k+1}$ with $k\geq 0$ such that 
 	\begin{center}
 	  \begin{tabular}{lll}
-	    $P_{1} \stackrel{\gamma_{1}}{\longmapsto} L_{1}  \stackrel{\gamma_{2}}{\longmapsto} L_{2} \cdots L_{k-1} \stackrel{\gamma_{k}}{\longmapsto} L_{k} \stackrel{\gamma_{k+1}}{\longmapsto} Q$ 
+	    $P_{1} \stackrel{\gamma_{1}}{\longmapsto} L_{1} \stackrel{\gamma_{2}}{\longmapsto} L_{2} \cdots L_{k-1} \stackrel{\gamma_{k}}{\longmapsto} L_{k} \stackrel{\gamma_{k+1}}{\longmapsto} Q$ 
 	  &
 	    and
 	  &
@@ -1056,84 +1076,96 @@ This section contains the definition of an alternative semantic for multi $\pi$.
 	    $\delta_{1} \cdot \ldots \cdot \delta_{h+1} = \sigma_{2}$
 	  \end{tabular}
 	\end{center}
-	We proceed by induction on the derivation of $ESync(\sigma_{1}, \sigma_{2}, \sigma_{3})$:
-DA CONTINUARE
-% 	For lemma \ref{multioutconstraintswithmarked} there cannot be an input action in a transition involving marked processes so $h$ must be $0$ and $Q_{1} \stackrel{\delta_{1}}{\longmapsto} Q_{1}^{'}$ with $\delta_{1}=xy$. Just one of the $\gamma$s is $\overline{x}y$ and the others are $\epsilon$ or $\tau$. We can have three different cases now: 
-% 	\begin{description}
-% 	  \item[$\gamma_{1}=\overline{x}y$]:
-% 	    A proof of the conclusion is:
-% 	    \begin{center}
-% 	      $P_{1}|Q_{1} \stackrel{\tau}{\longmapsto} L_{1}|Q_{1}^{'}
-% 			      \stackrel{\epsilon}{\longmapsto} L_{2}|Q_{1}^{'}
-% 		  \cdots
-% 				\stackrel{\epsilon}{\longmapsto} L_{k}|Q_{1}^{'}
-% 				\stackrel{\epsilon}{\longmapsto} P_{1}^{'}|Q_{1}^{'}$	  
-% 	    \end{center}
-% 	    we derive the first transition with rule $Com3L$, whether for the other transition we use the rule $Par1L$.
-% 	  \item[$\gamma_{i}=\overline{x}y$]:
-% 	    A proof of the conclusion is:
-% 	    \begin{center}
-% 	      $
-% 		  P_{1}|Q_{1} \stackrel{\epsilon}{\longmapsto} L_{1}|Q_{1} 
-% 		  \cdots
-% 			      \stackrel{\epsilon}{\longmapsto} L_{i-1}|Q_{1} 
-% 			      \stackrel{\tau}{\longmapsto} L_{i}|Q_{1}^{'}
-% 			      \stackrel{\epsilon}{\longmapsto} L_{i+1}|Q_{1}^{'}
-% 		  \cdots 
-% 			      \stackrel{\epsilon}{\longmapsto} L_{k}|Q_{1}^{'}
-% 			      \stackrel{\epsilon}{\longmapsto} P_{1}^{'}|Q_{1}^{'}$	  
-% 	    \end{center}
-% 	    we derive the transaction $ L_{i-1}|Q_{1} \stackrel{\tau}{\longmapsto} L_{i}|Q_{1}^{'}$ with rule $Com2L$, whether for the other transactions  we use the rule $Par1L$.
-% 	  \item[$\gamma_{k+1}=\overline{x}y$] similar.
-% 	\end{description}
-%       \item[$EComSeq$]: 
-% 	the last part of the derivation tree looks like this:
-% 	\begin{center}
-% 	  $\inferrule* [left=\bf{EComSeq}]{
-% 	      P_{1} \xrightarrow{\overline{x}y \cdot \sigma} P_{1}^{'}
-% 	    \\
-% 	      Q_{1} \xrightarrow{xy} Q_{1}^{'}
-% 	  }{
-% 	    P_{1}|Q_{1} \xrightarrow{\sigma} P_{1}^{'}|Q_{1}^{'}
-% 	  }$
-% 	\end{center}
-% 	for inductive hypothesis there exist $L_{1}$, $\cdots$, $L_{k}$ and $\gamma_{1}$, $\cdots$, $\gamma_{k+1}$ with $k\geq 0$ such that 
-% 	\begin{center}
-% 	  \begin{tabular}{lll}
-% 	    $P_{1} \stackrel{\gamma_{1}}{\longmapsto} L_{1}  \stackrel{\gamma_{2}}{\longmapsto} L_{2} \cdots L_{k-1} \stackrel{\gamma_{k}}{\longmapsto} L_{k} \stackrel{\gamma_{k+1}}{\longmapsto} P_{1}^{'}$ 
-% 	  &
-% 	    and
-% 	  &
-% 	    $\gamma_{1} \cdot \ldots \cdot \gamma_{k+1} = \overline{x}y \cdot \sigma$  
-% 	  \end{tabular}
-% 	\end{center}
-% 	For inductive hypothesis and lemma \ref{multioutconstraintswithmarked} $Q_{1} \stackrel{xy}{\longmapsto} Q_{1}^{'}$. We can have two different cases now depending on where the first $\overline{x}y$ is:
-% 	\begin{description}
-% 	  \item[$\gamma_{1}=\overline{x}y$]:
-% 	    A proof of the conclusion is:
-% 	    \begin{center}
-% 	      $P_{1}|Q_{1} \stackrel{\tau}{\longmapsto} L_{1}|Q_{1}^{'}
-% 			      \stackrel{\gamma_{2}}{\longmapsto} L_{2}|Q_{1}^{'}
-% 		  \cdots
-% 			      \stackrel{\gamma_{k}}{\longmapsto} L_{k}|Q_{1}^{'}
-% 			      \stackrel{\gamma_{k+1}}{\longmapsto} P_{1}^{'}|Q_{1}^{'}$	  
-% 	    \end{center}
-% 	    we derive the first transition with rule $Com3L$, whether for the other transactions we use the rule $Par1L$. Since $\gamma_{1} \cdot \ldots \cdot \gamma_{k+1} = \overline{x}y \cdot \sigma$ and $\gamma_{1}=\overline{x}y$ then $\tau \cdot \gamma_{2}\cdot \ldots \cdot \gamma_{k+1}\cdot \epsilon \cdot \ldots \epsilon \cdot \tau=\sigma$
-% 	  \item[$\gamma_{i}=\overline{x}y$]:
-% 	    A proof of the conclusion is:
-% 	    \begin{center}
-% 	      $P_{1}|Q_{1} \stackrel{\epsilon}{\longmapsto} L_{1}|Q_{1} 
-% 		  \cdots
-% 			      \stackrel{\epsilon}{\longmapsto} L_{i-1}|Q_{1} 
-% 			      \stackrel{\tau}{\longmapsto} L_{i}|Q_{1}^{'}
-% 			      \stackrel{\gamma_{i+1}}{\longmapsto} L_{i+1}|Q_{1}^{'}
-% 		  \cdots 
-% 			      \stackrel{\gamma_{k}}{\longmapsto} L_{k}|Q_{1}^{'}
-% 			      \stackrel{\gamma_{k+1}}{\longmapsto} P_{1}^{'}|Q_{1}^{'}$	  
-% 	    \end{center}
-% 	    we derive the transition $ L_{i-1}|Q_{1} \stackrel{\tau}{\longmapsto} L_{i}|Q_{1}^{'}$ with rule $Com2L$, whether for the other transactions of the premises we use the rule $Par1L$.
-% 	  \item[$\gamma_{k+1}=\overline{x}y$]: cannot happen because $\sigma$ is not empty.
-% 	\end{description}
+	We proceed by cases on the derivation of $ESync(\sigma_{1}, \sigma_{2}, \sigma_{3})$. We show just some cases because the others are similar.
+	\begin{description}
+	  \item[$S1L$] 
+	    Suppose that $\delta_{1}$ is $\overline{x}y$(the other cases are similar), so the other $\delta$s are $\epsilon$ or $\tau$. We can have three different cases now each : 
+	    \begin{description}
+	      \item[$\gamma_{1}=xy$]:
+		The other $\gamma$s are $\epsilon$ or $\tau$. A proof of the conclusion is:
+		  \begin{center}
+		    $P_{1}|Q_{1} 
+		      \stackrel{\epsilon}{\longmapsto} 
+			L_{1}|R_{1}
+		      \stackrel{\epsilon}{\longmapsto} 
+			L_{2}|R_{1}
+		      \cdots
+		      \stackrel{\epsilon}{\longmapsto} 
+			P_{1}^{'}|R_{1}
+		      \stackrel{\epsilon}{\longmapsto} 
+			P_{1}^{'}|R_{2}
+		      \cdots
+		      \stackrel{\epsilon}{\longmapsto} 
+			P_{1}^{'}|Q_{1}^{'}$
+		  \end{center}
+		we derive the first transition with rule $Com3ROut$, whether for the other transition we use the rules $Par1L$, $Par1R$, $Par3L$ or $Par3R$.
+	      \item[$\gamma_{i}=xy$]:
+		A proof of the conclusion is:
+		  \begin{center}
+		    $P_{1}|Q_{1} \stackrel{\epsilon}{\longmapsto} L_{1}|Q_{1} 
+		      \cdots
+ 			      \stackrel{\epsilon}{\longmapsto} L_{i-1}|Q_{1} 
+ 			      \stackrel{\tau}{\longmapsto} L_{i}|R_{1}
+ 			      \stackrel{\epsilon}{\longmapsto} L_{i+1}|R_{1}
+		      \cdots 
+ 			      \stackrel{\epsilon}{\longmapsto} P_{1}^{'}|R_{1}
+ 			      \stackrel{\epsilon}{\longmapsto} P_{1}^{'}|R_{2}
+		      \cdots 
+ 			      \stackrel{\epsilon}{\longmapsto} P_{1}^{'}|Q_{1}^{'}$
+		  \end{center}
+		we derive the transaction $ L_{i-1}|Q_{1} \stackrel{\tau}{\longmapsto} L_{i}|R_{1}$ with rule $Com5L$, whether for the other transactions we use some rule for parallel.
+	      \item[$\gamma_{k+1}=xy$] similar.
+	    \end{description}
+	  \item[$S2R$]: 
+	    We suppose that $\delta_{1}=xy$ and so other $\delta$s are $\epsilon$ or $\tau$, the other cases are similar. We can have two different cases now depending on where the first $\overline{x}y$ is:
+	      \begin{description}
+		\item[$\gamma_{1}=\overline{x}y$]:
+		  A proof of the conclusion is:
+		  \begin{center}
+		    $P_{1}|Q_{1} \stackrel{\tau}{\longmapsto} L_{1}|R_{1}
+ 			      \stackrel{\gamma_{2}}{\longmapsto} L_{2}|R_{1}
+			\cdots
+ 			      \stackrel{\gamma_{k+1}}{\longmapsto} P_{1}^{'}|R_{1}
+			      \stackrel{\delta_{2}}{\longmapsto} P_{1}^{'}|R_{2}
+			\cdots
+			      \stackrel{\delta_{h+1}}{\longmapsto} P_{1}^{'}|Q_{1}^{'}$
+		  \end{center}
+		  we derive the first transition with rule $Com3L$, whether for the other transactions we use some rule for parallel. Since $\gamma_{1} \cdot \ldots \cdot \gamma_{k+1} = \overline{x}y \cdot \sigma$ and $\gamma_{1}=\overline{x}y$ then $\tau \cdot \gamma_{2}\cdot \ldots \cdot \gamma_{k+1}\cdot \epsilon \cdot \ldots \epsilon \cdot \tau=\sigma$
+		\item[$\gamma_{i}=\overline{x}y$]:
+		  A proof of the conclusion is:
+		  \begin{center}
+		    $P_{1}|Q_{1} \stackrel{\epsilon}{\longmapsto} L_{1}|Q_{1} 
+			\cdots
+ 			      \stackrel{\epsilon}{\longmapsto} L_{i-1}|Q_{1} 
+ 			      \stackrel{\tau}{\longmapsto} L_{i}|R_{1}
+ 			      \stackrel{\gamma_{i+1}}{\longmapsto} L_{i+1}|R_{1}
+			\cdots 
+ 			      \stackrel{\gamma_{k}}{\longmapsto} P_{1}^{'}|R_{1}
+ 			      \stackrel{\delta_{2}}{\longmapsto} P_{1}^{'}|R_{2}
+			\cdots 
+ 			      \stackrel{\delta_{h+1}}{\longmapsto} P_{1}^{'}|Q_{1}^{'}$	  
+		  \end{center}
+		  we derive the transition $L_{i-1}|Q_{1} \stackrel{\tau}{\longmapsto} L_{i}|Q_{1}^{'}$ with rule $Com2L$, whether for the other transactions of the premises we use the rule $Par1L$.
+		\item[$\gamma_{k+1}=\overline{x}y$]: cannot happen because $\sigma$ is not empty.
+	      \end{description}
+	    \item[$S4R$]
+	      We have three cases: $|\sigma_{1}|=|\sigma_{2}|$, $|\sigma_{1}|>|\sigma_{2}|$ or $|\sigma_{2}|>|\sigma_{1}|$. In the first case $|\sigma_{3}|$ must be $\tau$ and we can build a chain of transition as in the previous cases. In the second case there is a prefix of $\sigma_{1}$ which synchronize with $\sigma_{2}$ and $\sigma_{3}$ is the rest of $\sigma_{1}$, in this case we can also build a chain of transition as in the previous cases. The third case is symmetric to the second.
+	  \end{description}
     \end{description}
   \end{proof}
 \end{proposition}
+
+
+The converse of lemma \ref{multipiIOloweqright} does not hold because the low semantic allow to express interleaving behaviour. But there is the following weaker result:
+\begin{proposition}
+  Let $\rightarrow$ be the relation defined in table \ref{multiIOearly} and let $\alpha$ be an action. If $P \stackrel{\alpha}{\longmapsto} Q$ then $P\xrightarrow{\alpha} Q$.
+  \begin{proof}
+    The proof is an easy induction on the proof tree of $P \stackrel{\alpha}{\longmapsto} Q$.
+  \end{proof}
+\end{proposition}
+
+
+
+
+
+
