@@ -60,7 +60,11 @@ In this case, a label can be a sequence of prefixes, whether in the original $\p
 	  }{
 	    \tau.P \xrightarrow{\tau} P
 	  }$
-      \\\\
+      \\
+    \end{tabular}
+      \\
+    \begin{tabular}{lll}
+      \\
 	  $\inferrule* [left=\bf{SOutSeq}]{
 	      P \xrightarrow{\sigma} Q
 	    \\
@@ -82,7 +86,11 @@ In this case, a label can be a sequence of prefixes, whether in the original $\p
 	  }{
 	    \underline{\overline{x}y}.P \xrightarrow{\overline{x}y} Q
 	  }$
-      \\\\
+      \\
+    \end{tabular}
+      \\
+    \begin{tabular}{ll}
+      \\
 	  $\inferrule* [left=\bf{EComSng}]{
 	      P \xrightarrow{\overline{x}y} P^{'}
 	    \\
@@ -91,6 +99,18 @@ In this case, a label can be a sequence of prefixes, whether in the original $\p
 	    P|Q \xrightarrow{\tau} P^{'}|Q^{'}
 	  }$
 	&
+	  $\inferrule* [left=\bf{EComSeq}]{
+	      P \xrightarrow{\overline{x}y\cdot \sigma} P^{'}
+	    \\
+	      Q\xrightarrow{xy} Q^{'}
+	  }{
+	    P|Q \xrightarrow{\sigma} P^{'}|Q^{'}
+	  }$
+      \\
+    \end{tabular}
+      \\
+    \begin{tabular}{ll}
+      \\
 	  $\inferrule* [left=\bf{Cong}]{
 	      P\equiv P^{'}
 	    \\
@@ -105,21 +125,11 @@ In this case, a label can be a sequence of prefixes, whether in the original $\p
 	    P|Q \xrightarrow{\sigma} P^{'}|Q
 	  }$
       \\\\
-	  $\inferrule* [left=\bf{EComSeq}]{
-	      P \xrightarrow{\overline{x}y\cdot \sigma} P^{'}
-	    \\
-	      Q\xrightarrow{xy} Q^{'}
-	  }{
-	    P|Q \xrightarrow{\sigma} P^{'}|Q^{'}
-	  }$
-	&
 	  $\inferrule* [left=\bf{Sum}]{
 	    P \xrightarrow{\sigma} P^{'}
 	  }{
 	    P+Q \xrightarrow{\sigma} P^{'}
 	  }$
-	&
-      \\\\
 % 	  $\inferrule* [left=\bf{OpnSeq}]{
 % 	      P \xrightarrow{\sigma} P^{'}
 % 	    \\ 
@@ -135,7 +145,6 @@ In this case, a label can be a sequence of prefixes, whether in the original $\p
 	  }{
 	    (\nu) z P \xrightarrow{\sigma} (\nu) z P^{'}
 	  }$
-	&
       \\\\\hline
     \end{tabular}
     \caption{Multi $\pi$ early semantic with structural congruence}
@@ -259,22 +268,35 @@ $\inferrule* [left=\bf{EComSng}]{
 \begin{definition}\index{transition relation! multipi! output only! late! with structural congruence}
   The \emph{late transition relation with structural congruence} is the smallest relation induced by the rules in table \ref{multipilatewith}.
   \begin{table}
-    \begin{tabular}{ll}
-	  \hline\\
-	    $\inferrule* [left=\bf{Pref}]{
-	    \alpha\; not\; a\; strong\; prefix
+    \begin{tabular}{lll}
+      \hline\\
+	  $\inferrule* [left=\bf{Out}]{
 	  }{
-	    \alpha.P \xrightarrow{\alpha} P
+	    \overline{x}y.P \xrightarrow{\overline{x}y} P
 	  }$
 	&
-	  $\inferrule* [left=\bf{Par}]{
+	  $\inferrule* [left=\bf{LInp}]{
+	  }{
+	    x(y).P \xrightarrow{x(y)} P
+	  }$
+	&
+	  $\inferrule* [left=\bf{Tau}]{
+	  }{
+	    \tau.P \xrightarrow{\tau} P
+	  }$
+      \\
+    \end{tabular}
+      \\
+    \begin{tabular}{ll}
+      \\
+	  $\inferrule* [left=\bf{SOutSeq}]{
 	      P \xrightarrow{\sigma} P^{'}
 	    \\
-	      bn(\sigma)\cap fn(Q)=\emptyset	  
+	      |\sigma| > 1
 	  }{
-	    P|Q \xrightarrow{\sigma} P^{'}|Q
+	      \underline{\overline{x}y}.P \xrightarrow{\overline{x}y \cdot \sigma} P^{'}
 	  }$
-      \\\\
+	&
 	  $\inferrule* [left=\bf{SOut}]{
 	      P \xrightarrow{\alpha} P^{'}
 	    \\
@@ -282,15 +304,47 @@ $\inferrule* [left=\bf{EComSng}]{
 	  }{
 	      \underline{\overline{x}y}.P \xrightarrow{\overline{x}y \cdot \alpha} P^{'}
 	  }$
-	&
+      \\
+    \end{tabular}
+      \\
+    \begin{tabular}{lll}
+      \\
 	  $\inferrule* [left=\bf{LComSeq}]{
 	      P \xrightarrow{xy} P^{'}
 	    \\
 	      Q\xrightarrow{\overline{x}z\cdot \sigma} Q^{'}
-	    \\
-	      z\notin fn(P)
 	  }{
 	    P|Q \xrightarrow{\sigma} P^{'}\{z/y\}|Q^{'}
+	  }$
+	&
+	  $\inferrule* [left=\bf{LCom}]{
+	      P \xrightarrow{xy} P^{'}
+	    \\
+	      Q\xrightarrow{\overline{x}z} Q^{'}
+	  }{
+	    P|Q \xrightarrow{\tau} P^{'}\{z/y\}|Q^{'}
+	  }$
+	&
+	  $z\notin fn(P)$
+      \\
+    \end{tabular}
+      \\
+    \begin{tabular}{ll}
+      \\
+	  $\inferrule* [left=\bf{Par}]{
+	      P \xrightarrow{\sigma} P^{'}
+	    \\
+	      bn(\sigma)\cap fn(Q)=\emptyset	  
+	  }{
+	    P|Q \xrightarrow{\sigma} P^{'}|Q
+	  }$
+	&
+	  $\inferrule* [left=\bf{Res}]{
+	      P \xrightarrow{\sigma} P^{'} 
+	    \\
+	      z\notin n(\sigma)
+	  }{
+	    (\nu) z P \xrightarrow{\sigma} (\nu) z P^{'}
 	  }$
       \\\\
 	  $\inferrule* [left=\bf{Sum}]{
@@ -306,32 +360,7 @@ $\inferrule* [left=\bf{EComSng}]{
 	  }{
 	      P \xrightarrow{\sigma} Q
 	  }$
-      \\\\
-	  $\inferrule* [left=\bf{Res}]{
-	    P \xrightarrow{\sigma} P^{'} z\notin n(\alpha)
-	  }{
-	    (\nu) z P \xrightarrow{\sigma} (\nu) z P^{'}
-	  }$
-	&
-	  $\inferrule* [left=\bf{LComSng}]{
-	      P \xrightarrow{xy} P^{'}
-	    \\
-	      Q\xrightarrow{\overline{x}z} Q^{'}
-	    \\
-	      z\notin fn(P)
-	  }{
-	    P|Q \xrightarrow{\tau} P^{'}\{z/y\}|Q^{'}
-	  }$
-      \\\\
-	  $\inferrule* [left=\bf{SOutSeq}]{
-	      P \xrightarrow{\sigma} P^{'}
-	    \\
-	      |\sigma| > 1
-	  }{
-	      \underline{\overline{x}y}.P \xrightarrow{\overline{x}y \cdot \sigma} P^{'}
-	  }$
-      &
-      \\\hline
+      \\\\\hline
     \end{tabular}
     \caption{Multi$\pi$ late semantic with structural congruence}
     \label{multipilatewith}
@@ -1837,4 +1866,283 @@ where $stop(P)$ is a multi $\pi$ process which cannot make any transition.
 % 	    \end{description}	    
 %   \end{proof}
 % \end{proposition}
+
+
+
+\section{Bisimilarity, congruence and equivalence}
+
+
+
+\section{Bisimilarity, congruence and equivalence}
+
+We present here some behavioural equivalences and some of their properties. In the following we will use the phrase $bn(\alpha)$ is fresh in a definition to mean that the name in $bn(\alpha)$, if any, is different from any free name occurring in any of the agents in the definition. We write $\rightarrow_{E}$ for the early semantic and $\rightarrow_{L}$ for the late semantic.
+
+
+\subsection{Late bisimilarity}
+
+\begin{definition}
+  A \emph{strong late bisimulation} is a binary simmetric relation $\mathbf{S}$ on processes such that for each process $P$ and $Q$, $P\mathbf{S}Q$ implies:
+  \begin{itemize}
+    \item
+      if $P \xrightarrow{a(x)}_{L} P^{'}$ and $x\notin fn(P)\cup fn(Q)$ then there exists a process $Q^{'}$ such that $Q \xrightarrow{a(x)}_{L} Q^{'}$ and for all $u$ $P^{'}\{u/x\}\mathbf{S}Q^{'}\{u/x\}$
+    \item
+      if $P \xrightarrow{\gamma}_{L} P^{'}$, $\gamma$ is a non-input action or a sequence of actions and $bn(\gamma) \cap (fn(P)\cup fn(Q)) = \emptyset$ then there exists a process $Q^{'}$ such that $Q \xrightarrow{\gamma}_{L} Q^{'}$ and $P^{'}\mathbf{S}Q^{'}$
+  \end{itemize}
+  $P$ and $Q$ are \emph{late bisimilar} written $P\dot{\sim}_{L}Q$ if there exists a strong late bisimulation $\mathbf{S}$ such that $P\mathbf{S}Q$.
+\end{definition}
+
+\begin{example}
+  Strong late bisimulation is not closed under substitution in general:
+  \[
+    a(u).0|\overline{b}v.0\; \dot{\sim}_{L}\; a(u).\overline{b}v.0 + \overline{b}v.a(u).0
+  \]
+  and the bisimulation(without the simmetric part) is  the following:
+  \[
+    \{(a(u).0|\overline{b}v.0, a(u).\overline{b}v.0 + \overline{b}v.a(u).0),\;\; (a(u).0|0,a(u).0),\;\; (0|0,0),\;\; (0|\overline{b}v.0,\overline{b}v.0)\} 
+  \]
+  If we apply the substitution $\{a/b\}$ to each process then they are not strongly bisimilar anymore because $(a(u).0|\overline{b}v.0)\{a/b\}$ is $a(u).0|\overline{a}v.0$ and this process can perform an invisible action whether $(a(u).\overline{b}v.0 + \overline{b}v.a(u).0)\{a/b\}$ cannot.
+\end{example}
+
+We refer to strong late bisimulation as strong \emph{ground} late bisimulation, because it is not preserved by substitution.
+
+There can be also an alternative definition of strong late bimisimulation:
+\begin{definition}
+  Let $\mathbb{P}$ be the set of processes. Then we define $\mathbf{B}_{0}=\mathbb{P}^{2}$ and for all $i>0$ we define $\mathbf{B}_{i}$ as the relation that contains every pair $(P,Q)\in \mathbf{B}_{i-1}$ such that:
+  \begin{itemize}
+    \item
+      if $P \xrightarrow{a(x)}_{L} P^{'}$ and $x\notin fn(P)\cup fn(Q)$ then there exists a process $Q^{'}$ such that $Q \xrightarrow{a(x)}_{L} Q^{'}$ and for all $u$ $P^{'}\{u/x\}  \mathbf{B}_{i-1} Q^{'}\{u/x\}$
+    \item
+      if $P \xrightarrow{\gamma}_{L} P^{'}$, $\gamma$ is a non-input action or a sequence of actions and $bn(\gamma) \cap (fn(P)\cup fn(Q)) = \emptyset$ then there exists a process $Q^{'}$ such that $Q \xrightarrow{\gamma}_{L} Q^{'}$ and $P^{'}\mathbf{B}_{i-1}Q^{'}$
+  \end{itemize}
+  Finally $\mathbf{B}=\cap_{i\in \mathbb{N}} \mathbf{B}_{i}$ and we can say that $P$ and $Q$ are \emph{late bisimilar} written $P\sim_{L}Q$ if $P \mathbf{B} Q$.
+\end{definition}
+
+\begin{lemma}
+  For all process $P$ and $Q$: $P\dot{\sim}Q$ if and only if $P\mathbf{B}Q$
+\end{lemma}
+
+
+\begin{lemma}
+  If $P\xrightarrow{\gamma}_{L}Q$ and $\sigma$ is an injective substitution then $P\sigma \xrightarrow{\gamma\sigma}_{L} Q\sigma$
+\end{lemma}
+
+
+\begin{proposition}
+  Let $\mathbf{T}$ be $\{(P\sigma,Q\sigma):P\dot{\sim}_{L}Q, \sigma\; injective\}$ then $\mathbf{T}$ is a bisimulation.
+  \begin{proof}:
+    Let $P$ and $Q$ be processes such that $P\dot{\sim}_{L}Q$ and let $\sigma$ be an injective substitution of names. We suppose that the application of $\sigma$ to both $P$ and $Q$ does not affect bound names. Now we have two cases according to the definition of bisimulation:
+    \begin{itemize}
+      \item:
+	\begin{center}
+	  \begin{tabular}{ll}
+	      $P\sigma \xrightarrow{a(x)}_{L}P^{'}$ and $x\notin (fn(P\sigma) \cup fn(Q\sigma))$
+	    &
+	  \\
+	      $\Rightarrow P \xrightarrow{b(x)}_{L}P^{'}\sigma^{-1}$ and $x\notin (fn(P) \cup fn(Q))$ where $b=a\sigma^{-1}$
+	    &
+	  \\
+	      $\Rightarrow \exists Q^{'}:\; Q \xrightarrow{b(x)}_{L}Q^{'}$ and $\forall u.$ $P^{'}\sigma^{-1}\{u/x\} \dot{\sim}_{L} Q^{'}\{u/x\}$
+	    &
+	  \\
+	      $\Rightarrow Q\sigma \xrightarrow{(b(x))\sigma}_{L}Q^{'}\sigma$ and $\forall u.$ $P^{'}\sigma^{-1}\{u/x\}\sigma \mathbf{T} Q^{'}\{u/x\}\sigma$
+	    &
+	  \\
+	      $\Rightarrow Q\sigma \xrightarrow{a(x)}_{L}Q^{'}\sigma$ and $\forall u.$ $P^{'}\{u/x\} \mathbf{T} Q^{'}\sigma\{u/x\}$
+	    &
+	  \\
+	  \end{tabular}
+	\end{center}
+      \item:
+	\begin{center}
+	  \begin{tabular}{ll}
+	      $P\sigma \xrightarrow{\gamma}_{L}P^{'}$ and $bn(\gamma)\cap (fn(P\sigma) \cup fn(Q\sigma))=\emptyset$
+	    &
+	  \\
+	      $\Rightarrow P \xrightarrow{\gamma\sigma^{-1}}_{L}P^{'}\sigma^{-1}$ and $bn(\gamma)\cap (fn(P) \cup fn(Q))=\emptyset$
+	    &
+	  \\
+	      $\Rightarrow \exists Q^{'}:\; Q \xrightarrow{\gamma\sigma^{-1}}_{L}Q^{'}$ and $P^{'}\sigma^{-1} \dot{\sim}_{L} Q^{'}$
+	    &
+	  \\
+	      $\Rightarrow Q\sigma \xrightarrow{\gamma\sigma^{-1}\sigma}_{L}Q^{'}\sigma$ and $P^{'}\sigma^{-1}\sigma \mathbf{T} Q^{'}\sigma$
+	    &
+	  \\
+	      $\Rightarrow Q\sigma \xrightarrow{\gamma}_{L}Q^{'}\sigma$ and $P^{'} \mathbf{T} Q^{'}\sigma$
+	    &
+	  \\
+	  \end{tabular}
+	\end{center}
+    \end{itemize}
+  \end{proof}
+\end{proposition}
+
+
+\begin{proposition}
+  If $P \dot{\sim}_{L} Q$ and $\sigma$ is an injective substitution then $P\sigma \dot{\sim}_{L} Q\sigma$.
+\end{proposition}
+
+\begin{proposition}
+  $\dot{\sim}_{L}$ is an equivalence.
+  \begin{proof}
+    Reflexivity is immediate. Symmetry holds because bisimulation is symmetric. Transitivity holds because $\dot{\sim}_{L} \dot{\sim}_{L}$ is a bisimulation: we prove this by induction on $\mathbf{B}_{i}$. Let $P,Q,R$ be processes such that $P \mathbf{B} Q \mathbf{B} R$. If $i=0$ it is clear from the definition of $\mathbf{B}_{0}$ that $P \mathbf{B}_{0} R$. If $i>0$ then according to the definition of $\mathbf{B}_{i}$ we have two cases:
+    \begin{itemize}
+      \item:
+	\begin{center}
+	  \begin{tabular}{ll}
+	      $P\sigma \xrightarrow{a(x)}_{L}P^{'}$ and $x\notin (fn(P) \cup fn(Q))$
+	    &
+	  \\
+	      $\Rightarrow \exists Q^{'}:\; Q \xrightarrow{a(x)}_{L}Q^{'}$ and $\forall u.$ $P^{'}\{u/x\} \mathbf{B}_{i-1} Q^{'}\{u/x\}$
+	    &
+	  \\
+	      $\Rightarrow \exists R^{'}:\; R \xrightarrow{a(x)}_{L}R^{'}$ and $\forall u.$ $Q^{'}\{u/x\} \mathbf{B}_{i-1} R^{'}\{u/x\}$
+	    &
+	  \\
+	      $\Rightarrow \forall u.$ $P^{'}\{u/x\} \mathbf{B}_{i-1} R^{'}\{u/x\}$
+	    &
+	  \\
+	  \end{tabular}
+	\end{center}
+      \item:
+	\begin{center}
+	  \begin{tabular}{ll}
+	      $P \xrightarrow{\gamma}_{L}P^{'}$ and $bn(\gamma)\cap (fn(P) \cup fn(Q))=\emptyset$
+	    &
+	  \\
+	      $\Rightarrow \exists Q^{'}:\; Q \xrightarrow{\gamma}_{L}Q^{'}$ and $P^{'} \mathbf{B}_{i-1} Q^{'}$
+	    &
+	  \\
+	      $\Rightarrow \exists R^{'}:\; R \xrightarrow{\gamma}_{L}R^{'}$ and $Q^{'} \mathbf{B}_{i-1} R^{'}$
+	    &
+	  \\
+	      $\Rightarrow P^{'} \mathbf{B}_{i-1} R^{'}$
+	    &
+	  \\
+	  \end{tabular}
+	\end{center}
+    \end{itemize}
+  \end{proof}
+\end{proposition}
+
+\begin{definition}
+  An occurrence of a process $Q$ inside a process $P$ is \emph{guarded} if it is a proper subterm of a prefix form in $P$. Otherwise it is \emph{unguarded}.
+\end{definition}
+
+\begin{definition}
+  A process is \emph{normal} if it is $(\nu \tilde{x})P$ where all bound names are distinct and $P$ has no unguarded restrictions, i.e., every occurrence of a process $(\nu \tilde{y})Q$ inside $P$ is guarded.
+\end{definition}
+
+\begin{proposition}
+  Every process is structurally congruent to a normal process.
+\end{proposition}
+
+\begin{lemma}
+  If $P\xrightarrow{\gamma}_{L}Q$ and $P\equiv N$ where $N$ is normal then by an inference of no greater depth, $N\xrightarrow{\gamma}_{L}M$ and $Q\equiv M$
+\end{lemma}
+
+
+\begin{proposition}
+  $\dot{\sim}_{L}$ is preserved by all operators except input prefix
+\end{proposition}
+
+\begin{definition}
+  Two processes $P$ and $Q$ are \emph{strong late equivalent} written $P\sim_{L}Q$ is for each substitution $\sigma$ $P\sigma \dot{\sim}_{L}Q\sigma$
+\end{definition}
+
+\begin{example}
+  If $z\notin fn(R)\cup \{x\}$ then $x(y).R \dot{\sim}_{L} (z)x(y).R$
+\end{example}
+
+
+
+\subsection{Early bisimilarity}
+
+\begin{definition}\index{bisimulation! strong! early! with early semantic}
+  A \emph{strong early bisimulation}(according to \cite{parrow})is a symmetric binary relation $\mathbf{S}$ on processes such that for each process $P$ and $Q$:
+  \begin{center}
+    $P\mathbf{S} Q$, $P \xrightarrow{\alpha}_{E} P^{'}$ and $bn(\alpha) \cap (fn(P) \cup fn(Q))=\emptyset$
+  \end{center} 
+  implies that
+  \begin{center}
+    there exists $Q^{'}$ such that $Q \xrightarrow{\alpha}_{E} Q^{'}$ and $P^{'}\mathbf{S}Q^{'}$
+  \end{center} 
+  $P$ and $Q$ are \emph{early bisimilar} written $P\dot{\sim}_{E}Q$ if there exists a strong early bisimulation $\mathbf{S}$ such that $P\mathbf{S}Q$
+\end{definition}
+
+\begin{definition}
+  Two processes $P$ and $Q$ are \emph{strong early equivalent} written $P\sim_{E}Q$ if for each substitution $\sigma$ $P\sigma \dot{\sim}_{E}Q\sigma$
+\end{definition}
+
+
+% \begin{proposition}
+%   Early bisimilarity is preserved by all operators except input prefix. 
+% \end{proposition}
+% 
+% \begin{proposition}
+%   The early congruence is the largest congruence in $\dot{\sim}_{E}$.  
+% \end{proposition}
+
+% In the following definition we consider a subcalculus without restriction. 
+% \begin{definition}\index{bisimulation! strong! open! early}
+%   A \emph{strong open bisimulation} is a symmetric binary relation $\mathbb{R}$ on agents satisfying the following for all substitutions $\sigma$: $P\mathbb{R} Q$ and $P\sigma\; \xrightarrow{\alpha}_{E}\; P^{'}$ where $bn(\alpha)$ is fresh implies that
+%   \begin{center}
+%     $\exists Q^{'}:\;\; Q\sigma\xrightarrow{\alpha}_{E}Q^{'}\; \wedge\; P^{'}\mathbb{R}Q^{'}$
+%   \end{center}
+%   $P$ and $Q$ are strongly open bisimilar, written $P\; \dot{\sim}_{O}\; Q$ if they are related by an open bisimulation.
+% \end{definition}
+% 
+% \begin{proposition}
+%   strong open bisimulation is also a late bisimulation, is closed under substitution, is an equivalence and a congruence
+% \end{proposition}
+
+
+\subsection{Congruence}
+
+\begin{definition}\index{congruence! strong}
+  We say that two agents $P$ and $Q$ are \emph{strongly congruent}, written $P\sim Q$ if
+  \begin{center}
+    $P\sigma \dot{\sim} Q\sigma$ for all substitution $\sigma$    
+  \end{center}
+\end{definition}
+
+\begin{proposition}
+  Strong congruence is the largest congruence in bisimilarity.
+\end{proposition}
+
+
+\subsection{Open bisimilarity}
+
+\begin{definition}
+  A \emph{distinction} is a finite symmetric and irreflexive binary relation on names. A substitution $\sigma$ \emph{respects} a distinction $D$ if for each name $a,b$ $aDb$ implies $\sigma(a)\neq \sigma(b)$. We write $D\sigma$ for the composition of the two relation.
+\end{definition}
+
+
+\begin{definition}
+  An \emph{strong open simulation}(according to \cite{parrow}) is $\{S_{D}\}_{D\in \mathbb{D}}$ a family of binary relations on processes such that for each process $P, Q$, for each distinction $D\in \mathbb{D}$, for each name substitution $\sigma$ which respects $D$ if $P S_{D} Q$, $P\sigma \xrightarrow{\alpha} P^{'}$ and $bn(\alpha)\cap (fn(P\sigma)\cup fn(Q\sigma))=\emptyset$ then:
+  \begin{itemize}
+    \item 
+      if $\alpha=\overline{a}(x)$ then there exists $Q^{'}$ such that $Q\sigma \xrightarrow{\overline{a}(x)} Q^{'}$ and $P^{'} S_{D^{'}} Q^{'}$ where $D^{'}=D\sigma \cup \{x\}\times (fn(P\sigma)\cup fn(Q\sigma)) \cup  (fn(P\sigma)\cup fn(Q\sigma))\times\{x\}$
+    \item
+      if $\alpha$ is not a bound output then there exists $Q^{'}$ such that $Q\sigma \xrightarrow{\alpha} Q^{'}$ and $P^{'} S_{D\sigma} Q^{'}$
+  \end{itemize}
+  $P$ and $Q$ are \emph{open D bisimilar}, written $P \dot{\sim}_{O}^{D} Q$ if there exists a member $S_{D}$ of an open bisimulation such that $P S_{D} Q$; they are \emph{open bisimilar} if they are open $\emptyset$ bisimilar, written $P \dot{\sim}_{O} D$.
+
+
+\end{definition}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
