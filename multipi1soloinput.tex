@@ -593,32 +593,34 @@ This section contains the definition of an alternative semantic for multi $\pi$.
 \begin{example}Multi-party synchronization
   We show an example of a derivation of three processes that synchronize.
  
-  \begin{center}
-  $\inferrule* [left=\bf{Par2}]{\inferrule* [left=\bf{Com3}]{
-      \inferrule* [left=\bf{SInpLow}]{
+  \begin{center}$
+    \inferrule* [left=\bf{Par1L}]{
+      \inferrule* [left=\bf{Com3}]{
+	\inferrule* [left=\bf{SInpLow}]{
+	}{
+	  \underline{x(a)}.x(b).P
+	    \stackrel{xy}{\longmapsto}
+	      *(x(b).P\{y/a\})
+	}
+      \\
+	\inferrule* [left=\bf{Out}]{
+	}{
+	  \overline{x}y.Q \stackrel{\overline{x}y}{\longmapsto} Q
+	}
       }{
-	\underline{x(a)}.x(b).P
-	  \stackrel{xy}{\longmapsto}
-	    *(x(b).P\{y/a\})
-      }
-    \\
-      \inferrule* [left=\bf{Out}]{
-      }{
-	\overline{x}y.Q \stackrel{\overline{x}y}{\longmapsto} Q
-      }
-  }{
 	\underline{x(a)}.x(b).P|\overline{x}y.Q
 	  \stackrel{\epsilon}{\longmapsto}
 	    *(x(b).P\{y/a\})|Q
-  }}{
+      }
+  }{
 	(\underline{x(a)}.x(b).P|\overline{x}y.Q) | \overline{x}z.R
 	  \stackrel{\epsilon}{\longmapsto}
-	    (*(x(b).P\{y/a\})|Q)|*(\overline{x}z.R)
-  }$
-  \end{center}
+	    (*(x(b).P\{y/a\})|Q)|\overline{x}z.R
+  }
+  $\end{center}
 
-  \begin{center}
-    $\inferrule* [left=\bf{Par1}]{
+  \begin{center}$
+    \inferrule* [left=\bf{Par1}]{
       \inferrule*[left=\bf{Star}]{
 	\inferrule* [left=\bf{EInp}]{
 	}{
@@ -629,40 +631,32 @@ This section contains the definition of an alternative semantic for multi $\pi$.
       }
     }{
       *(x(b).P\{y/a\}) | Q \stackrel{xz}{\longmapsto} P\{y/a\}\{z/b\} | Q
-    }$
-  \end{center}
+    }
+  $\end{center}
 
-  \begin{center}
-  $
-      \inferrule* [left=\bf{Com4}]{
-	  *(x(b).P\{y/a\}) | Q \stackrel{xz}{\longmapsto} P\{y/a\}\{z/b\} | Q
-	\\
-	  \inferrule* [left=\bf{Star}]{
-	    \inferrule* [left=\bf{Out}]{
-	    }{
-	      \overline{x}z.R	
-		\stackrel{\overline{x}z}{\longmapsto}
-		  R
-	    }
-	  }{
-	    *\overline{x}z.R	
-	      \stackrel{\overline{x}z}{\longmapsto}
-		R
-	  }
+  \begin{center}$
+    \inferrule* [left=\bf{Com4}]{
+      *(x(b).P\{y/a\}) | Q \stackrel{xz}{\longmapsto} P\{y/a\}\{z/b\} | Q
+    \\
+      \inferrule* [left=\bf{Out}]{
       }{
-	(\underline{x(a)}.x(b).P|\overline{x}y.Q)|*(\overline{x}z.R)
+	\overline{x}z.R	
+	  \stackrel{\overline{x}z}{\longmapsto}
+	    R
+      }
+    }{
+	(\underline{x(a)}.x(b).P|\overline{x}y.Q)|\overline{x}z.R
 	  \stackrel{\tau}{\longmapsto}
 	    (P\{y/a\}\{z/b\}|Q)|R
-      }
-  $
-  \end{center}
+    }
+  $\end{center}
 
   \begin{center}
   $
       \inferrule* [left=\bf{Low}]{
 	(\underline{x(a)}.x(b).P|\overline{x}y.Q) | \overline{x}z.R
 	  \stackrel{\epsilon}{\longmapsto}
-	    (*(x(b).P\{y/a\})|Q)|*(\overline{x}z.R)
+	    (*(x(b).P\{y/a\})|Q)|\overline{x}z.R
 	      \xrightarrow{\tau}
 		(P\{y/a\}\{z/b\}|Q)|R
       }{
