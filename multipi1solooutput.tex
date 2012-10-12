@@ -2036,13 +2036,42 @@ There can be also an alternative definition of strong late bimisimulation:
   Every process is structurally congruent to a normal process.
 \end{proposition}
 
-\begin{lemma}
+\begin{lemma}\label{reductiontonormalform}
   If $P\xrightarrow{\gamma}_{L}Q$ and $P\equiv N$ where $N$ is normal then by an inference of no greater depth, $N\xrightarrow{\gamma}_{L}M$ and $Q\equiv M$
+\end{lemma}
+
+\begin{definition}
+  A \emph{strong late bisimulation up to $\dot{\sim}_{L}$} is a binary simmetric relation $\mathbf{S}$ on processes such that for each process $P$ and $Q$, $P\mathbf{S}Q$ implies:
+  \begin{itemize}
+    \item
+      if $P \xrightarrow{a(x)}_{L} P^{'}$ and $x\notin fn(P)\cup fn(Q)$ then there exists a process $Q^{'}$ such that $Q \xrightarrow{a(x)}_{L} Q^{'}$ and for all $u$ there exist processes $A,B$ such that $P^{'}\{u/x\}\dot{\sim}_{L}A\mathbf{S}B\dot{\sim}_{L}Q^{'}\{u/x\}$
+    \item
+      if $P \xrightarrow{\gamma}_{L} P^{'}$, $\gamma$ is a non-input action or a sequence of actions and $bn(\gamma) \cap (fn(P)\cup fn(Q)) = \emptyset$ then there exist processes $A,B,Q^{'}$ such that $Q \xrightarrow{\gamma}_{L} Q^{'}$ and $P^{'}\dot{\sim}_{L}A\mathbf{S}B \dot{\sim}_{L}Q^{'}$
+  \end{itemize}
+\end{definition}
+
+\begin{proposition}
+  If two processes $P$ and $Q$ are strong late bisimilar up to $\dot{\sim}_{L}$ then they are also strong late bisimilar.
+\end{proposition}
+
+
+\begin{lemma}\label{a}
+  $\{((\nu \tilde{x})(P|Q),(\nu \tilde{x})(P^{'}|Q^{'})): P\dot{\sim} P^{'}, Q\dot{\sim}Q^{'}\}$ is a bisimulation up to $\dot{\sim}_{L}$
 \end{lemma}
 
 
 \begin{proposition}
-  $\dot{\sim}_{L}$ is preserved by all operators except input prefix
+  $\dot{\sim}_{L}$ is preserved by all operators except input prefix.
+  \begin{proof}
+    We have to prove the proposition for every operator in turn except for input prefix. If we take $P=P^{'}=0$ in lemma \ref{a} then the proposition holds for restriction. If we take $\tilde{x}$ to be the empty sequence in lemma \ref{a} then the proposition holds for parallel. The proof for sum is easy: $\{(P+R, Q+R): P\dot{\sim}_{L}Q\}$ is a bisimulation up to $\dot{\sim}_{L}$. The case for prefixes is also easy. We show just the case of strong output. Let $P\dot{\sim}_{L}Q$ then we want to prove that $\underline{\overline{x}y}.P$ and $\underline{\overline{x}y}.Q$ are bisimilar up to $\dot{\sim}_{L}$. We have two cases:
+    \begin{itemize}
+      \item 
+	There are no transitions starting from $P$ that are labeled with an output or a sequence of outputs. In this case there are no transition starting from $\underline{\overline{x}y}.P$ or $\underline{\overline{x}y}.Q$ so they are bisimilar.
+      \item 
+	$P\xrightarrow{\sigma}P^{'}$ and $\sigma$ is an output or a sequence of outputs. Then the only transition starting from $\underline{\overline{x}y}.P$ is $\underline{\overline{x}y}.P\xrightarrow{\overline{x}y \cdot \sigma} P^{'}$. So we do not have to check the first part of the definition of bisimulation but only the second one: $P\xrightarrow{\sigma}P^{'}$ implies that $Q\xrightarrow{\sigma}Q^{'}$ and the processes $P^{'}$ and $Q^{'}$ are bisimilar up to $\dot{\sim}_{L}$. So for rule $SOutSeq$ or $SOut$: $\underline{\overline{x}y}.Q\xrightarrow{\overline{x}y \cdot \sigma} Q^{'}$.
+    \end{itemize}
+    The input prefix does not preserve $\dot{\sim}_{L}$ and the following example is a proof: AGGIUNGERE ESEMPIO
+  \end{proof}
 \end{proposition}
 
 \begin{definition}
