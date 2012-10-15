@@ -155,8 +155,7 @@ then we have
 
 
 \begin{definition}\index{syntactic substitution}
-  $P\{b/a\}$ is the syntactic substitution of name $b$ for a different name $a$ inside a $\pi$ calculus process, and it consists in replacing every free occurrences of $a$ with $b$. If $b$ is a bound name in $P$ then we do not allow substitution!
-  $P\{b/a\}$ where $b\notin bn(P)$ is defined in table \ref{syntacticsubstitution}.
+  $P\{b/a\}$ is the syntactic substitution of name $b$ for a different name $a$ inside a $\pi$ calculus process, and it consists in replacing every free occurrences of $a$ with $b$. If $b$ is a bound name in $P$ then we do not allow substitution. The substitution is defined in table \ref{syntacticsubstitution}.
 \end{definition}
 
   \begin{table}
@@ -225,7 +224,7 @@ there is no substitution, instead the substitution occurs at an early point in t
   The \emph{early transition relation} $\rightarrow\subseteq \mathbb{P}\times \mathbb{A} \times \mathbb{P}$ is the smallest relation induced by the rules in table \ref{transitionrelationearlywithoutstructuralcongruence}. Where with $\tilde{x}$ we mean a sequence of names $x_{1}, \cdots, x_{n}$.
 
   \begin{table}
-    \begin{tabular}{ll}  
+    \begin{tabular}{lll}  
       \hline\\
 	  \bf{Out}
 	  \begin{tabular}{c}
@@ -239,13 +238,23 @@ there is no substitution, instead the substitution occurs at an early point in t
 	    \\\hline
 	      $x(y).P \xrightarrow{xz} P\{z/y\}$
 	  \end{tabular}
-      \\\\
-	  \bf{SumR}
+	&
+	  \bf{Tau}
 	  \begin{tabular}{c}
-	      $Q \xrightarrow{\alpha} Q^{'}$
+	      $\;\;$
 	    \\\hline
-	      $P+Q \xrightarrow{\alpha} Q^{'}$
-	    \end{tabular}
+	      $\tau.P \xrightarrow{\tau} P$
+	  \end{tabular}
+      \\
+    \end{tabular}
+ \\   \begin{tabular}{ll}  
+      \\
+	  \bf{ParL}
+	  \begin{tabular}{c}
+	      $P \xrightarrow{\alpha} P^{'}$
+	    \\\hline
+	      $P|Q \xrightarrow{\alpha} P^{'}|Q$
+	  \end{tabular}
 	&
 	  \bf{ParR}
 	  \begin{tabular}{c}
@@ -261,13 +270,16 @@ there is no substitution, instead the substitution occurs at an early point in t
 	      $P+Q \xrightarrow{\alpha} P^{'}$
 	  \end{tabular}
 	&
-	  \bf{ParL}
+	  \bf{SumR}
 	  \begin{tabular}{c}
-	      $P \xrightarrow{\alpha} P^{'}$
+	      $Q \xrightarrow{\alpha} Q^{'}$
 	    \\\hline
-	      $P|Q \xrightarrow{\alpha} P^{'}|Q$
-	  \end{tabular}
-      \\\\
+	      $P+Q \xrightarrow{\alpha} Q^{'}$
+	    \end{tabular}
+      \\
+    \end{tabular}
+ \\   \begin{tabular}{ll}  
+      \\
 	  \bf{Res}
 	  \begin{tabular}{c}
 	      $P \xrightarrow{\alpha} P^{'}\;\; z\notin n(\alpha)$
@@ -275,25 +287,30 @@ there is no substitution, instead the substitution occurs at an early point in t
 	      $(\nu z) P \xrightarrow{\alpha} (\nu z) P^{'}$
 	  \end{tabular}
 	&
-	  \bf{ResAlp}
+	  \bf{Opn}
 	  \begin{tabular}{c}
-	      $(\nu w)P\{w/z\} \xrightarrow{xz} P^{'}\;\; w\notin n(P)$
+	      $P \;\xrightarrow{\overline{x}z} P^{'}\;\; z\neq x$
 	    \\\hline
-	      $(\nu z) P \xrightarrow{xz} P^{'}$
+	      $(\nu z) P \;\xrightarrow{\overline{x}(z)} P^{'}$
 	  \end{tabular}
-      \\\\
-	  \bf{EComR}
-	  \begin{tabular}{c}
-	      $P \xrightarrow{\overline{x}y} P^{'}\;\; Q\xrightarrow{xy} Q^{'}$
-	    \\\hline
-	      $P|Q \xrightarrow{\tau} P^{'}|Q^{'}$
-	  \end{tabular}
-	&
+      \\
+    \end{tabular}
+ \\   \begin{tabular}{ll}  
+      \\
 	    \bf{ClsL}
 	    \begin{tabular}{c}
 		$P \xrightarrow{\overline{x}(z)} P^{'}$  
 		$Q \xrightarrow{xz} Q^{'}$ 
 		$z\notin fn(Q)$
+	      \\\hline
+		$P|Q \xrightarrow{\tau} (\nu z)(P^{'}|Q^{'})$
+	    \end{tabular}
+	  &
+	    \bf{ClsR}
+	    \begin{tabular}{c}
+		$P \xrightarrow{xz} P^{'}$  
+		$Q \xrightarrow{\overline{x}(z)} Q^{'}$ 
+		$z\notin fn(P)$
 	      \\\hline
 		$P|Q \xrightarrow{\tau} (\nu z)(P^{'}|Q^{'})$
 	    \end{tabular}
@@ -305,46 +322,23 @@ there is no substitution, instead the substitution occurs at an early point in t
 	      $P|Q \xrightarrow{\tau} P^{'}|Q^{'}$
 	  \end{tabular}
 	&
-	    \bf{ClsR}
-	    \begin{tabular}{c}
-		$P \xrightarrow{xz} P^{'}$  
-		$Q \xrightarrow{\overline{x}(z)} Q^{'}$ 
-		$z\notin fn(P)$
-	      \\\hline
-		$P|Q \xrightarrow{\tau} (\nu z)(P^{'}|Q^{'})$
-	    \end{tabular}
-      \\\\
-	  \bf{Tau}
+	  \bf{EComR}
 	  \begin{tabular}{c}
-	      $\;\;$
+	      $P \xrightarrow{\overline{x}y} P^{'}\;\; Q\xrightarrow{xy} Q^{'}$
 	    \\\hline
-	      $\tau.P \xrightarrow{\tau} P$
+	      $P|Q \xrightarrow{\tau} P^{'}|Q^{'}$
 	  \end{tabular}
-	  &
+      \\
+    \end{tabular}
+ \\   \begin{tabular}{ll}  
+      \\
 	  \bf{Cns}
 	  \begin{tabular}{c}
 	      $A(\tilde{x}) \stackrel{def}{=} P\; P\{\tilde{w}/\tilde{x}\} \xrightarrow{\alpha} P^{'}$
 	    \\\hline
 	      $A(\tilde{x})\{\tilde{w}/\tilde{x}\} \xrightarrow{\alpha} P^{'}$
 	  \end{tabular}
-      \\\\
-	  \bf{Opn}
-	  \begin{tabular}{c}
-	      $P \;\xrightarrow{\overline{x}z} P^{'}\;\; z\neq x$
-	    \\\hline
-	      $(\nu z) P \;\xrightarrow{\overline{x}(z)} P^{'}$
-	  \end{tabular}
 	&
-	  \bf{OpnAlp}
-	  \begin{tabular}{c}
-		  $(\nu w)P\{w/z\} \xrightarrow{\overline{x}(w)} P^{'}
-		\;
- 		  w\notin n(P)
-		\;
-		  x \neq w \neq z.$
-	    \\\hline
- 		$(\nu z)P \xrightarrow{\overline{x}(w)} P^{'}$
-	  \end{tabular}
       \\\hline
     \end{tabular}
     \caption{Early transition relation without structural congruence}

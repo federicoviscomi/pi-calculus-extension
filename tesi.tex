@@ -196,6 +196,22 @@
 \newtheorem{esempio}[adefinizione]{Example}
 
 
+
+\newenvironment{wide}{%
+  \begin{list}{}{%
+      \setlength{\topsep}{0pt}%
+      \addtolength{\leftmargin}{-1cm}%
+      \addtolength{\rightmargin}{-1cm}%
+      \setlength{\listparindent}{\parindent}%
+      \setlength{\itemindent}{\parindent}%
+      \setlength{\parsep}{\parskip}}%
+  \item[]%
+}{%
+  \end{list}%
+}
+
+
+
 %\newenvironment{proof}[1][Proof]{\begin{trivlist}
 %\item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
 \newenvironment{abstract}{
@@ -226,7 +242,9 @@
 
 \begin{document}
 
-\pagestyle{empty}
+% \pagestyle{empty}
+
+% \begin{wide}
 
 \include{titlepage2}
 \include{abstract}
@@ -258,5 +276,5 @@
 %\printindex
 
 \input{bibliografia}
-
+% \end{wide}
 \end{document}
