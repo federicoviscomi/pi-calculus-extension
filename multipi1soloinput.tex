@@ -44,7 +44,7 @@ The semantic of a multi $\pi$ process is labeled transition system such that
 
 In this case, a label can be a sequence of prefixes, whether in the original $\pi$ calculus a label can be only a prefix. We use the symbol $\cdot$ to denote the concatenation operator.
 
-\begin{definition}\index{transition relation! multipi! input only! early! with structural congruence}
+\begin{definition}
   The \emph{early transition relation with structural congruence} is the smallest relation induced by the rules in table \ref{multipisoloinputearlywith} where $inpSeq$ is a non empty sequence of input actions and $\sigma$ is a sequence of any action.
   \begin{table}
     \begin{tabular}{lll}
@@ -216,7 +216,7 @@ In this case, a label can be a sequence of prefixes, whether in the original $\p
 
 \subsection{Late operational semantic with structural congruence}
 
-\begin{definition}\index{transition relation! multipi! input only! late! with structural congruence}
+\begin{definition}
   The \emph{late transition relation with structural congruence} is the smallest relation induced by the rules in table \ref{multipisoloinputlateywith}.
   \begin{table}
     \begin{tabular}{ll}
@@ -960,3 +960,162 @@ This section contains the definition of an alternative semantic for multi $\pi$.
     \end{description}	    
   \end{proof}
 \end{proposition}
+
+
+
+\subsection{Late operational semantic without structural congruence}
+
+DA FARE
+
+\begin{definition}
+  The \emph{late transition relation without structural congruence} is the smallest relation induced by the rules in table \ref{multipisoloinputlateywith}.
+  \begin{table}
+    \begin{tabular}{ll}
+	\hline\\
+     	  $\inferrule* [left=\bf{Pref}]{
+	    \alpha not a strong prefix
+	  }{
+	    \alpha.P \xrightarrow{\alpha} P
+	  }$
+	&
+	  $\inferrule* [left=\bf{LComSeq}]{
+	      P \xrightarrow{x(y)\cdot \sigma} P^{'}
+	    \\
+	      Q\xrightarrow{\overline{x}z} Q^{'}
+	    \\
+	      z\notin fn(\sigma)\cup fn(P)
+	  }{
+	    P|Q \xrightarrow{\sigma\{z/y\}} P^{'}\{z/y\}|Q^{'}
+	  }$
+      \\\\
+	  $\inferrule* [left=\bf{SInp}]{
+	      P \xrightarrow{a(b)} P^{'}
+	  }{
+	    \underline{x(y)}.P \xrightarrow{x(y) \cdot a(b)} P^{'}
+	  }$
+	&
+	  $\inferrule* [left=\bf{LCom}]{
+	      P \xrightarrow{x(y)} P^{'}
+	    \\
+	      Q\xrightarrow{\overline{x}z} Q^{'}
+	    \\
+	      z\notin fn(P)
+	  }{
+	    P|Q \xrightarrow{\tau} P^{'}\{z/y\}|Q^{'}
+	  }$
+      \\\\
+	  $\inferrule* [left=\bf{Sum}]{
+	    P \xrightarrow{\sigma} P^{'}
+	  }{
+	    P+Q \xrightarrow{\sigma} P^{'}
+	  }$
+	&
+	  $\inferrule* [left=\bf{Cong}]{
+	      P\equiv P^{'}
+	    \\
+	      P^{'} \xrightarrow{\sigma} Q
+	  }{
+	      P \xrightarrow{\sigma} Q
+	  }$
+      \\\\
+	  $\inferrule* [left=\bf{Res}]{
+	      P \xrightarrow{\sigma} P^{'}
+	    \\
+	      z\notin n(\alpha)
+	  }{
+	    (\nu z) P \xrightarrow{\sigma} (\nu z) P^{'}
+	  }$
+	&
+	  $\inferrule* [left=\bf{Par}]{
+	      P \xrightarrow{\sigma} P^{'}
+	    \\
+	      bn(\sigma)\cup fn(Q)=\emptyset
+	  }{
+	    P|Q \xrightarrow{\sigma} P^{'}|Q
+	  }$
+      \\\\
+	  $\inferrule* [left=\bf{Opn}]{
+	      P \xrightarrow{\overline{x}z} P^{'}
+	    \\ 
+	      z\neq x
+	  }{
+	      (\nu z)P \xrightarrow{\overline{x}(z)} P^{'}
+	  }$
+	&
+	  $\inferrule* [left=\bf{SInpSeq}]{
+	      P \xrightarrow{\sigma} P^{'}
+	    \\
+	      |\sigma|>1
+	  }{
+	    \underline{x(y)}.P \xrightarrow{x(y) \cdot \sigma} P^{'}
+	  }$
+      \\\\
+	  $\inferrule* [left=\bf{SInpTau}]{
+	      P \xrightarrow{\tau} P^{'}
+	  }{
+	    \underline{x(y)}.P \xrightarrow{x(y)} P^{'}
+	  }$
+	&
+      \\\hline
+    \end{tabular}
+    \caption{Multi $\pi$ late semantic with structural congruence}
+    \label{multipisoloinputlateywith}
+  \end{table}
+\end{definition}
+
+\begin{example}Multi-party synchronization
+  We show an example of a derivation of three processes that synchronize with the late semantic. The three processes are $\underline{x(a)}.x(b).P$, $\overline{x}y.Q$ and $\overline{x}z.R$. We assume that:
+  \begin{center}
+      $a\notin fn(x(b))\cup fn (\underline{x(a)}.x(b).P)$
+  \end{center}
+  and
+  \begin{center}
+      $b\notin fn(\underline{x(a)}.x(b).P|\overline{x}y.Q)$
+  \end{center}
+
+  \begin{center}
+  $
+      \inferrule* [left=\bf{LCom}]{
+	\underline{x(a)}.x(b).P|\overline{x}y.Q
+	  \xrightarrow{x(b)}
+	    P\{y/a\}|Q
+	\\
+	  \inferrule* [left=\bf{Pref}]{
+	  }{
+	    \overline{x}z.R	
+	      \xrightarrow{\overline{x}z} 
+		R
+	  }
+      }{
+	(\underline{x(a)}.x(b).P|\overline{x}y.Q)|\overline{x}z.R
+	  \xrightarrow{\tau}
+	    (P\{y/a\}|Q)\{z/b\}|R
+      }
+  $
+  \end{center}
+  
+  \begin{center}
+  $\inferrule* [left=\bf{LComSeq}]{
+      \inferrule* [left=\bf{SInp}]{
+	\inferrule* [left=\bf{Pref}]{
+	}{
+	  x(b).P \xrightarrow{x(b)} P
+	}
+      }{
+	\underline{x(a)}.x(b).P
+	  \xrightarrow{x(a) \cdot x(b)} 
+	    P
+      }
+    \\
+      \inferrule* [left=\bf{Out}]{
+      }{
+	\overline{x}y.Q \xrightarrow{\overline{x}y} Q
+      }
+  }{
+	\underline{x(a)}.x(b).P|\overline{x}y.Q)
+	  \xrightarrow{x(b)}
+	    P\{y/a\}|Q
+  }$
+  \end{center}
+
+\end{example}
