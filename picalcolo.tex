@@ -17,7 +17,7 @@ We suppose that we have a countable set of names $\mathbb{N}$, ranged over by lo
 The process are defined by the following grammar:
 \begin{center}
   \begin{tabular}{l}
-    $P,Q$ ::= $0$ | $\pi.P$ | $P|Q$ | $P+Q$ | $(\nu x) P$ | $A(x_{1}, \cdots, x_{n})$ 
+    $P,Q$ ::= $0$ | $\pi.P$ | $P|Q$ | $P+Q$ | $(\nu x) P$ | $A$ 
   \end{tabular}
 \end{center}
 and they have the following intuitive meaning:
@@ -41,7 +41,7 @@ and they have the following intuitive meaning:
     is the parallel composition, $P$ and $Q$ can execute concurrently and also synchronize with each other
   \item[$(\nu z) P$] 
     is the scope restriction. This process behave as $P$ but the name $z$ is local. This process cannot use the name $z$ to interact with other processes.
-  \item[$A(x_{1}, \cdots, x_{n})$] 
+  \item[$A$] 
     is an identifier. Every identifier has a definition
     \begin{center}
       $A(x_{1}, \cdots, x_{n})=P$
@@ -3478,18 +3478,18 @@ We refer to strong late bisimulation as strong \emph{ground} late bisimulation, 
 
 \begin{definition}
   An \emph{strong open simulation}(according to \cite{parrow}) is $\{S_{D}\}_{D\in \mathbb{D}}$ a family of binary relations on processes such that for each process $P, Q$, for each distinction $D\in \mathbb{D}$, for each name substitution $\sigma$ which respects $D$ if $P S_{D} Q$, $P\sigma \xrightarrow{\alpha} P^{'}$ and $bn(\alpha)\cap (fn(P\sigma)\cup fn(Q\sigma))=\emptyset$ then:
-  \begin{itemize}
+   \begin{itemize}
     \item 
       if $\alpha=\overline{a}(x)$ then there exists $Q^{'}$ such that $Q\sigma \xrightarrow{\overline{a}(x)} Q^{'}$ and $P^{'} S_{D^{'}} Q^{'}$ where $D^{'}=D\sigma \cup \{x\}\times (fn(P\sigma)\cup fn(Q\sigma)) \cup  (fn(P\sigma)\cup fn(Q\sigma))\times\{x\}$
     \item
       if $\alpha$ is not a bound output then there exists $Q^{'}$ such that $Q\sigma \xrightarrow{\alpha} Q^{'}$ and $P^{'} S_{D\sigma} Q^{'}$
   \end{itemize}
   $P$ and $Q$ are \emph{open D bisimilar}, written $P \dot{\sim}_{O}^{D} Q$ if there exists a member $S_{D}$ of an open bisimulation such that $P S_{D} Q$; they are \emph{open bisimilar} if they are open $\emptyset$ bisimilar, written $P \dot{\sim}_{O} D$.
-
+ 
 
 \end{definition}
-
-
+ 
+ 
 
 
 
