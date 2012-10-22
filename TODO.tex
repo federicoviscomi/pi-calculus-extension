@@ -18,43 +18,43 @@
     trovare la congruenza coarsest contenuta nella bisimulazione scelta in precedenza
 \end{itemize}
 
-perche' nella regola originale sull'input nel pi calcolo early c'e' quella premessa?
+% perche' nella regola originale sull'input nel pi calcolo early c'e' quella premessa?
 
 
-\begin{itemize}
-  \item 
-    controllare tutti i ref
-  \item 
-    nel multipi solo output aggiungere stareps e modificare star in starout e modificare le dimostrazioni relative 
-  \item 	
-    stampare e rileggere
-  \item
-    riscrivere tutte le regole usando inferrule
-  \item
-    aggiungere la definizione precisa induttiva di alfa conversione anche per il multipi
-  \item
-    aggiungere a tutti i pi e multi pi la derivazione nella semantica late di
-    \begin{itemize}
-      \item 
-	$(x(z).P|Q)|\overline{x}y.R \xrightarrow{\tau} (P\{w/z\}|Q)\{y/w\}|R$ 
-      \item
-	$y=z$ or $y\notin fn(Q)$: $((\nu y) \overline{x}y.P)| x(z).Q \xrightarrow{\tau} (\nu y)(P|Q\{y/z\})$
-      \item
-	$y\neq z$ and $y\in fn(Q)$  $y^{'}$ fresh: $((\nu y) \overline{x}y.P)| x(z).Q \xrightarrow{\tau} (\nu y^{'})(P\{y^{'}/y\}|Q\{y^{'}/z\})$
-    \end{itemize}
-  \item	
-    le side condition delle par servono solo nella late? mi sembra di si. aggiungere una parte che spiega questo argomento
-  \item
-    sistemare index: o lo tolgo completamente o lo metto a tutte le definizioni.
-  \item	
-    cercare di equilibrare l'importanza del contenuto con gli spazi usati
-  \item	
-    qual'e' l'ortografia corretta di multi-parti?
-  \item	
-    ci sono delle parti che sono uguali in multipioutput e multipiinput. fattorizzare.
-  \item	
-    cosa succede nella regola opnseq di multiout se sigma contiene $\overline{z}u$? per adesso ho deciso di eliminarle perche' $(\nu z)(\underline{\overline{x}z}.\underline{\overline{x}y}.\overline{x}z.0) \xrightarrow{\overline{x}(z).\overline{x}y.\overline{x}(z)} 0$ non sembra essere derivabile in multioutlow. aggiungere un paragrafo alla fine che spiega quasta situazione ed eventualmente propone una soluzione con relative dimostrazioni. Fare una cosa simile per multi inp e out.
-    la regola opn che avevo usato e' giusta? o ha piu' senso dire che se l'azione ristretta e' il sogetto di una azione in sigma allora non si puo' applicare la open?
-  \item
-    aggiugere le regole per la comunicazione L|P in muti IO
-\end{itemize}
+% \begin{itemize}
+%   \item 
+%     controllare tutti i ref
+%   \item 
+%     nel multipi solo output aggiungere stareps e modificare star in starout e modificare le dimostrazioni relative 
+%   \item 	
+%     stampare e rileggere
+%   \item
+%     riscrivere tutte le regole usando inferrule
+%   \item
+%     aggiungere la definizione precisa induttiva di alfa conversione anche per il multipi
+%   \item
+%     aggiungere a tutti i pi e multi pi la derivazione nella semantica late di
+%     \begin{itemize}
+%       \item 
+% 	$(x(z).P|Q)|\overline{x}y.R \xrightarrow{\tau} (P\{w/z\}|Q)\{y/w\}|R$ 
+%       \item
+% 	$y=z$ or $y\notin fn(Q)$: $((\nu y) \overline{x}y.P)| x(z).Q \xrightarrow{\tau} (\nu y)(P|Q\{y/z\})$
+%       \item
+% 	$y\neq z$ and $y\in fn(Q)$  $y^{'}$ fresh: $((\nu y) \overline{x}y.P)| x(z).Q \xrightarrow{\tau} (\nu y^{'})(P\{y^{'}/y\}|Q\{y^{'}/z\})$
+%     \end{itemize}
+%   \item	
+%     le side condition delle par servono solo nella late? mi sembra di si. aggiungere una parte che spiega questo argomento
+%   \item
+%     sistemare index: o lo tolgo completamente o lo metto a tutte le definizioni.
+%   \item	
+%     cercare di equilibrare l'importanza del contenuto con gli spazi usati
+%   \item	
+%     qual'e' l'ortografia corretta di multi-parti?
+%   \item	
+%     ci sono delle parti che sono uguali in multipioutput e multipiinput. fattorizzare.
+%   \item	
+%     cosa succede nella regola opnseq di multiout se sigma contiene $\overline{z}u$? per adesso ho deciso di eliminarle perche' $(\nu z)(\underline{\overline{x}z}.\underline{\overline{x}y}.\overline{x}z.0) \xrightarrow{\overline{x}(z).\overline{x}y.\overline{x}(z)} 0$ non sembra essere derivabile in multioutlow. aggiungere un paragrafo alla fine che spiega quasta situazione ed eventualmente propone una soluzione con relative dimostrazioni. Fare una cosa simile per multi inp e out.
+%     la regola opn che avevo usato e' giusta? o ha piu' senso dire che se l'azione ristretta e' il sogetto di una azione in sigma allora non si puo' applicare la open?
+%   \item
+%     aggiugere le regole per la comunicazione L|P in muti IO
+% \end{itemize}
