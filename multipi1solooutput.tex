@@ -272,7 +272,7 @@ $\inferrule* [left=\bf{EComSng}]{
 This section contains the definition of an alternative semantic for multi $\pi$. First we define a low level version of the multi $\pi$ calculus(here with strong prefixing on output only), we call this language low multi $\pi$. The low multi $\pi$ is the multi $\pi$ enriched with a marked or intermediate process $*P$:
 \begin{center}
    \begin{tabular}{l}
-     $P,Q$ ::= $0$ | $\pi.P$ | $P|Q$ | $P+Q$ | $(\nu x) P$ | $A(x_{1}, \cdots, x_{n})$ | $*P$
+     $P,Q$ ::= $0$ | $\pi.P$ | $P|Q$ | $P+Q$ | $(\nu x) P$ | $A$ | $*P$
    \\\\
      $\pi$ ::= $\overline{x}y$ | $x(y)$ | $\underline{\overline{x}y}$ | $\tau$ 
    \end{tabular}
@@ -307,9 +307,9 @@ This section contains the definition of an alternative semantic for multi $\pi$.
 	  }$
 	  &
 	  $\inferrule* [left=\bf{StarEps}]{
-	      S \stackrel{\overline{x}y}{\longmapsto} S^{'}
+	      S \stackrel{\epsilon}{\longmapsto} S^{'}
 	  }{
-	      *S \stackrel{\overline{x}y}{\longmapsto} S^{'}
+	      *S \stackrel{\epsilon}{\longmapsto} S^{'}
 	  }$
 	  &
 	  $\inferrule* [left=\bf{StarOut}]{
@@ -330,22 +330,23 @@ This section contains the definition of an alternative semantic for multi $\pi$.
 	    P|Q \stackrel{\tau}{\longmapsto} P^{'}|Q^{'}
 	  }$
 	  &
-	  $\inferrule* [left=\bf{Cong}]{
-	      P\equiv P^{'}
-	    \\
-	      P^{'} \stackrel{\gamma}{\longmapsto} S
-	  }{
-	      P \stackrel{\gamma}{\longmapsto} S
-	  }$
        \\\\
-	  $\inferrule* [left=\bf{Com3R}]{
-	      P \stackrel{xy}{\longmapsto} P^{'}
+	  $\inferrule* [left=\bf{Com2L}]{
+	      L_{1} \stackrel{\overline{x}y}{\longmapsto} L_{1}^{'}
 	    \\
-	      Q \stackrel{\overline{x}y}{\longmapsto} L
+	      P \stackrel{xy}{\longmapsto} Q
 	  }{
-	    P|Q \stackrel{\epsilon}{\longmapsto} P^{'}|L
+	    L_{1}|P \stackrel{\epsilon}{\longmapsto} L_{1}^{'}|Q
 	  }$
 	  &
+	  $\inferrule* [left=\bf{Com2R}]{
+	      P \stackrel{xy}{\longmapsto} Q
+	    \\
+	      L_{1} \stackrel{\overline{x}y}{\longmapsto} L_{1}^{'}
+	  }{
+	    P|L_{1} \stackrel{\epsilon}{\longmapsto} Q|L_{1}^{'}
+	  }$
+      \\\\
 	  $\inferrule* [left=\bf{Com3L}]{
 	      P \stackrel{\overline{x}y}{\longmapsto} L
 	    \\
@@ -353,21 +354,13 @@ This section contains the definition of an alternative semantic for multi $\pi$.
 	  }{
 	    P|Q \stackrel{\epsilon}{\longmapsto} L|Q^{'}
 	  }$
-       \\\\
-	  $\inferrule* [left=\bf{Par1L}]{
-	      S \stackrel{\gamma}{\longmapsto} S^{'}
-% 	    \\ 
-% 	      bn(\gamma)\cap fn(Q)=\emptyset
-	  }{
-	      S|Q \stackrel{\gamma}{\longmapsto} S^{'}|Q
-	  }$
 	  &
-	  $\inferrule* [left=\bf{Par1R}]{
-	      S \stackrel{\gamma}{\longmapsto} S^{'}
-% 	    \\ 
-% 	      bn(\gamma)\cap fn(Q)=\emptyset
+	  $\inferrule* [left=\bf{Com3R}]{
+	      P \stackrel{xy}{\longmapsto} P^{'}
+	    \\
+	      Q \stackrel{\overline{x}y}{\longmapsto} L
 	  }{
-	      Q|S \stackrel{\gamma}{\longmapsto} Q|S^{'}
+	    P|Q \stackrel{\epsilon}{\longmapsto} P^{'}|L
 	  }$
        \\\\
 	  $\inferrule* [left=\bf{Com4L}]{
@@ -388,24 +381,8 @@ This section contains the definition of an alternative semantic for multi $\pi$.
       \\
     \end{tabular}
     \\
-    \begin{tabular}{ll}
+    \begin{tabular}{lll}
       \\
-	  $\inferrule* [left=\bf{Com2L}]{
-	      L_{1} \stackrel{\overline{x}y}{\longmapsto} L_{1}^{'}
-	    \\
-	      P \stackrel{xy}{\longmapsto} Q
-	  }{
-	    L_{1}|P \stackrel{\epsilon}{\longmapsto} L_{1}^{'}|Q
-	  }$
-	  &
-	  $\inferrule* [left=\bf{Com2R}]{
-	      P \stackrel{xy}{\longmapsto} Q
-	    \\
-	      L_{1} \stackrel{\overline{x}y}{\longmapsto} L_{1}^{'}
-	  }{
-	    P|L_{1} \stackrel{\epsilon}{\longmapsto} Q|L_{1}^{'}
-	  }$
-      \\\\
 	  $\inferrule* [left=\bf{Res}]{
 	      S \stackrel{\gamma}{\longmapsto} S^{'}
 	    \\
@@ -419,6 +396,36 @@ This section contains the definition of an alternative semantic for multi $\pi$.
 	  }{
 	    P+Q \stackrel{\gamma}{\longmapsto} S
 	  }$
+	  &
+	  $\inferrule* [left=\bf{Cong}]{
+	      P\equiv P^{'}
+	    \\
+	      P^{'} \stackrel{\gamma}{\longmapsto} S
+	  }{
+	      P \stackrel{\gamma}{\longmapsto} S
+	  }$
+
+      \\
+    \end{tabular}
+    \\
+    \begin{tabular}{ll}
+      \\
+	  $\inferrule* [left=\bf{Par1L}]{
+	      S \stackrel{\gamma}{\longmapsto} S^{'}
+% 	    \\ 
+% 	      bn(\gamma)\cap fn(Q)=\emptyset
+	  }{
+	      S|Q \stackrel{\gamma}{\longmapsto} S^{'}|Q
+	  }$
+	  &
+	  $\inferrule* [left=\bf{Par1R}]{
+	      S \stackrel{\gamma}{\longmapsto} S^{'}
+% 	    \\ 
+% 	      bn(\gamma)\cap fn(Q)=\emptyset
+	  }{
+	      Q|S \stackrel{\gamma}{\longmapsto} Q|S^{'}
+	  }$
+
 % 	  $\inferrule* [left=\bf{Opn}]{
 % 	      S \xrightarrow{\overline{x}y} S^{'}
 % 	  }{
@@ -473,16 +480,6 @@ This section contains the definition of an alternative semantic for multi $\pi$.
     \item
       if $P\stackrel{\alpha}{\longmapsto}Q$ then $\alpha$ cannot be an $\epsilon$
   \end{itemize}
-%   In other terms:
-%   \begin{center}
-%     \synttree[
-%       sdf
-%       [sdfdf]
-%     ]
-%   \end{center}
-  \begin{proof}
-    DA FARE
-  \end{proof}
 \end{lemma}
 
 
@@ -519,8 +516,8 @@ This section contains the definition of an alternative semantic for multi $\pi$.
   \begin{center}
     $\inferrule* [left=\bf{Par1L}]{
       \inferrule* [left=\bf{Par1L}]{
-	\inferrule* [left=\bf{Com2R}]{
-	  \inferrule* [left=\bf{SOut}]{
+	\inferrule* [left=\bf{Com3L}]{
+	  \inferrule* [left=\bf{SOutLow}]{
 	  }{
 	    \underline{\overline{x}a}.\overline{x}b.\overline{x}c.P \stackrel{\overline{x}a}{\longmapsto} * \underline{\overline{x}b}.\overline{x}c.P
 	  }
@@ -547,10 +544,10 @@ This section contains the definition of an alternative semantic for multi $\pi$.
 
   \begin{center}
     $\inferrule* [left=\bf{Par1L}]{
-      \inferrule* [left=\bf{Com2R}]{
+      \inferrule* [left=\bf{Com2L}]{
       \inferrule* [left=\bf{Par1L}]{
-	\inferrule* [left=\bf{Star}]{
-	  \inferrule* [left=\bf{SOut}]{
+	\inferrule* [left=\bf{StarOut}]{
+	  \inferrule* [left=\bf{SOutLow}]{
 	  }{
 	    \underline{\overline{x}b}.\overline{x}c.P \stackrel{\overline{x}b}{\longmapsto} *\overline{x}c.P
 	  }
@@ -575,10 +572,10 @@ This section contains the definition of an alternative semantic for multi $\pi$.
   \end{center}
 
   \begin{center}
-    $\inferrule* [left=\bf{Com4R}]{
+    $\inferrule* [left=\bf{Com4L}]{
       \inferrule* [left=\bf{Par1L}]{
       \inferrule* [left=\bf{Par1L}]{
-	\inferrule* [left=\bf{Star}]{
+	\inferrule* [left=\bf{StarOut}]{
 	  \inferrule* [left=\bf{Out}]{
 	  }{
 	    \overline{x}c.P \stackrel{\overline{x}c}{\longmapsto} P
@@ -631,7 +628,7 @@ This section contains the definition of an alternative semantic for multi $\pi$.
     \begin{description}
       \item[base case]
     \end{description}
-	If the depth is one then the rule used have to be one of: $EInp$, $Out$, $Tau$. These rules are also in table \ref{lowleveltransitionrelationearlyoutonly} so we can derive $P \stackrel{\sigma}{\longmapsto}Q$.
+	If the depth is one then the rule used has to be one of: $EInp$, $Out$, $Tau$. These rules are also in table \ref{lowleveltransitionrelationearlyoutonly} so we can derive $P \stackrel{\sigma}{\longmapsto}Q$.
     \begin{description}
       \item[inductive case]
     \end{description}
@@ -744,7 +741,7 @@ This section contains the definition of an alternative semantic for multi $\pi$.
 			      \stackrel{\epsilon}{\longmapsto} L_{2}|Q_{1}^{'}
 		  \cdots
 				\stackrel{\epsilon}{\longmapsto} L_{k}|Q_{1}^{'}
-				\stackrel{\epsilon}{\longmapsto} P_{1}^{'}|Q_{1}^{'}$	  
+				\stackrel{\tau}{\longmapsto} P_{1}^{'}|Q_{1}^{'}$	  
 	    \end{center}
 	    we derive the first transition with rule $Com3L$, whether for the other transition we use the rule $Par1L$.
 	  \item[$\gamma_{i}=\overline{x}y$]:
@@ -754,13 +751,13 @@ This section contains the definition of an alternative semantic for multi $\pi$.
 		  P_{1}|Q_{1} \stackrel{\epsilon}{\longmapsto} L_{1}|Q_{1} 
 		  \cdots
 			      \stackrel{\epsilon}{\longmapsto} L_{i-1}|Q_{1} 
-			      \stackrel{\tau}{\longmapsto} L_{i}|Q_{1}^{'}
+			      \stackrel{\epsilon}{\longmapsto} L_{i}|Q_{1}^{'}
 			      \stackrel{\epsilon}{\longmapsto} L_{i+1}|Q_{1}^{'}
 		  \cdots 
 			      \stackrel{\epsilon}{\longmapsto} L_{k}|Q_{1}^{'}
-			      \stackrel{\epsilon}{\longmapsto} P_{1}^{'}|Q_{1}^{'}$	  
+			      \stackrel{\tau}{\longmapsto} P_{1}^{'}|Q_{1}^{'}$	  
 	    \end{center}
-	    we derive the transaction $ L_{i-1}|Q_{1} \stackrel{\tau}{\longmapsto} L_{i}|Q_{1}^{'}$ with rule $Com2L$, whether for the other transactions  we use the rule $Par1L$.
+	    we derive the transaction $ L_{i-1}|Q_{1} \stackrel{\epsilon}{\longmapsto} L_{i}|Q_{1}^{'}$ with rule $Com2L$, whether for the other transactions  we use the rule $Par1L$.
 	  \item[$\gamma_{k+1}=\overline{x}y$] similar.
 	\end{description}
       \item[$Res$]: 
@@ -819,26 +816,26 @@ This section contains the definition of an alternative semantic for multi $\pi$.
 	  \item[$\gamma_{1}=\overline{x}y$]:
 	    A proof of the conclusion is:
 	    \begin{center}
-	      $P_{1}|Q_{1} \stackrel{\tau}{\longmapsto} L_{1}|Q_{1}^{'}
+	      $P_{1}|Q_{1} \stackrel{\epsilon}{\longmapsto} L_{1}|Q_{1}^{'}
 			      \stackrel{\gamma_{2}}{\longmapsto} L_{2}|Q_{1}^{'}
 		  \cdots
 			      \stackrel{\gamma_{k}}{\longmapsto} L_{k}|Q_{1}^{'}
 			      \stackrel{\gamma_{k+1}}{\longmapsto} P_{1}^{'}|Q_{1}^{'}$	  
 	    \end{center}
-	    we derive the first transition with rule $Com3L$, whether for the other transactions we use the rule $Par1L$. Since $\gamma_{1} \cdot \ldots \cdot \gamma_{k+1} = \overline{x}y \cdot \sigma$ and $\gamma_{1}=\overline{x}y$ then $\tau \cdot \gamma_{2}\cdot \ldots \cdot \gamma_{k+1}\cdot \epsilon \cdot \ldots \epsilon \cdot \tau=\sigma$
+	    we derive the first transition with rule $Com3L$, whether for the other transactions we use the rule $Par1L$. Since $\gamma_{1} \cdot \ldots \cdot \gamma_{k+1} = \overline{x}y \cdot \sigma$ and $\gamma_{1}=\overline{x}y$ then $\epsilon \cdot \gamma_{2}\cdot \ldots \cdot \gamma_{k+1}=\sigma$
 	  \item[$\gamma_{i}=\overline{x}y$]:
 	    A proof of the conclusion is:
 	    \begin{center}
 	      $P_{1}|Q_{1} \stackrel{\epsilon}{\longmapsto} L_{1}|Q_{1} 
 		  \cdots
 			      \stackrel{\epsilon}{\longmapsto} L_{i-1}|Q_{1} 
-			      \stackrel{\tau}{\longmapsto} L_{i}|Q_{1}^{'}
+			      \stackrel{\epsilon}{\longmapsto} L_{i}|Q_{1}^{'}
 			      \stackrel{\gamma_{i+1}}{\longmapsto} L_{i+1}|Q_{1}^{'}
 		  \cdots 
 			      \stackrel{\gamma_{k}}{\longmapsto} L_{k}|Q_{1}^{'}
 			      \stackrel{\gamma_{k+1}}{\longmapsto} P_{1}^{'}|Q_{1}^{'}$	  
 	    \end{center}
-	    we derive the transition $ L_{i-1}|Q_{1} \stackrel{\tau}{\longmapsto} L_{i}|Q_{1}^{'}$ with rule $Com2L$, whether for the other transactions of the premises we use the rule $Par1L$.
+	    we derive the transition $ L_{i-1}|Q_{1} \stackrel{\epsilon}{\longmapsto} L_{i}|Q_{1}^{'}$ with rule $Com2L$, whether for the other transactions of the premises we use the rule $Par1L$.
 	  \item[$\gamma_{k+1}=\overline{x}y$]: cannot happen because $\sigma$ is not empty.
 	\end{description}
     \end{description}
@@ -862,7 +859,7 @@ We would like to prove the converse of the previous proposition, namely: if ther
   \begin{center}
   $\inferrule* [left=\bf{Par1L}]{
     \inferrule* [left=\bf{Com3L}]{
-	\inferrule* [left=\bf{SOut}]{
+	\inferrule* [left=\bf{SOutLow}]{
 	}{
 	  \underline{\overline{x}y}.\underline{\overline{a}b}.\overline{x}y.0 
 	    \stackrel{\overline{x}y}{\longmapsto} 
@@ -889,8 +886,8 @@ We would like to prove the converse of the previous proposition, namely: if ther
   \begin{center}
   $\inferrule* [left=\bf{Par1L}]{
     \inferrule* [left=\bf{Par1L}]{
-    \inferrule* [left=\bf{Star}]{
-	\inferrule* [left=\bf{SOut}]{
+    \inferrule* [left=\bf{StarOut}]{
+	\inferrule* [left=\bf{SOutLow}]{
 	}{
 	  \underline{\overline{a}b}.\overline{x}y.0 
 	    \stackrel{\overline{a}b}{\longmapsto} 
@@ -913,9 +910,9 @@ We would like to prove the converse of the previous proposition, namely: if ther
   }$
   \end{center}
   \begin{center}
-  $\inferrule* [left=\bf{Com3L}]{
+  $\inferrule* [left=\bf{Com4L}]{
     \inferrule* [left=\bf{Par1L}]{
-	\inferrule* [left=\bf{Star}]{
+	\inferrule* [left=\bf{StarOut}]{
 	  \inferrule* [left=\bf{Out}]{
 	  }{
 	    \overline{x}y.0
@@ -965,8 +962,8 @@ We would like to prove the converse of the previous proposition, namely: if ther
 
 \begin{example}Transactional synchronization
   \begin{center}
-    $\inferrule*[left=\bf{Com?}]{
-      \inferrule*[left=\bf{Sout}]{
+    $\inferrule*[left=\bf{Com3L}]{
+      \inferrule*[left=\bf{SOutLow}]{
       }{
 	\underline{\overline{x}y}.\overline{x}y.0 
 	  \stackrel{\overline{x}y}{\longmapsto}
@@ -986,8 +983,8 @@ We would like to prove the converse of the previous proposition, namely: if ther
     }$
   \end{center}
   \begin{center}
-    $\inferrule*[left=\bf{Com?}]{
-      \inferrule*[left=\bf{Star}]{
+    $\inferrule*[left=\bf{Com4L}]{
+      \inferrule*[left=\bf{StarOut}]{
 	\inferrule*[left=\bf{Out}]{
 	}{
 	  \overline{x}y.0 
@@ -1008,7 +1005,7 @@ We would like to prove the converse of the previous proposition, namely: if ther
       }
     }{
       *\overline{x}y.0 | x(y).0
-	\stackrel{\epsilon}{\longmapsto}
+	\stackrel{\tau}{\longmapsto}
 	  0 | 0
     }$
   \end{center}
@@ -1026,6 +1023,7 @@ We would like to prove the converse of the previous proposition, namely: if ther
       \xrightarrow{\tau}
 	0 | 0$
   \end{center}
+  also we do not want to derive this transaction because the second process does not start with a strong prefix.
 \end{example}
 
 
@@ -1078,9 +1076,25 @@ There is a much weaker propositions we can prove:
 \end{proposition}
 
 
-Since it's important to give a low level semantic which is equivalent to the high level one, we can propose a change to the low level semantic that fits our need. We replace the rule $Com3L$, $Com3R$, $Com2L$ and $Com2R$ with:
+Since it's important to give a low level semantic which is equivalent to the high level one, we can propose a change to the low level semantic that gets closer to our purpose. We replace the rule $Com3L$, $Com3R$, $Com2L$ and $Com2R$ with:
 \begin{center}
   \begin{tabular}{ll}
+	  $\inferrule* [left=\bf{Com2LStop}]{
+	      L_{1} \stackrel{\overline{x}y}{\longmapsto} L_{2}
+	    \\
+	      P \stackrel{xy}{\longmapsto} Q
+	  }{
+	    L_{1}|P \stackrel{\epsilon}{\longmapsto} L_{2}|stop(Q)
+	  }$
+	  &
+	  $\inferrule* [left=\bf{Com2RStop}]{
+	      P \stackrel{xy}{\longmapsto} Q
+	    \\
+	      L_{1} \stackrel{\overline{x}y}{\longmapsto} L_{2}
+	  }{
+	    P|L_{1} \stackrel{\epsilon}{\longmapsto} stop(Q)|L_{2}
+	  }$
+      \\\\
 	  $\inferrule* [left=\bf{Com3LStop}]{
 	      P \stackrel{\overline{x}y}{\longmapsto} L
 	    \\
@@ -1096,22 +1110,6 @@ Since it's important to give a low level semantic which is equivalent to the hig
  	  }{
  	    P|Q \stackrel{\epsilon}{\longmapsto} stop(P^{'})|L
  	  }$
-       \\\\
-	  $\inferrule* [left=\bf{Com2LStop}]{
-	      L_{1} \stackrel{\overline{x}y}{\longmapsto} L_{2}
-	    \\
-	      P \stackrel{xy}{\longmapsto} Q
-	  }{
-	    L_{1}|P \stackrel{\tau}{\longmapsto} L_{2}|stop(Q)
-	  }$
-	  &
-	  $\inferrule* [left=\bf{Com2RStop}]{
-	      P \stackrel{xy}{\longmapsto} Q
-	    \\
-	      L_{1} \stackrel{\overline{x}y}{\longmapsto} L_{2}
-	  }{
-	    P|L_{1} \stackrel{\tau}{\longmapsto} stop(Q)|L_{2}
-	  }$
   \end{tabular}
 \end{center}
 where $stop(P)$ is a multi $\pi$ process which cannot make any transition.
@@ -1168,7 +1166,7 @@ where $stop(P)$ is a multi $\pi$ process which cannot make any transition.
       where at most one $\gamma$ is an output whether all the other $\gamma$s are $\epsilon$ or $\tau$ then $P\xrightarrow{\tau} er(Q)$ or if there is an output $\overline{x}y$ in the $\gamma$s then $P\xrightarrow{\overline{x}y} er(Q)$. 
   \end{itemize}
   \begin{proof}
-    The proof of the first part of this proposition is almost exactly as the proof of \ref{equivalencehightolow} DA VERIFICARE. The proof of the second part is by induction on the depth of the derivation of the first transition:
+    The proof of the first part of this proposition is almost exactly as the proof of proposition \ref{equivalencehightolow}. The proof of the second part is by induction on the depth of the derivation of the first transition:
     \begin{description}
       \item[base case]
  	The last rule in the derivation of $P \stackrel{\gamma_{1}}{\longmapsto} L_{1}$ can be only $SOutLow$:
@@ -1178,7 +1176,7 @@ where $stop(P)$ is a multi $\pi$ process which cannot make any transition.
  		      \underbrace{\underline{\overline{x}y}.P_{1}}_{P} \stackrel{\overline{x}y}{\longmapsto} \underbrace{* P_{1}}_{L_{1}}
  		  }$ 
 	    \end{center}
-	    since $*P_{1}$ has a mark at the top level, the last rule used to derive $*P_{1}\stackrel{\gamma_{2}}{\longmapsto}$ has to be $Star$ so we have $P_{1}\stackrel{\gamma_{2}}{\longmapsto}L_{2}$ or $P_{1}\stackrel{\gamma_{2}}{\longmapsto}Q$ depending on $k$. We can build the following chain of transition:
+	    since $*P_{1}$ has a mark at the top level, the last rule used to derive $*P_{1}\stackrel{\gamma_{2}}{\longmapsto}$ has to be $StarEps$ so we have $P_{1}\stackrel{\gamma_{2}}{\longmapsto}L_{2}$ or $P_{1}\stackrel{\gamma_{2}}{\longmapsto}Q$ depending on $k$. We can build the following chain of transition:
 	    \begin{center}
 	      $P_{1} \stackrel{\gamma_{2}}{\longmapsto} L_{2} \cdots L_{k-1} \stackrel{\gamma_{k}}{\longmapsto} L_{k} \stackrel{\gamma_{k+1}}{\longmapsto} Q$ 
 	    \end{center}
@@ -1305,7 +1303,7 @@ where $stop(P)$ is a multi $\pi$ process which cannot make any transition.
 	  \item[$Com3LStop$]: 
 	    the last part of the derivation of the first transition is:
 	    \begin{center}
-	    $\inferrule* [left=\bf{Com3L}]{
+	    $\inferrule* [left=\bf{Com3LStop}]{
 		P_{1} \stackrel{\overline{x}y}{\longmapsto} L_{1}^{'}
 	      \\
 		P_{2} \stackrel{xy}{\longmapsto} Q_{2}
@@ -1347,14 +1345,14 @@ where $stop(P)$ is a multi $\pi$ process which cannot make any transition.
 				\stackrel{\gamma_{k+1}}{\longmapsto} 
 				  Q_{1}$
 	    \end{center}
-	    for inductive hypothesis $P_{1} \xrightarrow{\overline{x}y} Q_{1}$. A proof of the conclusion is
+	    for inductive hypothesis $P_{1} \xrightarrow{\overline{x}y} er(Q_{1})$. A proof of the conclusion is
 	    \begin{center}
 	    $\inferrule* [left=\bf{EComSeq}]{
-		P_{1} \xrightarrow{\overline{x}} Q_{1}
+		P_{1} \xrightarrow{\overline{x}} er(Q_{1})
 	      \\
-		P_{2}\xrightarrow{\overline{x}y} Q_{2}
+		P_{2}\xrightarrow{xy} Q_{2}
 	    }{
-	      P_{1}|P_{2} \xrightarrow{\tau} Q_{1}|Q_{2}
+	      P_{1}|P_{2} \xrightarrow{\tau} er(Q_{1})|Q_{2}
 	    }$ 
 	    \end{center}
 	  \item[$Par1L$]: 
@@ -2113,7 +2111,7 @@ where $stop(P)$ is a multi $\pi$ process which cannot make any transition.
 
 
 
-\section{String bisimilarity and equivalence}
+
 
 \subsection{Late operational semantic without structural congruence}
 
@@ -2182,7 +2180,7 @@ where $stop(P)$ is a multi $\pi$ process which cannot make any transition.
       \\
     \begin{tabular}{ll}
       \\
-	  $\inferrule* [left=\bf{Par}]{
+	  $\inferrule* [left=\bf{ParL}]{
 	      P \xrightarrow{\sigma} P^{'}
 	    \\
 	      bn(\sigma)\cap fn(Q)=\emptyset	  
@@ -2195,10 +2193,20 @@ where $stop(P)$ is a multi $\pi$ process which cannot make any transition.
 	    \\
 	      z\notin n(\sigma)
 	  }{
-	    (\nu) z P \xrightarrow{\sigma} (\nu) z P^{'}
+	    (\nu z) P \xrightarrow{\sigma} (\nu z) P^{'}
 	  }$
       \\\\
-	  $\inferrule* [left=\bf{Sum}]{
+	  $\inferrule* [left=\bf{ParR}]{
+	      Q \xrightarrow{\sigma} Q^{'}
+	    \\
+	      bn(\sigma)\cap fn(P)=\emptyset	  
+	  }{
+	    P|Q \xrightarrow{\sigma} P|Q^{'}
+	  }$
+	&
+
+      \\\\
+	  $\inferrule* [left=\bf{SumL}]{
 	    P \xrightarrow{\sigma} P^{'}
 	  }{
 	    P+Q \xrightarrow{\sigma} P^{'}
@@ -2210,6 +2218,20 @@ where $stop(P)$ is a multi $\pi$ process which cannot make any transition.
 	      P^{'} \xrightarrow{\sigma} Q
 	  }{
 	      P \xrightarrow{\sigma} Q
+	  }$
+      \\\\
+	  $\inferrule* [left=\bf{SumR}]{
+	    Q \xrightarrow{\sigma} Q^{'}
+	  }{
+	    P+Q \xrightarrow{\sigma} Q^{'}
+	  }$
+	&
+	  $\inferrule* [left=\bf{Ide}]{
+	      A(\tilde{x}) \stackrel{def}{=} P
+	    \\
+	      P\{\tilde{y}/\tilde{x}\} \xrightarrow{\sigma} Q
+	  }{
+	      A \xrightarrow{\sigma} Q
 	  }$
       \\\\
 	  $\inferrule* [left=\bf{Cls}]{
@@ -2233,7 +2255,7 @@ where $stop(P)$ is a multi $\pi$ process which cannot make any transition.
 	    \\
 	      w \notin fn((\nu y) P^{'})
 	  }{
-	    P \xrightarrow{\overline{x}(w)} P^{'}\{x/w\}
+	    (\nu w)P \xrightarrow{\overline{x}(w)} P^{'}\{x/w\}
 	  }$
 	&
       \\\\\hline
@@ -2256,8 +2278,37 @@ where $stop(P)$ is a multi $\pi$ process which cannot make any transition.
   \end{center}
 \end{example}
 
-\begin{example} Scope extrusion with strong prefixing.
-  $x\notin fn(Q)$  
+\begin{example} Scope extrusion with strong prefixing(1).
+  $x\notin fn(a(b).R)$. The following is the desired transition:
+  \begin{center}
+    $(\nu x)(\underline{\overline{y}x}.\underline{\overline{a}b}.\underline{\overline{y}x}.\overline{a}b.P)|y(z).Q|a(b).R|y(z).S|a(b).T 
+      \xrightarrow{\tau} 
+	(\nu x)(
+	  P
+	  | Q\{x/z\}
+	  | R
+	  | S\{x/z\}
+	)
+	| T$
+  \end{center}
+  It is possible to infer this transition in the late semantic with structural congruence. But without structural congruence we can only infer 
+  \begin{center}
+    $(\nu x)(\underline{\overline{y}x}.\underline{\overline{a}b}.\underline{\overline{y}x}.\overline{a}b.P)|y(z).Q|a(b).R|y(z).S|a(b).T 
+      \xrightarrow{\tau} 
+	(\nu x)(
+	  (\nu x)(
+	    P
+	    | Q\{x/z\}
+	  )
+	  | R
+	  | S\{x/z\}
+	)
+	| T$
+  \end{center}
+\end{example}
+
+\begin{example} Scope extrusion with strong prefixing(2).
+  $x\in fn(a(b).R)$  
   \begin{center}
     $(\nu x)(\underline{\overline{y}x}.\underline{\overline{a}b}.\underline{\overline{y}x}.\overline{a}b.P)|y(z).Q|a(b).R|y(z).S|a(b).T \xrightarrow{\tau} ?$
   \end{center}
@@ -2270,8 +2321,11 @@ where $stop(P)$ is a multi $\pi$ process which cannot make any transition.
   \end{center}
 \end{example}
 
-
-NON FUNZIONA LO SCOPE EXTRUSION CON STRONG PREFIXING
+It is now natural to ask what the semantic of
+\begin{center}
+  $\underline{\overline{x}y}.(\nu x) \overline{y}x.P | (\nu y)x(z).Q | y(w).R$
+\end{center}
+should be
 
 \begin{example}Multi-party synchronization. 
   We show an example of a derivation of three processes that synchronize in the late semantic.
@@ -2331,24 +2385,94 @@ $\inferrule* [left=\bf{LComSng}]{
 \end{example}
 
 
-\subsection{String bisimilarity}
 
-\begin{definition}
-  A \emph{strong simulation} is a binary relation $\mathbf{S}$ on processes such that 
+\section{Strong bisimilarity and equivalence}
+\subsection{Strong bisimilarity}
+
+In the following section, $\rightarrow$ is the transition relation defined in table \ref{multipiearlywith}.
+
+\begin{definition}\label{strongEarlyBisimulation}
+  A \emph{strong early bisimulation} is a simmetric binary relation $\mathbf{S}$ on multi $\pi$ processes such that for all $P$ and $Q$: $P \mathbf{S} Q$, $P \xrightarrow{\gamma} P^{'}$ and $bn(\gamma)$ is fresh imply that
+  \begin{center}
+    $\exists Q^{'}:$ $Q \xrightarrow{\gamma} Q^{'}$ and $P^{'}\mathbf{S} Q^{'}$
+  \end{center}
+  The \emph{strong early bisimilarity}, written $\dot{\sim}_{E}$, is the union of all strong early bisimulation. Two processes $P,Q$ are \emph{strong early bisimilar}, written $P \dot{\sim}_{E} Q$, if they are related by the strong early bisimilarity.
 \end{definition}
 
+\begin{proposition}
+  The strong early bisimilarity is a strong early bisimulation.
+\end{proposition}
+
+\begin{proposition}
+  $\dot{\sim}_{E}$ is an equivalence relation.
+  \begin{proof}:
+    \begin{description}
+      \item[Reflexivity]
+	The identity relation on processes is a strong early bisimulation.
+      \item[Simmetry]
+	It is in the definition.
+      \item[Transitivity]
+	The composition $\dot{\sim}_{E} \dot{\sim}_{E}$ is a strong early bisimulation.
+    \end{description}
+  \end{proof}
+\end{proposition}
+
+
+\begin{definition}\label{strongEarlyBisimulationUpTo}
+  A \emph{strong early bisimulation up to $\dot{\sim}_{E}$} is a simmetric binary relation $\mathbf{S}$ on multi $\pi$ processes such that for all $P$ and $Q$: $P \mathbf{S} Q$, $P \xrightarrow{\gamma} P^{'}$ and $bn(\gamma)$ is fresh imply that
+  \begin{center}
+    $\exists P^{''},Q^{'},Q^{''}:$ $Q \xrightarrow{\gamma} Q^{'}$ and $P^{'} \dot{\sim}_{E} P^{''} \mathbf{S} Q^{''} \dot{\sim}_{E} Q^{'} $
+  \end{center}
+  Two processes $P,Q$ are \emph{strong early bisimilar up to $\dot{\sim}_{E}$}, written $P \dot{\sim}_{E}^{up} Q$, if they are related by a strong early bisimulation up to $\dot{\sim}_{E}$.
+\end{definition}
+
+\begin{proposition}
+  $P \dot{\sim}_{E}^{up} Q$ imply $P \dot{\sim}_{E} Q$.
+  \begin{proof}
+    Let $\mathbf{S}$ be a bisimulation up to $\dot{\sim}_{E}$ such that $P \mathbf{S} Q$. It can be proved that $\dot{\sim}_{E} \mathbf{S} \dot{\sim}_{E}$ is a bisimulation: let $A \dot{\sim}_{E} B \mathbf{S} C \dot{\sim}_{E} D$
+    \begin{center}
+      \begin{tabular}{l}
+	$A \xrightarrow{\gamma} A^{'}$ $\wedge$ $A \dot{\sim}_{E} B$ $\wedge$ definition \ref{strongEarlyBisimulation} 
+      
+	$\Rightarrow \exists B^{'}:$ $B \xrightarrow{\gamma} B^{'}$ $\wedge$ $A^{'}\dot{\sim}_{E} B^{'}$
+      \\
+	$B \mathbf{S} C$ $\wedge$ definition \ref{strongEarlyBisimulationUpTo}
+      
+	$\Rightarrow \exists C^{'} C^{''} B^{''}:$ $C \xrightarrow{\gamma} C^{'}$ $\wedge$ $B^{'} \dot{\sim}_{E} B^{''} \mathbf{S} C^{''} \dot{\sim}_{E} C^{'}$
+      \\
+	$C \xrightarrow{\gamma} C^{'}$ $\wedge$ $C \dot{\sim}_{E} D$ $\wedge$ definition \ref{strongEarlyBisimulation} 
+      
+	$\Rightarrow \exists D^{'}:$ $D \xrightarrow{\gamma} D^{'}$ $\wedge$ $C^{'}\mathbf{S} D^{'}$
+      \\
+	$A^{'} \dot{\sim}_{E} B^{'} \dot{\sim}_{E} B^{''} \mathbf{S} C^{''} \dot{\sim}_{E} C^{'} \dot{\sim}_{E} D^{'}$ $\wedge$ transitivity of $\dot{\sim}_{E}$
+	$\Rightarrow$ $A^{'} \dot{\sim}_{E} B^{''} \mathbf{S} C^{''} \dot{\sim}_{E} D^{'}$
+      \end{tabular}
+    \end{center}
+    It is easy to see that the simmetric also holds.
+  \end{proof}
+\end{proposition}
 
 
 
-
-
-
-
-
-
-
-
-
-
+\begin{proposition}
+  $\dot{\sim}_{E}$ is preserved by all operators except input prefixing.
+  \begin{proof}
+    The proof goes by cases on operators:
+    \begin{description}
+      \item[Output prefixing]
+	The relation $\{(\overline{x}y.P, \overline{x}y.Q): P\dot{\sim}_{E} Q\} \cup \dot{\sim}_{E}$ is a strong early bisimulation.
+      \item[Strong output prefixing]
+	The relation $\{(\underline{\overline{x}y}.P, \underline{\overline{x}y}.Q): P\dot{\sim}_{E} Q\} \cup \dot{\sim}_{E}$ is a strong early bisimulation.
+      \item[Tau prefixing]
+	
+      \item[Summation]
+	
+      \item[Parallel composition]
+	
+      \item[Restriction]
+		
+    \end{description}
+  \end{proof}
+\end{proposition}
 
 
