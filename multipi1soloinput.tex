@@ -217,7 +217,7 @@ In this case, a label can be a sequence of prefixes, whether in the original $\p
 \subsection{Late operational semantic with structural congruence}
 
 \begin{definition}
-  The \emph{late transition relation with structural congruence} is the smallest relation induced by the rules in table \ref{multipisoloinputlateywith}.
+  The \emph{late transition relation with structural congruence} is the smallest relation induced by the rules in table \ref{multipisoloinputlatewith}.
   \begin{table}
     \begin{tabular}{ll}
 	\hline\\
@@ -308,7 +308,7 @@ In this case, a label can be a sequence of prefixes, whether in the original $\p
       \\\hline
     \end{tabular}
     \caption{Multi $\pi$ late semantic with structural congruence}
-    \label{multipisoloinputlateywith}
+    \label{multipisoloinputlatewith}
   \end{table}
 \end{definition}
 
@@ -962,22 +962,47 @@ This section contains the definition of an alternative semantic for multi $\pi$.
 \end{proposition}
 
 
-
 \subsection{Late operational semantic without structural congruence}
 
-DA FARE
-
 \begin{definition}
-  The \emph{late transition relation without structural congruence} is the smallest relation induced by the rules in table \ref{multipisoloinputlateywith}.
+  The \emph{late transition relation without structural congruence} is the smallest relation induced by the rules in table \ref{multipisoloinputlatewithout}.
   \begin{table}
-    \begin{tabular}{ll}
+    \begin{tabular}{lll}
 	\hline\\
-     	  $\inferrule* [left=\bf{Pref}]{
-	    \alpha not a strong prefix
+     	  $\inferrule* [left=\bf{Out}]{
 	  }{
-	    \alpha.P \xrightarrow{\alpha} P
+	    \overline{x}y.P \xrightarrow{\overline{x}y} P
 	  }$
 	&
+     	  $\inferrule* [left=\bf{LInp}]{
+	    w \notin (fn(P)-\{z\})
+	  }{
+	    x(z).P \xrightarrow{x(w)} P\{w/z\}
+	  }$
+	&
+     	  $\inferrule* [left=\bf{Tau}]{
+	  }{
+	    \tau.P \xrightarrow{\tau} P
+	  }$
+      \\
+    \end{tabular}
+    \\
+    \begin{tabular}{ll}
+      \\
+	  $\inferrule* [left=\bf{SInp}]{
+	      P\{w/z\} \xrightarrow{\sigma} P^{'}
+	    \\
+	      w \notin (fn(P)-\{z\})
+	  }{
+	    \underline{x(y)}.P \xrightarrow{x(w) \cdot \sigma} P^{'}
+	  }$
+	&
+	  $\sigma$ is a non empty sequence of inputs
+      \\
+    \end{tabular}
+    \\
+    \begin{tabular}{ll}
+      \\
 	  $\inferrule* [left=\bf{LComSeq}]{
 	      P \xrightarrow{x(y)\cdot \sigma} P^{'}
 	    \\
@@ -985,13 +1010,7 @@ DA FARE
 	    \\
 	      z\notin fn(\sigma)\cup fn(P)
 	  }{
-	    P|Q \xrightarrow{\sigma\{z/y\}} P^{'}\{z/y\}|Q^{'}
-	  }$
-      \\\\
-	  $\inferrule* [left=\bf{SInp}]{
-	      P \xrightarrow{a(b)} P^{'}
-	  }{
-	    \underline{x(y)}.P \xrightarrow{x(y) \cdot a(b)} P^{'}
+	    P|Q \xrightarrow{\sigma} P^{'}\{z/y\}|Q^{'}
 	  }$
 	&
 	  $\inferrule* [left=\bf{LCom}]{
@@ -1003,19 +1022,25 @@ DA FARE
 	  }{
 	    P|Q \xrightarrow{\tau} P^{'}\{z/y\}|Q^{'}
 	  }$
-      \\\\
+      \\
+    \end{tabular}
+    \\
+    \begin{tabular}{ll}
+      \\
 	  $\inferrule* [left=\bf{Sum}]{
 	    P \xrightarrow{\sigma} P^{'}
 	  }{
 	    P+Q \xrightarrow{\sigma} P^{'}
 	  }$
 	&
-	  $\inferrule* [left=\bf{Cong}]{
-	      P\equiv P^{'}
+	  $\inferrule* [left=\bf{Opn}]{
+	      P \xrightarrow{\overline{x}z} P^{'}
+	    \\ 
+	      z\neq x
 	    \\
-	      P^{'} \xrightarrow{\sigma} Q
+	      w\notin fn(P^{'}-\{y\})
 	  }{
-	      P \xrightarrow{\sigma} Q
+	      (\nu z)P \xrightarrow{\overline{x}(z)} P^{'}\{z/w\}
 	  }$
       \\\\
 	  $\inferrule* [left=\bf{Res}]{
@@ -1033,42 +1058,42 @@ DA FARE
 	  }{
 	    P|Q \xrightarrow{\sigma} P^{'}|Q
 	  }$
-      \\\\
-	  $\inferrule* [left=\bf{Opn}]{
-	      P \xrightarrow{\overline{x}z} P^{'}
-	    \\ 
-	      z\neq x
-	  }{
-	      (\nu z)P \xrightarrow{\overline{x}(z)} P^{'}
-	  }$
-	&
-	  $\inferrule* [left=\bf{SInpSeq}]{
-	      P \xrightarrow{\sigma} P^{'}
-	    \\
-	      |\sigma|>1
-	  }{
-	    \underline{x(y)}.P \xrightarrow{x(y) \cdot \sigma} P^{'}
-	  }$
-      \\\\
-	  $\inferrule* [left=\bf{SInpTau}]{
-	      P \xrightarrow{\tau} P^{'}
-	  }{
-	    \underline{x(y)}.P \xrightarrow{x(y)} P^{'}
-	  }$
-	&
-      \\\hline
+      \\
     \end{tabular}
-    \caption{Multi $\pi$ late semantic with structural congruence}
-    \label{multipisoloinputlateywith}
+    \\
+    \begin{tabular}{ll}
+      \\
+	  $\inferrule* [left=\bf{Close}]{
+	      P \xrightarrow{x(w)} P^{'}
+	    \\
+	      Q \xrightarrow{\overline{x}(w)} Q^{'}
+	  }{
+	      P|Q \xrightarrow{\tau} (\nu w)(P^{'}|Q^{'})
+	  }$
+	&
+	  $\inferrule* [left=\bf{CloseSeq}]{
+	      P \xrightarrow{x(w) \cdot \sigma} P^{'}
+	    \\
+	      Q \xrightarrow{\overline{x}(w)} Q^{'}
+	  }{
+	      P|Q \xrightarrow{\sigma} (\nu w)(P^{'}|Q^{'})
+	  }$
+%       \\\\
+% 	  $\inferrule* [left=\bf{SInpTau}]{
+% 	      P \xrightarrow{\tau} P^{'}
+% 	  }{
+% 	    \underline{x(y)}.P \xrightarrow{x(y)} P^{'}
+% 	  }$
+% 	&
+      \\\\\hline
+    \end{tabular}
+    \caption{Multi $\pi$ late semantic without structural congruence}
+    \label{multipisoloinputlatewithout}
   \end{table}
 \end{definition}
 
 \begin{example}Multi-party synchronization
   We show an example of a derivation of three processes that synchronize with the late semantic. The three processes are $\underline{x(a)}.x(b).P$, $\overline{x}y.Q$ and $\overline{x}z.R$. We assume that:
-  \begin{center}
-      $a\notin fn(x(b))\cup fn (\underline{x(a)}.x(b).P)$
-  \end{center}
-  and
   \begin{center}
       $b\notin fn(\underline{x(a)}.x(b).P|\overline{x}y.Q)$
   \end{center}
@@ -1080,7 +1105,7 @@ DA FARE
 	  \xrightarrow{x(b)}
 	    P\{y/a\}|Q
 	\\
-	  \inferrule* [left=\bf{Pref}]{
+	  \inferrule* [left=\bf{Out}]{
 	  }{
 	    \overline{x}z.R	
 	      \xrightarrow{\overline{x}z} 
@@ -1096,8 +1121,8 @@ DA FARE
   
   \begin{center}
   $\inferrule* [left=\bf{LComSeq}]{
-      \inferrule* [left=\bf{SInp}]{
-	\inferrule* [left=\bf{Pref}]{
+      \inferrule* [left=\bf{SLInp}]{
+	\inferrule* [left=\bf{LInp}]{
 	}{
 	  x(b).P \xrightarrow{x(b)} P
 	}
@@ -1109,13 +1134,253 @@ DA FARE
     \\
       \inferrule* [left=\bf{Out}]{
       }{
-	\overline{x}y.Q \xrightarrow{\overline{x}y} Q
+	\overline{x}y.Q 
+	  \xrightarrow{\overline{x}y} 
+	    Q
       }
   }{
-	\underline{x(a)}.x(b).P|\overline{x}y.Q)
-	  \xrightarrow{x(b)}
+    \underline{x(a)}.x(b).P
+      | \overline{x}y.Q
+    \xrightarrow{x(b)}
 	    P\{y/a\}|Q
   }$
   \end{center}
 
 \end{example}
+
+
+In the following example we assume that all bound variables have different names.
+
+
+\begin{example} Scope intrusion without strong prefixing.
+  \begin{center}
+    $\overline{y}x.P|(\nu x)(y(z).Q) \xrightarrow{\tau} P|(\nu w)(Q\{w/x\}\{x/z\})$
+  \end{center}
+  This cannot be proved without explicit $\alpha$ conversion.
+\end{example}
+
+\begin{example} Scope intrusion with strong prefixing.
+  \begin{center}
+    $(\nu x)(\nu b)\underline{y(z)}.a(c).P
+      | y(x).Q
+      | a(b).R
+    \xrightarrow{\tau} 
+      ((\nu x^{'})(\nu b^{'})P\{x^{'}/x\}\{x/z\}
+	|Q)\{b^{'}/b\}\{b/c\} 
+	| R$
+  \end{center}
+  This cannot be proved without explicit $\alpha$ conversion.
+\end{example}
+
+\begin{example} Scope extrusion without strong prefixing.
+  $x\notin fn(Q)$  
+  \begin{center}
+  $\inferrule* [left=\bf{Cls}]{
+      \inferrule* [left=\bf{Opn}]{
+	\inferrule* [left=\bf{Out}]{
+	}{
+	  \overline{y}x.P
+	  \xrightarrow{\overline{y}x} 
+	    P
+	}
+      }{
+	(\nu x)
+	  (\overline{y}x.P)
+	  \xrightarrow{\overline{y}(x)} 
+	    P
+      }
+    \\
+      \inferrule* [left=\bf{LInp}]{
+      }{
+	y(z).Q
+	  \xrightarrow{y(x)} 
+	    Q\{x/z\}
+      }
+  }{
+    (\nu x)
+      (\overline{y}x.P)
+      | y(z).Q 
+    \xrightarrow{\tau} 
+      (\nu x)
+      (	  
+	P
+      | 
+	Q\{x/z\}
+      )
+  }$
+  \end{center}
+\end{example}
+
+\begin{example} Scope extrusion with strong prefixing.
+  \begin{center}
+    $\underline{y(x_{1})}.\underline{a(b)}.y(x_{2}).P
+      | (\nu z_{1})\overline{y}z_{1}.Q 
+      | \overline{a}b.R
+      | (\nu z_{2})\overline{y}z_{2}.S
+    \xrightarrow{\tau} 
+      (\nu z_{2})(
+ 	  (\nu z_{1})(
+ 	    P\{z_{1}/x_{1}\}\{x_{2}/z_{2}\}
+ 	    | Q
+ 	  )
+ 	  | R
+	  | S
+	)$
+  \end{center}
+  \begin{center}
+  $\inferrule* [left=\bf{ClsSeq}]{
+      \inferrule* [left=\bf{SInp}]{
+	\inferrule* [left=\bf{SInp}]{
+	  \inferrule* [left=\bf{LInp}]{
+	  }{
+	    (y(x_{2}).P)\{x_{1}/z_{1}\}
+	      \xrightarrow{y(z_{2})} 
+		P\{x_{1}/z_{1}\}\{x_{2}/z_{2}\}
+	  }
+	}{
+	  (\underline{a(b)}.y(x_{2}).P)\{x_{1}/z_{1}\}
+	    \xrightarrow{a(b) \cdot y(z_{2})} 
+	      P\{x_{1}/z_{1}\}\{x_{2}/z_{2}\}
+	}
+      }{
+	\underline{y(x_{1})}.\underline{a(b)}.y(x_{2}).P
+	  \xrightarrow{y(z_{1}) \cdot a(b) \cdot y(z_{2})} 
+	    P\{x_{1}/z_{1}\}\{x_{2}/z_{2}\}
+      }
+    \\
+      \inferrule* [left=\bf{Opn}]{
+      }{
+	(\nu z_{1})\overline{y}z_{1}.Q 
+	  \xrightarrow{y(z_{1})} 
+	    Q
+      }
+  }{
+    \underline{y(x_{1})}.\underline{a(b)}.y(z_{2}).P
+	| (\nu z_{1})\overline{y}z_{1}.Q 
+    \xrightarrow{a(b) \cdot y(x_{2})} 
+	  (\nu z_{1})(
+	    P\{z_{1}/x_{1}\}\{x_{2}/z_{2}\}
+	    | Q
+	  )
+%     \underline{y(x_{1})}.\underline{a(b)}.y(x_{2}).P
+% 	| (\nu z_{1})\overline{y}z_{1}.Q 
+%  	| \overline{a}b.R
+%  	| (\nu z_{2})\overline{y}z_{2}.S
+%     \xrightarrow{\tau} 
+%       (\nu z_{2})[(
+% 	  (\nu z_{1})(
+% 	    P\{z_{1}/x_{1}\}
+% 	    | Q
+% 	  )
+% 	  | R
+% 	)\{z_{2}/x_{2}\}
+% 	| S
+%       ]
+  }$
+  \end{center}
+
+  \begin{center}
+  $\inferrule* [left=\bf{ClsSeq}]{
+      \underline{y(x_{1})}.\underline{a(b)}.y(x_{2}).P
+	| (\nu z_{1})\overline{y}z_{1}.Q 
+      \xrightarrow{a(b) \cdot y(z_{2})} 
+	  (\nu z_{1})(
+	    P\{z_{1}/x_{1}\}\{x_{2}/z_{2}\}
+	    | Q
+	  )
+    \\
+      \inferrule* [left=\bf{Out}]{
+      }{
+	\overline{a}b.R
+	  \xrightarrow{\overline{a}b} 
+	    R
+      }
+  }{
+    \underline{y(x_{1})}.\underline{a(b)}.y(x_{2}).P
+	| (\nu z_{1})\overline{y}z_{1}.Q 
+	| \overline{a}b.R
+    \xrightarrow{y(z_{2})} 
+ 	  (\nu z_{1})(
+ 	    P\{z_{1}/x_{1}\}\{x_{2}/z_{2}\}
+ 	    | Q
+ 	  )
+ 	  | R
+%     \underline{y(x_{1})}.\underline{a(b)}.y(x_{2}).P
+% 	| (\nu z_{1})\overline{y}z_{1}.Q 
+%  	| \overline{a}b.R
+%  	| (\nu z_{2})\overline{y}z_{2}.S
+%     \xrightarrow{\tau} 
+%       (\nu z_{2})[(
+% 	  (\nu z_{1})(
+% 	    P\{z_{1}/x_{1}\}
+% 	    | Q
+% 	  )
+% 	  | R
+% 	)\{z_{2}/x_{2}\}
+% 	| S
+%       ]
+  }$
+  \end{center}
+
+  \begin{center}
+  $\inferrule* [left=\bf{Cls}]{
+      \underline{y(x_{1})}.\underline{a(b)}.y(x_{2}).P
+	| (\nu z_{1})\overline{y}z_{1}.Q 
+	| \overline{a}b.R
+      \xrightarrow{y(z_{2})} 
+ 	  (\nu z_{1})(
+ 	    P\{z_{1}/x_{1}\}\{x_{2}/z_{2}\}
+ 	    | Q
+ 	  )
+ 	  | R
+    \\
+      \inferrule* [left=\bf{Opn}]{
+	\inferrule* [left=\bf{Out}]{
+	}{
+	  \overline{y}z_{2}.S
+	    \xrightarrow{\overline{y}z_{2}} 
+	      S
+	}
+      }{
+	(\nu z_{2})\overline{y}z_{2}.S
+	  \xrightarrow{\overline{y}(z_{2})} 
+	    S
+      }
+  }{
+    \underline{y(x_{1})}.\underline{a(b)}.y(x_{2}).P
+	| (\nu z_{1})\overline{y}z_{1}.Q 
+	| \overline{a}b.R
+	| (\nu z_{2})\overline{y}z_{2}.S
+    \xrightarrow{\tau} 
+	(\nu z_{2})(
+ 	  (\nu z_{1})(
+ 	    P\{z_{1}/x_{1}\}\{x_{2}/z_{2}\}
+ 	    | Q
+ 	  )
+ 	  | R
+	  | S
+	)
+  }$
+  \end{center}
+
+\end{example}
+
+% \section{Strong bisimilarity and equivalence}
+% 
+% \subsection{Strong bisimilarity}
+% 
+% \begin{definition}
+%   A \emph{strong simulation} is a binary relation $\mathbb{S}$ on processes such that for all $P\mathbf{S}Q$:
+%   \begin{itemize}
+%     \item 
+%       $P \xrightarrow{\alpha} P^{'}$ and $\alpha$ is a free action imply that there exists some $Q^{'}$ such that $Q \xrightarrow{\alpha} Q^{'}$ and $P^{'}\mathbf{S}Q^{'}$
+%     \item
+%       $P \xrightarrow{x(y)} P^{'}$ and $y\notin fn(P,Q)$ is a free action imply that there exists some $Q^{'}$ such that $Q \xrightarrow{x(y)} Q^{'}$ and for all $w$, $P^{'}\{w/y\}\mathbf{S}Q^{'}\{w/y\}$
+%     \item
+%       
+%   \end{itemize}
+% \end{definition}
+% 
+% \subsection{Strong equivalence and distinctions}
+% \subsection{Properties of strong bisimilarity}
+% \subsection{Properties of strong $D-$ equivalence}
