@@ -2113,10 +2113,10 @@ where $stop(P)$ is a multi $\pi$ process which cannot make any transition.
 
 
 
-\subsection{Late operational semantic without structural congruence}
+\subsection{Early operational semantic without structural congruence}
 
 \begin{definition}
-  The \emph{late transition relation without structural congruence} is the smallest relation induced by the rules in table \ref{multipilatewith}.
+  The \emph{late transition relation without structural congruence} is the smallest relation induced by the rules in table \ref{multipioutearlywithout}.
   \begin{table}
     \begin{tabular}{lll}
       \hline\\
@@ -2125,10 +2125,10 @@ where $stop(P)$ is a multi $\pi$ process which cannot make any transition.
 	    \overline{x}y.P \xrightarrow{\overline{x}y} P
 	  }$
 	&
-	  $\inferrule* [left=\bf{LInp}]{
-	    w \notin fn((\nu z)P)
+	  $\inferrule* [left=\bf{EInp}]{
+	    w \notin (fn(P)-\{z\})
 	  }{
-	    x(z).P \xrightarrow{x(w)} P\{w/z\}
+	    x(z).P \xrightarrow{xw} P\{w/z\}
 	  }$
 	&
 	  $\inferrule* [left=\bf{Tau}]{
@@ -2140,41 +2140,33 @@ where $stop(P)$ is a multi $\pi$ process which cannot make any transition.
       \\
     \begin{tabular}{ll}
       \\
-	  $\inferrule* [left=\bf{SOutSeq}]{
+	  $\inferrule* [left=\bf{SOut}]{
 	      P \xrightarrow{\sigma} P^{'}
-	    \\
-	      |\sigma| > 1
 	  }{
 	      \underline{\overline{x}y}.P \xrightarrow{\overline{x}y \cdot \sigma} P^{'}
 	  }$
 	&
-	  $\inferrule* [left=\bf{SOut}]{
-	      P \xrightarrow{\overline{a}b} P^{'}
-	  }{
-	      \underline{\overline{x}y}.P \xrightarrow{\overline{x}y \cdot \overline{a}b} P^{'}
-	  }$
+	  $\sigma$ is a non empty sequence of outputs
       \\
     \end{tabular}
       \\
-    \begin{tabular}{lll}
+    \begin{tabular}{ll}
       \\
-	  $\inferrule* [left=\bf{LComSeq}]{
-	      P \xrightarrow{x(y)} P^{'}
+	  $\inferrule* [left=\bf{EComSeq}]{
+	      P \xrightarrow{\overline{x}y\cdot \sigma} P^{'}
 	    \\
-	      Q\xrightarrow{\overline{x}z\cdot \sigma} Q^{'}
+	      Q\xrightarrow{xy} Q^{'}
 	  }{
-	    P|Q \xrightarrow{\sigma} P^{'}\{z/y\}|Q^{'}
+	    P|Q \xrightarrow{\sigma} P^{'}|Q^{'}
 	  }$
 	&
-	  $\inferrule* [left=\bf{LCom}]{
-	      P \xrightarrow{x(y)} P^{'}
+	  $\inferrule* [left=\bf{ECom}]{
+	      P \xrightarrow{\overline{x}y} P^{'}
 	    \\
-	      Q\xrightarrow{\overline{x}z} Q^{'}
+	      Q\xrightarrow{xy} Q^{'}
 	  }{
-	    P|Q \xrightarrow{\tau} P^{'}\{z/y\}|Q^{'}
+	    P|Q \xrightarrow{\tau} P^{'}|Q^{'}
 	  }$
-	&
-	  $z\notin fn(P)$
       \\
     \end{tabular}
       \\
@@ -2182,48 +2174,26 @@ where $stop(P)$ is a multi $\pi$ process which cannot make any transition.
       \\
 	  $\inferrule* [left=\bf{ParL}]{
 	      P \xrightarrow{\sigma} P^{'}
-	    \\
-	      bn(\sigma)\cap fn(Q)=\emptyset	  
+% 	    \\
+% 	      bn(\sigma)\cap fn(Q)=\emptyset	  
 	  }{
 	    P|Q \xrightarrow{\sigma} P^{'}|Q
 	  }$
 	&
+	  $\inferrule* [left=\bf{ParR}]{
+	      Q \xrightarrow{\sigma} Q^{'}
+% 	    \\
+% 	      bn(\sigma)\cap fn(P)=\emptyset	  
+	  }{
+	    P|Q \xrightarrow{\sigma} P|Q^{'}
+	  }$
+      \\\\
 	  $\inferrule* [left=\bf{Res}]{
 	      P \xrightarrow{\sigma} P^{'} 
 	    \\
 	      z\notin n(\sigma)
 	  }{
 	    (\nu z) P \xrightarrow{\sigma} (\nu z) P^{'}
-	  }$
-      \\\\
-	  $\inferrule* [left=\bf{ParR}]{
-	      Q \xrightarrow{\sigma} Q^{'}
-	    \\
-	      bn(\sigma)\cap fn(P)=\emptyset	  
-	  }{
-	    P|Q \xrightarrow{\sigma} P|Q^{'}
-	  }$
-	&
-
-      \\\\
-	  $\inferrule* [left=\bf{SumL}]{
-	    P \xrightarrow{\sigma} P^{'}
-	  }{
-	    P+Q \xrightarrow{\sigma} P^{'}
-	  }$
-	&
-	  $\inferrule* [left=\bf{Cong}]{
-	      P\equiv P^{'}
-	    \\
-	      P^{'} \xrightarrow{\sigma} Q
-	  }{
-	      P \xrightarrow{\sigma} Q
-	  }$
-      \\\\
-	  $\inferrule* [left=\bf{SumR}]{
-	    Q \xrightarrow{\sigma} Q^{'}
-	  }{
-	    P+Q \xrightarrow{\sigma} Q^{'}
 	  }$
 	&
 	  $\inferrule* [left=\bf{Ide}]{
@@ -2233,65 +2203,150 @@ where $stop(P)$ is a multi $\pi$ process which cannot make any transition.
 	  }{
 	      A \xrightarrow{\sigma} Q
 	  }$
+
+% 	  $\inferrule* [left=\bf{Cong}]{
+% 	      P\equiv P^{'}
+% 	    \\
+% 	      P^{'} \xrightarrow{\sigma} Q
+% 	  }{
+% 	      P \xrightarrow{\sigma} Q
+% 	  }$
       \\\\
-	  $\inferrule* [left=\bf{Cls}]{
-	      P \xrightarrow{\overline{x}(w)} P^{'}
-	    \\
-	      Q \xrightarrow{x(w)} Q^{'}
+	  $\inferrule* [left=\bf{SumL}]{
+	    P \xrightarrow{\sigma} P^{'}
 	  }{
-	      P|Q \xrightarrow{\tau} (\nu w)(P^{'}|Q^{'})
+	    P+Q \xrightarrow{\sigma} P^{'}
 	  }$
 	&
-	  $\inferrule* [left=\bf{ClsSeq}]{
-	      P \xrightarrow{\overline{x}(w) \cdot \sigma} P^{'}
-	    \\
-	      Q \xrightarrow{x(w)} Q^{'}
+	  $\inferrule* [left=\bf{SumR}]{
+	    Q \xrightarrow{\sigma} Q^{'}
 	  }{
-	      P|Q \xrightarrow{\sigma} (\nu w)(P^{'}|Q^{'})
+	    P+Q \xrightarrow{\sigma} Q^{'}
 	  }$
-      \\\\
-	  $\inferrule* [left=\bf{Opn}]{
-	      P \xrightarrow{\overline{x}y} P^{'}
-	    \\
-	      w \notin fn((\nu y) P^{'})
-	  }{
-	    (\nu w)P \xrightarrow{\overline{x}(w)} P^{'}\{x/w\}
-	  }$
-	&
+%       \\
+%     \end{tabular}
+%       \\
+%     \begin{tabular}{l}
+%       \\	
+% 	  $\inferrule* [left=\bf{Opn}]{
+% 	      P\{z/y\} \xrightarrow{\sigma\{z/y\}} P^{'}
+% 	    \\
+% 	      y \in obj(\sigma)
+% 	    \\
+% 	      z \notin sbj(\sigma)
+% 	  }{
+% 	    (\nu z)P \xrightarrow{opn(\sigma, z, y)} P^{'}
+% 	  }$
+% 	  $\inferrule* [left=\bf{Opn}]{
+% 	      P \xrightarrow{\sigma} P^{'}
+% 	    \\
+% 	      y \in obj(\sigma)
+% 	    \\
+% 	      y \notin sbj(\sigma)
+% 	  }{
+% 	    (\nu y)P \xrightarrow{opn(\sigma, y)} P^{'}
+% 	  }$
+%       \\
+%     \end{tabular}
+%       \\
+%     \begin{tabular}{ll}
+%       \\	
+% 	  $\inferrule* [left=\bf{Cls}]{
+% 	      P \xrightarrow{\overline{x}(z)} P^{'}
+% 	    \\
+% 	      Q \xrightarrow{xz} Q^{'}
+% 	  }{
+% 	      P|Q \xrightarrow{\tau} (\nu z)(P^{'}|Q^{'})
+% 	  }$
+% 	&
+% 	  $\inferrule* [left=\bf{ClsSeq}]{
+% 	      P \xrightarrow{\overline{x}(z) \cdot \sigma} P^{'}
+% 	    \\
+% 	      Q \xrightarrow{xz} Q^{'}
+% 	  }{
+% 	      P|Q \xrightarrow{\sigma} (\nu z)(P^{'}|Q^{'})
+% 	  }$
+%       \\
+%     \end{tabular}
+%       \\
+%     \begin{tabular}{ll}
+%       \\
+% 	$opn(\overline{x}y, w)=\overline{x}y$
+%       &
+% 	$opn(\overline{x}y \cdot \sigma, w)=\overline{x}y \cdot opn(\sigma, w)$
+%     \\
+% 	$opn(\overline{x}w, w)=\overline{x}(w)$
+%       &
+% 	$opn(\overline{x}w \cdot \sigma, w)=\overline{x}(w) \cdot opn(\sigma, w)$
+%     \\
       \\\\\hline
     \end{tabular}
-    \caption{Multi$\pi$ late semantic without structural congruence}
-    \label{multipilatewith}
+    \caption{Multi$\pi$ early semantic without structural congruence}
+    \label{multipioutearlywithout}
   \end{table}
+  
+
 \end{definition}
 
-\begin{example} Scope intrusion without strong prefixing.
-  \begin{center}
-    $\overline{y}x.P|(\nu x)(y(z).Q) \xrightarrow{\tau} P|(\nu w)(Q\{w/x\}\{x/z\})$
-  \end{center}
-\end{example}
-
-\begin{example} Scope extrusion without strong prefixing.
-  $x\notin fn(Q)$  
-  \begin{center}
-    $(\nu x)(\overline{y}x.P)|y(z).Q \xrightarrow{\tau} (\nu x)(P|Q\{x/z\})$
-  \end{center}
-\end{example}
-
 \begin{example} Scope extrusion with strong prefixing(1).
-  $x\notin fn(a(b).R)$. The following is the desired transition:
+  $x\notin fn(y(z).Q|a(b).R|y(z).S)$. The following is the desired transition:
   \begin{center}
     $(\nu x)(\underline{\overline{y}x}.\underline{\overline{a}b}.\underline{\overline{y}x}.\overline{a}b.P)|y(z).Q|a(b).R|y(z).S|a(b).T 
       \xrightarrow{\tau} 
 	(\nu x)(
 	  P
 	  | Q\{x/z\}
-	  | R
 	  | S\{x/z\}
 	)
+	| R
 	| T$
   \end{center}
-  It is possible to infer this transition in the late semantic with structural congruence. But without structural congruence we can only infer 
+  It is possible to infer this transition in the semantic with structural congruence. But without structural congruence and the following spoce extrusion rules
+  \begin{center}
+        \begin{tabular}{l}
+      \\	
+% 	  $\inferrule* [left=\bf{Opn}]{
+% 	      P\{z/y\} \xrightarrow{\sigma\{z/y\}} P^{'}
+% 	    \\
+% 	      y \in obj(\sigma)
+% 	    \\
+% 	      z \notin sbj(\sigma)
+% 	  }{
+% 	    (\nu z)P \xrightarrow{opn(\sigma, z, y)} P^{'}
+% 	  }$
+	  $\inferrule* [left=\bf{Opn}]{
+	      P \xrightarrow{\sigma} P^{'}
+	    \\
+	      y \in obj(\sigma)
+	    \\
+	      y \notin sbj(\sigma)
+	  }{
+	    (\nu y)P \xrightarrow{opn(\sigma, y)} P^{'}
+	  }$
+      \\
+    \end{tabular}
+      \\
+    \begin{tabular}{ll}
+      \\	
+	  $\inferrule* [left=\bf{Cls}]{
+	      P \xrightarrow{\overline{x}(z)} P^{'}
+	    \\
+	      Q \xrightarrow{xz} Q^{'}
+	  }{
+	      P|Q \xrightarrow{\tau} (\nu z)(P^{'}|Q^{'})
+	  }$
+	&
+	  $\inferrule* [left=\bf{ClsSeq}]{
+	      P \xrightarrow{\overline{x}(z) \cdot \sigma} P^{'}
+	    \\
+	      Q \xrightarrow{xz} Q^{'}
+	  }{
+	      P|Q \xrightarrow{\sigma} (\nu z)(P^{'}|Q^{'})
+	  }$
+      \\
+    \end{tabular}
+  \end{center}
+  we can only infer 
   \begin{center}
     $(\nu x)(\underline{\overline{y}x}.\underline{\overline{a}b}.\underline{\overline{y}x}.\overline{a}b.P)|y(z).Q|a(b).R|y(z).S|a(b).T 
       \xrightarrow{\tau} 
@@ -2305,13 +2360,160 @@ where $stop(P)$ is a multi $\pi$ process which cannot make any transition.
 	)
 	| T$
   \end{center}
+  This transition is not what we want because now the scope of the inner $\nu x$ hides in $P$ the scope of the outer $\nu x$, so $P$ and $S$ cannot use $x$ to communicate. But whit these rules:
+  \begin{center}
+    \begin{tabular}{ll}
+      \\	
+% 	  $\inferrule* [left=\bf{Opn}]{
+% 	      P\{z/y\} \xrightarrow{\sigma\{z/y\}} P^{'}
+% 	    \\
+% 	      y \in obj(\sigma)
+% 	    \\
+% 	      z \notin sbj(\sigma)
+% 	  }{
+% 	    (\nu z)P \xrightarrow{opn(\sigma, z, y)} P^{'}
+% 	  }$
+	  $\inferrule* [left=\bf{Opn}]{
+	      P \xrightarrow{\sigma} P^{'}
+	    \\
+	      y \in obj(\sigma)
+	    \\
+	      y \notin sbj(\sigma)
+	  }{
+	    (\nu y)P \xrightarrow{opn(\sigma, y) (\nu y)} P^{'}
+	  }$
+	&
+% 	\\\\
+% 	  $\inferrule* [left=\bf{Cls}]{
+% 	      P \xrightarrow{(\nu y)} Q
+% 	  }{
+% 	      P \xrightarrow{\tau} (\nu y)Q
+% 	  }$
+% 	&
+% 	  $\inferrule* [left=\bf{ClsSeq}]{
+% 	      P \xrightarrow{(\nu y) \cdot \sigma} Q
+% 	  }{
+% 	      P \xrightarrow{\sigma} (\nu y)Q
+% 	  }$
+      \\
+    \end{tabular}
+      \\
+    \begin{tabular}{ll}
+      \\	
+	  $\inferrule* [left=\bf{Cls}]{
+	      P \xrightarrow{\overline{x}(y) \cdot (\nu y)} P^{'}
+	    \\
+	      Q \xrightarrow{xy} Q^{'}
+	  }{
+	      P|Q \xrightarrow{\tau} (\nu y)(P^{'}|Q^{'})
+	  }$
+	&
+	  $\inferrule* [left=\bf{ClsSeq1}]{
+	      P \xrightarrow{\overline{x}(y) \cdot (\nu y) \cdot \sigma} P^{'}
+	    \\
+	      Q \xrightarrow{xy} Q^{'}
+	  }{
+	      P|Q \xrightarrow{\sigma} (\nu y)(P^{'}|Q^{'})
+	  }$
+      \\
+	  $\inferrule* [left=\bf{ClsSeq2}]{
+	      P \xrightarrow{\overline{x}(y) \cdot \sigma} P^{'}
+	    \\
+	      Q \xrightarrow{xy} Q^{'}
+	  }{
+	      P|Q \xrightarrow{\sigma} P^{'}|Q^{'}
+	  }$
+	&
+	  $\sigma$ does not start with $\nu $
+      \\
+    \end{tabular}
+      \\
+    \begin{tabular}{ll}
+      \\
+	$opn(\overline{x}y, y)=\overline{x}(y) \cdot (\nu y)$
+	&
+	$opn(\overline{x}y \cdot \sigma, y)= \left\{\begin{array}{ll}
+	  \overline{x}(y)  \cdot opn(\sigma, y) & if\; y\in obj(\sigma)
+	\\
+	  \overline{x}(y) \cdot (\nu y) \cdot opn(\sigma, y) & if\; y\notin obj(\sigma)
+	\end{array}\right.$
+      \\
+	$opn(\overline{x}z, y)=\overline{x}z$
+	&
+	$opn(\overline{x}z \cdot \sigma, y)=\overline{x}z \cdot opn(\sigma, y)$
+      \\
+	$opn((\nu z), y)=(\nu z)$
+	&
+	$opn((\nu z) \cdot \sigma, y)=(\nu z) \cdot opn(\sigma, y)$
+      \\
+    \end{tabular}
+  \end{center}
+  The following transition can be inferred:
+  \begin{center}
+    $(\nu x)(\underline{\overline{y}x}.\underline{\overline{a}b}.\underline{\overline{y}x}.\overline{a}b.P)
+      | y(z).Q
+      | a(b).R
+      | y(z).S
+      | a(b).T 
+      \xrightarrow{\tau} 
+	(\nu x)(
+	  P
+	  | Q\{x/z\}
+	  | R
+	  | S\{x/z\}
+	)
+	| T$
+  \end{center}
 \end{example}
 
-\begin{example} Scope extrusion with strong prefixing(2).
-  $x\in fn(a(b).R)$  
+\begin{example} Scope intrusion without strong prefixing.
   \begin{center}
-    $(\nu x)(\underline{\overline{y}x}.\underline{\overline{a}b}.\underline{\overline{y}x}.\overline{a}b.P)|y(z).Q|a(b).R|y(z).S|a(b).T \xrightarrow{\tau} ?$
+    $\overline{y}x.P|(\nu x)(y(z).Q) \xrightarrow{\tau} P|(\nu w)(Q\{w/x\}\{x/z\})$
   \end{center}
+  This transition cannot be derived without $alpha$ conversion.
+\end{example}
+
+\begin{example} Scope extrusion without strong prefixing.
+  \begin{center}
+  $
+    \inferrule* [left=\bf{Cls}]{
+      \inferrule* [left=\bf{Opn}]{
+	\inferrule* [left=\bf{Out}]{
+	}{
+	  \overline{y}x.P
+	    \xrightarrow{\overline{y}x} 
+	      P
+	}
+      }{
+	(\nu x)(\overline{y}x.P)
+	  \xrightarrow{\overline{y}(x) (\nu x)} 
+	    P
+      }
+      \\
+      \inferrule* [left=\bf{EInp}]{
+	x\notin (fn(Q)-\{z\})
+      }{
+	y(z).Q 
+	  \xrightarrow{yx} 
+	    Q\{x/z\}
+      }
+  }{
+    (\nu x)(\overline{y}x.P)|y(z).Q 
+	\xrightarrow{\tau} 
+	  (\nu x)(P|Q\{x/z\})
+  }$
+  \end{center}
+\end{example}
+
+
+\begin{example} Scope extrusion with strong prefixing(2).
+  $x\in fn(y(z).Q|a(b).R|y(z).S)$ and  $x^{'}\notin fn(y(z).Q|a(b).R|y(z).S)$
+  \begin{center}
+    $(\nu x)(\underline{\overline{y}x}.\underline{\overline{a}b}.\underline{\overline{y}x}.\overline{a}b.P)|y(z).Q|a(b).R|y(z).S|a(b).T \xrightarrow{\tau} 
+      (\nu x^{'})(P\{x^{'}/x\}|Q\{x^{'}/z\}|R|S\{x^{'}/z\})|T
+    $
+  \end{center}
+  This transition cannot be derived without $\alpha$ conversion.
 \end{example}
 
 
@@ -2319,77 +2521,78 @@ where $stop(P)$ is a multi $\pi$ process which cannot make any transition.
   \begin{center}
     $\underline{\overline{y}x}.\overline{a}b.P|(\nu x)(y(z).Q)|(\nu b)(a(c).R) \xrightarrow{\tau} P|(\nu w)(Q\{w/x\}\{x/z\})|(\nu d)(R\{d/b\}\{b/c\})$
   \end{center}
+  This transition cannot be derived without $\alpha$ conversion.
 \end{example}
 
-It is now natural to ask what the semantic of
-\begin{center}
-  $\underline{\overline{x}y}.(\nu x) \overline{y}x.P | (\nu y)x(z).Q | y(w).R$
-\end{center}
-should be
+% It is now natural to ask what the semantic of
+% \begin{center}
+%   $\underline{\overline{x}y}.(\nu x) \overline{y}x.P | (\nu y)x(z).Q | y(w).R$
+% \end{center}
+% should be
 
-\begin{example}Multi-party synchronization. 
-  We show an example of a derivation of three processes that synchronize in the late semantic.
-\begin{center}
-$\inferrule* [left=\bf{Res}]{
-    x\notin n(\tau)
-   \\
-    \inferrule* [left=\bf{LComSeq}]{
-	  \underline{\overline{x}y}.\overline{x}y.0|x(y).0
-	    \xrightarrow{\overline{x}y}
-	      0|0
-      \\
-	\inferrule* [left=\bf{Pref}]{
-	}{
-	  x(y).0	
-	    \xrightarrow{x(y)} 
-	      0
-	}
-    }{
-      ((\underline{\overline{x}y}.\overline{x}y.0|x(y).0)|x(y).0)
-	\xrightarrow{\tau}
-	  ((0|0)|0)
-    }
-  }{
-    (\nu x)((\underline{\overline{x}y}.\overline{x}y.0|x(y).0)|x(y).0)
-      \xrightarrow{\tau}
-	(\nu x)((0|0)|0)
-}$
-\end{center}
-
-\begin{center}
-$\inferrule* [left=\bf{LComSng}]{
-  \inferrule* [left=\bf{SOut}]{
-    \inferrule* [left=\bf{Pref}]{
-    }{
-      \overline{x}y.0
-	\xrightarrow{\overline{x}y}
-	  0
-    }
-  }{
-    \underline{\overline{x}y}.\overline{x}y.0
-      \xrightarrow{\overline{x}y\cdot \overline{x}y}
-	0
-  }
-  \\
-    \inferrule* [left=\bf{Pref}]{
-    }{
-      x(y).0 \xrightarrow{x(y)} 0
-    }
-}{
-  \underline{\overline{x}y}.\overline{x}y.0|x(y).0
-    \xrightarrow{\overline{x}y}
-      0|0
-}$
-\end{center}
-
-\end{example}
+% \begin{example}Multi-party synchronization. 
+%   We show an example of a derivation of three processes that synchronize in the late semantic.
+% \begin{center}
+% $\inferrule* [left=\bf{Res}]{
+%     x\notin n(\tau)
+%    \\
+%     \inferrule* [left=\bf{LComSeq}]{
+% 	  \underline{\overline{x}y}.\overline{x}y.0|x(y).0
+% 	    \xrightarrow{\overline{x}y}
+% 	      0|0
+%       \\
+% 	\inferrule* [left=\bf{Pref}]{
+% 	}{
+% 	  x(y).0	
+% 	    \xrightarrow{x(y)} 
+% 	      0
+% 	}
+%     }{
+%       ((\underline{\overline{x}y}.\overline{x}y.0|x(y).0)|x(y).0)
+% 	\xrightarrow{\tau}
+% 	  ((0|0)|0)
+%     }
+%   }{
+%     (\nu x)((\underline{\overline{x}y}.\overline{x}y.0|x(y).0)|x(y).0)
+%       \xrightarrow{\tau}
+% 	(\nu x)((0|0)|0)
+% }$
+% \end{center}
+% 
+% \begin{center}
+% $\inferrule* [left=\bf{LComSng}]{
+%   \inferrule* [left=\bf{SOut}]{
+%     \inferrule* [left=\bf{Pref}]{
+%     }{
+%       \overline{x}y.0
+% 	\xrightarrow{\overline{x}y}
+% 	  0
+%     }
+%   }{
+%     \underline{\overline{x}y}.\overline{x}y.0
+%       \xrightarrow{\overline{x}y\cdot \overline{x}y}
+% 	0
+%   }
+%   \\
+%     \inferrule* [left=\bf{Pref}]{
+%     }{
+%       x(y).0 \xrightarrow{x(y)} 0
+%     }
+% }{
+%   \underline{\overline{x}y}.\overline{x}y.0|x(y).0
+%     \xrightarrow{\overline{x}y}
+%       0|0
+% }$
+% \end{center}
+% 
+% \end{example}
 
 
 
 \section{Strong bisimilarity and equivalence}
 \subsection{Strong bisimilarity}
 
-In the following section, $\rightarrow$ is the transition relation defined in table \ref{multipiearlywith}.
+In the following section, $\rightarrow$ is the transition relation defined in table \ref{multipioutearlywithout}.
 
 \begin{definition}\label{strongEarlyBisimulation}
   A \emph{strong early bisimulation} is a simmetric binary relation $\mathbf{S}$ on multi $\pi$ processes such that for all $P$ and $Q$: $P \mathbf{S} Q$, $P \xrightarrow{\gamma} P^{'}$ and $bn(\gamma)$ is fresh imply that
@@ -2453,6 +2656,41 @@ In the following section, $\rightarrow$ is the transition relation defined in ta
 \end{proposition}
 
 
+\begin{proposition}
+  $\equiv_{\alpha}$ is a strong bisimulation.
+  \begin{proof}
+    We prove that if $P \equiv_{\alpha} Q$ and $P \xrightarrow{\gamma} P^{'}$ then $Q \xrightarrow{\gamma} Q^{'}$ and $P^{'}\equiv_{\alpha} Q^{'}$. The simmetric holds because $\alpha$ equivalence is simmetric. The proof proceed by induction on the derivation of $P \xrightarrow{\gamma} P^{'}$. The last rule used can be:
+    \begin{description}
+      \item[Out]:
+	$P$ is $\overline{x}y.P_{1}$ and $\gamma$ is $\overline{x}y$ for some names $x,y$ and process $P_{1}$. $P \equiv_{\alpha} Q$ and the inversion lemma for $\alpha$ equivalence imply $Q$ is $\overline{x}y.Q_{1}$ and $P_{1}\equiv_{\alpha}Q_{1}$ for a process $Q_{1}$. Rule $Out$ proves $\overline{x}y.Q_{1} \xrightarrow{\overline{x}y} Q_{1}$
+      \item[EInp]:
+	$P$ is $x(y).P_{1}$ and $\gamma$ is $xz$ for some names $x,y,z$ and process $P_{1}$ such that $z\notin (fn(P_{1})-\{y\})$.
+	$P \equiv_{\alpha} Q$ and the inversion lemma for $\alpha$ equivalence imply $Q$ is $x(w).Q_{1}$ and $P_{1}\equiv_{\alpha}Q_{1}\{y/w\}$ for a process $Q_{1}$ such that $y\notin fn(Q_{1})$ and a name $w$ which is not necessarily different from $y$. Rule $EInp$ proves $x(w).Q_{1} \xrightarrow{xz} Q_{1}$
+      \item[Res]: similar to the previous case.
+      \item[Tau]:
+	$P$ is $\tau.P_{1}$ and $\gamma$ is $\tau$ for some process $P_{1}$. $P \equiv_{\alpha} Q$ and the inversion lemma for $\alpha$ equivalence imply $Q$ is $\tau.Q_{1}$ and $P_{1}\equiv_{\alpha}Q_{1}$ for a process $Q_{1}$. Rule $Tau$ proves $\tau.Q_{1} \xrightarrow{\tau} Q_{1}$
+      \item[SOut]:
+	$P$ is $\underline{\overline{x}y}.P_{1}$ and $\gamma$ is $\overline{x}y \cdot \gamma^{'}$ for some names $x,y$, process $P_{1}$ and a non empty sequence of outputs $\gamma^{'}$. $P \equiv_{\alpha} Q$ and the inversion lemma for $\alpha$ equivalence imply $Q$ is $\underline{\overline{x}y}.Q_{1}$ and $P_{1}\equiv_{\alpha}Q_{1}$ for a process $Q_{1}$. The premise is $P_{1} \xrightarrow{\gamma^{'}} P_{1}^{'}$, for inductive hypothesis $Q_{1} \xrightarrow{\gamma^{'}} Q_{1}^{'}$ and $P_{1}^{'} \equiv_{\alpha} Q_{1}^{'}$. Rule $SOut$ proves $\underline{\overline{x}y}.Q_{1} \xrightarrow{\overline{x}y \cdot \gamma^{'}} Q_{1}$
+%       \item[EComSeq]:
+% 	\begin{center}
+% 	  $\inferrule* {
+% 	      P_{1} \xrightarrow{xy} P_{1}^{'}
+% 	    \\
+% 	      P_{2}\xrightarrow{\overline{x}y\cdot \sigma} P_{2}^{'}
+% 	  }{
+% 	    \underbrace{P_{1}|P_{2}}_{P} \xrightarrow{\sigma} \underbrace{P_{1}^{'}|P_{2}^{'}}_{P^{'}}
+% 	  }$
+% 	\end{center}
+% 	The conclusion follows for inversion lemma of $\alpha$ conversion, inductive hypothesis and rule $EComSeq$
+      \item[EComSeq, ECom, ParL, ParR, SumL, SumR, Ide]: similar to the previous case.
+      \item[Opn]:
+      \item[Cls]:
+      \item[ClsSeq1]:
+      \item[ClsSeq2]:
+    \end{description}
+  \end{proof}
+\end{proposition}
+
 
 \begin{proposition}
   $\dot{\sim}_{E}$ is preserved by all operators except input prefixing.
@@ -2464,15 +2702,41 @@ In the following section, $\rightarrow$ is the transition relation defined in ta
       \item[Strong output prefixing]
 	The relation $\{(\underline{\overline{x}y}.P, \underline{\overline{x}y}.Q): P\dot{\sim}_{E} Q\} \cup \dot{\sim}_{E}$ is a strong early bisimulation.
       \item[Tau prefixing]
-	
+	The relation $\{(\tau.P, \tau.Q): P\dot{\sim}_{E} Q\} \cup \dot{\sim}_{E}$ is a strong early bisimulation.
       \item[Summation]
-	
-      \item[Parallel composition]
-	
+	The relation $\{(P+R, Q+R): P\dot{\sim}_{E} Q\} \cup \dot{\sim}_{E}$ is a strong early bisimulation.
       \item[Restriction]
-		
+	The relation $\{((\nu x)P, (\nu x)Q): P\dot{\sim}_{E} Q\} \cup \dot{\sim}_{E}$ is a strong early bisimulation.
+      \item[Parallel composition]
+	The relation $\{(P|R, Q|R): P\dot{\sim}_{E} Q\} \cup \dot{\sim}_{E}$ is a strong early bisimulation. The last rule applicable to $P|R$ can be:
+	\begin{description}
+	  \item[ECom]:
+	    \begin{center}
+	      $\inferrule* {
+		  P \xrightarrow{\overline{x}y} P^{'}
+		\\
+		  R \xrightarrow{xy} R^{'}
+	      }{
+		P|R \xrightarrow{\tau} P^{'}|R^{'}
+	      }$
+	    \end{center}
+	    $P \xrightarrow{\overline{x}y} P^{'}$ and $P\dot{\sim}_{E} Q$ imply that there exists a process $Q^{'}$ such that $Q \xrightarrow{\overline{x}y} Q^{'}$ and $P^{'}\dot{\sim}_{E} Q^{'}$. So for rule $ECom$: $Q|R \xrightarrow{\tau} Q^{'}|R^{'}$ and $P^{'}|R^{'}\dot{\sim}_{E} Q^{'}|R^{'}$
+	  \item[Cls]:
+	    \begin{center}
+	      $\inferrule* {
+		  P \xrightarrow{\overline{x}(y) \cdot (\nu y)} P^{'}
+		\\
+		  R \xrightarrow{xy} R^{'}
+	      }{
+		P|R \xrightarrow{\tau} (\nu y)(P^{'}|R^{'})
+	      }$
+	    \end{center}
+	    $P \xrightarrow{\overline{x}(y) \cdot (\nu y)} P^{'}$ and $P\dot{\sim}_{E} Q$ imply that there exists a process $Q^{'}$ such that $Q \xrightarrow{\overline{x}y \cdot (\nu y)} Q^{'}$ and $P^{'}\dot{\sim}_{E} Q^{'}$. So for rule $Cls$: $Q|R \xrightarrow{\tau} (\nu y)(Q^{'}|R^{'})$ and $(\nu y)(P^{'}|R^{'}) \dot{\sim}_{E} (\nu y)(Q^{'}|R^{'})$
+	  \item[EComSeq1, EComSeq2, ParL, ParR] similar.
+	\end{description}
     \end{description}
   \end{proof}
 \end{proposition}
+
 
 
