@@ -2126,7 +2126,7 @@ where $stop(P)$ is a multi $\pi$ process which cannot make any transition.
 	  }$
 	&
 	  $\inferrule* [left=\bf{EInp}]{
-	    w \notin (fn(P)-\{z\})
+% 	    w \notin (fn(P)-\{z\})
 	  }{
 	    x(z).P \xrightarrow{xw} P\{w/z\}
 	  }$
@@ -2141,12 +2141,12 @@ where $stop(P)$ is a multi $\pi$ process which cannot make any transition.
     \begin{tabular}{ll}
       \\
 	  $\inferrule* [left=\bf{SOut}]{
-	      P \xrightarrow{\sigma} P^{'}
+	      P \xrightarrow{\gamma} P^{'}
 	  }{
-	      \underline{\overline{x}y}.P \xrightarrow{\overline{x}y \cdot \sigma} P^{'}
+	      \underline{\overline{x}y}.P \xrightarrow{\overline{x}y \cdot \gamma} P^{'}
 	  }$
 	&
-	  $\sigma$ is a non empty sequence of outputs
+	  $\gamma$ is a non empty sequence of outputs
       \\
     \end{tabular}
       \\
@@ -2174,16 +2174,16 @@ where $stop(P)$ is a multi $\pi$ process which cannot make any transition.
       \\
 	  $\inferrule* [left=\bf{ParL}]{
 	      P \xrightarrow{\sigma} P^{'}
-% 	    \\
-% 	      bn(\sigma)\cap fn(Q)=\emptyset	  
+ 	    \\
+ 	      bn(\sigma)\cap fn(Q)=\emptyset	  
 	  }{
 	    P|Q \xrightarrow{\sigma} P^{'}|Q
 	  }$
 	&
 	  $\inferrule* [left=\bf{ParR}]{
 	      Q \xrightarrow{\sigma} Q^{'}
-% 	    \\
-% 	      bn(\sigma)\cap fn(P)=\emptyset	  
+ 	    \\
+ 	      bn(\sigma)\cap fn(P)=\emptyset	  
 	  }{
 	    P|Q \xrightarrow{\sigma} P|Q^{'}
 	  }$
@@ -2203,7 +2203,6 @@ where $stop(P)$ is a multi $\pi$ process which cannot make any transition.
 	  }{
 	      A \xrightarrow{\sigma} Q
 	  }$
-
 % 	  $\inferrule* [left=\bf{Cong}]{
 % 	      P\equiv P^{'}
 % 	    \\
@@ -2380,7 +2379,7 @@ where $stop(P)$ is a multi $\pi$ process which cannot make any transition.
 	    \\
 	      y \notin sbj(\sigma)
 	  }{
-	    (\nu y)P \xrightarrow{opn(\sigma, y) (\nu y)} P^{'}
+	    (\nu y)P \xrightarrow{opn(\sigma, y)} P^{'}
 	  }$
 	&
 % 	\\\\
@@ -2447,6 +2446,30 @@ where $stop(P)$ is a multi $\pi$ process which cannot make any transition.
 	$opn((\nu z) \cdot \sigma, y)=(\nu z) \cdot opn(\sigma, y)$
       \\
     \end{tabular}
+      \\
+    \begin{tabular}{lllll}
+      \\
+	  $sbj(\tau)=\emptyset$
+	&
+	  $sbj(\overline{x}y)=\{x\}$
+	&
+	  $sbj(x(y))=\{x\}$
+	&
+	  $sbj((\nu y))=\emptyset$
+	&
+	  $sbj(\alpha \cdot \sigma)=sbj(\alpha) \cup sbj(\sigma)$
+      \\
+	  $obj(\tau)=\emptyset$
+	&
+	  $obj(\overline{x}y)=\{y\}$
+	&
+	  $obj(x(y))=\{y\}$
+	&
+	  $obj((\nu y))=\emptyset$
+	&
+	  $obj(\alpha \cdot \sigma)=obj(\alpha) \cup obj(\sigma)$
+      \\\\
+    \end{tabular}
   \end{center}
   The following transition can be inferred:
   \begin{center}
@@ -2491,7 +2514,7 @@ where $stop(P)$ is a multi $\pi$ process which cannot make any transition.
       }
       \\
       \inferrule* [left=\bf{EInp}]{
-	x\notin (fn(Q)-\{z\})
+% 	x\notin (fn(Q)-\{z\})
       }{
 	y(z).Q 
 	  \xrightarrow{yx} 
@@ -2664,8 +2687,7 @@ In the following section, $\rightarrow$ is the transition relation defined in ta
       \item[Out]:
 	$P$ is $\overline{x}y.P_{1}$ and $\gamma$ is $\overline{x}y$ for some names $x,y$ and process $P_{1}$. $P \equiv_{\alpha} Q$ and the inversion lemma for $\alpha$ equivalence imply $Q$ is $\overline{x}y.Q_{1}$ and $P_{1}\equiv_{\alpha}Q_{1}$ for a process $Q_{1}$. Rule $Out$ proves $\overline{x}y.Q_{1} \xrightarrow{\overline{x}y} Q_{1}$
       \item[EInp]:
-	$P$ is $x(y).P_{1}$ and $\gamma$ is $xz$ for some names $x,y,z$ and process $P_{1}$ such that $z\notin (fn(P_{1})-\{y\})$.
-	$P \equiv_{\alpha} Q$ and the inversion lemma for $\alpha$ equivalence imply $Q$ is $x(w).Q_{1}$ and $P_{1}\equiv_{\alpha}Q_{1}\{y/w\}$ for a process $Q_{1}$ such that $y\notin fn(Q_{1})$ and a name $w$ which is not necessarily different from $y$. Rule $EInp$ proves $x(w).Q_{1} \xrightarrow{xz} Q_{1}$
+	$P$ is $x(y).P_{1}$ and $\gamma$ is $xz$ for some names $x,y,z$ and process $P_{1}$.	$P \equiv_{\alpha} Q$ and the inversion lemma for $\alpha$ equivalence imply $Q$ is $x(w).Q_{1}$ and $P_{1}\equiv_{\alpha}Q_{1}\{y/w\}$ for a process $Q_{1}$ such that $y\notin fn(Q_{1})$ and a name $w$ which is not necessarily different from $y$. Rule $EInp$ proves $x(w).Q_{1} \xrightarrow{xz} Q_{1}$
       \item[Res]: similar to the previous case.
       \item[Tau]:
 	$P$ is $\tau.P_{1}$ and $\gamma$ is $\tau$ for some process $P_{1}$. $P \equiv_{\alpha} Q$ and the inversion lemma for $\alpha$ equivalence imply $Q$ is $\tau.Q_{1}$ and $P_{1}\equiv_{\alpha}Q_{1}$ for a process $Q_{1}$. Rule $Tau$ proves $\tau.Q_{1} \xrightarrow{\tau} Q_{1}$
@@ -2700,7 +2722,21 @@ In the following section, $\rightarrow$ is the transition relation defined in ta
       \item[Output prefixing]
 	The relation $\{(\overline{x}y.P, \overline{x}y.Q): P\dot{\sim}_{E} Q\} \cup \dot{\sim}_{E}$ is a strong early bisimulation.
       \item[Strong output prefixing]
-	The relation $\{(\underline{\overline{x}y}.P, \underline{\overline{x}y}.Q): P\dot{\sim}_{E} Q\} \cup \dot{\sim}_{E}$ is a strong early bisimulation.
+	The relation $\{(\underline{\overline{x}y}.P, \underline{\overline{x}y}.Q): P\dot{\sim}_{E} Q\} \cup \dot{\sim}_{E}$ is a strong early bisimulation: there are two cases to consider:
+	\begin{itemize}
+	  \item 
+	    If there exists a transition $P \xrightarrow{\gamma} P^{'}$ where $\gamma$ is a non empty sequence of outputs then we can apply the rule $SOut$:
+	    \begin{center}
+	      $\inferrule* {
+		P \xrightarrow{\gamma} P^{'}
+	      }{
+		\underline{\overline{x}y}.P \xrightarrow{\overline{x}y \cdot \gamma} P^{'}
+	      }$
+	    \end{center}
+	    $P \xrightarrow{\gamma} P^{'}$ and $P \dot{\sim}_{E} Q$ imply $Q \xrightarrow{\gamma} Q^{'}$ and $P^{'} \dot{\sim}_{E} Q^{'}$. For rule $SOut$: $\underline{\overline{x}y}.Q \xrightarrow{\overline{x}y \cdot \gamma} Q^{'}$ so the conclusion holds.
+	  \item
+	    Otherwise there is no transition starting from $\underline{\overline{x}y}.P$ or from $\underline{\overline{x}y}.Q$ so these processes are strongly bisimilar.
+	\end{itemize}
       \item[Tau prefixing]
 	The relation $\{(\tau.P, \tau.Q): P\dot{\sim}_{E} Q\} \cup \dot{\sim}_{E}$ is a strong early bisimulation.
       \item[Summation]
@@ -2732,11 +2768,111 @@ In the following section, $\rightarrow$ is the transition relation defined in ta
 	      }$
 	    \end{center}
 	    $P \xrightarrow{\overline{x}(y) \cdot (\nu y)} P^{'}$ and $P\dot{\sim}_{E} Q$ imply that there exists a process $Q^{'}$ such that $Q \xrightarrow{\overline{x}y \cdot (\nu y)} Q^{'}$ and $P^{'}\dot{\sim}_{E} Q^{'}$. So for rule $Cls$: $Q|R \xrightarrow{\tau} (\nu y)(Q^{'}|R^{'})$ and $(\nu y)(P^{'}|R^{'}) \dot{\sim}_{E} (\nu y)(Q^{'}|R^{'})$
-	  \item[EComSeq1, EComSeq2, ParL, ParR] similar.
+	  \item[ClsSeq1, ClsSeq2, ParL, ParR] similar.
 	\end{description}
     \end{description}
   \end{proof}
 \end{proposition}
+
+
+\begin{example}
+  $\dot{\sim}_{E}$ is not in general preserved by input prefixing because:
+    \begin{center}
+      $a(x).0 | \overline{b}y.0 \dot{\sim}_{E} a(x).\overline{b}y.0 + \overline{b}y.a(x).0$
+    \end{center}
+    but 
+    \begin{center}
+      $c(a).(a(x).0 | \overline{b}y.0) \dot{\not\sim}_{E} c(a).(a(x).\overline{b}y.0 + \overline{b}y.a(x).0)$
+    \end{center}
+    because
+    \begin{center}
+      \begin{tabular}{l}
+	  $c(a).(a(x).0 | \overline{b}y.0) \xrightarrow{cb} b(x).0 | \overline{b}y.0 \xrightarrow{\tau} 0|0$
+	\\
+	  $c(a).(a(x).\overline{b}y.0 + \overline{b}y.a(x).0) \xrightarrow{cb} b(x).\overline{b}y.0 + \overline{b}y.b(x).0 \not\xrightarrow{\tau}$
+      \end{tabular}
+    \end{center}
+\end{example}
+
+
+\subsection{Open bisimilarity}
+
+\begin{definition}
+  A \emph{distinction} is a finite symmetric and irreflexive binary relation on names. A substitution $\sigma$ \emph{respects} a distinction $D$ if 
+  \begin{center}
+     $\forall a,b.$ $aDb$ $\Rightarrow$ $a\sigma\neq b\sigma$
+  \end{center}
+  We write $D\sigma$ for the composition of the two relation.
+\end{definition}
+
+
+\begin{definition}\label{strongDequivalence}
+  $P$ and $Q$ are \emph{strongly D equivalent}, written $P \dot{\sim}^{D} Q$, if for all substitution $\sigma$ respecting $D$: $P\sigma \dot{\sim}_{E} Q\sigma$.
+\end{definition}
+ 
+ 
+\begin{theorem}
+  $\dot{\sim}^{D}$ is a congruence.
+  \begin{proof}
+    $\dot{\sim}^{D}$ is an equivalence relation because $\dot{\sim}_{E}$ is an equivalence relation.
+    \begin{description}
+      \item[$Reflexivity$]
+	Since $\dot{\sim}_{E}$ is reflexive, for all substitution $\sigma$ respecting $D$: $P\sigma \dot{\sim}_{E} Q\sigma$ so $P \dot{\sim}^{D} P$
+      \item[$Symmetry$]
+	Let $P \dot{\sim}^{D} Q$ then for all substitution $\sigma$ respecting $D$: $P\sigma \dot{\sim}_{E} Q\sigma$. Since $\dot{\sim}_{E}$ is symmetric $Q\sigma \dot{\sim}_{E} P\sigma$ so $Q \dot{\sim}^{D} P$
+      \item[$Transitivity$]
+	Let $P \dot{\sim}^{D} Q$ and $Q \dot{\sim}^{D} R$ then for all substitution $\sigma$ respecting $D$: $P\sigma \dot{\sim}_{E} Q\sigma$ and $Q\sigma \dot{\sim}_{E} R\sigma$. Since $\dot{\sim}_{E}$ is transitive $P\sigma \dot{\sim}_{E} R\sigma$ so $P \dot{\sim}^{D} R$.
+    \end{description}
+    $\dot{\sim}^{D}$ is preserved by every operator. Let $P \dot{\sim}^{D} Q$ and let $\sigma$ be a substitution respecting $D$ so $P\sigma \dot{\sim}_{E} Q\sigma$:
+    \begin{description}
+      \item[Output prefixing]
+	The only transitions starting from $(\overline{x}y.P)\sigma$ and $(\overline{x}y.Q)\sigma$ are
+	\begin{center}
+	      $(\overline{x}y.P)\sigma \xrightarrow{(\overline{x}y)\sigma} P\sigma \dot{\sim}_{E} Q\sigma \xleftarrow{(\overline{x}y)\sigma} (\overline{x}y.Q)\sigma$
+	\end{center}
+	so $(\overline{x}y.P)\sigma \dot{\sim}_{E} (\overline{x}y.Q)\sigma$ and $\overline{x}y.P \dot{\sim}^{D} \overline{x}y.Q$
+      \item[Strong output prefixing]
+	There are two cases to consider:
+	\begin{itemize}
+	  \item 
+	    If there exists a transition $P\sigma \xrightarrow{\gamma} P^{'}$ where $\gamma$ is a non empty sequence of outputs then
+	    \begin{center}
+	      $\inferrule* [left=\bf{SOut}]{
+		P\sigma \xrightarrow{\gamma} P^{'}
+	      }{
+		(\underline{\overline{x}y}.P)\sigma \xrightarrow{(\overline{x}y)\sigma \cdot \gamma} P^{'}
+	      }$
+	    \end{center}
+	    $P\sigma \xrightarrow{\gamma} P^{'}$ and $P\sigma \dot{\sim}_{E} Q\sigma$ imply $Q\sigma \xrightarrow{\gamma} Q^{'}$ and $P^{'} \dot{\sim}_{E} Q^{'}$. For rule $SOut$ 
+	    \begin{center}
+	      $(\underline{\overline{x}y}.Q)\sigma \xrightarrow{(\overline{x}y)\sigma \cdot \gamma} Q^{'}$
+	    \end{center}
+	    so $(\underline{\overline{x}y}.P)\sigma \dot{\sim}_{E} (\underline{\overline{x}y}.Q)\sigma$ and $\underline{\overline{x}y}.P \dot{\sim}^{D} \underline{\overline{x}y}.Q$.
+	  \item
+	    Otherwise there is no transition starting from $(\underline{\overline{x}y}.P)\sigma$ or from $(\underline{\overline{x}y}.Q)\sigma$ so $(\underline{\overline{x}y}.P)\sigma$ $\dot{\sim}_{E}$ $(\underline{\overline{x}y}.Q)\sigma$ and  $\underline{\overline{x}y}.P \dot{\sim}^{D} \underline{\overline{x}y}.Q$.
+	\end{itemize}
+      \item[Input prefixing]
+	Let $z\notin bn(P)\cup bn(Q)$ and let $y \notin img(\sigma)$. The transitions starting from $(x(y).P)\sigma$ and $(x(y).Q)\sigma$ are
+	\begin{center}
+	  \begin{tabular}{ll}
+	    $x\sigma (y).P\sigma \xrightarrow{x\sigma z} P\sigma\{z/y\}$ 
+	  &
+	    $x\sigma (y).Q\sigma \xrightarrow{x\sigma z} Q\sigma\{z/y\}$ 
+	  \end{tabular}
+	\end{center}
+	?
+      \item[Tau prefixing]
+
+      \item[Summation]
+
+      \item[Restriction]
+
+      \item[Parallel composition]
+    \end{description}
+  \end{proof}
+\end{theorem}
+
+
 
 
 
