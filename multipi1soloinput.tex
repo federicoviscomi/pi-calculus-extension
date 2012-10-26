@@ -233,7 +233,8 @@ In this case, a label can be a sequence of prefixes, whether in the original $\p
   The \emph{late transition relation with structural congruence} is the smallest relation induced by the rules in table \ref{multipisoloinputlatewith}.
   \begin{table}
     \begin{tabular}{lll}
-	\hline\\
+	\multicolumn{3}{l}{\line(1,0){415}}
+	\\\\
 	  $\inferrule* [left=\bf{Out}]{
 	  }{
 	    \overline{x}y.P \xrightarrow{\overline{x}y} P
@@ -250,30 +251,20 @@ In this case, a label can be a sequence of prefixes, whether in the original $\p
 	  }{
 	    \tau.P \xrightarrow{\tau} P
 	  }$
-      \\\\
-	  $\inferrule* [left=\bf{SInpTau}]{
-	      P \xrightarrow{\tau} P^{'}
-	  }{
-	    \underline{x(z)}.P \xrightarrow{x(z)} P^{'}
-	  }$
-	&
+      \\
+      \end{tabular}
+	\\
+      \begin{tabular}{ll}
+      \\
 	  $\inferrule* [left=\bf{SInp}]{
-	      P \xrightarrow{a(b)} P^{'}
+	      P \xrightarrow{\gamma} P^{'}
 % 	    \\
 % 	      y\notin fn((\nu z) P)
 	  }{
-	    \underline{x(z)}.P \xrightarrow{x(z) \cdot a(b)} P^{'}
+	    \underline{x(z)}.P \xrightarrow{x(z) \cdot \gamma} P^{'}
 	  }$
 	&
-	  $\inferrule* [left=\bf{SInpSeq}]{
-	      P \xrightarrow{\sigma} P^{'}
-	    \\
-	      |\sigma|>1
-% 	    \\
-% 	      y\notin fn((\nu z) P)
-	  }{
-	    \underline{x(z)}.P \xrightarrow{x(z) \cdot \sigma} P^{'}
-	  }$
+	  $\gamma$ is a non empty sequence of inputs
       \\
       \end{tabular}
 	\\
@@ -283,8 +274,8 @@ In this case, a label can be a sequence of prefixes, whether in the original $\p
 	      P \xrightarrow{x(y)\cdot \sigma} P^{'}
 	    \\
 	      Q\xrightarrow{\overline{x}z} Q^{'}
-% 	    \\
-% 	      z\notin fn(\sigma)\cup fn(P)
+  	    \\
+   	      bn(\sigma)\cap fn(Q) = \emptyset
 	  }{
 	    P|Q \xrightarrow{\sigma\{z/y\}} P^{'}\{z/y\}|Q^{'}
 	  }$
@@ -301,7 +292,7 @@ In this case, a label can be a sequence of prefixes, whether in the original $\p
       \\
       \end{tabular}
 	\\
-      \begin{tabular}{ll}
+      \begin{tabular}{lll}
       \\
 	  $\inferrule* [left=\bf{Sum}]{
 	    P \xrightarrow{\sigma} P^{'}
@@ -316,6 +307,14 @@ In this case, a label can be a sequence of prefixes, whether in the original $\p
 	  }{
 	      P \xrightarrow{\sigma} Q
 	  }$
+	&
+	  $\inferrule* [left=\bf{Opn}]{
+	      P \xrightarrow{\overline{x}z} P^{'}
+	    \\ 
+	      z\neq x
+	  }{
+	      (\nu z)P \xrightarrow{\overline{x}(z)} P^{'}
+	  }$
       \\\\
 	  $\inferrule* [left=\bf{Res}]{
 	      P \xrightarrow{\sigma} P^{'}
@@ -328,20 +327,12 @@ In this case, a label can be a sequence of prefixes, whether in the original $\p
 	  $\inferrule* [left=\bf{Par}]{
 	      P \xrightarrow{\sigma} P^{'}
 	    \\
-	      bn(\sigma)\cup fn(Q)=\emptyset
+	      bn(\sigma)\cap fn(Q)=\emptyset
 	  }{
 	    P|Q \xrightarrow{\sigma} P^{'}|Q
 	  }$
-      \\\\
-	  $\inferrule* [left=\bf{Opn}]{
-	      P \xrightarrow{\overline{x}z} P^{'}
-	    \\ 
-	      z\neq x
-	  }{
-	      (\nu z)P \xrightarrow{\overline{x}(z)} P^{'}
-	  }$
 	&
-      \\\hline
+	\\\\\multicolumn{3}{l}{\line(1,0){415}}
     \end{tabular}
     \caption{Multi $\pi$ late semantic with structural congruence}
     \label{multipisoloinputlatewith}
@@ -1375,21 +1366,23 @@ In the following example we assume that all bound variables have different names
 
 \end{example}
 
-% \section{Strong bisimilarity and equivalence}
-% 
-% \subsection{Strong bisimilarity}
-% 
-% \begin{definition}
-%   A \emph{strong simulation} is a binary relation $\mathbb{S}$ on processes such that for all $P\mathbf{S}Q$:
-%   \begin{itemize}
-%     \item 
-%       $P \xrightarrow{\alpha} P^{'}$ and $\alpha$ is a free action imply that there exists some $Q^{'}$ such that $Q \xrightarrow{\alpha} Q^{'}$ and $P^{'}\mathbf{S}Q^{'}$
-%     \item
-%       $P \xrightarrow{x(y)} P^{'}$ and $y\notin fn(P,Q)$ is a free action imply that there exists some $Q^{'}$ such that $Q \xrightarrow{x(y)} Q^{'}$ and for all $w$, $P^{'}\{w/y\}\mathbf{S}Q^{'}\{w/y\}$
-%     \item
-%       
-%   \end{itemize}
-% \end{definition}
+\section{Strong bisimilarity and equivalence}
+
+In the following section the symbol $\rightarrow$ will refer to the late semantic with structural congruence of multi $\pi$ calculus with strong input.
+
+\subsection{Strong bisimilarity}
+
+\begin{definition}
+  A \emph{strong simulation} is a binary relation $\mathbb{S}$ on processes such that for all $P\mathbf{S}Q$:
+   \begin{itemize}
+     \item 
+       $P \xrightarrow{\alpha} P^{'}$ and $\alpha$ is a free action imply that there exists some $Q^{'}$ such that $Q \xrightarrow{\alpha} Q^{'}$ and $P^{'}\mathbf{S}Q^{'}$
+     \item
+       $P \xrightarrow{x(y)} P^{'}$ and $y\notin fn(P,Q)$ is a free action imply that there exists some $Q^{'}$ such that $Q \xrightarrow{x(y)} Q^{'}$ and for all $w$, $P^{'}\{w/y\}\mathbf{S}Q^{'}\{w/y\}$
+     \item       
+  \end{itemize}
+\end{definition}
+
 % 
 % \subsection{Strong equivalence and distinctions}
 % \subsection{Properties of strong bisimilarity}

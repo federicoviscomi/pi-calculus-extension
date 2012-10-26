@@ -45,7 +45,7 @@ In this case, a label can be a sequence of prefixes, whether in the original $\p
 % The relation $opn$ is defined in table \ref{opn}.
   \begin{table}
     \begin{tabular}{lll}
-      \hline\\
+      	\multicolumn{3}{l}{\line(1,0){415}}\\
 	  $\inferrule* [left=\bf{Out}]{
 	  }{
 	    \overline{x}y.P \xrightarrow{\overline{x}y} P
@@ -145,48 +145,11 @@ In this case, a label can be a sequence of prefixes, whether in the original $\p
 	  }{
 	    (\nu) z P \xrightarrow{\sigma} (\nu) z P^{'}
 	  }$
-      \\\\\hline
+      \\\\	\multicolumn{2}{l}{\line(1,0){415}}
     \end{tabular}
     \caption{Multi $\pi$ early semantic with structural congruence}
     \label{multipiearlywith}
   \end{table}
-
-
-%   \begin{table}
-%     \begin{tabular}{lll}
-%       \hline\\
-% 	  $\inferrule* {
-% 	      x\neq z
-% 	  }{
-% 	      opn(\overline{x}z,z)=\overline{x}(z)
-% 	  }$
-% 	&
-% 	  $\inferrule* {
-% 	      x\neq z
-% 	  }{
-% 	      opn(\overline{x}z\cdot \sigma,z)=\overline{x}(z)\cdot opn(\sigma,z)
-% 	  }$
-% 	&
-%       \\\\
-% 	  $\inferrule* {
-% 	    y\neq z
-% 	  }{
-% 	      opn(\overline{x}y,z)=\overline{x}y
-% 	  }$
-% 	&
-% 	  $\inferrule* {
-% 	    y\neq z
-% 	  }{
-% 	      opn(\overline{x}y\cdot \sigma,z)=\overline{x}y\cdot opn(\sigma,z)
-% 	  }$
-% 	&
-%       \\\\\hline
-%     \end{tabular}
-%     \caption{relation $opn$}
-%     \label{opn}
-%   \end{table}
-
-
 \end{definition}
 
 
@@ -281,7 +244,7 @@ This section contains the definition of an alternative semantic for multi $\pi$.
   The low level transition relation is the smallest relation induced by the rules in table \ref{lowleveltransitionrelationearlyoutonly} in which $P$ stands for a process without mark, $L$ stands for a process with mark and $S$ can stand for both. 
   \begin{table}
     \begin{tabular}{lll}
-      \hline\\
+      	\multicolumn{3}{l}{\line(1,0){415}}\\
 	  $\inferrule* [left=\bf{Out}]{
 	  }{
 	    \overline{x}y.P \stackrel{\overline{x}y}{\longmapsto} P
@@ -425,45 +388,7 @@ This section contains the definition of an alternative semantic for multi $\pi$.
 	  }{
 	      Q|S \stackrel{\gamma}{\longmapsto} Q|S^{'}
 	  }$
-
-% 	  $\inferrule* [left=\bf{Opn}]{
-% 	      S \xrightarrow{\overline{x}y} S^{'}
-% 	  }{
-% 	      (\nu y)P \xrightarrow{\overline{x}(y)} P^{'}
-% 	  }$
-%       \\\\\\
-% 	  $\inferrule* [left=\bf{Par2L}]{
-% 	     P \stackrel{\gamma}{\longmapsto} L
-% % 	    \\ 
-% % 	      bn(\gamma)\cap fn(Q)=\emptyset
-% 	  }{
-% 	      P|Q \stackrel{\gamma}{\longmapsto} L|*Q
-% 	  }$
-% 	&
-% 	  $\inferrule* [left=\bf{Par2R}]{
-% 	     P \stackrel{\gamma}{\longmapsto} L
-% % 	    \\ 
-% % 	      bn(\gamma)\cap fn(Q)=\emptyset
-% 	  }{
-% 	      Q|P \stackrel{\gamma}{\longmapsto} *Q|L
-% 	  }$
-%       \\\\
-% 	  $\inferrule* [left=\bf{Par3L}]{
-% 	      L_{1} \stackrel{\gamma}{\longmapsto} L_{1}^{'}
-% % 	    \\ 
-% % 	      bn(\gamma)\cap fn(L_{2})=\emptyset
-% 	  }{
-% 	      L_{1}|L_{2} \stackrel{\gamma}{\longmapsto} L_{1}^{'}|L_{2}
-% 	  }$
-% 	&
-% 	  $\inferrule* [left=\bf{Par3R}]{
-% 	      L_{2} \stackrel{\gamma}{\longmapsto} L_{2}^{'}
-% % 	    \\ 
-% % 	      bn(\gamma)\cap fn(L_{2})=\emptyset
-% 	  }{
-% 	      L_{1}|L_{2} \stackrel{\gamma}{\longmapsto} L_{1}|L_{2}^{'}
-% 	  }$
-      \\\\\hline
+      \\\\	\multicolumn{2}{l}{\line(1,0){415}}
     \end{tabular}
     \caption{Low multi $\pi$ early semantic with structural congruence}
     \label{lowleveltransitionrelationearlyoutonly}
@@ -2119,7 +2044,7 @@ where $stop(P)$ is a multi $\pi$ process which cannot make any transition.
   The \emph{late transition relation without structural congruence} is the smallest relation induced by the rules in table \ref{multipioutearlywithout}.
   \begin{table}
     \begin{tabular}{lll}
-      \hline\\
+      	\multicolumn{3}{l}{\line(1,0){415}}\\
 	  $\inferrule* [left=\bf{Out}]{
 	  }{
 	    \overline{x}y.P \xrightarrow{\overline{x}y} P
@@ -2222,63 +2147,7 @@ where $stop(P)$ is a multi $\pi$ process which cannot make any transition.
 	  }{
 	    P+Q \xrightarrow{\sigma} Q^{'}
 	  }$
-%       \\
-%     \end{tabular}
-%       \\
-%     \begin{tabular}{l}
-%       \\	
-% 	  $\inferrule* [left=\bf{Opn}]{
-% 	      P\{z/y\} \xrightarrow{\sigma\{z/y\}} P^{'}
-% 	    \\
-% 	      y \in obj(\sigma)
-% 	    \\
-% 	      z \notin sbj(\sigma)
-% 	  }{
-% 	    (\nu z)P \xrightarrow{opn(\sigma, z, y)} P^{'}
-% 	  }$
-% 	  $\inferrule* [left=\bf{Opn}]{
-% 	      P \xrightarrow{\sigma} P^{'}
-% 	    \\
-% 	      y \in obj(\sigma)
-% 	    \\
-% 	      y \notin sbj(\sigma)
-% 	  }{
-% 	    (\nu y)P \xrightarrow{opn(\sigma, y)} P^{'}
-% 	  }$
-%       \\
-%     \end{tabular}
-%       \\
-%     \begin{tabular}{ll}
-%       \\	
-% 	  $\inferrule* [left=\bf{Cls}]{
-% 	      P \xrightarrow{\overline{x}(z)} P^{'}
-% 	    \\
-% 	      Q \xrightarrow{xz} Q^{'}
-% 	  }{
-% 	      P|Q \xrightarrow{\tau} (\nu z)(P^{'}|Q^{'})
-% 	  }$
-% 	&
-% 	  $\inferrule* [left=\bf{ClsSeq}]{
-% 	      P \xrightarrow{\overline{x}(z) \cdot \sigma} P^{'}
-% 	    \\
-% 	      Q \xrightarrow{xz} Q^{'}
-% 	  }{
-% 	      P|Q \xrightarrow{\sigma} (\nu z)(P^{'}|Q^{'})
-% 	  }$
-%       \\
-%     \end{tabular}
-%       \\
-%     \begin{tabular}{ll}
-%       \\
-% 	$opn(\overline{x}y, w)=\overline{x}y$
-%       &
-% 	$opn(\overline{x}y \cdot \sigma, w)=\overline{x}y \cdot opn(\sigma, w)$
-%     \\
-% 	$opn(\overline{x}w, w)=\overline{x}(w)$
-%       &
-% 	$opn(\overline{x}w \cdot \sigma, w)=\overline{x}(w) \cdot opn(\sigma, w)$
-%     \\
-      \\\\\hline
+      \\\\	\multicolumn{2}{l}{\line(1,0){415}}
     \end{tabular}
     \caption{Multi$\pi$ early semantic without structural congruence}
     \label{multipioutearlywithout}

@@ -62,7 +62,7 @@ To resolve ambiguity we can use parenthesis and observe the conventions that pre
 
   \begin{table}
     \begin{tabular}{ll}
-      \hline\\
+      \multicolumn{2}{l}{\line(1,0){415}}\\
 	$B(0, I)\; =\; \emptyset$&$B(Q+R,I)\; =\; B(Q,I)\cup B(R,I)$
       \\\\
 	$B(\overline{x}y.Q, I)\; =\; B(Q, I)$&$B(Q|R,I)\; =\; B(Q,I)\cup B(R,I)$
@@ -83,7 +83,7 @@ To resolve ambiguity we can use parenthesis and observe the conventions that pre
 	      &
 		if\; A\in I
 	  \end{array}\right.$}
-      \\\hline
+      \\\multicolumn{2}{l}{\line(1,0){415}}
     \end{tabular}
     \caption{Bound occurrences}
     \label{table:B}
@@ -97,7 +97,7 @@ To resolve ambiguity we can use parenthesis and observe the conventions that pre
 
   \begin{table}
     \begin{tabular}{lll}
-      \hline\\
+      \multicolumn{3}{l}{\line(1,0){415}}\\
 	  $fn(\overline{x}y.Q)\; =\; \{x,\overline{x},y,\overline{y}\}\cup fn(Q)$
 	&
 	  $fn(Q+R)\; =\; fn(Q)\cup fn(R)$
@@ -113,7 +113,7 @@ To resolve ambiguity we can use parenthesis and observe the conventions that pre
 	  $fn(\tau.Q)\; =\; fn(Q)$
 	&
 	  $fn(A(\tilde{x}))=\{\tilde{x}\}$
-      \\\hline
+      \\\multicolumn{3}{l}{\line(1,0){415}}
     \end{tabular}
     \caption{Free occurrences}
     \label{F}
@@ -163,7 +163,7 @@ then we have
 
   \begin{table}
     \begin{tabular}{l}
-      \hline\\
+      \multicolumn{1}{l}{\line(1,0){415}}\\
 	$0\{b/a\}\; =\; 0$
       \\\\
 	$(\overline{x}y.Q)\{b/a\}\; =\; \overline{x}\{b/a\}y\{b/a\}.Q\{b/a\}$
@@ -209,7 +209,7 @@ then we have
 	$((\nu b)Q)\{b/a\}\; =\;(\nu c)((Q\{c/b\})\{b/a\})$ where $c\notin n(Q)$ if $a\in fn(Q)$ 
       \\\\
 	$((\nu b)Q)\{b/a\}\; =\;(\nu b)Q$ if $a\notin fn(Q)$
-      \\\hline
+      \\\multicolumn{1}{l}{\line(1,0){415}}
     \end{tabular}
     \caption{Syntatic substitution}
     \label{syntacticsubstitution}
@@ -243,7 +243,7 @@ In the following section we present the early semantic without structural congru
 
   \begin{table}
     \begin{tabular}{ll}  
-      \hline\\
+      \multicolumn{2}{l}{\line(1,0){415}}\\
 	  \bf{Out}
 	  \begin{tabular}{c}
 	      $\;\;$
@@ -362,7 +362,7 @@ In the following section we present the early semantic without structural congru
 	    \\\hline
  		$(\nu z)P \xrightarrow{\overline{x}(w)} P^{'}$
 	  \end{tabular}
-      \\\hline
+      \\\multicolumn{2}{l}{\line(1,0){415}}
     \end{tabular}
     \caption{Early transition relation without structural congruence}
     \label{transitionrelationearlywithoutstructuralcongruence}
@@ -535,7 +535,7 @@ In this case the set of actions $\mathbb{A}$ contains
   The \emph{late transition relation without structural congruence} $\rightarrow\subseteq \mathbb{P}\times \mathbb{A} \times \mathbb{P}$ is the smallest relation induced by the rules in table \ref{transitionrelationpilatewithoutstructuralcongruence}. TUTTE LE SEMANTICHE LATE DEL PI CALCOLO SONO DA AGGIORNARE!!!! !!! !! !
   \begin{table}
     \begin{tabular}{ll}
-      \hline\\
+     \multicolumn{2}{l}{\line(1,0){415}}\\
 	  \bf{LInp}
 	  \begin{tabular}{c}
  	    $z\notin fn(P)$
@@ -631,7 +631,7 @@ In this case the set of actions $\mathbb{A}$ contains
 	      \\\hline
 	    $A(\tilde{y}) \xrightarrow{\alpha} P^{'}$
 	  \end{tabular}
-      \\\hline
+      \\\multicolumn{2}{l}{\line(1,0){415}}
     \end{tabular}
     \caption{Late semantic without structural congruence}
     \label{transitionrelationpilatewithoutstructuralcongruence}
@@ -690,7 +690,7 @@ Structural congruences are a set of equations defining equality and congruence r
   Processes $P$ and $Q$ are \emph{$\alpha$ convertible} or \emph{$\alpha$ equivalent} if $Q$ can be obtained from $P$ by a finite number of changes of bound names. If $P$ and $Q$ are $\alpha$ equivalent then we write $P\equiv_{\alpha}Q$. Specifically the $\alpha$ equivalence is the smallest binary relation on processes that satisfies the laws in table \ref{alphaequivalence}
   \begin{table}
     \begin{tabular}{ll}
-      \hline\\
+      \multicolumn{2}{l}{\line(1,0){415}}\\
 	  $\inferrule*[left=AlpSum]{
 	      P_{1}\equiv_{\alpha}Q_{1}
 	    \\
@@ -760,7 +760,7 @@ Structural congruences are a set of equations defining equality and congruence r
 	  }{
 	    0\equiv_{\alpha}0
 	  }$
-      \\\\\hline
+      \\\\\multicolumn{2}{l}{\line(1,0){415}}
     \end{tabular}
     \caption{$\alpha$ equivalence laws}
     \label{alphaequivalence}
@@ -820,7 +820,7 @@ non ho una dimostrazione ma lo da per scontato in \cite{milnerparrowwalker} para
   We define a \emph{structural congruence $\equiv$} as the smallest congruence on processes that satisfies the axioms in table \ref{structuralcongrunce}
   \begin{table}
     \begin{tabular}{lll}
-      \hline\\
+      \multicolumn{3}{l}{\line(1,0){415}}\\
 	SC-ALP&$\begin{array}{c}P \equiv_{\alpha} Q\\\overline{P\equiv Q}\end{array}$&$\alpha$ conversion
       \\\\
 	\multicolumn{3}{l}{abelian monoid laws for sum:}
@@ -852,7 +852,7 @@ non ho una dimostrazione ma lo da per scontato in \cite{milnerparrowwalker} para
 	\multicolumn{3}{l}{unfolding law:}
       \\
 	SC-IDE&$A(\tilde{w})\equiv P\{\tilde{w}/\tilde{x}\}$&if $A(\tilde{x})\stackrel{def}{=}P$
-      \\\hline
+      \\\multicolumn{3}{l}{\line(1,0){415}}
     \end{tabular}
     \caption{Structural congruence axioms}
     \label{structuralcongrunce}
@@ -1848,7 +1848,7 @@ In this subsection we introduce the early operational semantic for $\pi$ calculu
 
   \begin{table}
     \begin{tabular}{ll}  
-      \hline\\
+      	\multicolumn{2}{l}{\line(1,0){415}}\\
 	  \bf{Out}
 	  \begin{tabular}{c}
 	      $\;\;$
@@ -1957,7 +1957,7 @@ In this subsection we introduce the early operational semantic for $\pi$ calculu
 	      $\tau.P \xrightarrow{\tau} P$
 	  \end{tabular}
 	&
-      \\\hline
+      \\	\multicolumn{2}{l}{\line(1,0){415}}
     \end{tabular}
     \caption{Early transition relation with $\alpha$ conversion}
     \label{transitionrelationearlywithalphaconversion}
@@ -1973,7 +1973,7 @@ In this subsection we introduce the early operational semantic for $\pi$ calculu
 
   \begin{table}
     \begin{tabular}{lll}
-      \hline\\
+      	\multicolumn{3}{l}{\line(1,0){415}}\\
 	  \bf{Out}
 	  \begin{tabular}{c}
 	    \hline
@@ -2033,7 +2033,7 @@ In this subsection we introduce the early operational semantic for $\pi$ calculu
 	    \hline
 	    $P^{'} \xrightarrow{\alpha} Q^{'}$
 	  \end{tabular}
-      \\\hline
+      \\	\multicolumn{3}{l}{\line(1,0){415}}
     \end{tabular}
     \caption{Early semantic with structural congruence}
     \label{earlysemanticwithstructuralcongruence}
@@ -2118,7 +2118,7 @@ In this subsection we introduce the early operational semantic for $\pi$ calculu
   The \emph{late transition relation with structural congruence} $\rightarrow\subseteq \mathbb{P}\times \mathbb{A} \times \mathbb{P}$ is the smallest relation induced by the rules in table \ref{latewith}.
   \begin{table}
     \begin{tabular}{ll}
-	\hline\\
+		\multicolumn{2}{l}{\line(1,0){415}}\\
 	\bf{Prf}
 	\begin{tabular}{c}
 	  \hline
@@ -2167,7 +2167,7 @@ In this subsection we introduce the early operational semantic for $\pi$ calculu
 	    $(\nu z) P \xrightarrow{\overline{x}(z)} P^{'}$
 	\end{tabular}
       &
-    \\\hline
+    \\\multicolumn{2}{l}{\line(1,0){415}}
     \end{tabular}
     \caption{Late semantic with structural congruence}
     \label{latewith}
