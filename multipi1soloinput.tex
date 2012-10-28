@@ -1,7 +1,7 @@
 
 \section{Syntax}
 
-As we did whit $\pi$ calculus, we suppose that we have a countable set of names $\mathbb{N}$, ranged over by lower case letters $a,b, \cdots, z$. This names are used for communication channels and values. Furthermore we have a set of identifiers, ranged over by $A$. We represent the agents or processes by upper case letters $P,Q, \cdots $. A multi $\pi$ process, in addiction to the same actions of a $\pi$ process, can perform also a strong prefix input:
+As we did whit $\pi$ calculus, we suppose that we have a countable set of names $\mathbf{N}$, ranged over by lower case letters $a,b, \cdots, z$. This names are used for communication channels and values. Furthermore we have a set of identifiers, ranged over by $A$. We represent the agents or processes by upper case letters $P,Q, \cdots $. A multi $\pi$ process, in addiction to the same actions of a $\pi$ process, can perform also a strong prefix input:
 \begin{center}
   $\pi$ ::= $\overline{x}y$ | $x(z)$ | $\underline{x(y)}$ | $\tau$ 
 \end{center}
@@ -23,9 +23,11 @@ We have to extend the following definition to deal with the strong prefix:
     \\
   \end{tabular}
 \end{center}
-
+The scope of the object of a strong input is the process that follows the strong input. For example the scope of a name $x$ in a process $\underline{y(x)}.x(b).P$ is $x(b).P$.
 
 In this setting two process cannot synchronize on a sequence of actions with length greater than one so we cannot have transactional synchronization but we can have multi-party synchronization.
+
+
 
 
 \section{Operational semantic}
@@ -35,11 +37,11 @@ In this setting two process cannot synchronize on a sequence of actions with len
 The semantic of a multi $\pi$ process is labeled transition system such that
 \begin{itemize}
   \item 
-    the nodes are multi $\pi$ calculus process. The set of node is $\mathbb{P}_{m}$
+    the nodes are multi $\pi$ calculus process. The set of node is $\mathbf{P}_{m}$
   \item
-    the actions are multi $\pi$ calculus actions. The set of actions is $\mathbb{A}_{m}$, we use $\alpha, \alpha_{1}, \alpha_{2},\cdots $ to range over the set of actions, we use $\sigma, \sigma_{1}, \sigma_{2}, \cdots $ to range over the set $\mathbb{A}_{m}^{+} \cup \{\tau\}$.
+    the actions are multi $\pi$ calculus actions. The set of actions is $\mathbf{A}_{m}$, we use $\alpha, \alpha_{1}, \alpha_{2},\cdots $ to range over the set of actions, we use $\sigma, \sigma_{1}, \sigma_{2}, \cdots $ to range over the set $\mathbf{A}_{m}^{+} \cup \{\tau\}$.
   \item
-    the transition relations is $\rightarrow\subseteq \mathbb{P}_{m}\times (\mathbb{A}_{m}^{+} \cup \{\tau\})\times \mathbb{P}_{m}$
+    the transition relations is $\rightarrow\subseteq \mathbf{P}_{m}\times (\mathbf{A}_{m}^{+} \cup \{\tau\})\times \mathbf{P}_{m}$
 \end{itemize}
 
 In this case, a label can be a sequence of prefixes, whether in the original $\pi$ calculus a label can be only a prefix. We use the symbol $\cdot$ to denote the concatenation operator.
@@ -1354,19 +1356,506 @@ This section contains the definition of an alternative semantic for multi $\pi$.
 
 \section{Strong bisimilarity and equivalence}
 
-In the following section the symbol $\rightarrow$ will refer to the late semantic with structural congruence of multi $\pi$ calculus with strong input which is illustrated in table \ref{multipisoloinputlatewith}.
+In the following section the symbol $\rightarrow$ will refer to the late semantic with structural congruence of multi $\pi$ calculus with strong input which is illustrated in table \ref{multipisoloinputlatewith}. Also we consider a structural congruence without the rules $P|0\equiv 0$ and $P+0\equiv 0$
+
+\begin{definition}
+  $\twoheadrightarrow$ is the smallest relation induced by the all the rules in table \ref{multipisoloinputlatewith} except $Cong$. 
+\end{definition}
+
+\begin{proposition}
+  If $P\xrightarrow{\sigma} Q$ then there exists a process $R$ such that: $R\stackrel{\sigma}{\twoheadrightarrow}Q$ and $P\equiv R$
+  \begin{proof}
+    We show that we can move the rule $Cong$ down the inference tree of $P\xrightarrow{\sigma} Q$. So a derivation of $P\xrightarrow{\sigma} Q$ can translate into a derivation of $P\xrightarrow{\sigma} Q$ which uses the rule $Cong$ only as its last rule.
+    \begin{description}
+      \item[$SInp$]:
+	\begin{center}
+	  $\inferrule* [left=\bf{SInp}]{
+	    \inferrule* [left=\bf{Cong}]{
+		P \equiv R
+	      \\
+		R \xrightarrow{\gamma} Q
+	    }{
+	      P \xrightarrow{\gamma} Q
+	    }
+	  }{
+	    \underline{x(z)}.P \xrightarrow{x(z) \cdot \gamma} Q
+	  }$
+	\end{center}
+	become
+	\begin{center}
+	  $\inferrule* [left=\bf{Cong}]{
+	    \inferrule* {
+	      P \equiv R
+	    }{
+	      \underline{x(z)}.P \equiv \underline{x(z)}.R
+	    }
+	  \\
+	    \inferrule* [left=\bf{SInp}]{
+	      R \xrightarrow{\gamma} Q
+	    }{
+	      \underline{x(z)}.R \xrightarrow{x(z) \cdot \gamma} Q
+	    }
+	  }{
+	    \underline{x(z)}.P \xrightarrow{x(z) \cdot \gamma} Q
+	  }$
+	\end{center}
+      \item[$Sum$]:
+	\begin{center}
+	  $\inferrule* [left=\bf{Sum}]{
+	    \inferrule* [left=\bf{Cong}]{
+		P \equiv R
+	      \\
+		R \xrightarrow{\gamma} Q
+	    }{
+	      P \xrightarrow{\gamma} Q
+	    }
+	  }{
+	    P+S \xrightarrow{\gamma} Q
+	  }$
+	\end{center}
+	become
+	\begin{center}
+	  $\inferrule* [left=\bf{Cong}]{
+	    \inferrule* {
+	      P \equiv R
+	    }{
+	      P+S \equiv R+S
+	    }
+	  \\
+	    \inferrule* [left=\bf{Sum}]{
+	      R \xrightarrow{\gamma} Q
+	    }{
+	      R+S \xrightarrow{\gamma} Q
+	    }
+	  }{
+	    P+S \xrightarrow{\gamma} Q
+	  }$
+	\end{center}
+      \item[$Cong$]:
+	\begin{center}
+	  $\inferrule* [left=\bf{Cong}]{
+	      P \equiv R
+	    \\
+	      \inferrule* [left=\bf{Cong}]{
+		  R \equiv S
+		\\
+		  S \xrightarrow{\gamma} Q
+	      }{
+		R \xrightarrow{\gamma} Q
+	      }
+	  }{
+	    P \xrightarrow{\gamma} Q
+	  }$
+	\end{center}
+	become
+	\begin{center}
+	  $\inferrule* [left=\bf{Cong}]{
+	    \inferrule* {
+		P \equiv R
+	      \\
+		R \equiv S
+	    }{
+	      P \equiv S
+	    }
+	  \\
+	    S \xrightarrow{\gamma} Q
+	  }{
+	    P \xrightarrow{\gamma} Q
+	  }$
+	\end{center}
+      \item[$Par$]:
+	\begin{center}
+	  $\inferrule* [left=\bf{Par}]{
+	      \inferrule* [left=\bf{Cong}]{
+		  P \equiv R
+		\\
+		  R \xrightarrow{\gamma} Q
+	      }{
+		P \xrightarrow{\gamma} Q
+	      }
+	    \\
+	      bn(\gamma)\cap fn(S)=\emptyset
+	  }{
+	    P|S \xrightarrow{\gamma} Q
+	  }$
+	\end{center}
+	become
+	\begin{center}
+	  $\inferrule* [left=\bf{Cong}]{
+	      \inferrule* {
+		P \equiv R
+	      }{
+		P|S \equiv R|S
+	      }
+	    \\
+	      \inferrule* [left=\bf{Par}]{
+		  R \xrightarrow{\gamma} Q
+		\\
+		  bn(\gamma)\cap fn(S)=\emptyset
+	      }{
+		R|S \xrightarrow{\gamma} Q
+	      }
+	  }{
+	    P|S \xrightarrow{\gamma} Q
+	  }$
+	\end{center}
+      \item[$LComSeq$]:
+	\begin{center}
+	  $\inferrule* [left=\bf{LComSeq}]{
+	      \inferrule* [left=\bf{Cong}]{
+		  P_{1} \equiv R_{1}
+		\\
+		  R_{1} \xrightarrow{x(y) \cdot \sigma} Q_{1}
+	      }{
+		P_{1} \xrightarrow{x(y) \cdot \sigma} Q_{1}
+	      }
+	    \\
+	      \inferrule* [left=\bf{Cong}]{
+		  P_{2} \equiv R_{2}
+		\\
+		  R_{2} \xrightarrow{\overline{x}z} Q_{2}
+	      }{
+		P_{2} \xrightarrow{\overline{x}z} Q_{2}
+	      }
+% 	    \\
+% 	      bn(\sigma) \cap fn(P_{2}) = \emptyset
+	  }{
+	    P_{1}|P_{2} \xrightarrow{\gamma\{z/y\}} Q_{1}\{z/y\}|Q_{2}
+	  }$
+	\end{center}
+	become
+	\begin{center}
+	  $\inferrule* [left=\bf{Cong}]{
+	      \inferrule* {
+		  P_{1} \equiv R_{1}
+		\\
+		  P_{2} \equiv R_{2}
+	      }{
+		P_{1}|P_{2} \equiv R_{1}|R_{2}
+	      }
+	    \\
+	      \inferrule* [left=\bf{LComSeq}]{
+		  R_{1} \xrightarrow{x(y) \cdot \sigma} Q_{1}
+		\\
+		  R_{2} \xrightarrow{\overline{x}z} Q_{2}
+	      }{
+		R_{1}|R_{2} \xrightarrow{\sigma\{z/y\}} Q_{1}\{z/y\}|Q_{2}
+	      }
+	  }{
+	    P_{1}|P_{2} \xrightarrow{\gamma\{z/y\}} Q_{1}\{z/y\}|Q_{2}
+	  }$
+	\end{center}
+      \item[$LCom$]:
+	\begin{center}
+	  $\inferrule* [left=\bf{LCom}]{
+	      \inferrule* [left=\bf{Cong}]{
+		  P_{1} \equiv R_{1}
+		\\
+		  R_{1} \xrightarrow{x(y)} Q_{1}
+	      }{
+		P_{1} \xrightarrow{x(y)} Q_{1}
+	      }
+	    \\
+	      \inferrule* [left=\bf{Cong}]{
+		  P_{2} \equiv R_{2}
+		\\
+		  R_{2} \xrightarrow{\overline{x}z} Q_{2}
+	      }{
+		P_{2} \xrightarrow{\overline{x}z} Q_{2}
+	      }
+	  }{
+	    P_{1}|P_{2} \xrightarrow{\tau} Q_{1}\{z/y\}|Q_{2}
+	  }$
+	\end{center}
+	become
+	\begin{center}
+	  $\inferrule* [left=\bf{Cong}]{
+	      \inferrule* {
+		  P_{1} \equiv R_{1}
+		\\
+		  P_{2} \equiv R_{2}
+	      }{
+		P_{1}|P_{2} \equiv R_{1}|R_{2}
+	      }
+	    \\
+	      \inferrule* [left=\bf{LCom}]{
+		  R_{1} \xrightarrow{x(y)} Q_{1}
+		\\
+		  R_{2} \xrightarrow{\overline{x}z} Q_{2}
+	      }{
+		R_{1}|R_{2} \xrightarrow{\tau} Q_{1}\{z/y\}|Q_{2}
+	      }
+	  }{
+	    P_{1}|P_{2} \xrightarrow{\tau} Q_{1}\{z/y\}|Q_{2}
+	  }$
+	\end{center}
+      \item[$Res$]:
+	\begin{center}
+	  $\inferrule* [left=\bf{Res}]{
+	      \inferrule* [left=\bf{Cong}]{
+		  P \equiv R
+		\\
+		  R \xrightarrow{\gamma} Q
+	      }{
+		P \xrightarrow{\gamma} Q
+	      }
+	    \\
+	      z\notin n(\gamma)
+	  }{
+	    (\nu z)P \xrightarrow{\gamma} (\nu z)Q
+	  }$
+	\end{center}
+	become
+	\begin{center}
+	  $\inferrule* [left=\bf{Cong}]{
+	      \inferrule* {
+		P \equiv R
+	      }{
+		(\nu z)P \equiv (\nu z)R
+	      }
+	    \\
+	      \inferrule* [left=\bf{Res}]{
+		  R \xrightarrow{\gamma} Q
+		\\
+		  z\notin n(\gamma)
+	      }{
+		(\nu z)R \xrightarrow{\gamma} (\nu z)Q
+	      }
+	  }{
+	    (\nu z)P \xrightarrow{\gamma} (\nu z)Q
+	  }$
+	\end{center}
+      \item[$Opn$]:
+	\begin{center}
+	  $\inferrule* [left=\bf{Opn}]{
+	      \inferrule* [left=\bf{Cong}]{
+		  P \equiv R
+		\\
+		  R \xrightarrow{\overline{x}y} Q
+	      }{
+		P \xrightarrow{\overline{x}y} Q
+	      }
+	    \\
+	      y\neq x
+	  }{
+	    (\nu y)P \xrightarrow{\overline{x}(y)} Q
+	  }$
+	\end{center}
+	become
+	\begin{center}
+	  $\inferrule* [left=\bf{Cong}]{
+	      \inferrule* {
+		P \equiv R
+	      }{
+		(\nu y)P \equiv (\nu y)R
+	      }
+	    \\
+	      \inferrule* [left=\bf{Opn}]{
+		  R \xrightarrow{\overline{x}y} Q
+		\\
+		  y\neq x
+	      }{
+		(\nu y)R \xrightarrow{\overline{x}(y)} Q
+	      }
+	  }{
+	    (\nu y)P \xrightarrow{\overline{x}(y)} Q
+	  }$
+	\end{center}
+    \end{description}
+  \end{proof}
+\end{proposition}
+
 
 \subsection{Strong bisimilarity}
 
-\begin{definition}
-  A \emph{strong bisimulation} is a simmetric binary relation $\mathbb{S}$ on multi $\pi$ processes such that for all $P\mathbf{S}Q$:
+\begin{definition}\label{strongLateBisimulation}
+  A \emph{strong bisimulation} is a simmetric binary relation $\mathbf{S}$ on multi $\pi$ processes such that for all $P\mathbf{S}Q$:
    \begin{itemize}
      \item 
        $P \xrightarrow{\alpha} P^{'}$, $bn(\alpha)$ is fresh and $\alpha$ is not an input nor a sequence of inputs then there exists some $Q^{'}$ such that $Q \xrightarrow{\alpha} Q^{'}$ and $P^{'}\mathbf{S}Q^{'}$
      \item
-       $P \xrightarrow{x(y) \cdot \gamma} P^{'}$ where $\gamma$ is a possibly empty sequence of inputs and $bn(x(y) \cdot \gamma)$ is fresh then there exists some $Q^{'}$ such that $Q \xrightarrow{x(y) \cdot \gamma} Q^{'}$ and for all $w$, $P^{'}\{w/y\}\mathbf{S}Q^{'}\{w/y\}$
+       $P \xrightarrow{x_{1}(y_{1}) \cdot \ldots \cdot x_{n}(y_{n})} P^{'}$ where $\gamma$ is a possibly empty sequence of inputs and $y_{1} \cdot \ldots \cdot y_{n}$ is fresh then there exists some $Q^{'}$ such that $Q \xrightarrow{x_{1}(y_{1}) \cdot \ldots \cdot x_{n}(y_{n})} Q^{'}$ and for all $w_{1}\cdot \ldots \cdot w_{n}$, $P^{'}\{w_{1}/y_{1}, \ldots, w_{n}/y_{n}\}\mathbf{S}Q^{'}\{w_{1}/y_{1}, \ldots, w_{n}/y_{n}\}$
   \end{itemize}
+  $P$ and $Q$ are strongly bisimilar, written $P \dot{\sim} Q$, if they are related by a strong bisimulation.
 \end{definition}
+
+Is this definition a proper extension of the one in \cite{parrow}? The only way to tell is by showing some example of process that we intuitively want to be bisimilar.
+\begin{example}:
+  \begin{center}
+    \begin{tabular}{lll}
+	$P=\underline{a(u)}.b(v).0$
+      &
+	$P \dot{\sim} Q$ 
+      &
+	$\underline{a(x)}.b(v).(\nu y)\overline{y}u.0=Q$
+    \end{tabular}
+  \end{center}
+  This is because for all $u\in \mathbf{N}-\{b\}$ and for all $v\in \mathbf{N}-\{u\}$: $P \xrightarrow{a(u) \cdot b(v)} 0$. For all $x\in \mathbf{N}-\{b,u\}$ and for all $v\in \mathbf{N}-\{u,x,y\}$:$Q \xrightarrow{a(x) \cdot b(v)} 0$. Taking $z,w$ fresh in $P$ and $Q$ means: $z,w\in \mathbf{N}-\{a,b,u\}$, so both $P$ and $Q$ can make the transition $\xrightarrow{a(z) \cdot b(w)}$ and arrive to $0$.
+\end{example}
+
+% \begin{definition}
+%   We say that $P$ and $Q$ are \emph{strongly bisimular up to structural congruence} written $\dot{\sim}^{\equiv}$ if:
+%    \begin{itemize}
+%      \item 
+%        $P \xrightarrow{\alpha} P^{'}$, $bn(\alpha)$ is fresh and $\alpha$ is not an input nor a sequence of inputs then there exist processes $Q^{'},Q^{''},P^{''}$ such that $Q \xrightarrow{\alpha} Q^{'}$ and $P^{'} \equiv P^{''} \dot{\sim} Q^{''} \equiv Q^{'}$
+%      \item
+%        $P \xrightarrow{x_{1}(y_{1}) \cdot \ldots \cdot x_{n}(y_{n})} P^{'}$ where $\gamma$ is a possibly empty sequence of inputs and $y_{1} \cdot \ldots \cdot y_{n}$ is fresh then there exist processes $Q^{'}, Q^{''}, P^{''}$ such that $Q \xrightarrow{x_{1}(y_{1}) \cdot \ldots \cdot x_{n}(y_{n})} Q^{'}$ and for all $w_{1}\cdot \ldots \cdot w_{n}$, $P^{'}\{w_{1}/y_{1}, \ldots, w_{n}/y_{n}\} \equiv P^{''} \dot{\sim} Q^{''} \equiv Q^{'}\{w_{1}/y_{1}, \ldots, w_{n}/y_{n}\}$
+%   \end{itemize}
+% \end{definition}
+
+% \begin{proposition}
+%   $P \dot{\sim}_{E}^{up} Q$ imply $P \dot{\sim}_{E} Q$.
+%   \begin{proof}
+%     Let $\mathbf{S}$ be a bisimulation up to $\dot{\sim}_{E}$ such that $P \mathbf{S} Q$. It can be proved that $\dot{\sim}_{E} \mathbf{S} \dot{\sim}_{E}$ is a bisimulation: let $A \dot{\sim}_{E} B \mathbf{S} C \dot{\sim}_{E} D$
+%     \begin{center}
+%       \begin{tabular}{l}
+% 	$A \xrightarrow{\gamma} A^{'}$ $\wedge$ $A \dot{\sim}_{E} B$ $\wedge$ definition \ref{strongEarlyBisimulation} 
+%       
+% 	$\Rightarrow \exists B^{'}:$ $B \xrightarrow{\gamma} B^{'}$ $\wedge$ $A^{'}\dot{\sim}_{E} B^{'}$
+%       \\
+% 	$B \mathbf{S} C$ $\wedge$ definition \ref{strongEarlyBisimulationUpTo}
+%       
+% 	$\Rightarrow \exists C^{'} C^{''} B^{''}:$ $C \xrightarrow{\gamma} C^{'}$ $\wedge$ $B^{'} \dot{\sim}_{E} B^{''} \mathbf{S} C^{''} \dot{\sim}_{E} C^{'}$
+%       \\
+% 	$C \xrightarrow{\gamma} C^{'}$ $\wedge$ $C \dot{\sim}_{E} D$ $\wedge$ definition \ref{strongEarlyBisimulation} 
+%       
+% 	$\Rightarrow \exists D^{'}:$ $D \xrightarrow{\gamma} D^{'}$ $\wedge$ $C^{'}\mathbf{S} D^{'}$
+%       \\
+% 	$A^{'} \dot{\sim}_{E} B^{'} \dot{\sim}_{E} B^{''} \mathbf{S} C^{''} \dot{\sim}_{E} C^{'} \dot{\sim}_{E} D^{'}$ $\wedge$ transitivity of $\dot{\sim}_{E}$
+% 	$\Rightarrow$ $A^{'} \dot{\sim}_{E} B^{''} \mathbf{S} C^{''} \dot{\sim}_{E} D^{'}$
+%       \end{tabular}
+%     \end{center}
+%     It is easy to see that the simmetric also holds.
+%   \end{proof}
+% \end{proposition}
+
+\begin{definition}\label{strongLateBisimulationUpTo}
+  Let $\mathbf{R}$ be a strong late bisimulation. A \emph{strong bisimulation up to $\mathbf{R}$} is a simmetric binary relation $\mathbf{S}$ on multi $\pi$ processes such that for all $P\mathbf{S}Q$:
+   \begin{itemize}
+     \item 
+       $P \xrightarrow{\alpha} P^{'}$, $bn(\alpha)$ is fresh and $\alpha$ is not an input nor a sequence of inputs then there exist processes $Q^{'}, Q^{''}, P^{''}$ such that $Q \xrightarrow{\alpha} Q^{'}$ and $P^{'} \mathbf{R} P^{''} \mathbf{S} Q^{''} \mathbf{R} Q^{'}$
+     \item
+       $P \xrightarrow{x_{1}(y_{1}) \cdot \ldots \cdot x_{n}(y_{n})} P^{'}$ where $\gamma$ is a possibly empty sequence of inputs and $y_{1} \cdot \ldots \cdot y_{n}$ is fresh then there exists some $Q^{'}$ such that $Q \xrightarrow{x_{1}(y_{1}) \cdot \ldots \cdot x_{n}(y_{n})} Q^{'}$ and for all $w_{1}\cdot \ldots \cdot w_{n}$  $P^{'}\{w_{1}/y_{1}, \ldots, w_{n}/y_{n}\} \mathbf{R} \mathbf{S} \mathbf{R} Q^{'}\{w_{1}/y_{1}, \ldots, w_{n}/y_{n}\}$
+  \end{itemize}
+  $P$ and $Q$ are strongly bisimilar up to $\mathbf{R}$, written $P \dot{\sim}^{\mathbf{R}} Q$, if they are related by a strong bisimulation up to $\mathbf{R}$.
+\end{definition}
+
+
+\begin{proposition}
+  $P \dot{\sim}^{\mathbf{R}} Q$ imply $P \dot{\sim} Q$.
+   \begin{proof}
+     Let $\mathbf{S}$ be a bisimulation up to $\mathbf{R}$ such that $P \mathbf{S} Q$. It can be proved that $\mathbf{R} \mathbf{S} \mathbf{R}$ is a bisimulation: let $A \mathbf{R} B \mathbf{S} C \mathbf{R} D$ and let $\gamma$ be a non input action
+     \begin{center}
+       \begin{tabular}{l}
+ 	$A \xrightarrow{\gamma} A^{'}$ $\wedge$ $A \mathbf{R} B$ $\wedge$ definition \ref{strongLateBisimulation}
+       
+ 	$\Rightarrow \exists B^{'}:$ $B \xrightarrow{\gamma} B^{'}$ $\wedge$ $A^{'} \mathbf{R} B^{'}$
+       \\
+ 	$B \mathbf{S} C$ $\wedge$ definition \ref{strongLateBisimulationUpTo}
+       
+ 	$\Rightarrow \exists C^{'} C^{''} B^{''}:$ $C \xrightarrow{\gamma} C^{'}$ $\wedge$ $B^{'} \mathbf{R} B^{''} \mathbf{S} C^{''} \mathbf{R} C^{'}$
+       \\
+ 	$C \xrightarrow{\gamma} C^{'}$ $\wedge$ $C \mathbf{R} D$ $\wedge$ definition \ref{strongLateBisimulation} 
+       
+	$\Rightarrow \exists D^{'}:$ $D \xrightarrow{\gamma} D^{'}$ $\wedge$ $C^{'}\mathbf{R} D^{'}$
+       \\
+	$A^{'} \mathbf{R} B^{'} \mathbf{R} B^{''} \mathbf{S} C^{''} \mathbf{R} C^{'} \mathbf{R} D^{'}$ $\wedge$ transitivity of $\mathbf{R}$
+	$\Rightarrow$ $A^{'} \mathbf{R} B^{''} \mathbf{S} C^{''} \mathbf{R} D^{'}$
+      \end{tabular}
+    \end{center}
+    It is easy to see that the simmetric also holds. For the other case: let $x_{1}(y_{1}) \cdot \ldots \cdot x_{n}(y_{n})= \tilde{x}(\tilde{y})$
+     \begin{center}
+       \begin{tabular}{l}
+ 	$A \xrightarrow{\tilde{x}(\tilde{y})} A^{'}$ $\wedge$ $A \mathbf{R} B$ $\wedge$ definition \ref{strongLateBisimulation}
+       
+ 	$\Rightarrow \exists B^{'}:$ $B \xrightarrow{\tilde{x}(\tilde{y})} B^{'}$ and for all $\tilde{w}:A^{'}\{\tilde{w}/\tilde{y}\} \mathbf{R} B^{'}\{\tilde{w}/\tilde{y}\}$
+       \\
+ 	$B \mathbf{S} C$ $\wedge$ definition \ref{strongLateBisimulationUpTo}
+       
+ 	$\Rightarrow \exists C^{'}:$ $C \xrightarrow{\tilde{x}(\tilde{y})} C^{'}$ $\wedge$ $B^{'}\{\tilde{w}/\tilde{y}\} \mathbf{R} \mathbf{S} \mathbf{R} C^{'}\{\tilde{w}/\tilde{y}\}$
+       \\
+ 	$C \xrightarrow{\tilde{x}(\tilde{y})} C^{'}$ $\wedge$ $C \mathbf{R} D$ $\wedge$ definition \ref{strongLateBisimulation} 
+       
+	$\Rightarrow \exists D^{'}:$ $D \xrightarrow{\tilde{x}(\tilde{y})} D^{'}$ $\wedge$ $C^{'}\{\tilde{w}/\tilde{y}\} \mathbf{R} D^{'}\{\tilde{w}/\tilde{y}\}$
+       \\
+	$A^{'}\{\tilde{w}/\tilde{y}\} \mathbf{R} B^{'}\{\tilde{w}/\tilde{y}\} \mathbf{R} \mathbf{S} \mathbf{R} C^{'}\{\tilde{w}/\tilde{y}\} \mathbf{R} D^{'}\{\tilde{w}/\tilde{y}\}$ $\wedge$ transitivity of $\mathbf{R}$
+	$\Rightarrow$ $A^{'}\{\tilde{w}/\tilde{y}\} \mathbf{R} \mathbf{S} \mathbf{R} D^{'}\{\tilde{w}/\tilde{y}\}$
+      \end{tabular}
+    \end{center}
+    It is easy to see that the simmetric also holds.
+   \end{proof}
+\end{proposition}
+
+\begin{proposition}
+  Structural congruence is a strong bisimulation.
+  \begin{proof}
+    Let $P\equiv Q$. If $P\xrightarrow{\sigma}P^{'}$ then for symmetry of $\equiv$ and rule $Cong$: $Q\xrightarrow{\sigma}P^{'}$. If $Q\xrightarrow{\sigma}Q^{'}$ then for rule $Cong$: $P\xrightarrow{\sigma}Q^{'}$
+  \end{proof}
+\end{proposition}
+
+\begin{proposition}
+  If $P \xrightarrow{\gamma} Q$ then there exists a process $N$ in normal form such that $N \xrightarrow{\gamma} Q$ and $P\equiv N$
+\end{proposition}
+
+\begin{lemma}[Inversion lemma for structural congruence]
+  :\begin{description}
+    \item[$Output$]
+      $\overline{x}y.P \equiv R$ then $R$ is in the form $\overline{x}y.S$ such that $P\equiv S$
+  \end{description}
+  DA CONTINUARE
+  \begin{proof}
+  We can assume that the property of being a congruence amounts to having these rules:
+  \begin{center}
+    \begin{tabular}{ll}
+	$\inferrule* [left=\bf{Congr1}]{
+	  P\equiv Q
+	}{
+	  C[P]\equiv C[Q]
+	}$
+      &
+	$\inferrule* [left=\bf{Congr2}]{
+	    P_{1}\equiv Q_{1}
+	  \\
+	    P_{2}\equiv Q_{2}
+	}{
+	  C[P_{1}, P_{2}]\equiv C[Q_{1}, Q_{2}]
+	}$
+    \end{tabular}
+  \end{center}
+  \begin{description}
+    \item[$Output$] the only rules that can be applied to a process whose top level is an output are: the $\alpha$ conversion rule, $Congr1$ and $Congr2$.
+  \end{description}
+  \end{proof}
+\end{lemma}
+
+
+
+\begin{proposition}
+  $\dot{\sim}$ is preserved by all operators except input prefix.
+  \begin{proof}
+    We have to try each operator in turn and prove that $\dot{\sim}^{\equiv}$ is preserved:
+    \begin{description}
+      \item[Output prefix]
+	Let $P \dot{\sim} Q$ and let $\overline{x}y.P \xrightarrow{\alpha} P^{'}$. The last rule used in the derivation of this transition can be:
+	\begin{description}
+	  \item[$Out$]
+	    $\overline{x}y.P \xrightarrow{\overline{x}y} P$ and $\overline{x}y.Q \xrightarrow{\overline{x}y} Q$ and $P \dot{\sim} Q$
+	  \item[$Cong$]
+	    A process structurally congruent to $\overline{x}y.P$ must be in the form $\overline{x}y.R$ where $P \equiv R$ so $\overline{x}y.P \xrightarrow{\overline{x}y} R$.
+	\end{description}
+      \item[Input prefix]:
+      \item[Tau prefix]
+	Let $P \dot{\sim} Q$ and let $\tau.P \xrightarrow{\alpha} P^{'}$. The last rule used in the derivation of this transition can be:
+	\begin{description}
+	  \item[$Tau$]
+	    $\tau.P \xrightarrow{\tau} P$ and $\tau.Q \xrightarrow{\tau} Q$ and $P \dot{\sim} Q$
+	  \item[$Cong$]
+	    A process structurally congruent to $\tau.P$ must be in the form $\tau.R$ where $P \equiv R$ so $\overline{x}y.P \xrightarrow{\overline{x}y} R$.
+	\end{description}
+    \end{description}
+  \end{proof}
+\end{proposition}
+
 
 % 
 % \subsection{Strong equivalence and distinctions}
