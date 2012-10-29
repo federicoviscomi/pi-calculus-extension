@@ -195,6 +195,14 @@
 \newtheorem{proposizione}[adefinizione]{Proposition}
 \newtheorem{esempio}[adefinizione]{Example}
 
+\let\origdescription\description
+\newenvironment{descriptionM}{
+  \setlength{\leftmargini}{0em}
+  \origdescription
+  \setlength{\itemindent}{0em}
+  \setlength{\labelsep}{\textwidth}
+}
+{\endlist}
 
 
 \newenvironment{wide}{%
