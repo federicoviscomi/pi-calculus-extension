@@ -1354,15 +1354,76 @@ This section contains the definition of an alternative semantic for multi $\pi$.
 % 
 % \end{example}
 
-\section{Strong bisimilarity and equivalence}
+\section{Normal form}
 
-In the following section the symbol $\rightarrow$ will refer to the late semantic with structural congruence of multi $\pi$ calculus with strong input which is illustrated in table \ref{multipisoloinputlatewith}. Also we consider a structural congruence without the rules $P|0\equiv 0$ and $P+0\equiv 0$
+In the following section the symbol $\rightarrow$ will refer to the late semantic with structural congruence of multi $\pi$ calculus with strong input which is illustrated in table \ref{multipisoloinputlatewith}. Also we consider a structural congruence without the rules $P|0\equiv 0$ and $P+0\equiv 0$. For the purpose of clarity the rule of structural congruence are repeated in this secition.
+
+
+\begin{definition}
+  \emph{structural congruence $\equiv$} is the smallest relation on processes that satisfies the axioms in table \ref{structuralCongrunce}
+  \begin{table}
+    \begin{tabular}{ll}
+      \multicolumn{2}{l}{\line(1,0){415}}\\
+	$\inferrule* [left=\bf{SumAsc1}]{}{M_{1}+(M_{2}+M_{3})\equiv (M_{1}+M_{2})+M_{3}}$ &$\inferrule* [left=\bf{ParAsc1}]{}{P_{1}|(P_{2}|P_{3})\equiv (P_{1}|P_{2})|P_{3}}$
+      \\
+	$\inferrule* [left=\bf{SumAsc2}]{}{(M_{1}+M_{2})+M_{3}\equiv M_{1}+(M_{2}+M_{3})}$ &$\inferrule* [left=\bf{ParAsc2}]{}{(P_{1}|P_{2})|P_{3}\equiv P_{1}|(P_{2}|P_{3})}$ 
+      \\
+	 & 
+      \\
+      \end{tabular}
+      \\
+      \begin{tabular}{lll}
+      \\
+	$\inferrule* [left=\bf{ParCom}]{}{P_{1}|P_{2}\equiv P_{2}|P_{1}}$ &
+	$\inferrule* [left=\bf{ResCom}]{}{(\nu x) (\nu y) P \equiv (\nu y) (\nu x) P}$ &
+	$\inferrule* [left=\bf{SumCom}]{}{M_{1}+M_{2}\equiv M_{2}+M_{1}}$
+      \\
+      \end{tabular}
+      \\
+      \begin{tabular}{ll}
+      \\
+	$\inferrule* [left=\bf{ScpExtPar1}]{z\notin fn(P_{1})}{(\nu z) (P_{1}|P_{2}) \equiv P_{1}|(\nu z) P_{2}}$ & $\inferrule* [left=\bf{ScpExtPar2}]{z\notin fn(P_{1})}{P_{1}|(\nu z) P_{2} \equiv (\nu z) (P_{1}|P_{2})}$ 
+      \\
+	$\inferrule* [left=\bf{ScpExtSum1}]{z\notin fn(P_{1})}{(\nu z) (P_{1}+P_{2}) \equiv P_{1}+(\nu z) P_{2}}$ & $\inferrule* [left=\bf{ScpExtSum2}]{z\notin fn(P_{1})}{P_{1}+(\nu z) P_{2} \equiv (\nu z) (P_{1}+P_{2})}$ 
+      \\
+      \end{tabular}
+      \\
+      \begin{tabular}{lll}
+      \\
+	$\inferrule* [left=\bf{Ide}]{A(\tilde{x})\stackrel{def}{=}P}{A(\tilde{w})\equiv P\{\tilde{w}/\tilde{x}\}}$&
+	$\inferrule* [left=\bf{Trans}]{P \equiv Q \\ Q \equiv R}{P \equiv R}$&
+	  $\inferrule* [left=\bf{Alp}] {
+	    P \equiv_{\alpha} Q
+	  }{
+	    P\equiv Q
+	  }$
+
+      \\
+	$\inferrule* [left=\bf{Cong1}]{P \equiv Q}{C[P] \equiv C[Q]}$&$\inferrule* [left=\bf{Cong2}]{P_{1} \equiv Q_{1} \\ P_{2} \equiv Q_{2}}{C[P_{1}, P_{2}] \equiv C[Q_{1}, Q_{2}]}$&
+      \\
+      \\\multicolumn{3}{l}{\line(1,0){415}}
+    \end{tabular}
+    \caption{Structural congruence axioms}
+    \label{structuralCongrunce}
+  \end{table}
+\end{definition}
+
+\begin{proposition}
+  $\equiv$ as defined in table \ref{structuralCongrunce} is a congruence and an equivalence relation.
+  \begin{proof}
+    $\equiv$ is a congruence thanks to rules $Cong1$ and $Cong2$. Reflexivity holds for rule $Alp$. Symmetry holds because all the rules are symmetric or have a symmetric counterpart. Transitivity holds because of rule $Trans$.
+  \end{proof}
+\end{proposition}
+
+\begin{lemma}
+  If $P \equiv Q$ then there is a proof of $P \equiv Q$ that does not use the rule $Trans$.
+\end{lemma}
 
 \begin{definition}
   $\twoheadrightarrow$ is the smallest relation induced by the all the rules in table \ref{multipisoloinputlatewith} except $Cong$. 
 \end{definition}
 
-\begin{proposition}
+\begin{proposition}\label{moveCongDown}
   If $P\xrightarrow{\sigma} Q$ then there exists a process $R$ such that: $R\stackrel{\sigma}{\twoheadrightarrow}Q$ and $P\equiv R$
   \begin{proof}
     We show that we can move the rule $Cong$ down the inference tree of $P\xrightarrow{\sigma} Q$. So a derivation of $P\xrightarrow{\sigma} Q$ can translate into a derivation of $P\xrightarrow{\sigma} Q$ which uses the rule $Cong$ only as its last rule.
@@ -1666,6 +1727,108 @@ In the following section the symbol $\rightarrow$ will refer to the late semanti
 \end{proposition}
 
 
+\begin{lemma}[Inversion lemma for structural congruence]\label{inversionlemmamultiinplatewhith}
+  :\begin{description}
+    \item[$Output$]
+      $\overline{x}y.P \equiv R$ then $R$ is in the form $\overline{x}y.S$ such that $P\equiv S$
+    \item[$Tau$]
+      $\tau.P \equiv R$ then $R$ is in the form $\tau.S$ such that $P\equiv S$
+    \item[$Sum$]
+      $P+Q \equiv R$ then $R$ is in the form $A+B$ such that $(P\equiv A\; \wedge\; Q\equiv B)$ or $(P\equiv B\; \wedge\; Q\equiv A)$ NON FUNZIONA PERCHE' C'E' LO SCOPE EXTRUSION ANCHE PER LA SOMMA!
+  \end{description}
+  DA CONTINUARE
+  \begin{proof}
+  We can assume that the property of being a congruence amounts to having these rules:
+  \begin{center}
+    \begin{tabular}{ll}
+	$\inferrule* [left=\bf{Congr1}]{
+	  P\equiv Q
+	}{
+	  C[P]\equiv C[Q]
+	}$
+      &
+	$\inferrule* [left=\bf{Congr2}]{
+	    P_{1}\equiv Q_{1}
+	  \\
+	    P_{2}\equiv Q_{2}
+	}{
+	  C[P_{1}, P_{2}]\equiv C[Q_{1}, Q_{2}]
+	}$
+    \end{tabular}
+  \end{center}
+  \begin{description}
+    \item[$Output$] the only rules that can be applied to a process whose top level is an output are: the $\alpha$ conversion rule, $Congr1$ and $Congr2$.
+    \item[$Tau$] similar.
+    \item[$Summation$] the only rules that can be applied to a process whose top level is a sum are: the $\alpha$ conversion rule, $Congr1$, $Congr2$ and the commutativity of sum.
+
+  \end{description}
+  \end{proof}
+\end{lemma}
+
+% \begin{definition}
+%   Let $(\nu x)Q$ be an occurrence in a process $P$, i.e., there is a context $C[\_]$ such that $C[(\nu x)Q]=P$. We say that this occurrence is \emph{guarded} if it occurs inside a prefix. Otherwise we say that the occurrence is \emph{unguarded}. More formally the occurrence is \emph{guarded} if there are two contexts $C[\_], D[\_]$ and an action prefixing $\alpha$ such that $P=D[\alpha.C[(\nu x)Q]]$
+% \end{definition}
+
+\begin{definition}
+  Let $(\nu x)Q$ be an occurrence in a process $P$, i.e., there is a context $C[\_]$ such that $C[(\nu x)Q]=P$. We say that this occurrence is \emph{guarded} if it occurs right inside a prefix. Otherwise we say that the occurrence is \emph{unguarded}. More formally the occurrence $(\nu x)Q$ is \emph{guarded} in $P$ if there is a context $C[\_]$, an action prefixing $\alpha$ and names $\tilde{y}$ such that $P=C[\alpha.(\nu \tilde{y})(\nu x)Q]$
+\end{definition}
+
+\begin{definition}
+  We say that a process is in \emph{normal form} if all bound names are distinct and all unguarded restrictions are at the top level, i.e., of the form $(\nu \tilde{x})P$ where $P$ has no unguarded restrictions, note that $\tilde{x}$ can eventually be empty.
+\end{definition}
+
+\begin{lemma}\label{existenceOfNormalForm}
+  Every process is structurally congruent to a process in normal form.
+  \begin{proof}
+    Let $P$ be a process. We have to show that there exists a process $N$ such that $P \equiv N$ and $N$ is in normal form. We prove this by structural induction on $P$:
+    \begin{description}
+      \item[$0$] 
+	in this case $P=0$ is already in normal form.
+      \item[$\alpha.P_{1}$] 
+	for inductive hypothesis there exists a process $N$ such that $P_{1} \equiv N$ and $N$ is in normal form. Then $\alpha.P_{1} \equiv \alpha.N$ and $\alpha.N$ is in normal form.
+      \item[$P_{1}+P_{2}$]
+	for inductive hypothesis there exist processes $N_{1}$ and $N_{2}$ such that $P_{1} \equiv N_{1}$, $P_{2} \equiv N_{2}$ and $N_{1}, N_{2}$ are in normal form. If $N_{1}$ or $N_{2}$ have unguarded restrictions at the top level then $N_{1}+N_{2}$ is not in normal form but we can move the restrictions up to the top level using $\alpha$ equivalence and the rule 
+	\begin{center}
+	  \begin{tabular}{ll}
+	      $(\nu x)(P+Q) \equiv P + (\nu x)Q$ 
+	    &
+	      if $x\notin fn(P)$
+	  \end{tabular}
+	\end{center}
+	and we get something that is in normal form and structurally equivalent to $N_{1}+N_{2}$ and so to $P_{1}+P_{2}$.
+      \item[$P_{1}|P_{2}$] similar.
+      \item[$(\nu x)P_{1}$] 
+	for inductive hypothesis there exists a process $N$ such that $P_{1} \equiv N$ and $N$ is in normal form. $(\nu x)N$ is in normal form and it is structurally congruent to $P$.
+    \end{description}
+  \end{proof}
+\end{lemma}
+
+
+\begin{lemma}\label{mapToNormalForm}
+  $P \xrightarrow{\gamma} Q$, $P\equiv N$, $N$ is in normal form then $N \xrightarrow{\gamma} M$, $Q\equiv M$, $M$ is in normal form and the depth of the inference tree of $N \xrightarrow{\gamma} M$ is not greater than the depth of the inference tree of $P \xrightarrow{\gamma} Q$.
+  \begin{proof}
+    The proof is by induction on the derivation of $P\equiv N$. The last rule used can be:
+    \begin{description}
+      \item[$\alpha\; conversion$] 
+	?? ???
+    \end{description}
+  \end{proof}
+\end{lemma}
+
+\begin{lemma}
+  If $P \xrightarrow{\gamma} Q$ then there exist processes $N,M$ in normal form such that $P\equiv N$, $N \xrightarrow{\gamma} M$, $Q\equiv M$ and the inference tree of $N \xrightarrow{\gamma} M$ is not deeper than the one of $P \xrightarrow{\gamma} Q$.
+  \begin{proof}
+    this lemma follows from lemma \ref{existenceOfNormalForm} and lemma \ref{mapToNormalForm}
+  \end{proof}
+\end{lemma}
+
+\begin{lemma}[Inversion lemma for structural congruence for normal form]
+  
+\end{lemma}
+
+
+\section{Strong bisimilarity and equivalence}
+
 \subsection{Strong bisimilarity}
 
 \begin{definition}\label{strongLateBisimulation}
@@ -1794,43 +1957,6 @@ Is this definition a proper extension of the one in \cite{parrow}? The only way 
 \end{proposition}
 
 \begin{proposition}
-  If $P \xrightarrow{\gamma} Q$ then there exists a process $N$ in normal form such that $N \xrightarrow{\gamma} Q$ and $P\equiv N$
-\end{proposition}
-
-\begin{lemma}[Inversion lemma for structural congruence]
-  :\begin{description}
-    \item[$Output$]
-      $\overline{x}y.P \equiv R$ then $R$ is in the form $\overline{x}y.S$ such that $P\equiv S$
-  \end{description}
-  DA CONTINUARE
-  \begin{proof}
-  We can assume that the property of being a congruence amounts to having these rules:
-  \begin{center}
-    \begin{tabular}{ll}
-	$\inferrule* [left=\bf{Congr1}]{
-	  P\equiv Q
-	}{
-	  C[P]\equiv C[Q]
-	}$
-      &
-	$\inferrule* [left=\bf{Congr2}]{
-	    P_{1}\equiv Q_{1}
-	  \\
-	    P_{2}\equiv Q_{2}
-	}{
-	  C[P_{1}, P_{2}]\equiv C[Q_{1}, Q_{2}]
-	}$
-    \end{tabular}
-  \end{center}
-  \begin{description}
-    \item[$Output$] the only rules that can be applied to a process whose top level is an output are: the $\alpha$ conversion rule, $Congr1$ and $Congr2$.
-  \end{description}
-  \end{proof}
-\end{lemma}
-
-
-
-\begin{proposition}
   $\dot{\sim}$ is preserved by all operators except input prefix.
   \begin{proof}
     We have to try each operator in turn and prove that $\dot{\sim}^{\equiv}$ is preserved:
@@ -1841,17 +1967,75 @@ Is this definition a proper extension of the one in \cite{parrow}? The only way 
 	  \item[$Out$]
 	    $\overline{x}y.P \xrightarrow{\overline{x}y} P$ and $\overline{x}y.Q \xrightarrow{\overline{x}y} Q$ and $P \dot{\sim} Q$
 	  \item[$Cong$]
-	    A process structurally congruent to $\overline{x}y.P$ must be in the form $\overline{x}y.R$ where $P \equiv R$ so $\overline{x}y.P \xrightarrow{\overline{x}y} R$.
+	    For lemma \ref{inversionlemmamultiinplatewhith} a process structurally congruent to $\overline{x}y.P$ must be in the form $\overline{x}y.R$ where $P \equiv R$ so $\overline{x}y.P \xrightarrow{\overline{x}y} R$.
 	\end{description}
-      \item[Input prefix]:
-      \item[Tau prefix]
-	Let $P \dot{\sim} Q$ and let $\tau.P \xrightarrow{\alpha} P^{'}$. The last rule used in the derivation of this transition can be:
+      \item[Tau prefix] similar.
+      \item[Input prefix]: FARE UN ESEMPIO A PARTE DEL PERCH NON FUNZIONA	
+      \item[Strong input]: FARE UN ESEMPIO A PARTE DEL PERCH NON FUNZIONA	
+      \item[Summation]: 
+	Let $P \dot{\sim} Q$ and let $P+R \xrightarrow{\gamma} P^{'}$. The last rule used in the derivation of this transition can be:
 	\begin{description}
-	  \item[$Tau$]
-	    $\tau.P \xrightarrow{\tau} P$ and $\tau.Q \xrightarrow{\tau} Q$ and $P \dot{\sim} Q$
+	  \item[$Sum$]
+	    $P+R \xrightarrow{\gamma} P^{'}$ because $P \xrightarrow{\gamma} P^{'}$ so $Q \xrightarrow{\gamma} Q^{'}$ and $P^{'} \dot{\sim} Q^{'}$ or $P^{'}\{\tilde{w}/\tilde{y}\} \dot{\sim} Q^{'}\{\tilde{w}/\tilde{y}\}$
 	  \item[$Cong$]
-	    A process structurally congruent to $\tau.P$ must be in the form $\tau.R$ where $P \equiv R$ so $\overline{x}y.P \xrightarrow{\overline{x}y} R$.
+	    For proposition \ref{moveCongDown} we can assume that only the last rule used to prove $P+R \xrightarrow{\gamma} P^{'}$ is $Cong$ so
+	    \begin{center}
+	      $\inferrule* [left=\bf{Cong}]{
+		  P+R\equiv S
+		\\
+		  S \stackrel{\gamma}{\twoheadrightarrow} P^{'}
+	      }{
+		P+R \xrightarrow{\gamma} P^{'}
+	      }$
+	    \end{center}
+	    we proceed by cases on the last rule used in the derivation of $P+R\equiv S$:
+	    \begin{description}
+	      \item[$Cong2$]
+		$S$ is $A+B$, $P \equiv A$ and $R \equiv B$. Then $A+B \stackrel{\gamma}{\twoheadrightarrow} P^{'}$, the last rule used in this derivation must be $Sum$ so $A \stackrel{\gamma}{\twoheadrightarrow} P^{'}$. 
+		\begin{center}
+		  $\inferrule* [left=\bf{Cong}]{
+		      P\equiv A
+		    \\
+		      A \stackrel{\gamma}{\twoheadrightarrow} P^{'}
+		  }{
+		    P \xrightarrow{\gamma} P^{'}
+		  }$
+		\end{center}
+		Since $P\dot{\sim}Q$ we have $Q \xrightarrow{\gamma} Q^{'}$ and $P^{'} \dot{\sim} Q^{'}$ or $P^{'}\{\tilde{w}/\tilde{y}\} \dot{\sim} Q^{'}\{\tilde{w}/\tilde{y}\}$. For rule $Sum$: $Q+R \xrightarrow{\gamma} Q^{'}$
+	      \item[$SumCom$]
+		$S$ is $R+P$. Then $R+P \stackrel{\gamma}{\twoheadrightarrow} P^{'}$, the last rule used in this derivation must be $Sum$ so $R \stackrel{\gamma}{\twoheadrightarrow} P^{'}$. 
+		\begin{center}
+		  $\inferrule* [left=\bf{Cong}]{
+		      Q+R\equiv R+Q
+		    \\
+			\inferrule* [left=\bf{Sum}]{
+			    R \stackrel{\gamma}{\twoheadrightarrow} P^{'}
+			}{
+			  R+Q \xrightarrow{\gamma} P^{'}
+			}
+		  }{
+		    Q+R \xrightarrow{\gamma} P^{'}
+		  }$
+		\end{center}
+	      \item[$Alp$]
+		$S$ is $\alpha$ equivalent to $P+R$ so $S=S_{1}+S_{2}$ such that $S_{1}\equiv_{\alpha}P$ and $S_{2}\equiv_{\alpha}R$. Then  $S_{1}+S_{2} \stackrel{\gamma}{\twoheadrightarrow} P^{'}$, the last rule used in this derivation must be $Sum$ so $S_{1} \stackrel{\gamma}{\twoheadrightarrow} P^{'}$. 
+		\begin{center}
+		  $\inferrule* [left=\bf{Cong}]{
+			    P\equiv_{\alpha}S_{1}
+			  \\
+			    S_{1} \stackrel{\gamma}{\twoheadrightarrow} P^{'}
+			}{
+			  P \xrightarrow{\gamma} P^{'}
+			}$
+		\end{center}
+		Since $P\dot{\sim}Q$ we have $Q \xrightarrow{\gamma} Q^{'}$ and $P^{'} \dot{\sim} Q^{'}$ or $P^{'}\{\tilde{w}/\tilde{y}\} \dot{\sim} Q^{'}\{\tilde{w}/\tilde{y}\}$. For rule $Sum$: $Q+R \xrightarrow{\gamma} Q^{'}$
+	      \item[$ScpExtSum2$]
+	      \item[$SumAsc1$]
+	      \item[$SumAsc2$]
+	    \end{description}
 	\end{description}
+      \item[Restriction]: ?
+      \item[Parallel]: ?
     \end{description}
   \end{proof}
 \end{proposition}
