@@ -1856,11 +1856,11 @@ where $stop(P)$ is a multi $\pi$ process which cannot make any transition.
 %   \begin{center}
 %     there exists $Q^{'}$ such that $Q \xrightarrow{\gamma}_{E} Q^{'}$ and $P^{'}\mathbf{S}Q^{'}$
 %   \end{center} 
-%   $P$ and $Q$ are \emph{early bisimilar} written $P\dot{\sim}_{E}Q$ if there exists a strong early bisimulation $\mathbf{S}$ such that $P\mathbf{S}Q$
+%   $P$ and $Q$ are \emph{early bisimilar} written $P\sim_{E}Q$ if there exists a strong early bisimulation $\mathbf{S}$ such that $P\mathbf{S}Q$
 % \end{definition}
 % 
 % \begin{definition}
-%   Two processes $P$ and $Q$ are \emph{strong early equivalent} written $P\sim_{E}Q$ if for each substitution $\sigma$ $P\sigma \dot{\sim}_{E}Q\sigma$
+%   Two processes $P$ and $Q$ are \emph{strong early equivalent} written $P\sim_{E}Q$ if for each substitution $\sigma$ $P\sigma \sim_{E}Q\sigma$
 % \end{definition}
 % 
 % 
@@ -1869,7 +1869,7 @@ where $stop(P)$ is a multi $\pi$ process which cannot make any transition.
 % % \end{proposition}
 % % 
 % % \begin{proposition}
-% %   The early congruence is the largest congruence in $\dot{\sim}_{E}$.  
+% %   The early congruence is the largest congruence in $\sim_{E}$.  
 % % \end{proposition}
 % 
 % % In the following definition we consider a subcalculus without restriction. 
@@ -1975,7 +1975,7 @@ where $stop(P)$ is a multi $\pi$ process which cannot make any transition.
 %   \begin{proof}
 %     Let $\sigma$ be a substitution that respects $D$. We have to prove that every operator preserves $\sim_{D}$:
 %     \begin{description}
-%       \item[$Summation$]
+%       \item[$Sum$]
 % 	Let $R$ be a process. We have to prove that $(P+R)\sigma \dot{\sim}_{L} (Q+R)\sigma$. So we have four cases:
 % 	\begin{itemize}
 % 	  \item 
@@ -2041,13 +2041,16 @@ where $stop(P)$ is a multi $\pi$ process which cannot make any transition.
 \subsection{Early operational semantic without structural congruence}
 
 \begin{definition}
-  The \emph{late transition relation without structural congruence} is the smallest relation induced by the rules in table \ref{multipioutearlywithout}.
+  The \emph{late transition relation without structural congruence} is the smallest relation induced by the rules in table \ref{multipioutearlywithout} and in table \ref{MultiOutScopeExtrusionRules}.
   \begin{table}
     \begin{tabular}{lll}
-      	\multicolumn{3}{l}{\line(1,0){415}}\\
-	  $\inferrule* [left=\bf{Out}]{
+      	\multicolumn{3}{l}{\line(1,0){415}}\\\\
+	  $\inferrule* [left=\bf{SOut}]{
+	    n \geq 0
 	  }{
-	    \overline{x}y.P \xrightarrow{\overline{x}y} P
+	    \underline{\overline{x_{1}}y_{1}}.\ldots.\underline{\overline{x_{n}}y_{n}}.\overline{x}y.P 
+	      \xrightarrow{\overline{x_{1}}y_{1} \cdot \ldots \cdot \overline{x_{n}}y_{n} \cdot \overline{x}y} 
+		P
 	  }$
 	&
 	  $\inferrule* [left=\bf{EInp}]{
@@ -2060,18 +2063,6 @@ where $stop(P)$ is a multi $\pi$ process which cannot make any transition.
 	  }{
 	    \tau.P \xrightarrow{\tau} P
 	  }$
-      \\
-    \end{tabular}
-      \\
-    \begin{tabular}{ll}
-      \\
-	  $\inferrule* [left=\bf{SOut}]{
-	      P \xrightarrow{\gamma} P^{'}
-	  }{
-	      \underline{\overline{x}y}.P \xrightarrow{\overline{x}y \cdot \gamma} P^{'}
-	  }$
-	&
-	  $\gamma$ is a non empty sequence of outputs
       \\
     \end{tabular}
       \\
@@ -2149,89 +2140,13 @@ where $stop(P)$ is a multi $\pi$ process which cannot make any transition.
 	  }$
       \\\\	\multicolumn{2}{l}{\line(1,0){415}}
     \end{tabular}
-    \caption{Multi$\pi$ early semantic without structural congruence}
+    \caption{Multi$\pi$ early semantic without structural congruence part 1}
     \label{multipioutearlywithout}
   \end{table}
   
-
-\end{definition}
-
-\begin{example} Scope extrusion with strong prefixing(1).
-  $x\notin fn(y(z).Q|a(b).R|y(z).S)$. The following is the desired transition:
-  \begin{center}
-    $(\nu x)(\underline{\overline{y}x}.\underline{\overline{a}b}.\underline{\overline{y}x}.\overline{a}b.P)|y(z).Q|a(b).R|y(z).S|a(b).T 
-      \xrightarrow{\tau} 
-	(\nu x)(
-	  P
-	  | Q\{x/z\}
-	  | S\{x/z\}
-	)
-	| R
-	| T$
-  \end{center}
-  It is possible to infer this transition in the semantic with structural congruence. But without structural congruence and the following spoce extrusion rules
-  \begin{center}
-        \begin{tabular}{l}
-      \\	
-% 	  $\inferrule* [left=\bf{Opn}]{
-% 	      P\{z/y\} \xrightarrow{\sigma\{z/y\}} P^{'}
-% 	    \\
-% 	      y \in obj(\sigma)
-% 	    \\
-% 	      z \notin sbj(\sigma)
-% 	  }{
-% 	    (\nu z)P \xrightarrow{opn(\sigma, z, y)} P^{'}
-% 	  }$
-	  $\inferrule* [left=\bf{Opn}]{
-	      P \xrightarrow{\sigma} P^{'}
-	    \\
-	      y \in obj(\sigma)
-	    \\
-	      y \notin sbj(\sigma)
-	  }{
-	    (\nu y)P \xrightarrow{opn(\sigma, y)} P^{'}
-	  }$
-      \\
-    \end{tabular}
-      \\
+  \begin{table}
     \begin{tabular}{ll}
-      \\	
-	  $\inferrule* [left=\bf{Cls}]{
-	      P \xrightarrow{\overline{x}(z)} P^{'}
-	    \\
-	      Q \xrightarrow{xz} Q^{'}
-	  }{
-	      P|Q \xrightarrow{\tau} (\nu z)(P^{'}|Q^{'})
-	  }$
-	&
-	  $\inferrule* [left=\bf{ClsSeq}]{
-	      P \xrightarrow{\overline{x}(z) \cdot \sigma} P^{'}
-	    \\
-	      Q \xrightarrow{xz} Q^{'}
-	  }{
-	      P|Q \xrightarrow{\sigma} (\nu z)(P^{'}|Q^{'})
-	  }$
-      \\
-    \end{tabular}
-  \end{center}
-  we can only infer 
-  \begin{center}
-    $(\nu x)(\underline{\overline{y}x}.\underline{\overline{a}b}.\underline{\overline{y}x}.\overline{a}b.P)|y(z).Q|a(b).R|y(z).S|a(b).T 
-      \xrightarrow{\tau} 
-	(\nu x)(
-	  (\nu x)(
-	    P
-	    | Q\{x/z\}
-	  )
-	  | R
-	  | S\{x/z\}
-	)
-	| T$
-  \end{center}
-  This transition is not what we want because now the scope of the inner $\nu x$ hides in $P$ the scope of the outer $\nu x$, so $P$ and $S$ cannot use $x$ to communicate. But whit these rules:
-  \begin{center}
-    \begin{tabular}{ll}
-      \\	
+      \\	\multicolumn{2}{l}{\line(1,0){415}}\\
 % 	  $\inferrule* [left=\bf{Opn}]{
 % 	      P\{z/y\} \xrightarrow{\sigma\{z/y\}} P^{'}
 % 	    \\
@@ -2337,10 +2252,87 @@ where $stop(P)$ is a multi $\pi$ process which cannot make any transition.
 	  $obj((\nu y))=\emptyset$
 	&
 	  $obj(\alpha \cdot \sigma)=obj(\alpha) \cup obj(\sigma)$
-      \\\\
+      \\	\multicolumn{5}{l}{\line(1,0){415}}\\
+    \end{tabular}
+    \caption{Multi $\pi$ late semantic: scope extrusion rules}
+    \label{MultiOutScopeExtrusionRules}
+  \end{table}
+\end{definition}
+
+
+\begin{example} Scope extrusion with strong prefixing(1).
+  $x\notin fn(y(z).Q|a(b).R|y(z).S)$. The following is the desired transition:
+  \begin{center}
+    $(\nu x)(\underline{\overline{y}x}.\underline{\overline{a}b}.\underline{\overline{y}x}.\overline{a}b.P)|y(z).Q|a(b).R|y(z).S|a(b).T 
+      \xrightarrow{\tau} 
+	(\nu x)(
+	  P
+	  | Q\{x/z\}
+	  | S\{x/z\}
+	)
+	| R
+	| T$
+  \end{center}
+  It is possible to infer this transition in the semantic with structural congruence. But without structural congruence and the following spoce extrusion rules
+  \begin{center}
+        \begin{tabular}{l}
+      \\	
+% 	  $\inferrule* [left=\bf{Opn}]{
+% 	      P\{z/y\} \xrightarrow{\sigma\{z/y\}} P^{'}
+% 	    \\
+% 	      y \in obj(\sigma)
+% 	    \\
+% 	      z \notin sbj(\sigma)
+% 	  }{
+% 	    (\nu z)P \xrightarrow{opn(\sigma, z, y)} P^{'}
+% 	  }$
+	  $\inferrule* [left=\bf{Opn}]{
+	      P \xrightarrow{\sigma} P^{'}
+	    \\
+	      y \in obj(\sigma)
+	    \\
+	      y \notin sbj(\sigma)
+	  }{
+	    (\nu y)P \xrightarrow{opn(\sigma, y)} P^{'}
+	  }$
+      \\
+    \end{tabular}
+      \\
+    \begin{tabular}{ll}
+      \\	
+	  $\inferrule* [left=\bf{Cls}]{
+	      P \xrightarrow{\overline{x}(z)} P^{'}
+	    \\
+	      Q \xrightarrow{xz} Q^{'}
+	  }{
+	      P|Q \xrightarrow{\tau} (\nu z)(P^{'}|Q^{'})
+	  }$
+	&
+	  $\inferrule* [left=\bf{ClsSeq}]{
+	      P \xrightarrow{\overline{x}(z) \cdot \sigma} P^{'}
+	    \\
+	      Q \xrightarrow{xz} Q^{'}
+	  }{
+	      P|Q \xrightarrow{\sigma} (\nu z)(P^{'}|Q^{'})
+	  }$
+      \\
     \end{tabular}
   \end{center}
-  The following transition can be inferred:
+  we can only infer 
+  \begin{center}
+    $(\nu x)(\underline{\overline{y}x}.\underline{\overline{a}b}.\underline{\overline{y}x}.\overline{a}b.P)|y(z).Q|a(b).R|y(z).S|a(b).T 
+      \xrightarrow{\tau} 
+	(\nu x)(
+	  (\nu x)(
+	    P
+	    | Q\{x/z\}
+	  )
+	  | R
+	  | S\{x/z\}
+	)
+	| T$
+  \end{center}
+  This transition is not what we want because now the scope of the inner $\nu x$ hides in $P$ the scope of the outer $\nu x$, so $P$ and $S$ cannot use $x$ to communicate. But whit the rules of table \ref{MultiOutScopeExtrusionRules} the following transition can be inferred:
   \begin{center}
     $(\nu x)(\underline{\overline{y}x}.\underline{\overline{a}b}.\underline{\overline{y}x}.\overline{a}b.P)
       | y(z).Q
@@ -2491,15 +2483,68 @@ In the following section, $\rightarrow$ is the transition relation defined in ta
   \begin{center}
     $\exists Q^{'}:$ $Q \xrightarrow{\gamma} Q^{'}$ and $P^{'}\mathbf{S} Q^{'}$
   \end{center}
-  The \emph{strong early bisimilarity}, written $\dot{\sim}_{E}$, is the union of all strong early bisimulation. Two processes $P,Q$ are \emph{strong early bisimilar}, written $P \dot{\sim}_{E} Q$, if they are related by the strong early bisimilarity.
+  The \emph{strong early bisimilarity}, written $\sim_{E}$, is the union of all strong early bisimulation. Two processes $P,Q$ are \emph{strong early bisimilar}, written $P \sim_{E} Q$, if they are related by the strong early bisimilarity. The strong early bisimilarity is a strong early bisimulation.
 \end{definition}
 
-\begin{proposition}
-  The strong early bisimilarity is a strong early bisimulation.
-\end{proposition}
+\begin{definition}\label{strongEarlyBisimulationUpTo}
+  A \emph{strong early bisimulation up to $\sim_{E}$} is a simmetric binary relation $\mathbf{S}$ on multi $\pi$ processes such that for all $P$ and $Q$: $P \mathbf{S} Q$, $P \xrightarrow{\gamma} P^{'}$ and $bn(\gamma)$ is fresh imply that
+  \begin{center}
+    $\exists P^{''},Q^{'},Q^{''}:$ $Q \xrightarrow{\gamma} Q^{'}$ and $P^{'} \sim_{E} P^{''} \mathbf{S} Q^{''} \sim_{E} Q^{'} $
+  \end{center}
+  Two processes $P,Q$ are \emph{strong early bisimilar up to $\sim_{E}$}, written $P \sim_{E}^{up} Q$, if they are related by a strong early bisimulation up to $\sim_{E}$.
+\end{definition}
+
+
+\begin{definition}\label{strongEarlyBisimulationUpToRestriction}
+  A \emph{strong early bisimulation up to restriction} is a simmetric binary relation $\mathbf{S}$ on multi $\pi$ processes such that for all $P$ and $Q$: $P \mathbf{S} Q$ imply
+  \begin{itemize}
+    \item
+      for all $w\notin (fn(P)\cup fn(Q))$: $P\{w/z\} \sim_{E} Q\{w/z\}$
+    \item
+      $P \xrightarrow{\gamma} P^{'}$ and $\gamma$ is not a $\tau$ imply there exists $Q^{'}$ such that $Q \xrightarrow{\gamma} Q^{'}$ and $P^{'} \mathbf{S} Q^{'}$
+    \item
+      $P \xrightarrow{\tau} P^{'}$ then for some $Q^{'}$: $Q \xrightarrow{\tau} Q^{'}$ and either $P^{'} \mathbf{S} Q^{'}$ or for some $P^{''},Q^{''}$ and $w$: $P^{'}\equiv (\nu w)P^{''}$, $Q^{'}\equiv (\nu w)Q^{''}$ and $P^{''} \mathbf{S} Q^{''}$
+  \end{itemize}
+  Two processes $P,Q$ are \emph{strong early bisimilar up to restriction}, written $P \sim_{E}^{\nu} Q$, if they are related by a strong early bisimulation up to restriction.
+\end{definition}
+
+
+\subsection{Properties of strong early bisimilarity}
+
+% \begin{lemma}
+%   If $P \xrightarrow{\gamma} P^{'}$ then
+%   \begin{itemize}
+%     \item 
+%       $fn(\gamma) \subseteq fn(P)$
+%     \item 
+%       $fn(P^{'}) \subseteq fn(P)\cup bn(\gamma)$
+%   \end{itemize}
+%   \begin{proof}
+%     By induction on the depth of the inference of $P \xrightarrow{\gamma} P^{'}$. The last rule applied in the inference can be:
+%     \begin{description}
+%       \item[EInp]:
+%       \item[Res]: 
+%       \item[Tau]:
+%       \item[SOut]:
+%       \item[EComSeq]:
+%       \item[ECom]:
+%       \item[ParL]:
+%       \item[ParR]:
+%       \item[SumL]:
+%       \item[SumR]:
+%       \item[Ide]:
+%       \item[Opn]:
+%       \item[Cls]:
+%       \item[ClsSeq1]:
+%       \item[ClsSeq2]:
+%     \end{description}
+%   \end{proof}
+% \end{lemma}
+
+ 
 
 \begin{proposition}
-  $\dot{\sim}_{E}$ is an equivalence relation.
+  $\sim_{E}$ is an equivalence relation.
   \begin{proof}:
     \begin{description}
       \item[Reflexivity]
@@ -2507,43 +2552,51 @@ In the following section, $\rightarrow$ is the transition relation defined in ta
       \item[Simmetry]
 	It is in the definition.
       \item[Transitivity]
-	The composition $\dot{\sim}_{E} \dot{\sim}_{E}$ is a strong early bisimulation.
+	The composition $\sim_{E} \sim_{E}$ is a strong early bisimulation.
     \end{description}
   \end{proof}
 \end{proposition}
 
-
-\begin{definition}\label{strongEarlyBisimulationUpTo}
-  A \emph{strong early bisimulation up to $\dot{\sim}_{E}$} is a simmetric binary relation $\mathbf{S}$ on multi $\pi$ processes such that for all $P$ and $Q$: $P \mathbf{S} Q$, $P \xrightarrow{\gamma} P^{'}$ and $bn(\gamma)$ is fresh imply that
-  \begin{center}
-    $\exists P^{''},Q^{'},Q^{''}:$ $Q \xrightarrow{\gamma} Q^{'}$ and $P^{'} \dot{\sim}_{E} P^{''} \mathbf{S} Q^{''} \dot{\sim}_{E} Q^{'} $
-  \end{center}
-  Two processes $P,Q$ are \emph{strong early bisimilar up to $\dot{\sim}_{E}$}, written $P \dot{\sim}_{E}^{up} Q$, if they are related by a strong early bisimulation up to $\dot{\sim}_{E}$.
-\end{definition}
-
 \begin{proposition}
-  $P \dot{\sim}_{E}^{up} Q$ imply $P \dot{\sim}_{E} Q$.
+  $P \sim_{E}^{up} Q$ imply $P \sim_{E} Q$.
   \begin{proof}
-    Let $\mathbf{S}$ be a bisimulation up to $\dot{\sim}_{E}$ such that $P \mathbf{S} Q$. It can be proved that $\dot{\sim}_{E} \mathbf{S} \dot{\sim}_{E}$ is a bisimulation: let $A \dot{\sim}_{E} B \mathbf{S} C \dot{\sim}_{E} D$
+    Let $\mathbf{S}$ be a bisimulation up to $\sim_{E}$ such that $P \mathbf{S} Q$. It can be proved that $\sim_{E} \mathbf{S} \sim_{E}$ is a bisimulation: let $A \sim_{E} B \mathbf{S} C \sim_{E} D$
     \begin{center}
       \begin{tabular}{l}
-	$A \xrightarrow{\gamma} A^{'}$ $\wedge$ $A \dot{\sim}_{E} B$ $\wedge$ definition \ref{strongEarlyBisimulation} 
+	$A \xrightarrow{\gamma} A^{'}$ $\wedge$ $A \sim_{E} B$ $\wedge$ definition \ref{strongEarlyBisimulation} 
       
-	$\Rightarrow \exists B^{'}:$ $B \xrightarrow{\gamma} B^{'}$ $\wedge$ $A^{'}\dot{\sim}_{E} B^{'}$
+	$\Rightarrow \exists B^{'}:$ $B \xrightarrow{\gamma} B^{'}$ $\wedge$ $A^{'}\sim_{E} B^{'}$
       \\
 	$B \mathbf{S} C$ $\wedge$ definition \ref{strongEarlyBisimulationUpTo}
       
-	$\Rightarrow \exists C^{'} C^{''} B^{''}:$ $C \xrightarrow{\gamma} C^{'}$ $\wedge$ $B^{'} \dot{\sim}_{E} B^{''} \mathbf{S} C^{''} \dot{\sim}_{E} C^{'}$
+	$\Rightarrow \exists C^{'} C^{''} B^{''}:$ $C \xrightarrow{\gamma} C^{'}$ $\wedge$ $B^{'} \sim_{E} B^{''} \mathbf{S} C^{''} \sim_{E} C^{'}$
       \\
-	$C \xrightarrow{\gamma} C^{'}$ $\wedge$ $C \dot{\sim}_{E} D$ $\wedge$ definition \ref{strongEarlyBisimulation} 
+	$C \xrightarrow{\gamma} C^{'}$ $\wedge$ $C \sim_{E} D$ $\wedge$ definition \ref{strongEarlyBisimulation} 
       
 	$\Rightarrow \exists D^{'}:$ $D \xrightarrow{\gamma} D^{'}$ $\wedge$ $C^{'}\mathbf{S} D^{'}$
       \\
-	$A^{'} \dot{\sim}_{E} B^{'} \dot{\sim}_{E} B^{''} \mathbf{S} C^{''} \dot{\sim}_{E} C^{'} \dot{\sim}_{E} D^{'}$ $\wedge$ transitivity of $\dot{\sim}_{E}$
-	$\Rightarrow$ $A^{'} \dot{\sim}_{E} B^{''} \mathbf{S} C^{''} \dot{\sim}_{E} D^{'}$
+	$A^{'} \sim_{E} B^{'} \sim_{E} B^{''} \mathbf{S} C^{''} \sim_{E} C^{'} \sim_{E} D^{'}$ $\wedge$ transitivity of $\sim_{E}$
+	$\Rightarrow$ $A^{'} \sim_{E} B^{''} \mathbf{S} C^{''} \sim_{E} D^{'}$
       \end{tabular}
     \end{center}
     It is easy to see that the simmetric also holds.
+  \end{proof}
+\end{proposition}
+
+\begin{proposition}
+  If $\mathbf{S}$ is a strong early bisimulation up to restriction then $\mathbf{S} \subseteq \sim_{E}$.
+  \begin{proof}
+    Let $\mathbf{S}$ be a strong early bisimulation up to restriction then we define
+    \begin{center}
+      $\left\{\begin{array}{l}
+	  \mathbf{S}_{0} = \mathbf{S}
+	\\
+	  \mathbf{S}_{n+1}=\{((\nu w)P, (\nu w)Q): P\mathbf{S}_{n}Q, w\in \mathbf{N}\}
+	\\
+	  \mathbf{S}^{*}= \bigcup_{n<\omega} \mathbf{S}_{n}
+       \end{array}\right.$
+    \end{center}
+    Clearly $\mathbf{S} \subseteq \mathbf{S}^{*}$. We have to prove that $\mathbf{S}^{*}$ is a strong early bisimulation. The proof is an induction on $n$
   \end{proof}
 \end{proposition}
 
@@ -2553,15 +2606,16 @@ In the following section, $\rightarrow$ is the transition relation defined in ta
   \begin{proof}
     We prove that if $P \equiv_{\alpha} Q$ and $P \xrightarrow{\gamma} P^{'}$ then $Q \xrightarrow{\gamma} Q^{'}$ and $P^{'}\equiv_{\alpha} Q^{'}$. The simmetric holds because $\alpha$ equivalence is simmetric. The proof proceed by induction on the derivation of $P \xrightarrow{\gamma} P^{'}$. The last rule used can be:
     \begin{description}
-      \item[Out]:
-	$P$ is $\overline{x}y.P_{1}$ and $\gamma$ is $\overline{x}y$ for some names $x,y$ and process $P_{1}$. $P \equiv_{\alpha} Q$ and the inversion lemma for $\alpha$ equivalence imply $Q$ is $\overline{x}y.Q_{1}$ and $P_{1}\equiv_{\alpha}Q_{1}$ for a process $Q_{1}$. Rule $Out$ proves $\overline{x}y.Q_{1} \xrightarrow{\overline{x}y} Q_{1}$
+%       \item[Out]:
+% 	$P$ is $\overline{x}y.P_{1}$ and $\gamma$ is $\overline{x}y$ for some names $x,y$ and process $P_{1}$. $P \equiv_{\alpha} Q$ and the inversion lemma for $\alpha$ equivalence imply $Q$ is $\overline{x}y.Q_{1}$ and $P_{1}\equiv_{\alpha}Q_{1}$ for a process $Q_{1}$. Rule $Out$ proves $\overline{x}y.Q_{1} \xrightarrow{\overline{x}y} Q_{1}$
       \item[EInp]:
 	$P$ is $x(y).P_{1}$ and $\gamma$ is $xz$ for some names $x,y,z$ and process $P_{1}$.	$P \equiv_{\alpha} Q$ and the inversion lemma for $\alpha$ equivalence imply $Q$ is $x(w).Q_{1}$ and $P_{1}\equiv_{\alpha}Q_{1}\{y/w\}$ for a process $Q_{1}$ such that $y\notin fn(Q_{1})$ and a name $w$ which is not necessarily different from $y$. Rule $EInp$ proves $x(w).Q_{1} \xrightarrow{xz} Q_{1}$
       \item[Res]: similar to the previous case.
       \item[Tau]:
 	$P$ is $\tau.P_{1}$ and $\gamma$ is $\tau$ for some process $P_{1}$. $P \equiv_{\alpha} Q$ and the inversion lemma for $\alpha$ equivalence imply $Q$ is $\tau.Q_{1}$ and $P_{1}\equiv_{\alpha}Q_{1}$ for a process $Q_{1}$. Rule $Tau$ proves $\tau.Q_{1} \xrightarrow{\tau} Q_{1}$
       \item[SOut]:
-	$P$ is $\underline{\overline{x}y}.P_{1}$ and $\gamma$ is $\overline{x}y \cdot \gamma^{'}$ for some names $x,y$, process $P_{1}$ and a non empty sequence of outputs $\gamma^{'}$. $P \equiv_{\alpha} Q$ and the inversion lemma for $\alpha$ equivalence imply $Q$ is $\underline{\overline{x}y}.Q_{1}$ and $P_{1}\equiv_{\alpha}Q_{1}$ for a process $Q_{1}$. The premise is $P_{1} \xrightarrow{\gamma^{'}} P_{1}^{'}$, for inductive hypothesis $Q_{1} \xrightarrow{\gamma^{'}} Q_{1}^{'}$ and $P_{1}^{'} \equiv_{\alpha} Q_{1}^{'}$. Rule $SOut$ proves $\underline{\overline{x}y}.Q_{1} \xrightarrow{\overline{x}y \cdot \gamma^{'}} Q_{1}$
+	$P$ is $\underline{\overline{x_{1}}y_{1}}.\ldots.\underline{\overline{x_{n}}y_{n}}.\overline{x}y.P_{1}$ and $\gamma$ is $\overline{x_{1}}y_{1} \cdot \cdots \cdot \overline{x_{n}}y_{n}\cdot \overline{x}y$ for some names $x,y,\tilde{x},\tilde{y}$, process $P_{1}$. $P \equiv_{\alpha} Q$ and the inversion lemma for $\alpha$ equivalence imply $Q$ is $\underline{\overline{x_{1}}y_{1}}.\ldots.\underline{\overline{x_{n}}y_{n}}.\overline{x}y.Q_{1}$ and $P_{1}\equiv_{\alpha}Q_{1}$ for a process $Q_{1}$. For rule $SOut$: $Q\xrightarrow{\gamma}Q_{1}$.
+% 	$P$ is $\underline{\overline{x}y}.P_{1}$ and $\gamma$ is $\overline{x}y \cdot \gamma^{'}$ for some names $x,y$, process $P_{1}$ and a non empty sequence of outputs $\gamma^{'}$. $P \equiv_{\alpha} Q$ and the inversion lemma for $\alpha$ equivalence imply $Q$ is $\underline{\overline{x}y}.Q_{1}$ and $P_{1}\equiv_{\alpha}Q_{1}$ for a process $Q_{1}$. The premise is $P_{1} \xrightarrow{\gamma^{'}} P_{1}^{'}$, for inductive hypothesis $Q_{1} \xrightarrow{\gamma^{'}} Q_{1}^{'}$ and $P_{1}^{'} \equiv_{\alpha} Q_{1}^{'}$. Rule $SOut$ proves $\underline{\overline{x}y}.Q_{1} \xrightarrow{\overline{x}y \cdot \gamma^{'}} Q_{1}$
 %       \item[EComSeq]:
 % 	\begin{center}
 % 	  $\inferrule* {
@@ -2583,15 +2637,15 @@ In the following section, $\rightarrow$ is the transition relation defined in ta
 \end{proposition}
 
 
-\begin{proposition}
-  $\dot{\sim}_{E}$ is preserved by all operators except input prefixing.
+\begin{lemma}\label{earlyBisimulationProprerties}
+  $\sim_{E}$ is preserved by all operators except input prefixing.
   \begin{proof}
     The proof goes by cases on operators:
     \begin{description}
       \item[Output prefixing]
-	The relation $\{(\overline{x}y.P, \overline{x}y.Q): P\dot{\sim}_{E} Q\} \cup \dot{\sim}_{E}$ is a strong early bisimulation.
+	The relation $\{(\overline{x}y.P, \overline{x}y.Q): P\sim_{E} Q\} \cup \sim_{E}$ is a strong early bisimulation.
       \item[Strong output prefixing]
-	The relation $\{(\underline{\overline{x}y}.P, \underline{\overline{x}y}.Q): P\dot{\sim}_{E} Q\} \cup \dot{\sim}_{E}$ is a strong early bisimulation: there are two cases to consider:
+	The relation $\{(\underline{\overline{x}y}.P, \underline{\overline{x}y}.Q): P\sim_{E} Q\} \cup \sim_{E}$ is a strong early bisimulation: there are two cases to consider:
 	\begin{itemize}
 	  \item 
 	    If there exists a transition $P \xrightarrow{\gamma} P^{'}$ where $\gamma$ is a non empty sequence of outputs then we can apply the rule $SOut$:
@@ -2602,18 +2656,18 @@ In the following section, $\rightarrow$ is the transition relation defined in ta
 		\underline{\overline{x}y}.P \xrightarrow{\overline{x}y \cdot \gamma} P^{'}
 	      }$
 	    \end{center}
-	    $P \xrightarrow{\gamma} P^{'}$ and $P \dot{\sim}_{E} Q$ imply $Q \xrightarrow{\gamma} Q^{'}$ and $P^{'} \dot{\sim}_{E} Q^{'}$. For rule $SOut$: $\underline{\overline{x}y}.Q \xrightarrow{\overline{x}y \cdot \gamma} Q^{'}$ so the conclusion holds.
+	    $P \xrightarrow{\gamma} P^{'}$ and $P \sim_{E} Q$ imply $Q \xrightarrow{\gamma} Q^{'}$ and $P^{'} \sim_{E} Q^{'}$. For rule $SOut$: $\underline{\overline{x}y}.Q \xrightarrow{\overline{x}y \cdot \gamma} Q^{'}$ so the conclusion holds.
 	  \item
 	    Otherwise there is no transition starting from $\underline{\overline{x}y}.P$ or from $\underline{\overline{x}y}.Q$ so these processes are strongly bisimilar.
 	\end{itemize}
       \item[Tau prefixing]
-	The relation $\{(\tau.P, \tau.Q): P\dot{\sim}_{E} Q\} \cup \dot{\sim}_{E}$ is a strong early bisimulation.
-      \item[Summation]
-	The relation $\{(P+R, Q+R): P\dot{\sim}_{E} Q\} \cup \dot{\sim}_{E}$ is a strong early bisimulation.
+	The relation $\{(\tau.P, \tau.Q): P\sim_{E} Q\} \cup \sim_{E}$ is a strong early bisimulation.
+      \item[Sum]
+	The relation $\{(P+R, Q+R): P\sim_{E} Q\} \cup \sim_{E}$ is a strong early bisimulation.
       \item[Restriction]
-	The relation $\{((\nu x)P, (\nu x)Q): P\dot{\sim}_{E} Q\} \cup \dot{\sim}_{E}$ is a strong early bisimulation.
+	The relation $\{((\nu x)P, (\nu x)Q): P\sim_{E} Q\} \cup \sim_{E}$ is a strong early bisimulation.
       \item[Parallel composition]
-	The relation $\{(P|R, Q|R): P\dot{\sim}_{E} Q\} \cup \dot{\sim}_{E}$ is a strong early bisimulation. The last rule applicable to $P|R$ can be:
+	The relation $\{(P|R, Q|R): P\sim_{E} Q\} \cup \sim_{E}$ is a strong early bisimulation. The last rule applicable to $P|R$ can be:
 	\begin{description}
 	  \item[ECom]:
 	    \begin{center}
@@ -2625,7 +2679,7 @@ In the following section, $\rightarrow$ is the transition relation defined in ta
 		P|R \xrightarrow{\tau} P^{'}|R^{'}
 	      }$
 	    \end{center}
-	    $P \xrightarrow{\overline{x}y} P^{'}$ and $P\dot{\sim}_{E} Q$ imply that there exists a process $Q^{'}$ such that $Q \xrightarrow{\overline{x}y} Q^{'}$ and $P^{'}\dot{\sim}_{E} Q^{'}$. So for rule $ECom$: $Q|R \xrightarrow{\tau} Q^{'}|R^{'}$ and $P^{'}|R^{'}\dot{\sim}_{E} Q^{'}|R^{'}$
+	    $P \xrightarrow{\overline{x}y} P^{'}$ and $P\sim_{E} Q$ imply that there exists a process $Q^{'}$ such that $Q \xrightarrow{\overline{x}y} Q^{'}$ and $P^{'}\sim_{E} Q^{'}$. So for rule $ECom$: $Q|R \xrightarrow{\tau} Q^{'}|R^{'}$ and $P^{'}|R^{'}\sim_{E} Q^{'}|R^{'}$
 	  \item[Cls]:
 	    \begin{center}
 	      $\inferrule* {
@@ -2636,18 +2690,18 @@ In the following section, $\rightarrow$ is the transition relation defined in ta
 		P|R \xrightarrow{\tau} (\nu y)(P^{'}|R^{'})
 	      }$
 	    \end{center}
-	    $P \xrightarrow{\overline{x}(y) \cdot (\nu y)} P^{'}$ and $P\dot{\sim}_{E} Q$ imply that there exists a process $Q^{'}$ such that $Q \xrightarrow{\overline{x}y \cdot (\nu y)} Q^{'}$ and $P^{'}\dot{\sim}_{E} Q^{'}$. So for rule $Cls$: $Q|R \xrightarrow{\tau} (\nu y)(Q^{'}|R^{'})$ and $(\nu y)(P^{'}|R^{'}) \dot{\sim}_{E} (\nu y)(Q^{'}|R^{'})$
+	    $P \xrightarrow{\overline{x}(y) \cdot (\nu y)} P^{'}$ and $P\sim_{E} Q$ imply that there exists a process $Q^{'}$ such that $Q \xrightarrow{\overline{x}y \cdot (\nu y)} Q^{'}$ and $P^{'}\sim_{E} Q^{'}$. So for rule $Cls$: $Q|R \xrightarrow{\tau} (\nu y)(Q^{'}|R^{'})$ and $(\nu y)(P^{'}|R^{'}) \sim_{E} (\nu y)(Q^{'}|R^{'})$
 	  \item[ClsSeq1, ClsSeq2, ParL, ParR] similar.
 	\end{description}
     \end{description}
   \end{proof}
-\end{proposition}
+\end{lemma}
 
 
 \begin{example}
-  $\dot{\sim}_{E}$ is not in general preserved by input prefixing because:
+  $\sim_{E}$ is not in general preserved by input prefixing because:
     \begin{center}
-      $a(x).0 | \overline{b}y.0 \dot{\sim}_{E} a(x).\overline{b}y.0 + \overline{b}y.a(x).0$
+      $a(x).0 | \overline{b}y.0 \sim_{E} a(x).\overline{b}y.0 + \overline{b}y.a(x).0$
     \end{center}
     but 
     \begin{center}
@@ -2666,82 +2720,291 @@ In the following section, $\rightarrow$ is the transition relation defined in ta
 
 \subsection{Open bisimilarity}
 
-\begin{definition}
-  A \emph{distinction} is a finite symmetric and irreflexive binary relation on names. A substitution $\sigma$ \emph{respects} a distinction $D$ if 
+\begin{definition}\label{distinction}
+  A \emph{distinction} is a finite symmetric and irreflexive binary relation on names. A substitution $\sigma$ \emph{respects} a pair $(a,b)$ if 
+  \begin{center}
+     $a\sigma\neq b\sigma$
+  \end{center}
+  A substitution $\sigma$ \emph{respects} a distinction $D$ if it respects every pair in the distinction:
   \begin{center}
      $\forall a,b.$ $aDb$ $\Rightarrow$ $a\sigma\neq b\sigma$
   \end{center}
-  We write $D\sigma$ for the composition of the two relation.
+  We write $D \cdot \sigma$ for the composition of the two relation.
 \end{definition}
+
+\begin{example}
+  The empty relation $\emptyset$ is a distinction. Every substitution respects the empty distinction.
+\end{example}
+
+\begin{definition}
+  Let $D$ be a distinction and $A$ be a set of names
+  \begin{center}
+    $D-A \stackrel{def}{=} D - (A\times \mathbb{N} \cup \mathbb{N} \times A)$
+  \end{center}
+\end{definition}
+
+\begin{definition}
+  Let $D$ be a distinction and $\sigma$ be a substitution. The application of $\sigma$ to $D$ is defined as:
+  \begin{center}
+    $D\sigma \stackrel{def}{=} \{(a\sigma,b\sigma): (a,b)\in D\}$
+  \end{center}
+\end{definition}
+
+\begin{proposition}
+  Let $D,D^{'}$ be distinctions and $\sigma$ be a substitution. Then
+  \begin{center}
+    $D^{'}\subseteq D$ and $\sigma$ respects $D$ imply $\sigma$ respects $D^{'}$
+  \end{center}
+\end{proposition}
+
+
+\begin{lemma}\label{distinctionSubstitution}
+  Let $\sigma$ be a substitution, $D$ be a distinction and $c\notin n(D)$. If $\sigma$ respects $D$ then $\sigma\{c/x\}$ respects $D-\{x\}$.
+  \begin{proof}:
+    $\sigma$ respects $D$ and $D-\{x\}\subseteq D$ imply $\sigma$ respects $D-\{x\}$. $(d_{1},d_{2}) \in (D-\{x\})$ imply $d_{1} \sigma\{c/x\} = d_{1} \sigma$ and $d_{2} \sigma = d_{2} \sigma\{c/x\}$. $\sigma$ respects $D-\{x\}$ and $(d_{1},d_{2}) \in (D-\{x\})$ for definition \ref{distinction} imply $d_{1} \sigma \neq d_{2} \sigma$.  Putting it all together $\sigma \{c/x\}$ respects $(d_{1}, d_{2})$.
+  \end{proof}
+\end{lemma}
+
+According to \cite{milnerparrowwalker} the following holds:
+\begin{lemma}\label{distinctionSubstitution2}
+  Let $\sigma$ be a substitution, $D$ be a distinction and $y \sigma = y$. If $\sigma$ respects $D-\{x\}$ then $\{y/x\}\sigma$ respects $D$.
+  \begin{proof}
+    NON RIESCO A DIMOSTRARLO!
+  \end{proof}
+\end{lemma}
+
 
 
 \begin{definition}\label{strongDequivalence}
-  $P$ and $Q$ are \emph{strongly D equivalent}, written $P \dot{\sim}^{D} Q$, if for all substitution $\sigma$ respecting $D$: $P\sigma \dot{\sim}_{E} Q\sigma$.
+  $P$ and $Q$ are \emph{strongly D equivalent}, written $P \sim^{D} Q$, if for all substitution $\sigma$ respecting $D$: $P\sigma \sim_{E} Q\sigma$.
 \end{definition}
  
  
-\begin{theorem}
-  $\dot{\sim}^{D}$ is a congruence.
+\begin{lemma}\label{openBisimulationEquivalence}
+  For any distinction $D$ $\sim^{D}$ is an equivalence relation
   \begin{proof}
-    $\dot{\sim}^{D}$ is an equivalence relation because $\dot{\sim}_{E}$ is an equivalence relation.
+    $\sim^{D}$ is an equivalence relation because $\sim_{E}$ is an equivalence relation.
     \begin{description}
       \item[$Reflexivity$]
-	Since $\dot{\sim}_{E}$ is reflexive, for all substitution $\sigma$ respecting $D$: $P\sigma \dot{\sim}_{E} Q\sigma$ so $P \dot{\sim}^{D} P$
+	Since $\sim_{E}$ is reflexive, for all substitution $\sigma$ respecting $D$: $P\sigma \sim_{E} Q\sigma$ so $P \sim^{D} P$
       \item[$Symmetry$]
-	Let $P \dot{\sim}^{D} Q$ then for all substitution $\sigma$ respecting $D$: $P\sigma \dot{\sim}_{E} Q\sigma$. Since $\dot{\sim}_{E}$ is symmetric $Q\sigma \dot{\sim}_{E} P\sigma$ so $Q \dot{\sim}^{D} P$
+	Let $P \sim^{D} Q$ then for all substitution $\sigma$ respecting $D$: $P\sigma \sim_{E} Q\sigma$. Since $\sim_{E}$ is symmetric $Q\sigma \sim_{E} P\sigma$ so $Q \sim^{D} P$
       \item[$Transitivity$]
-	Let $P \dot{\sim}^{D} Q$ and $Q \dot{\sim}^{D} R$ then for all substitution $\sigma$ respecting $D$: $P\sigma \dot{\sim}_{E} Q\sigma$ and $Q\sigma \dot{\sim}_{E} R\sigma$. Since $\dot{\sim}_{E}$ is transitive $P\sigma \dot{\sim}_{E} R\sigma$ so $P \dot{\sim}^{D} R$.
-    \end{description}
-    $\dot{\sim}^{D}$ is preserved by every operator. Let $P \dot{\sim}^{D} Q$ and let $\sigma$ be a substitution respecting $D$ so $P\sigma \dot{\sim}_{E} Q\sigma$:
-    \begin{description}
-      \item[Output prefixing]
-	The only transitions starting from $(\overline{x}y.P)\sigma$ and $(\overline{x}y.Q)\sigma$ are
-	\begin{center}
-	      $(\overline{x}y.P)\sigma \xrightarrow{(\overline{x}y)\sigma} P\sigma \dot{\sim}_{E} Q\sigma \xleftarrow{(\overline{x}y)\sigma} (\overline{x}y.Q)\sigma$
-	\end{center}
-	so $(\overline{x}y.P)\sigma \dot{\sim}_{E} (\overline{x}y.Q)\sigma$ and $\overline{x}y.P \dot{\sim}^{D} \overline{x}y.Q$
-      \item[Strong output prefixing]
-	There are two cases to consider:
-	\begin{itemize}
-	  \item 
-	    If there exists a transition $P\sigma \xrightarrow{\gamma} P^{'}$ where $\gamma$ is a non empty sequence of outputs then
-	    \begin{center}
-	      $\inferrule* [left=\bf{SOut}]{
-		P\sigma \xrightarrow{\gamma} P^{'}
-	      }{
-		(\underline{\overline{x}y}.P)\sigma \xrightarrow{(\overline{x}y)\sigma \cdot \gamma} P^{'}
-	      }$
-	    \end{center}
-	    $P\sigma \xrightarrow{\gamma} P^{'}$ and $P\sigma \dot{\sim}_{E} Q\sigma$ imply $Q\sigma \xrightarrow{\gamma} Q^{'}$ and $P^{'} \dot{\sim}_{E} Q^{'}$. For rule $SOut$ 
-	    \begin{center}
-	      $(\underline{\overline{x}y}.Q)\sigma \xrightarrow{(\overline{x}y)\sigma \cdot \gamma} Q^{'}$
-	    \end{center}
-	    so $(\underline{\overline{x}y}.P)\sigma \dot{\sim}_{E} (\underline{\overline{x}y}.Q)\sigma$ and $\underline{\overline{x}y}.P \dot{\sim}^{D} \underline{\overline{x}y}.Q$.
-	  \item
-	    Otherwise there is no transition starting from $(\underline{\overline{x}y}.P)\sigma$ or from $(\underline{\overline{x}y}.Q)\sigma$ so $(\underline{\overline{x}y}.P)\sigma$ $\dot{\sim}_{E}$ $(\underline{\overline{x}y}.Q)\sigma$ and  $\underline{\overline{x}y}.P \dot{\sim}^{D} \underline{\overline{x}y}.Q$.
-	\end{itemize}
-      \item[Input prefixing]
-	Let $z\notin bn(P)\cup bn(Q)$ and let $y \notin img(\sigma)$. The transitions starting from $(x(y).P)\sigma$ and $(x(y).Q)\sigma$ are
-	\begin{center}
-	  \begin{tabular}{ll}
-	    $x\sigma (y).P\sigma \xrightarrow{x\sigma z} P\sigma\{z/y\}$ 
-	  &
-	    $x\sigma (y).Q\sigma \xrightarrow{x\sigma z} Q\sigma\{z/y\}$ 
-	  \end{tabular}
-	\end{center}
-	?
-      \item[Tau prefixing]
-
-      \item[Summation]
-
-      \item[Restriction]
-
-      \item[Parallel composition]
+	Let $P \sim^{D} Q$ and $Q \sim^{D} R$ then for all substitution $\sigma$ respecting $D$: $P\sigma \sim_{E} Q\sigma$ and $Q\sigma \sim_{E} R\sigma$. Since $\sim_{E}$ is transitive $P\sigma \sim_{E} R\sigma$ so $P \sim^{D} R$.
     \end{description}
   \end{proof}
+\end{lemma}
+
+\begin{lemma}\label{openBisimulationPreservedByRestriction}
+  If $P \sim^{D} Q$ and for all $v \notin n(P)\cup n(Q)$ such that $(v,y)\in D$ it holds that $P\{v/y\} \sim^{D} Q\{v/y\}$ then $(\nu y).P \sim^{D} (\nu y).Q$
+  \begin{proof}
+    Let $\sigma$ be a substitution that respects $D$. If $y \sigma^{-1} = \{y\}$ then 
+    \begin{center}
+      \begin{tabular}{ll}
+	  $(x(y).P)\sigma = x\sigma(y).P\sigma \xrightarrow{x\sigma z} P\sigma\{z/y\}$
+	&
+	  $(x(y).Q)\sigma = x\sigma(y).Q\sigma \xrightarrow{x\sigma z} Q\sigma\{z/y\}$
+      \end{tabular}
+    \end{center}
+
+    If $y \notin (y \sigma^{-1})$ then $(x(y).P)\sigma = x\sigma (w).P\{w/y\}\sigma \xrightarrow{x\sigma z} P\{w/y\}\sigma\{z/w\}$ where $w\notin n(x(y).P)$.
+      ??
+  \end{proof}
+\end{lemma}
+
+
+\begin{lemma}\label{openBisimulationPreservedByInput}
+  If $P \sim^{D} Q$ and for all $v\in fn(P,Q)$ such that $(v,y)\in D$ it holds that $P\{v/y\} \sim^{D} Q\{v/y\}$ then $x(y).P \sim^{D} x(y).Q$
+  \begin{proof}
+    Let $\sigma$ be a substitution that respects $D$. If $y \sigma^{-1} = \{y\}$ then 
+    \begin{center}
+      \begin{tabular}{ll}
+	  $(x(y).P)\sigma = x\sigma(y).P\sigma \xrightarrow{x\sigma z} P\sigma\{z/y\}$
+	&
+	  $(x(y).Q)\sigma = x\sigma(y).Q\sigma \xrightarrow{x\sigma z} Q\sigma\{z/y\}$
+      \end{tabular}
+    \end{center}
+
+    If $y \notin (y \sigma^{-1})$ then $(x(y).P)\sigma = x\sigma (w).P\{w/y\}\sigma \xrightarrow{x\sigma z} P\{w/y\}\sigma\{z/w\}$ where $w\notin n(x(y).P)$.
+  \end{proof}
+\end{lemma}
+
+
+\begin{lemma}\label{openBisimulationPreservedByAllExceptInput}
+      If $P \sim^{D} Q$ then 
+      \begin{itemize}
+	\item 
+	  $\tau.P \sim^{D} \tau.Q$
+	\item 
+	  $\overline{x}y.P \sim^{D} \overline{x}y.Q$
+	\item 
+	  $\underline{\overline{x}y}.P \sim^{D} \underline{\overline{x}y}.Q$
+	\item
+	  $P+R \sim^{D} Q+R$
+	\item
+	  $P|R \sim^{D} Q|R$
+	\item
+	  $(\nu x)P \sim^{D-\{x\}} (\nu x)Q$
+      \end{itemize}
+  \begin{proof}
+    $\sim^{D}$ is preserved by every operator. Let $P \sim^{D} Q$ and let $\sigma$ be a substitution respecting $D$ so $P\sigma \sim_{E} Q\sigma$:
+    \begin{description}
+      \item[Output prefixing]\hfill \\
+	\begin{center}
+	  \begin{tabular}{ll}
+	      $P \sim^{D} Q$
+	    &
+	      definition \ref{strongDequivalence}
+	  \\
+	      $\Rightarrow$ $\forall \sigma$ respecting $D.$ $P\sigma \sim_{E} Q\sigma$
+	    &
+	      lemma \ref{earlyBisimulationProprerties}
+	  \\
+	      $\Rightarrow$ $(\overline{x}y)\sigma.(P\sigma) \sim_{E} (\overline{x}y)\sigma.(Q\sigma)$
+	    &
+	      definition of substitution
+	  \\
+	      $\Rightarrow$ $(\overline{x}y.P)\sigma \sim_{E} (\overline{x}y.Q)\sigma$
+	    &
+	      definition \ref{strongDequivalence}
+	  \\
+	      $\Rightarrow$ $\overline{x}y.P \sim^{D} \overline{x}y.Q$
+	    &
+	  \end{tabular}
+	\end{center}
+      \item[Strong output prefixing] similar.
+      \item[Tau prefixing]\hfill \\
+	\begin{center}
+	  \begin{tabular}{ll}
+	      $P \sim^{D} Q$
+	    &
+	      definition \ref{strongDequivalence}
+	  \\
+	      $\Rightarrow$ $\forall \sigma$ respecting $D.$ $P\sigma \sim_{E} Q\sigma$
+	    &
+	      lemma \ref{earlyBisimulationProprerties}
+	  \\
+	      $\Rightarrow$ $\tau.(P\sigma) \sim_{E} \tau.(Q\sigma)$
+	    &
+	      definition of substitution
+	  \\
+	      $\Rightarrow$ $(\tau.P)\sigma \sim_{E} (\tau.Q)\sigma$
+	    &
+	      definition \ref{strongDequivalence}
+	  \\
+	      $\Rightarrow$ $\tau.P \sim^{D} \tau.Q$
+	    &
+	  \end{tabular}
+	\end{center}
+      \item[Sum]\hfill \\
+	\begin{center}
+	  \begin{tabular}{ll}
+	      $P \sim^{D} Q$
+	    &
+	      definition \ref{strongDequivalence}
+	  \\
+	      $\Rightarrow$ $\forall \sigma$ respecting $D.$ $P\sigma \sim_{E} Q\sigma$
+	    &
+	      lemma \ref{earlyBisimulationProprerties}
+	  \\
+	      $\Rightarrow$ $(P\sigma)+(R\sigma) \sim_{E} (Q\sigma)+(R\sigma)$
+	    &
+	      definition of substitution
+	  \\
+	      $\Rightarrow$ $(P+R)\sigma \sim_{E} (Q+R)\sigma$
+	    &
+	      definition \ref{strongDequivalence}
+	  \\
+	      $\Rightarrow$ $P+R \sim^{D} Q+R$
+	    &
+	  \end{tabular}
+	\end{center}
+      \item[Parallel composition]\hfill \\
+	\begin{center}
+	  \begin{tabular}{ll}
+	      $P \sim^{D} Q$
+	    &
+	      definition \ref{strongDequivalence}
+	  \\
+	      $\Rightarrow$ $\forall \sigma$ respecting $D.$ $P\sigma \sim_{E} Q\sigma$
+	    &
+	      lemma \ref{earlyBisimulationProprerties}
+	  \\
+	      $\Rightarrow$ $(P\sigma)|(R\sigma) \sim_{E} (Q\sigma)|(R\sigma)$
+	    &
+	      definition of substitution
+	  \\
+	      $\Rightarrow$ $(P|R)\sigma \sim_{E} (Q|R)\sigma$
+	    &
+	      definition \ref{strongDequivalence}
+	  \\
+	      $\Rightarrow$ $P|R \sim^{D} Q|R$
+	    &
+	  \end{tabular}
+	\end{center}
+      \item[Restriction]
+	There are two cases: if $((\nu x) P)\sigma=(\nu x)(P\sigma)$:
+	\begin{center}
+	  \begin{tabular}{ll}
+	      $P \sim^{D} Q$
+	    &
+	      definition \ref{strongDequivalence}
+	  \\
+	      $\Rightarrow$ $\forall \sigma$ respecting $D.$ $P\sigma \sim_{E} Q\sigma$
+	    &
+	      lemma \ref{earlyBisimulationProprerties}	      
+	  \\
+	      $\Rightarrow$ $(\nu x)(P\sigma) \sim_{E} (\nu x)(Q\sigma)$
+	    &
+	      definition of substitution 
+	  \\
+	      $\Rightarrow$ $((\nu x)P)\sigma \sim_{E} ((\nu x)Q)\sigma$
+	    &
+	      definition \ref{strongDequivalence}
+	  \\
+	      $\Rightarrow$ $(\nu x)P \sim^{D} (\nu x)Q$
+	    &
+	  \end{tabular}
+	\end{center}		
+	otherwise $((\nu x) P)\sigma=(\nu c)(P\{c/x\}\sigma)$ where $c\notin n(P,Q)$ and $c \sigma = c$:
+	\begin{center}
+	  \begin{tabular}{ll}
+	  \\
+	      $\sigma$ respects $D-\{x\}$
+	    &
+	      lemma \ref{distinctionSubstitution2}
+	  \\
+	      $\Rightarrow \{c/x\}\sigma$ respects $D$
+	    &
+	      definition \ref{strongDequivalence} and $P \sim^{D} Q$
+	  \\
+	      $\Rightarrow$ $P\{c/x\}\sigma \sim_{E} Q\{c/x\}\sigma$
+	    &
+	      lemma \ref{earlyBisimulationProprerties}
+	  \\
+	      $\Rightarrow$ $(\nu c)(P\{c/x\}\sigma) \sim_{E} (\nu c)(Q\{c/x\}\sigma)$
+	    &
+	      definition of substitution 
+	  \\
+	      $\Rightarrow$ $((\nu x)P)\sigma \sim_{E} ((\nu x)Q)\sigma$
+	    &
+	      definition \ref{strongDequivalence}
+	  \\
+	      $\Rightarrow$ $(\nu x)P \sim^{D-\{x\}} (\nu x)Q$
+	    &
+	  \end{tabular}
+	\end{center}		
+    \end{description}
+  \end{proof}
+\end{lemma}
+
+
+
+\begin{theorem}
+  $\sim^{\emptyset}$ is a congruence.
+  \begin{proof}
+    Lemma \ref{openBisimulationEquivalence} and put $D=\emptyset$ in lemma \ref{openBisimulationPreservedByAllExceptInput} and in lemma \ref{openBisimulationPreservedByInput}
+  \end{proof}
 \end{theorem}
-
-
-
 
 

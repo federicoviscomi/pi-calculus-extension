@@ -1833,7 +1833,7 @@ In the following section the symbol $\rightarrow$ will refer to the late semanti
       n \geq 0
     }{
       \underline{x_{1}(y_{1})}.\; \ldots\; .\underline{x_{n}(y_{n})}.z(w).P 
-	\xrightarrow{x_{1}(y_{1})\cdot \ldots \cdot x_{n}(y_{n})\cdot z(w)} 
+	\xrightarrow{\widetilde{x(y)} \cdot z(w)} 
 	  P
     }$
   \end{center}
@@ -1898,7 +1898,7 @@ In the following section the symbol $\rightarrow$ will refer to the late semanti
   	    \\
    	      bn(\sigma)\cap fn(Q) = \emptyset
 	  }{
-	    (\nu \tilde{a} \tilde{b}) (P|Q) \xrightarrow{\sigma\{z/y\}}_{n} (\nu \tilde{c} \tilde{d})(P^{'}\{z/y\}|Q^{'})
+	    (\nu \tilde{a} \tilde{c}) (P|Q) \xrightarrow{\sigma\{z/y\}}_{n} (\nu \tilde{b} \tilde{d})(P^{'}\{z/y\}|Q^{'})
 	  }$
 	\\
 	  $\inferrule* [left=\bf{LCom1}]{
@@ -1916,7 +1916,7 @@ In the following section the symbol $\rightarrow$ will refer to the late semanti
   	    \\
    	      bn(\sigma)\cap fn(Q) = \emptyset
 	  }{
-	    (\nu \tilde{a} \tilde{b}) (P|Q) \xrightarrow{\sigma\{z/y\}}_{n} (\nu \tilde{c} \tilde{d})(P^{'}\{z/y\}|Q^{'})
+	    (\nu \tilde{a} \tilde{c}) (P|Q) \xrightarrow{\sigma\{z/y\}}_{n} (\nu \tilde{b} \tilde{d})(P^{'}\{z/y\}|Q^{'})
 	  }$
 	\\
 	  $\inferrule* [left=\bf{LCom2}]{
@@ -2141,6 +2141,7 @@ Is this definition a proper extension of the one in \cite{parrow}? The only way 
     We have to try each operator in turn and prove that $\dot{\sim}^{\equiv}$ is preserved:
     \begin{description}
       \item[Output prefix]
+    \end{description}
 	Let $P \dot{\sim} Q$ and let $\overline{x}y.P \xrightarrow{\alpha} P^{'}$. The last rule used in the derivation of this transition can be:
 	\begin{description}
 	  \item[$Out$]
@@ -2148,10 +2149,18 @@ Is this definition a proper extension of the one in \cite{parrow}? The only way 
 	  \item[$Cong$]
 	    For lemma \ref{inversionlemmamultiinplatewhith} a process structurally congruent to $\overline{x}y.P$ must be in the form $\overline{x}y.R$ where $P \equiv R$ so $\overline{x}y.P \xrightarrow{\overline{x}y} R$.
 	\end{description}
+    \begin{description}
       \item[Tau prefix] similar.
-      \item[Input prefix] FARE UN ESEMPIO A PARTE DEL PERCH NON FUNZIONA	
+    \end{description}
+    \begin{description}
+      \item[Input prefix] FARE UN ESEMPIO A PARTE DEL PERCH NON FUNZIONA
+    \end{description}
+    \begin{description}
       \item[Strong input] FARE UN ESEMPIO A PARTE DEL PERCH NON FUNZIONA	
+    \end{description}
+    \begin{description}
       \item[Summation]
+    \end{description}
 	Let $P \dot{\sim} Q$ and let $P+R \xrightarrow{\gamma} P^{'}$. The last rule used in the derivation of this transition can be:
 	\begin{description}
 	  \item[$Sum$]
@@ -2298,7 +2307,9 @@ Is this definition a proper extension of the one in \cite{parrow}? The only way 
 		$P \stackrel{\gamma}{\twoheadrightarrow} P^{'}$ so for bisimilarity $Q \xrightarrow{\gamma} Q^{'}$ and $P^{'}\dot{\sim} Q^{'}$ or $P^{'}\{\tilde{w}/\tilde{y}\} \dot{\sim} Q^{'}\{\tilde{w}/\tilde{y}\}$. For rule $Sum$: $Q+R \xrightarrow{\gamma} Q^{'}$.
 	    \end{description}
 	\end{description}
+    \begin{description}
       \item[Restriction] 
+    \end{description}
 	The relation 
 	\begin{center}
 	  $Res(\dot{\sim})=\{((\nu x)P,(\nu x)Q): P\dot{\sim}Q\}\cup \dot{\sim}$ 
@@ -2344,23 +2355,36 @@ Is this definition a proper extension of the one in \cite{parrow}? The only way 
 	    for lemma \ref{moveCongDownNorm2} we can assume that the proof tree of $(\nu x)P \xrightarrow{\widetilde{x(y)}} P^{'}$ ends in the following way:
 	    \begin{center}
 	      $\inferrule* [left=\bf{Cong}]{
-		  (\nu z)P \equiv (\nu \tilde{a})R
+		  (\nu z)P \equiv R
 		\\
-		  (\nu \tilde{a})R \xrightarrow{\widetilde{x(y)}}_{n} P^{'}
+		  R \xrightarrow{\widetilde{x(y)}}_{n} P^{'}
 	      }{
 		(\nu z)P \xrightarrow{\widetilde{x(y)}} P^{'}
 	      }$
 	    \end{center}
-	    where $(\nu \tilde{a})R$ is in normal form and the top level of $R$ is not a restriction. At this point the last rule of a derivation of $(\nu \tilde{a})R \xrightarrow{\widetilde{x(y)}}_{n} P^{'}$ can be: 
+	    where $R$ is in normal form and the top level of $R$ is not a restriction. At this point the last rule of a derivation of $R \xrightarrow{\widetilde{x(y)}}_{n} P^{'}$ can be: 
 	    \begin{description}	
 	      \item[$Inp$] 
-		in this case $\tilde{a}$ is empty.
-	      \item[$LComSeq$]
+		this case does not exist because $(\nu a)B \not \equiv c(d).E$
+	      \item[$LComSeq$]\hfill \\
+		\begin{center}
+		  $\inferrule* [left=\bf{LComSeq1}]{
+			  (\nu \tilde{a})R_{1} \xrightarrow{x(y)\cdot \sigma}_{n} (\nu \tilde{b})R_{1}^{'}
+			\\
+			  (\nu \tilde{c})R_{2} \xrightarrow{\overline{x}z}_{n} (\nu \tilde{d})R_{2}^{'}
+			\\
+			  bn(\sigma)\cap fn(Q) = \emptyset
+		      }{
+			(\nu \tilde{a} \tilde{c}) (R_{1}|R_{2}) \xrightarrow{\sigma\{z/y\}}_{n} (\nu \tilde{b} \tilde{d})(R_{1}^{'}|R_{2}^{'})
+		      }$
+		\end{center}
+		$(\nu z)P \equiv (\nu \tilde{a} \tilde{c}) (R_{1}|R_{2})$ and $\sigma\{z/y\}=\widetilde{x(y)}$.
 	      \item[$Sum1,2$]
 	      \item[$Res$]
 	      \item[$Par1,2$]
 	    \end{description}
 	\end{description}
+    \begin{description}
       \item[Parallel] ?
     \end{description}
   \end{proof}
