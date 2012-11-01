@@ -34,7 +34,7 @@ We have to extend the following definition to deal with the strong prefix:
   The \emph{early transition relation with structural congruence} is the smallest relation induced by the rules in table \ref{multiIOearly}:
   \begin{table}
     \begin{tabular}{lll}
-	  \hline\\
+	  \multicolumn{3}{l}{\line(1,0){415}}\\\\
 	  $\inferrule* [left=\bf{Inp}]{
 	  }{
 	    x(y).P \xrightarrow{xz} P\{z/x\}
@@ -54,7 +54,7 @@ We have to extend the following definition to deal with the strong prefix:
       \begin{tabular}{ll}
       \\\\
 	  $\inferrule* [left=\bf{SInp}]{
-	      \{z/y\}P \xrightarrow{\sigma} P^{'} 
+	      P\{z/y\} \xrightarrow{\sigma} P^{'} 
 	    \\
 	      \sigma\neq \tau
 	  }{
@@ -114,7 +114,7 @@ We have to extend the following definition to deal with the strong prefix:
 	  }{
 	    P|Q \xrightarrow{\sigma} P^{'}|Q
 	  }$
-      \\\\\hline
+      \\\\\multicolumn{2}{l}{\line(1,0){415}}
     \end{tabular}
     \caption{Multi $\pi$ early semantic with structural congruence}
     \label{multiIOearly}
@@ -124,7 +124,7 @@ We have to extend the following definition to deal with the strong prefix:
 The names $\sigma, \sigma_{1}, \sigma_{2}, \sigma_{3}$ are non empty sequences of actions and are also not $\tau$. The relation $ESync$ is defined by the axioms in table \ref{syncEarly}
 \begin{table}
   \begin{tabular}{ll}
-      \hline\\
+      \multicolumn{2}{l}{\line(1,0){415}}\\
 	$\inferrule* [left=S1L]{
 	}{
 	  ESync(xy,\overline{x}y,\tau)
@@ -166,7 +166,7 @@ The names $\sigma, \sigma_{1}, \sigma_{2}, \sigma_{3}$ are non empty sequences o
 	}{
 	  ESync(\overline{x}y\cdot\sigma_{1},xy\cdot \sigma_{2}, \sigma_{3})
 	}$
-    \\\\\hline
+    \\\\\multicolumn{2}{l}{\line(1,0){415}}
   \end{tabular}
   \caption{Synchronization relation}
   \label{syncEarly}
@@ -317,7 +317,7 @@ In this case, a label can be a sequence of prefixes, whether in the original $\p
   The \emph{late transition relation with structural congruence} is the smallest relation induced by the rules in table \ref{multiIOlatewith2}:
   \begin{table}
     \begin{tabular}{ll}
-	  \hline\\
+	  \multicolumn{2}{l}{\line(1,0){415}}\\
 	  $\inferrule* [left=\bf{Pref}]{
 	    \alpha\; not\; a\; strong\; prefix
 	  }{
@@ -379,7 +379,7 @@ In this case, a label can be a sequence of prefixes, whether in the original $\p
 	  }{
 	    \underline{x(y)}.P \xrightarrow{x(y) \cdot \sigma} P^{'}
 	  }$
-      \\\\\hline
+      \\\\\multicolumn{2}{l}{\line(1,0){415}}
     \end{tabular}
     \caption{Multi $\pi$ late semantic with structural congruence}
     \label{multiIOlatewith2}
@@ -389,7 +389,7 @@ In this case, a label can be a sequence of prefixes, whether in the original $\p
 In what follows, the names $\delta, \delta_{1}, \delta_{2}$ represents substitutions, they can also be empty; the names $\sigma, \sigma_{1}, \sigma_{2}, \sigma_{3}$ are non empty sequences of actions. The relation $Sync$ is defined by the axioms in table \ref{sync}
 \begin{table}
   \begin{tabular}{ll}
-      \hline\\
+      \multicolumn{2}{l}{\line(1,0){415}}\\
 	$\inferrule* [left=S1L]{
 	}{
 	  Sync(x(y),\overline{x}z,\tau,\{z/y\},\{\})
@@ -475,7 +475,7 @@ In what follows, the names $\delta, \delta_{1}, \delta_{2}$ represents substitut
 % 	}{
 % 	  Sync(\sigma, \epsilon, \sigma, \delta_{1}, \delta_{2})
 % 	}$
-    \\\\\hline
+    \\\\\multicolumn{2}{l}{\line(1,0){415}}
   \end{tabular}
   \caption{Synchronization relation}
   \label{sync}
@@ -710,7 +710,7 @@ This section contains the definition of an alternative semantic for multi $\pi$.
   The low level transition relation is the smallest relation induced by the rules in table \ref{lowleveltransitionrelationearlyIO} in which $P$ stands for a process without mark, $L$ stands for a process with mark and $S$ can stand for both. 
   \begin{table}
     \begin{tabular}{lll}
-      \hline\\
+      \multicolumn{3}{l}{\line(1,0){415}}\\
 	  $\inferrule* [left=\bf{Out}]{
 	  }{
 	    \overline{x}y.P \stackrel{\overline{x}y}{\longmapsto} P
@@ -895,7 +895,7 @@ This section contains the definition of an alternative semantic for multi $\pi$.
 	  }{
 	    L_{1}|L_{2} \stackrel{\tau}{\longmapsto} P|Q
 	  }$
-	\\\\\hline
+	\\\\\multicolumn{2}{l}{\line(1,0){415}}
 	\end{tabular}
     \caption{Low multi $\pi$ early semantic with structural congruence}
     \label{lowleveltransitionrelationearlyIO}

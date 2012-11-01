@@ -50,7 +50,7 @@ In this case, a label can be a sequence of prefixes, whether in the original $\p
   The \emph{early transition relation with structural congruence} is the smallest relation induced by the rules in table \ref{multipisoloinputearlywith} where $inpSeq$ is a non empty sequence of input actions and $\sigma$ is a sequence of any action.
   \begin{table}
     \begin{tabular}{lll}
-	  \hline\\
+	\multicolumn{3}{l}{\line(1,0){415}}\\
 	  $\inferrule* [left=\bf{Out}]{
 	  }{
 	    \overline{x}y.P \xrightarrow{\overline{x}y} P
@@ -153,7 +153,7 @@ In this case, a label can be a sequence of prefixes, whether in the original $\p
 	  }{
 	    P|Q \xrightarrow{\sigma} P^{'}|Q^{'}
 	  }$
-      \\\\\hline
+      \\\\\multicolumn{2}{l}{\line(1,0){415}}\\
     \end{tabular}
     \caption{Multi $\pi$ early semantic with structural congruence}
     \label{multipisoloinputearlywith}
@@ -414,7 +414,7 @@ This section contains the definition of an alternative semantic for multi $\pi$.
   The low level transition relation is the smallest relation induced by the rules in table \ref{lowleveltransitionrelationinput} in which $P$ stands for a process without mark, $L$ stands for a process with mark and $S$ can stand for both. 
   \begin{table}
     \begin{tabular}{lll}
-      \hline\\
+      	\multicolumn{3}{l}{\line(1,0){415}}\\
 	  $\inferrule* [left=\bf{Out}]{
 	  }{
 	    \overline{x}y.P \stackrel{\overline{x}y}{\longmapsto} P
@@ -567,7 +567,7 @@ This section contains the definition of an alternative semantic for multi $\pi$.
 	    P+Q \stackrel{\gamma}{\longmapsto} S
 	  }$
 
-      \\\\\hline
+      \\\\	\multicolumn{3}{l}{\line(1,0){415}}
     \end{tabular}
     \caption{Low multi $\pi$ early semantic with structural congruence}
     \label{lowleveltransitionrelationinput}
@@ -1390,18 +1390,37 @@ In the following section the symbol $\rightarrow$ will refer to the late semanti
       \\
       \begin{tabular}{lll}
       \\
-	$\inferrule* [left=\bf{Ide}]{A(\tilde{x})\stackrel{def}{=}P}{A(\tilde{w})\equiv P\{\tilde{w}/\tilde{x}\}}$&
-	$\inferrule* [left=\bf{Trans}]{P \equiv Q \\ Q \equiv R}{P \equiv R}$&
+	  $\inferrule* [left=\bf{Ide}]{A(\tilde{x})\stackrel{def}{=}P}{A(\tilde{w})\equiv P\{\tilde{w}/\tilde{x}\}}$
+	&
+	  $\inferrule* [left=\bf{Trans}]{P \equiv Q \\ Q \equiv R}{P \equiv R}$
+	&
 	  $\inferrule* [left=\bf{Alp}] {
 	    P \equiv_{\alpha} Q
 	  }{
 	    P\equiv Q
 	  }$
-
       \\
-	$\inferrule* [left=\bf{Cong1}]{P \equiv Q}{C[P] \equiv C[Q]}$&$\inferrule* [left=\bf{Cong2}]{P_{1} \equiv Q_{1} \\ P_{2} \equiv Q_{2}}{C[P_{1}, P_{2}] \equiv C[Q_{1}, Q_{2}]}$&
+      \end{tabular}
       \\
-      \\\multicolumn{3}{l}{\line(1,0){415}}
+      \begin{tabular}{ll}
+      \\
+	  $\inferrule* [left=\bf{Cong1}]{
+	    P \equiv Q
+	  }{
+	    C[P] \equiv C[Q]
+	  }$
+	&
+	  $\inferrule* [left=\bf{Cong2}]{
+	    P_{1} \equiv Q_{1} 
+	  \\ 
+	    P_{2} \equiv Q_{2}
+	  \\
+	    C[\_,\_]\in\{\_+\_, \_|\_ \}
+	  }{
+	    C[P_{1}, P_{2}] \equiv C[Q_{1}, Q_{2}]
+	  }$
+      \\
+      \\\multicolumn{2}{l}{\line(1,0){415}}
     \end{tabular}
     \caption{Structural congruence axioms}
     \label{structuralCongrunce}
@@ -1415,7 +1434,7 @@ In the following section the symbol $\rightarrow$ will refer to the late semanti
   \end{proof}
 \end{proposition}
 
-\begin{lemma}
+\begin{lemma}\label{structuralCongrunceTransitivityElimination}
   If $P \equiv Q$ then there is a proof of $P \equiv Q$ that does not use the rule $Trans$.
 \end{lemma}
 
@@ -1774,7 +1793,7 @@ In the following section the symbol $\rightarrow$ will refer to the late semanti
 \end{definition}
 
 \begin{definition}
-  We say that a process is in \emph{normal form} if all bound names are distinct and all unguarded restrictions are at the top level, i.e., of the form $(\nu \tilde{x})P$ where $P$ has no unguarded restrictions, note that $\tilde{x}$ can eventually be empty.
+  We say that a process is in \emph{normal form} if all bound names are distinct and all unguarded restrictions are at the top level, i.e., of the form $(\nu \tilde{x})P$ where $P$ has no unguarded restrictions, note that $\tilde{x}$ can eventually be empty. If a process $P$ is in normal form, we write for short $P$ n.f.. 
 \end{definition}
 
 \begin{lemma}\label{existenceOfNormalForm}
@@ -1874,21 +1893,17 @@ In the following section the symbol $\rightarrow$ will refer to the late semanti
 	  }{
 	    \tau.P \xrightarrow{\tau}_{n} P
 	  }$
-      \\
-      \end{tabular}
-	\\
-      \begin{tabular}{l}
-      \\
+	&
 	  $\inferrule* [left=\bf{Inp}]{
 	      n \geq 0
 	  }{
 	    \underline{x_{1}(y_{1})}.\; \ldots\; .\underline{x_{n}(y_{n})}.z(w).N
-	      \xrightarrow{x_{1}(y_{1})\cdot \ldots \cdot x_{n}(y_{n})\cdot z(w)}_{n}
+	      \xrightarrow{\widetilde{x(y)}\cdot z(w)}_{n}
 		N
 	  }$
       \\
       \end{tabular}
-	\\
+	\\\\
       \begin{tabular}{l}
       \\
 	  $\inferrule* [left=\bf{LComSeq1}]{
@@ -1900,7 +1915,7 @@ In the following section the symbol $\rightarrow$ will refer to the late semanti
 	  }{
 	    (\nu \tilde{a} \tilde{c}) (P|Q) \xrightarrow{\sigma\{z/y\}}_{n} (\nu \tilde{b} \tilde{d})(P^{'}\{z/y\}|Q^{'})
 	  }$
-	\\
+      \\
 	  $\inferrule* [left=\bf{LCom1}]{
 	      (\nu \tilde{a}) P \xrightarrow{x(y)}_{n} (\nu \tilde{b})P^{'}
 	    \\
@@ -1928,19 +1943,19 @@ In the following section the symbol $\rightarrow$ will refer to the late semanti
 	  }$
       \\
       \end{tabular}
-	\\
-      \begin{tabular}{l}
+	\\\\
+      \begin{tabular}{ll}
       \\
 	  $\inferrule* [left=\bf{Sum1}]{
 	      (\nu \tilde{a}) P \xrightarrow{\sigma}_{n} (\nu \tilde{b})P^{'}
 	    \\
-	      (\nu \tilde{c})Q\; normal\; form
+	      (\nu \tilde{c})Q\; n.\; f.
 	  }{
 	    (\nu \tilde{a} \tilde{c}) (P+Q) \xrightarrow{\sigma}_{n} (\nu \tilde{b} \tilde{c})P^{'}
 	  }$
-	\\
+	&
 	  $\inferrule* [left=\bf{Sum2}]{
-	      (\nu \tilde{a})P\; normal\; form
+	      (\nu \tilde{a})P\; n.\; f.
 	    \\
 	      (\nu \tilde{b}) Q \xrightarrow{\sigma}_{n} (\nu \tilde{c})Q^{'}
 	  }{
@@ -1976,13 +1991,13 @@ In the following section the symbol $\rightarrow$ will refer to the late semanti
 	    \\
 	      bn(\sigma)\cap fn(Q)=\emptyset
 	    \\
-	      (\nu \tilde{c})Q\; normal\; form
+	      (\nu \tilde{c})Q\; n.\; f.
 	  }{
 	    (\nu \tilde{a} \tilde{c})(P|Q) \xrightarrow{\sigma}_{n} (\nu \tilde{b} \tilde{c})(P^{'}|Q)
 	  }$
       \\
 	  $\inferrule* [left=\bf{Par2}]{
-	      (\nu \tilde{a})P\; normal\; form
+	      (\nu \tilde{a})P\; n.\; f.
 	    \\
 	      bn(\sigma)\cap fn((\nu \tilde{a})P)=\emptyset
 	    \\
@@ -1992,7 +2007,7 @@ In the following section the symbol $\rightarrow$ will refer to the late semanti
 	  }$
 	\\\\\multicolumn{1}{l}{\line(1,0){415}}
     \end{tabular}
-    \caption{Multi $\pi$ late semantic for normal forms}
+    \caption{Multi $\pi$ late semantic for normal forms. Every process in the head of a transition in the premise of a rule is in normal form. The restrictions can be empty}
     \label{multipiInpNorm}
   \end{table}
 \end{definition}
@@ -2159,7 +2174,7 @@ Is this definition a proper extension of the one in \cite{parrow}? The only way 
       \item[Strong input] FARE UN ESEMPIO A PARTE DEL PERCH NON FUNZIONA	
     \end{description}
     \begin{description}
-      \item[Summation]
+      \item[Summation] QUESTA DIMOSTRAZIONE NON FUNZIONA PERCHE' IL LEMMA \ref{moveCongDown} E' FALSO!!!
     \end{description}
 	Let $P \dot{\sim} Q$ and let $P+R \xrightarrow{\gamma} P^{'}$. The last rule used in the derivation of this transition can be:
 	\begin{description}
@@ -2351,7 +2366,7 @@ Is this definition a proper extension of the one in \cite{parrow}? The only way 
 	      }$
 	    \end{center}
 	    $P \xrightarrow{\overline{x}y} P^{'}$ and $P\dot{\sim}Q$ imply $Q \xrightarrow{\overline{x}y} Q^{'}$ and $P^{'} \dot{\sim} Q^{'}$ which imply that $((\nu z)P^{'}, (\nu z)Q^{'})$ is in $Res(\dot{\sim})$.
-	  \item[$Cong(1)$]
+	  \item[$Cong$ $\rightarrow_{n}$]
 	    for lemma \ref{moveCongDownNorm2} we can assume that the proof tree of $(\nu x)P \xrightarrow{\widetilde{x(y)}} P^{'}$ ends in the following way:
 	    \begin{center}
 	      $\inferrule* [left=\bf{Cong}]{
@@ -2362,7 +2377,7 @@ Is this definition a proper extension of the one in \cite{parrow}? The only way 
 		(\nu z)P \xrightarrow{\widetilde{x(y)}} P^{'}
 	      }$
 	    \end{center}
-	    where $R$ is in normal form and the top level of $R$ is not a restriction. At this point the last rule of a derivation of $R \xrightarrow{\widetilde{x(y)}}_{n} P^{'}$ can be: 
+	    where $R$ is in normal form. At this point the last rule of a derivation of $R \xrightarrow{\widetilde{x(y)}}_{n} P^{'}$ can be: 
 	    \begin{description}	
 	      \item[$Inp$] 
 		this case does not exist because $(\nu a)B \not \equiv c(d).E$
@@ -2383,12 +2398,141 @@ Is this definition a proper extension of the one in \cite{parrow}? The only way 
 	      \item[$Res$]
 	      \item[$Par1,2$]
 	    \end{description}
+	  \item[$Cong$ $\twoheadrightarrow$]
+	    for lemma \ref{moveCongDown} we can assume that the proof tree of $(\nu x)P \xrightarrow{\widetilde{x(y)}} P^{'}$ ends in the following way:
+	    \begin{center}
+	      $\inferrule* [left=\bf{Cong}]{
+		  (\nu z)P \equiv R
+		\\
+		  R \stackrel{\widetilde{x(y)}}{\longtwoheadrightarrow} P^{'}
+	      }{
+		(\nu z)P \xrightarrow{\widetilde{x(y)}} P^{'}
+	      }$
+	    \end{center}
+	    so the proof goes on by cases on the last rule of the inference of $(\nu z)P \equiv R$ which bearing in mind lemma \ref{structuralCongrunceTransitivityElimination} can be:
+	    \begin{description}
+	      \item[$ResCom$]
+		so arranging some names in order to make it look more clear, the last part of the inference is:
+		\begin{center}
+		  $\inferrule* [left=\bf{Cong}]{
+		    \inferrule* [left=\bf{ResCom}]{
+		    }{
+		      (\nu z)(\nu w)P \equiv (\nu w)(\nu z)P
+		    }
+		    \\
+		    \inferrule* [left=\bf{Res}]{
+			\inferrule* [left=\bf{Res}]{
+			    P \stackrel{\widetilde{x(y)}}{\longtwoheadrightarrow} P^{'}
+			  \\
+			    w,z\notin n(\widetilde{x(y)})
+			}{
+			  (\nu z)P \stackrel{\widetilde{x(y)}}{\longtwoheadrightarrow} (\nu z)P^{'}
+			}
+% 		      \\
+% 			w\notin n(\widetilde{x(y)})
+		    }{
+		      (\nu w)(\nu z)P \stackrel{\widetilde{x(y)}}{\longtwoheadrightarrow} (\nu w)(\nu z)P^{'}
+		    }
+		  }{
+		    (\nu z)(\nu w)P \xrightarrow{\widetilde{x(y)}} P^{'}
+		  }$
+		\end{center}	      	
+		
+	      \item[$Trans$]
+	      \item[$ScpExtPar1$]
+		$\inferrule* [left=\bf{ScpExtPar1}]{z\notin fn(P_{1})}{(\nu z) (P_{1}|P_{2}) \equiv P_{1}|(\nu z) P_{2}}$
+	      \item[$ScpExtSum1$]
+		$\inferrule* [left=\bf{ScpExtSum1}]{z\notin fn(P_{1})}{(\nu z) (P_{1}+P_{2}) \equiv P_{1}+(\nu z) P_{2}}$
+	      \item[$Alp$]
+		$\inferrule* [left=\bf{Alp}] {
+		  P \equiv_{\alpha} Q
+		}{
+		  P\equiv Q
+		}$
+	    \end{description}
 	\end{description}
     \begin{description}
-      \item[Parallel] ?
+      \item[Parallel]
+	    \begin{description}
+	      \item[$SumAsc1$]
+		$\inferrule* [left=\bf{SumAsc1}]{}{M_{1}+(M_{2}+M_{3})\equiv (M_{1}+M_{2})+M_{3}}$ 
+	      \item[$ParAsc1$]
+		$\inferrule* [left=\bf{ParAsc1}]{}{P_{1}|(P_{2}|P_{3})\equiv (P_{1}|P_{2})|P_{3}}$
+	      \item[$SumAsc2$]
+		$\inferrule* [left=\bf{SumAsc2}]{}{(M_{1}+M_{2})+M_{3}\equiv M_{1}+(M_{2}+M_{3})}$
+	      \item[$ParAsc2$]
+		$\inferrule* [left=\bf{ParAsc2}]{}{(P_{1}|P_{2})|P_{3}\equiv P_{1}|(P_{2}|P_{3})}$ 
+	      \item[$ParCom$]
+		$\inferrule* [left=\bf{ParCom}]{}{P_{1}|P_{2}\equiv P_{2}|P_{1}}$ 
+	      \item[$ResCom$]
+	      	$\inferrule* [left=\bf{ResCom}]{}{(\nu x) (\nu y) P \equiv (\nu y) (\nu x) P}$
+      	      \item[$SumCom$]
+		$\inferrule* [left=\bf{SumCom}]{}{M_{1}+M_{2}\equiv M_{2}+M_{1}}$
+	      \item[$ScpExtPar1$]
+		$\inferrule* [left=\bf{ScpExtPar1}]{z\notin fn(P_{1})}{(\nu z) (P_{1}|P_{2}) \equiv P_{1}|(\nu z) P_{2}}$
+	      \item[$ScpExtPar2$]
+		$\inferrule* [left=\bf{ScpExtPar2}]{z\notin fn(P_{1})}{P_{1}|(\nu z) P_{2} \equiv (\nu z) (P_{1}|P_{2})}$ 
+	      \item[$ScpExtSum1$]
+		$\inferrule* [left=\bf{ScpExtSum1}]{z\notin fn(P_{1})}{(\nu z) (P_{1}+P_{2}) \equiv P_{1}+(\nu z) P_{2}}$
+	      \item[$ScpExtSum2$]
+		$\inferrule* [left=\bf{ScpExtSum2}]{z\notin fn(P_{1})}{P_{1}+(\nu z) P_{2} \equiv (\nu z) (P_{1}+P_{2})}$ 
+	      \item[$Ide$]
+		$\inferrule* [left=\bf{Ide}]{A(\tilde{x})\stackrel{def}{=}P}{A(\tilde{w})\equiv P\{\tilde{w}/\tilde{x}\}}$
+	      \item[$Trans$]
+		$\inferrule* [left=\bf{Trans}]{P \equiv Q \\ Q \equiv R}{P \equiv R}$
+	      \item[$Alp$]
+		$\inferrule* [left=\bf{Alp}] {
+		  P \equiv_{\alpha} Q
+		}{
+		  P\equiv Q
+		}$
+	      \item[$Cong1$]
+		$\inferrule* [left=\bf{Cong1}]{P \equiv Q}{C[P] \equiv C[Q]}$
+	      \item[$Cong2$]
+		$\inferrule* [left=\bf{Cong2}]{P_{1} \equiv Q_{1} \\ P_{2} \equiv Q_{2}}{C[P_{1}, P_{2}] \equiv C[Q_{1}, Q_{2}]}$
+	    \end{description}
     \end{description}
   \end{proof}
 \end{proposition}
+
+% 	    \begin{description}
+% 	      \item[$SumAsc1$]
+% 		$\inferrule* [left=\bf{SumAsc1}]{}{M_{1}+(M_{2}+M_{3})\equiv (M_{1}+M_{2})+M_{3}}$ 
+% 	      \item[$ParAsc1$]
+% 		$\inferrule* [left=\bf{ParAsc1}]{}{P_{1}|(P_{2}|P_{3})\equiv (P_{1}|P_{2})|P_{3}}$
+% 	      \item[$SumAsc2$]
+% 		$\inferrule* [left=\bf{SumAsc2}]{}{(M_{1}+M_{2})+M_{3}\equiv M_{1}+(M_{2}+M_{3})}$
+% 	      \item[$ParAsc2$]
+% 		$\inferrule* [left=\bf{ParAsc2}]{}{(P_{1}|P_{2})|P_{3}\equiv P_{1}|(P_{2}|P_{3})}$ 
+% 	      \item[$ParCom$]
+% 		$\inferrule* [left=\bf{ParCom}]{}{P_{1}|P_{2}\equiv P_{2}|P_{1}}$ 
+% 	      \item[$ResCom$]
+% 	      	$\inferrule* [left=\bf{ResCom}]{}{(\nu x) (\nu y) P \equiv (\nu y) (\nu x) P}$
+%       	      \item[$SumCom$]
+% 		$\inferrule* [left=\bf{SumCom}]{}{M_{1}+M_{2}\equiv M_{2}+M_{1}}$
+% 	      \item[$ScpExtPar1$]
+% 		$\inferrule* [left=\bf{ScpExtPar1}]{z\notin fn(P_{1})}{(\nu z) (P_{1}|P_{2}) \equiv P_{1}|(\nu z) P_{2}}$
+% 	      \item[$ScpExtPar2$]
+% 		$\inferrule* [left=\bf{ScpExtPar2}]{z\notin fn(P_{1})}{P_{1}|(\nu z) P_{2} \equiv (\nu z) (P_{1}|P_{2})}$ 
+% 	      \item[$ScpExtSum1$]
+% 		$\inferrule* [left=\bf{ScpExtSum1}]{z\notin fn(P_{1})}{(\nu z) (P_{1}+P_{2}) \equiv P_{1}+(\nu z) P_{2}}$
+% 	      \item[$ScpExtSum2$]
+% 		$\inferrule* [left=\bf{ScpExtSum2}]{z\notin fn(P_{1})}{P_{1}+(\nu z) P_{2} \equiv (\nu z) (P_{1}+P_{2})}$ 
+% 	      \item[$Ide$]
+% 		$\inferrule* [left=\bf{Ide}]{A(\tilde{x})\stackrel{def}{=}P}{A(\tilde{w})\equiv P\{\tilde{w}/\tilde{x}\}}$
+% 	      \item[$Trans$]
+% 		$\inferrule* [left=\bf{Trans}]{P \equiv Q \\ Q \equiv R}{P \equiv R}$
+% 	      \item[$Alp$]
+% 		$\inferrule* [left=\bf{Alp}] {
+% 		  P \equiv_{\alpha} Q
+% 		}{
+% 		  P\equiv Q
+% 		}$
+% 	      \item[$Cong1$]
+% 		$\inferrule* [left=\bf{Cong1}]{P \equiv Q}{C[P] \equiv C[Q]}$
+% 	      \item[$Cong2$]
+% 		$\inferrule* [left=\bf{Cong2}]{P_{1} \equiv Q_{1} \\ P_{2} \equiv Q_{2}}{C[P_{1}, P_{2}] \equiv C[Q_{1}, Q_{2}]}$
+% 	    \end{description}
 
 
 % 

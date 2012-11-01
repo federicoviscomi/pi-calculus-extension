@@ -2049,7 +2049,7 @@ where $stop(P)$ is a multi $\pi$ process which cannot make any transition.
 	    n \geq 0
 	  }{
 	    \underline{\overline{x_{1}}y_{1}}.\ldots.\underline{\overline{x_{n}}y_{n}}.\overline{x}y.P 
-	      \xrightarrow{\overline{x_{1}}y_{1} \cdot \ldots \cdot \overline{x_{n}}y_{n} \cdot \overline{x}y} 
+	      \xrightarrow{\widetilde{\overline{x}y} \cdot \overline{x}y} 
 		P
 	  }$
 	&
@@ -2138,6 +2138,15 @@ where $stop(P)$ is a multi $\pi$ process which cannot make any transition.
 	  }{
 	    P+Q \xrightarrow{\sigma} Q^{'}
 	  }$
+      \\\\
+	  $\inferrule* [left=\bf{Alph}]{
+	      P \equiv_{\alpha} Q
+	    \\
+	      Q \xrightarrow{\sigma} P^{'}
+	  }{
+	    P \xrightarrow{\sigma} P^{'}
+	  }$
+	&
       \\\\	\multicolumn{2}{l}{\line(1,0){415}}
     \end{tabular}
     \caption{Multi$\pi$ early semantic without structural congruence part 1}
@@ -2472,6 +2481,60 @@ where $stop(P)$ is a multi $\pi$ process which cannot make any transition.
 % \end{example}
 
 
+\begin{definition}
+  The transition relation $\twoheadrightarrow_{E}$ is the smallest relation induced by the rules in table \ref{multipioutearlywithout} excluding the rule $Alp$, and in table \ref{MultiOutScopeExtrusionRules}.
+\end{definition}
+
+% \begin{lemma}\label{moveAlpDown}
+%   Let $T_{1}$ be a proof tree of $P \xrightarrow{\gamma} Q$ and let $\delta(T)$ be the depth of $T$ and suppose that we modify the rule $Opn$ in the following way:
+%   \begin{center}
+% 	  $\inferrule* [left=\bf{Opn}]{
+% 	      P \xrightarrow{\sigma} P^{'}
+% 	    \\
+% 	      y \in obj(\sigma)
+% 	    \\
+% 	      y \notin sbj(\sigma)
+% 	    \\
+% 	      z \notin fn(P)
+% 	  }{
+% 	    (\nu y)P \xrightarrow{opn(\sigma\{z/y\}, z)} P^{'}\{z/y\}
+% 	  }$    
+%   \end{center}
+%   Then there exist a proof tree $T_{2}$ of $P \stackrel{\gamma}{\twoheadrightarrow} S$ where $S\equiv_{\alpha} Q$ and $\delta(T_{2})\leq \delta(T_{1})$
+% \end{lemma}
+
+In the following section we will try to prove that strong early bisimulation is preserved by some operators. We would like to use the following lemma:
+\begin{example}
+  Let $P \xrightarrow{\gamma} Q$ and suppose that we modify the rule $Opn$ in the following way:
+  \begin{center}
+	  $\inferrule* [left=\bf{Opn}]{
+	      P \xrightarrow{\sigma} P^{'}
+	    \\
+	      y \in obj(\sigma)
+	    \\
+	      y \notin sbj(\sigma)
+	    \\
+	      z \notin fn(P)
+	  }{
+	    (\nu y)P \xrightarrow{opn(\sigma\{z/y\}, z)} P^{'}\{z/y\}
+	  }$    
+  \end{center}
+  Then $P \stackrel{\gamma}{\twoheadrightarrow} S$ and $S\equiv_{\alpha} Q$.
+\end{example}
+but this does not hold because
+\begin{center}
+  \begin{tabular}{ll}
+      $(\nu x) z(a).0 \equiv_{\alpha} (\nu y) z(a).0 \xrightarrow{zx} (\nu y)0$
+    &
+      $(\nu x) z(a).0 \not \xrightarrow{zx} $
+  \end{tabular}
+\end{center}
+
+So we have to use another proof technique:
+\begin{lemma}\label{moveAlpDown}
+  If $P \xrightarrow{\gamma} Q$ then $P\equiv_{\alpha}R \stackrel{\gamma}{\twoheadrightarrow} S\equiv_{\alpha}Q$.
+\end{lemma}
+
 
 \section{Strong bisimilarity and equivalence}
 \subsection{Strong bisimilarity}
@@ -2557,7 +2620,7 @@ In the following section, $\rightarrow$ is the transition relation defined in ta
   \end{proof}
 \end{proposition}
 
-\begin{proposition}
+\begin{proposition}\label{earlyBisimilarityUpToImplyEarlyBisimilarity}
   $P \sim_{E}^{up} Q$ imply $P \sim_{E} Q$.
   \begin{proof}
     Let $\mathbf{S}$ be a bisimulation up to $\sim_{E}$ such that $P \mathbf{S} Q$. It can be proved that $\sim_{E} \mathbf{S} \sim_{E}$ is a bisimulation: let $A \sim_{E} B \mathbf{S} C \sim_{E} D$
@@ -2643,9 +2706,28 @@ In the following section, $\rightarrow$ is the transition relation defined in ta
     The proof goes by cases on operators:
     \begin{description}
       \item[Output prefixing]
-	The relation $\{(\overline{x}y.P, \overline{x}y.Q): P\sim_{E} Q\} \cup \sim_{E}$ is a strong early bisimulation.
+	The relation $\{(\overline{x}y.P, \overline{x}y.Q): P\sim_{E} Q\} \cup \sim_{E}$ is a strong early bisimulation. We can apply the following rules to $\overline{x}y$:
+	\begin{description}
+	  \item[$Out$]
+	    $\overline{x}y.P \xrightarrow{\overline{x}y} P \sim_{E} Q \stackrel{\overline{x}y}{\longleftarrow} \overline{x}y.Q$
+	  \item[$Alp$]:
+	    \begin{center}
+	      $\inferrule* [left=\bf{Alp}]{
+		  \inferrule* {
+		    P \equiv_{\alpha} R
+		  }{
+		    \overline{x}y.P \equiv_{\alpha} \overline{x}y.R
+		  }
+		\\
+		  \overline{x}y.R \xrightarrow{\overline{x}y} R
+	      }{
+		  \overline{x}y.P \xrightarrow{\overline{x}y} R
+	      }$
+	    \end{center}
+	    $\overline{x}y.P \xrightarrow{\overline{x}y} R \equiv_{\alpha} P \sim_{E} Q$ and $\overline{x}y.Q \xrightarrow{\overline{x}y} Q$ imply $\overline{x}y.P$ and $\overline{x}y.Q$ are early bisimilar up to $\alpha$ equivalence. For proposition \ref{earlyBisimilarityUpToImplyEarlyBisimilarity}: $\overline{x}y.P$ and $\overline{x}y.Q$ are early bisimilar.
+	\end{description}
       \item[Strong output prefixing]
-	The relation $\{(\underline{\overline{x}y}.P, \underline{\overline{x}y}.Q): P\sim_{E} Q\} \cup \sim_{E}$ is a strong early bisimulation: there are two cases to consider:
+	The relation $\{(\underline{\overline{x}y}.P, \underline{\overline{x}y}.Q): P\sim_{E} Q\} \cup \sim_{E}$ is a strong early bisimulation: there are three cases to consider:
 	\begin{itemize}
 	  \item 
 	    If there exists a transition $P \xrightarrow{\gamma} P^{'}$ where $\gamma$ is a non empty sequence of outputs then we can apply the rule $SOut$:
@@ -2658,14 +2740,357 @@ In the following section, $\rightarrow$ is the transition relation defined in ta
 	    \end{center}
 	    $P \xrightarrow{\gamma} P^{'}$ and $P \sim_{E} Q$ imply $Q \xrightarrow{\gamma} Q^{'}$ and $P^{'} \sim_{E} Q^{'}$. For rule $SOut$: $\underline{\overline{x}y}.Q \xrightarrow{\overline{x}y \cdot \gamma} Q^{'}$ so the conclusion holds.
 	  \item
+	    There exists a process $R$ $\alpha$ equivalent to $P$ such that $R \xrightarrow{\gamma} R^{'}$ where $\gamma$ is a non empty sequence of outputs. We can apply the following rules:
+	    \begin{center}
+	      $\inferrule* [left=\bf{Alp}]{
+		  \inferrule* {
+		    P \equiv_{\alpha} R
+		  }{
+		    \underline{\overline{x}y}.P \equiv_{\alpha} \underline{\overline{x}y}.R
+		  }
+		\\
+		  \inferrule* [left=\bf{SOut}]{
+		    R \xrightarrow{\gamma} R^{'}
+		  }{
+		    \underline{\overline{x}y}.R \xrightarrow{\overline{x}y \cdot \gamma} R^{'}
+		  }
+	      }{
+		\underline{\overline{x}y}.P \xrightarrow{\overline{x}y \cdot \gamma} R^{'}
+	      }$
+	    \end{center}
+	    For rule $Alp$: $P \xrightarrow{\gamma} R^{'}$ and so we are back to the previous case.
+	  \item
 	    Otherwise there is no transition starting from $\underline{\overline{x}y}.P$ or from $\underline{\overline{x}y}.Q$ so these processes are strongly bisimilar.
 	\end{itemize}
       \item[Tau prefixing]
-	The relation $\{(\tau.P, \tau.Q): P\sim_{E} Q\} \cup \sim_{E}$ is a strong early bisimulation.
+	The relation $\{(\tau.P, \tau.Q): P\sim_{E} Q\} \cup \sim_{E}$ is a strong early bisimulation. We have to consider in turn each rule that can be applied to $\tau.P$:
+	\begin{description}
+	  \item[$Tau$]
+	    $\tau.P \xrightarrow{\tau} P \sim_{E} Q \stackrel{\tau}{\longleftarrow} \tau.Q$
+	  \item[$Alp$]:
+	    \begin{center}
+	      $\inferrule* [left=\bf{Alp}]{
+		  \inferrule* {
+		    P \equiv_{\alpha} R
+		  }{
+		    \tau.P \equiv_{\alpha} \tau.R
+		  }
+		\\
+		  \tau.R \xrightarrow{\tau} R
+	      }{
+		  \tau.P \xrightarrow{\tau} R
+	      }$
+	    \end{center}
+	    $\tau.P \xrightarrow{\tau} R \equiv_{\alpha} P \sim_{E} Q$ and $\tau.Q \xrightarrow{\tau} Q$ imply $\tau.P$ and $\tau.Q$ are early bisimilar up to $\alpha$ equivalence. For proposition \ref{earlyBisimilarityUpToImplyEarlyBisimilarity}: $\tau.P$ and $\tau.Q$ are early bisimilar.	    
+	\end{description}
       \item[Sum]
-	The relation $\{(P+R, Q+R): P\sim_{E} Q\} \cup \sim_{E}$ is a strong early bisimulation.
+	The relation $\{(P+R, Q+R): P\sim_{E} Q\} \cup \sim_{E}$ is a strong early bisimulation. The rules that can be applied to $P+Q$ are:
+	\begin{description}
+	  \item[$Sum$]
+	    $P+R \xrightarrow{\gamma} P^{'} \sim_{E} Q^{'} \stackrel{\gamma}{\longleftarrow} Q+R$
+	  \item[$Alp$]:
+	    \begin{center}
+	      $\inferrule* [left=\bf{Alp}]{
+		  \inferrule* {
+		      P \equiv_{\alpha} P_{1}
+		    \\
+		      R \equiv_{\alpha} R_{1}
+		  }{
+		    P+R \equiv_{\alpha} P_{1}+R_{1}
+		  }
+		\\
+		  \inferrule* [left=\bf{Sum}]{
+		    P_{1} \xrightarrow{\gamma} P_{1}^{'}
+		  }{
+		    P_{1}+R_{1} \xrightarrow{\gamma} P_{1}^{'}
+		  }
+	      }{
+		  P+R \xrightarrow{\gamma} P_{1}^{'}
+	      }$
+	    \end{center}
+	    $P\equiv_{\alpha} P_{1}$ and $P_{1} \xrightarrow{\gamma} P_{1}^{'}$ imply for rule $Alp$: $P \xrightarrow{\gamma} P_{1}^{'}$ which in turn imply $Q \xrightarrow{\gamma} Q_{1}^{'}$ and $P_{1}^{'} \sim_{E} Q_{1}^{'}$ since $P\sim_{E}Q$. Now an application of the rule $Sum$ yields $Q+R \xrightarrow{\gamma} Q_{1}^{'}$.
+% 	    PROVA STILE DI DIMOSTRAZIONE:
+% 	    \begin{center}
+% 	      $\inferrule* {
+% 		  \inferrule* [left=\bf{Alp}]{
+% 		    P \equiv_{\alpha} P_{1}
+% 		  \\
+% 		    P_{1} \xrightarrow{\gamma} P_{1}^{'}
+% 		  }{
+% 		    P \xrightarrow{\gamma} P_{1}^{'}
+% 		  }
+% 		\\
+% 		  P \sim_{E}Q
+% 	      }{
+% 		  Q \xrightarrow{\gamma} Q_{1}^{'}
+% 		\\
+% 		  P_{1}^{'} \sim_{E} Q_{1}^{'}
+% 	      }$
+% 	    \end{center}
+% 	    \begin{center}
+% 	      $\inferrule* {
+% 		  \inferrule* [left=\bf{Sum}]{
+% 		    P \xrightarrow{\gamma} P_{1}^{'} 
+% 		      \sim_{E} Q_{1}^{'}
+% 		      \stackrel{\gamma}{\longleftarrow} Q
+% 		  }{
+% 		    P+R \xrightarrow{\gamma} P_{1}^{'} 
+% 		      \sim_{E} Q_{1}^{'}
+% 		      \stackrel{\gamma}{\longleftarrow} Q+R
+% 		  }
+% 	      }{
+% 		P+R \sim_{E} Q+R
+% 	      }$
+% 	    \end{center}
+	\end{description}
       \item[Restriction]
-	The relation $\{((\nu x)P, (\nu x)Q): P\sim_{E} Q\} \cup \sim_{E}$ is a strong early bisimulation.
+	The relation $Res(\sim_{E})=\{((\nu x)P, (\nu x)Q): P\sim_{E} Q\} \cup \sim_{E}$ is a strong early bisimulation. The last rule applicable to $(\nu x)P$ can be:
+	\begin{description}
+	  \item[$Res$]:
+	    \begin{center}
+	      $\inferrule* [left=\bf{Res}]{
+		  P \xrightarrow{\gamma} P^{'}
+		\\
+		  x \notin n(\gamma)
+	      }{
+		(\nu x)P \xrightarrow{\gamma} (\nu x)P^{'}
+	      }$
+	    \end{center}
+	    $P \xrightarrow{\gamma} P^{'}$ imply $Q \xrightarrow{\gamma} Q^{'}$ and $P^{'} \sim_{E} Q^{'}$ so for rule $Res$: $(\nu x)Q \xrightarrow{\gamma} (\nu x)Q^{'}$ and $((\nu x)P^{'}, (\nu x)Q^{'})\in Res(\sim_{E})$. 
+	  \item[$Opn$]:
+	    \begin{center}
+	      $\inferrule* [left=\bf{Opn}]{
+		  P \xrightarrow{\overline{x}y} P^{'}
+	      }{
+		(\nu y)P \xrightarrow{\overline{x}(y)} P^{'}
+	      }$
+	    \end{center}
+	    $P \xrightarrow{\overline{x}y} P^{'}$ imply $Q \xrightarrow{\overline{x}y} Q^{'}$ and $P^{'} \sim_{E} Q^{'}$. For rule $Opn$: $(\nu y)Q \xrightarrow{\overline{x}(y)} Q^{'}$.
+	  \item[$ResAlp$]
+	    
+	  \item[$OpnAlp$]
+	    
+ 	  \item[$Alp(1)$]
+	    let $(\nu x)P \xrightarrow{\gamma} P^{'}$, having in mind lemma \ref{moveAlpDown} 
+   	    \begin{center}
+   	      $\inferrule* [left=\bf{Res}]{
+   		  P \stackrel{\gamma}{\longtwoheadrightarrow} R^{'}
+ 		\\
+ 		  x \notin n(\gamma)
+   	      }{
+   		  (\nu x)P \stackrel{\gamma}{\longtwoheadrightarrow} (\nu x)R^{'} \equiv_{\alpha} P^{'}
+   	      }$
+   	    \end{center}
+ 	    $P \sim_{E} Q$ and $P \stackrel{\gamma}{\longtwoheadrightarrow} R^{'}$ imply $Q \xrightarrow{\gamma} S$ and $S\sim_{E} R^{'}$. For rule $Res$: $(\nu x)Q \xrightarrow{\gamma} (\nu x)S$. Putting it all together:
+ 	    \begin{center}
+ 	      $(\nu x)P \xrightarrow{\gamma} P^{'} \equiv_{\alpha} (\nu x)R^{'} Res(\sim_{E}) (\nu x)S \stackrel{\gamma}{\leftarrow} (\nu x)Q$
+ 	    \end{center}
+ 	    so $Res(\sim_{E})$ is a bisimulation up to $\alpha$ equivalence hence it is a bisimulation.
+  	  \item[$Alp(2)$]:
+ 	    let $(\nu x)P \xrightarrow{\gamma} P^{'}$, having in mind lemma \ref{moveAlpDown}:
+ 	    \begin{center}
+ 	      $\inferrule* [left=\bf{Opn}]{
+ 		P \stackrel{\widetilde{\overline{a}b}}{\longtwoheadrightarrow} R^{'}
+ 	      }{
+ 		(\nu x)P \stackrel{opn(\widetilde{\overline{a}b}, x)}{\longtwoheadrightarrow} R^{'} \equiv_{\alpha} P^{'}
+ 	      }$ 
+  	    \end{center}
+ 	    $P \stackrel{\widetilde{\overline{a}b}}{\longtwoheadrightarrow} R^{'}$ and $P \sim_{E} Q$ imply $Q \xrightarrow{\widetilde{\overline{a}b}} S$ and $S\sim_{E} R^{'}$. For rule $Opn$: $(\nu x)Q \xrightarrow{\gamma} S$. Putting it all together:
+ 	    \begin{center}
+ 	      $(\nu x)P \xrightarrow{\gamma} P^{'} \equiv_{\alpha} R^{'} \sim_{E} S \stackrel{\gamma}{\twoheadleftarrow} (\nu x)Q$
+ 	    \end{center}
+ 	    so $Res(\sim_{E})$ is a bisimulation up to $\alpha$ equivalence hence it is a bisimulation.
+% 	  \item[$Alp(1)$]:
+% 	    \begin{center}
+% 	      $\inferrule* [left=\bf{Alp}]{
+% 		  \inferrule* {
+% 		      P \equiv_{\alpha} R
+% 		  }{
+% 		    (\nu x)P \equiv_{\alpha} (\nu x)R
+% 		  }
+% 		\\
+% 		  \inferrule* [left=\bf{Opn}]{
+% 		    R \xrightarrow{\overline{y}x} R^{'}
+% 		  }{
+% 		    (\nu x)R \xrightarrow{\overline{y}(x)} R^{'}
+% 		  }
+% 	      }{
+% 		  (\nu x)P \xrightarrow{\overline{y}(x)} R^{'}
+% 	      }$
+% 	    \end{center}
+% 	    which imply:
+% 	    \begin{center}
+% 	      $\inferrule* [left=\bf{Opn}]{
+% 		  \inferrule* {
+% 		      \inferrule* [left=\bf{Alp}]{
+% 			  P \equiv_{\alpha} R
+% 			\\
+% 			  R \xrightarrow{\overline{y}x} R^{'}
+% 		      }{
+% 			P \xrightarrow{\overline{y}x} R^{'}
+% 		      }
+% 		    \\
+% 		      P \sim_{E} Q
+% 		  }{
+% 		    Q \xrightarrow{\overline{y}x} Q^{'}
+% 		      \sim_{E} R^{'}
+% 		      \stackrel{\overline{y}x}{\longleftarrow} P
+% 		  }
+% 		}{
+% 		  (\nu x)Q  \xrightarrow{\overline{y}(x)} Q^{'}
+% 			    \sim_{E} R^{'}
+% 			    \stackrel{\overline{y}(x)}{\longleftarrow} (\nu x)P
+% 		}$
+% 	    \end{center}
+% 	  \item[$Alp(2)$]:
+% 	    \begin{center}
+% 	      $\inferrule* [left=\bf{Alp}]{
+% 		  \inferrule* {
+% 		      P \equiv_{\alpha} R
+% 		  }{
+% 		    (\nu x)P \equiv_{\alpha} (\nu x)R
+% 		  }
+% 		\\
+% 		  \inferrule* [left=\bf{Res}]{
+% 		      R \xrightarrow{\gamma} R^{'}
+% 		    \\
+% 		      x \notin n(\gamma)
+% 		  }{
+% 		    (\nu x)R \xrightarrow{\gamma} (\nu x)R^{'}
+% 		  }
+% 	      }{
+% 		  (\nu x)P \xrightarrow{\gamma} (\nu x)R^{'}
+% 	      }$
+% 	    \end{center}
+% 	    which imply:
+% 	    \begin{center}
+% 	      $\inferrule* [left=\bf{Res}]{
+% 		  \inferrule* {
+% 		      \inferrule* [left=\bf{Alp}]{
+% 			  P \equiv_{\alpha} R
+% 			\\
+% 			  R \xrightarrow{\gamma} R^{'}
+% 		      }{
+% 			P \xrightarrow{\gamma} R^{'}
+% 		      }
+% 		    \\
+% 		      P \sim_{E} Q
+% 		  }{
+% 		    Q \xrightarrow{\gamma} Q^{'}
+% 		      \sim_{E} R^{'}
+% 		      \stackrel{\gamma}{\longleftarrow} P
+% 		  }
+% 		}{
+% 		  (\nu x)Q  \xrightarrow{\gamma} (\nu x)Q^{'}
+% 			    Res(\sim_{E}) (\nu x)R^{'}
+% 			    \stackrel{\gamma}{\longleftarrow} (\nu x)P
+% 		}$
+% 	    \end{center}
+%  	  \item[$Alp(3)$]:
+%  	    for lemma \ref{moveAlpDown}:
+%  	    \begin{center}
+%  	      $\inferrule* [left=\bf{Alp}]{
+%  		  \inferrule* {
+%  		      P \equiv_{\alpha} R\{x/z\}
+%  		    \\
+%  		      z \notin n(R)
+%  		  }{
+%  		    (\nu x)P \equiv_{\alpha} (\nu z)R
+%  		  }
+%  		\\
+%  		  \inferrule* [left=\bf{Opn}]{
+%  		      R \stackrel{\overline{y}z}{\twoheadrightarrow} R^{'}
+%  		  }{
+%  		    (\nu z)R \stackrel{\overline{y}(z)}{\twoheadrightarrow} R^{'}
+%  		  }
+%  	      }{
+%  		  (\nu x)P \xrightarrow{\overline{y}(z)} R^{'}
+%  	      }$
+%  	    \end{center}
+%  	    which imply:
+%  	    \begin{center}
+%  	      $\inferrule* [left=\bf{Opn}] {
+%  		\inferrule* {
+%  		  \inferrule* [left=\bf{Alp}] {
+%  		    P \equiv_{\alpha} R\{x/z\}
+%  		  \\
+%  		      \inferrule* {
+%  			  R \stackrel{\overline{y}z}{\twoheadrightarrow} R^{'}
+%  		      }{
+%  			R\{x/z\} \xrightarrow{\overline{y}x} R^{''}
+%  		      }
+%  		  }{
+%  		    P \xrightarrow{\overline{y}x} R^{''}
+%  		  }
+%  		  \\
+%  		    P \sim_{E} Q
+%  		}{
+%  		  Q  \xrightarrow{\overline{y}x} Q^{'}
+%  			    \sim_{E} R^{''}
+%  			    \stackrel{\overline{y}x}{\longleftarrow} P
+%  		}
+%  		}{
+%  		  (\nu x)Q  \xrightarrow{\overline{y}(x)} Q^{'}
+%  			    \sim_{E} R^{''}
+%  			    \stackrel{\overline{y}(x)}{\longleftarrow} (\nu x)P
+%  		}$
+%  	    \end{center}
+% 	  \item[$Alp(4)$]:
+% 	    for lemma \ref{moveAlpDown}:
+% 	    \begin{center}
+% 	      $\inferrule* [left=\bf{Alp}]{
+% 		  \inferrule* {
+% 		      P \equiv_{\alpha} R\{x/z\}
+% 		    \\
+% 		      z \notin n(R)
+% 		  }{
+% 		    (\nu x)P \equiv_{\alpha} (\nu z)R
+% 		  }
+% 		\\
+% 		  \inferrule* [left=\bf{Res}]{
+% 		      R \stackrel{\gamma}{\twoheadrightarrow} R^{'}
+% 		    \\
+% 		      z \notin n(\gamma)
+% 		  }{
+% 		    (\nu z)R \stackrel{\gamma}{\twoheadrightarrow} (\nu z)R^{'}
+% 		  }
+% 	      }{
+% 		  (\nu x)P \xrightarrow{\gamma} (\nu z)R^{'}
+% 	      }$
+% 	    \end{center}
+% 	    which imply:
+% 	    \begin{center}
+% 	      $\inferrule* [left=\bf{Res}] {
+% 		\inferrule* {
+% 		  \inferrule* [left=\bf{Alp}] {
+% 		    P \equiv_{\alpha} R\{x/z\}
+% 		  \\
+% 		      \inferrule* {
+% 			  R \stackrel{\gamma}{\twoheadrightarrow} R^{'}
+% 			\\
+% 			  z\notin n(R)
+% 		      }{
+% 			R\{x/z\} \xrightarrow{\gamma\{x/z\}} R^{''}
+% 		      }
+% 		  }{
+% 		    P \xrightarrow{\gamma\{x/z\}} R^{''}
+% 		  }
+% 		  \\
+% 		    P \sim_{E} Q
+% 		}{
+% 		  Q  \xrightarrow{\gamma\{x/z\}} Q^{'}
+% 			    \sim_{E} R^{''}
+% 			    \stackrel{\gamma\{x/z\}}{\longleftarrow} P
+% 		}
+% 		\\
+% 		  x\notin n(\gamma\{x/z\})
+% 		}{
+% 		  (\nu x)Q  \xrightarrow{\gamma\{x/z\}} (\nu x)Q^{'}
+% 			    Res(\sim_{E}) (\nu x)R^{''}
+% 			    \stackrel{\gamma\{x/z\}}{\longleftarrow} (\nu x)P
+% 		}$
+% 	    \end{center}
+	\end{description}
       \item[Parallel composition]
 	The relation $\{(P|R, Q|R): P\sim_{E} Q\} \cup \sim_{E}$ is a strong early bisimulation. The last rule applicable to $P|R$ can be:
 	\begin{description}
@@ -2718,7 +3143,7 @@ In the following section, $\rightarrow$ is the transition relation defined in ta
 \end{example}
 
 
-\subsection{Open bisimilarity}
+\subsection{Strong D equivalence}
 
 \begin{definition}\label{distinction}
   A \emph{distinction} is a finite symmetric and irreflexive binary relation on names. A substitution $\sigma$ \emph{respects} a pair $(a,b)$ if 
@@ -2776,11 +3201,11 @@ According to \cite{milnerparrowwalker} the following holds:
 
 
 \begin{definition}\label{strongDequivalence}
-  $P$ and $Q$ are \emph{strongly D equivalent}, written $P \sim^{D} Q$, if for all substitution $\sigma$ respecting $D$: $P\sigma \sim_{E} Q\sigma$.
+  $P$ and $Q$ are \emph{strongly D equivalent}, written $P \sim^{D} Q$, if for all substitution $\sigma$ respecting $D$: $P\sigma \sim_{E} Q\sigma$. In this definition we assume that the application of $\sigma$ to $P$ and $Q$ does not change any bound name.
 \end{definition}
+
  
- 
-\begin{lemma}\label{openBisimulationEquivalence}
+\begin{lemma}\label{strongDEquivalenceIsAnEquivalence}
   For any distinction $D$ $\sim^{D}$ is an equivalence relation
   \begin{proof}
     $\sim^{D}$ is an equivalence relation because $\sim_{E}$ is an equivalence relation.
@@ -2795,25 +3220,25 @@ According to \cite{milnerparrowwalker} the following holds:
   \end{proof}
 \end{lemma}
 
-\begin{lemma}\label{openBisimulationPreservedByRestriction}
-  If $P \sim^{D} Q$ and for all $v \notin n(P)\cup n(Q)$ such that $(v,y)\in D$ it holds that $P\{v/y\} \sim^{D} Q\{v/y\}$ then $(\nu y).P \sim^{D} (\nu y).Q$
-  \begin{proof}
-    Let $\sigma$ be a substitution that respects $D$. If $y \sigma^{-1} = \{y\}$ then 
-    \begin{center}
-      \begin{tabular}{ll}
-	  $(x(y).P)\sigma = x\sigma(y).P\sigma \xrightarrow{x\sigma z} P\sigma\{z/y\}$
-	&
-	  $(x(y).Q)\sigma = x\sigma(y).Q\sigma \xrightarrow{x\sigma z} Q\sigma\{z/y\}$
-      \end{tabular}
-    \end{center}
+% \begin{lemma}\label{strongDEquivalencePreservedByRestriction}
+%   If $P \sim^{D} Q$ and for all $v \notin n(P)\cup n(Q)$ such that $(v,y)\in D$ it holds that $P\{v/y\} \sim^{D} Q\{v/y\}$ then $(\nu y).P \sim^{D} (\nu y).Q$
+%   \begin{proof}
+%     Let $\sigma$ be a substitution that respects $D$. If $y \sigma^{-1} = \{y\}$ then 
+%     \begin{center}
+%       \begin{tabular}{ll}
+% 	  $(x(y).P)\sigma = x\sigma(y).P\sigma \xrightarrow{x\sigma z} P\sigma\{z/y\}$
+% 	&
+% 	  $(x(y).Q)\sigma = x\sigma(y).Q\sigma \xrightarrow{x\sigma z} Q\sigma\{z/y\}$
+%       \end{tabular}
+%     \end{center}
+% 
+%     If $y \notin (y \sigma^{-1})$ then $(x(y).P)\sigma = x\sigma (w).P\{w/y\}\sigma \xrightarrow{x\sigma z} P\{w/y\}\sigma\{z/w\}$ where $w\notin n(x(y).P)$.
+%       ??
+%   \end{proof}
+% \end{lemma}
 
-    If $y \notin (y \sigma^{-1})$ then $(x(y).P)\sigma = x\sigma (w).P\{w/y\}\sigma \xrightarrow{x\sigma z} P\{w/y\}\sigma\{z/w\}$ where $w\notin n(x(y).P)$.
-      ??
-  \end{proof}
-\end{lemma}
 
-
-\begin{lemma}\label{openBisimulationPreservedByInput}
+\begin{lemma}\label{strongDEquivalencePreservedByInput}
   If $P \sim^{D} Q$ and for all $v\in fn(P,Q)$ such that $(v,y)\in D$ it holds that $P\{v/y\} \sim^{D} Q\{v/y\}$ then $x(y).P \sim^{D} x(y).Q$
   \begin{proof}
     Let $\sigma$ be a substitution that respects $D$. If $y \sigma^{-1} = \{y\}$ then 
@@ -2830,7 +3255,7 @@ According to \cite{milnerparrowwalker} the following holds:
 \end{lemma}
 
 
-\begin{lemma}\label{openBisimulationPreservedByAllExceptInput}
+\begin{lemma}\label{stringDEquivalencePreservedByAllExceptInput}
       If $P \sim^{D} Q$ then 
       \begin{itemize}
 	\item 
@@ -2844,7 +3269,7 @@ According to \cite{milnerparrowwalker} the following holds:
 	\item
 	  $P|R \sim^{D} Q|R$
 	\item
-	  $(\nu x)P \sim^{D-\{x\}} (\nu x)Q$
+	  $(\nu x)P \sim^{D} (\nu x)Q$
       \end{itemize}
   \begin{proof}
     $\sim^{D}$ is preserved by every operator. Let $P \sim^{D} Q$ and let $\sigma$ be a substitution respecting $D$ so $P\sigma \sim_{E} Q\sigma$:
@@ -2943,7 +3368,7 @@ According to \cite{milnerparrowwalker} the following holds:
 	  \end{tabular}
 	\end{center}
       \item[Restriction]
-	There are two cases: if $((\nu x) P)\sigma=(\nu x)(P\sigma)$:
+	Note that in definition \ref{strongDequivalence} we assume that the substitution does not change any bound name so $((\nu x) P)\sigma=(\nu x)(P\sigma)$:
 	\begin{center}
 	  \begin{tabular}{ll}
 	      $P \sim^{D} Q$
@@ -2966,34 +3391,34 @@ According to \cite{milnerparrowwalker} the following holds:
 	    &
 	  \end{tabular}
 	\end{center}		
-	otherwise $((\nu x) P)\sigma=(\nu c)(P\{c/x\}\sigma)$ where $c\notin n(P,Q)$ and $c \sigma = c$:
-	\begin{center}
-	  \begin{tabular}{ll}
-	  \\
-	      $\sigma$ respects $D-\{x\}$
-	    &
-	      lemma \ref{distinctionSubstitution2}
-	  \\
-	      $\Rightarrow \{c/x\}\sigma$ respects $D$
-	    &
-	      definition \ref{strongDequivalence} and $P \sim^{D} Q$
-	  \\
-	      $\Rightarrow$ $P\{c/x\}\sigma \sim_{E} Q\{c/x\}\sigma$
-	    &
-	      lemma \ref{earlyBisimulationProprerties}
-	  \\
-	      $\Rightarrow$ $(\nu c)(P\{c/x\}\sigma) \sim_{E} (\nu c)(Q\{c/x\}\sigma)$
-	    &
-	      definition of substitution 
-	  \\
-	      $\Rightarrow$ $((\nu x)P)\sigma \sim_{E} ((\nu x)Q)\sigma$
-	    &
-	      definition \ref{strongDequivalence}
-	  \\
-	      $\Rightarrow$ $(\nu x)P \sim^{D-\{x\}} (\nu x)Q$
-	    &
-	  \end{tabular}
-	\end{center}		
+% 	otherwise $((\nu x) P)\sigma=(\nu c)(P\{c/x\}\sigma)$ where $c\notin n(P,Q)$ and $c \sigma = c$:
+% 	\begin{center}
+% 	  \begin{tabular}{ll}
+% 	  \\
+% 	      $\sigma$ respects $D-\{x\}$
+% 	    &
+% 	      lemma \ref{distinctionSubstitution2}
+% 	  \\
+% 	      $\Rightarrow \{c/x\}\sigma$ respects $D$
+% 	    &
+% 	      definition \ref{strongDequivalence} and $P \sim^{D} Q$
+% 	  \\
+% 	      $\Rightarrow$ $P\{c/x\}\sigma \sim_{E} Q\{c/x\}\sigma$
+% 	    &
+% 	      lemma \ref{earlyBisimulationProprerties}
+% 	  \\
+% 	      $\Rightarrow$ $(\nu c)(P\{c/x\}\sigma) \sim_{E} (\nu c)(Q\{c/x\}\sigma)$
+% 	    &
+% 	      definition of substitution 
+% 	  \\
+% 	      $\Rightarrow$ $((\nu x)P)\sigma \sim_{E} ((\nu x)Q)\sigma$
+% 	    &
+% 	      definition \ref{strongDequivalence}
+% 	  \\
+% 	      $\Rightarrow$ $(\nu x)P \sim^{D-\{x\}} (\nu x)Q$
+% 	    &
+% 	  \end{tabular}
+% 	\end{center}		
     \end{description}
   \end{proof}
 \end{lemma}
@@ -3003,8 +3428,14 @@ According to \cite{milnerparrowwalker} the following holds:
 \begin{theorem}
   $\sim^{\emptyset}$ is a congruence.
   \begin{proof}
-    Lemma \ref{openBisimulationEquivalence} and put $D=\emptyset$ in lemma \ref{openBisimulationPreservedByAllExceptInput} and in lemma \ref{openBisimulationPreservedByInput}
+    Lemma \ref{strongDEquivalenceIsAnEquivalence} and put $D=\emptyset$ in lemma \ref{stringDEquivalencePreservedByAllExceptInput} and in lemma \ref{strongDEquivalencePreservedByInput}
   \end{proof}
 \end{theorem}
 
 
+\subsection{Open bisimulation}
+
+The following is an extension of the definition of strong open bisimulation found in \cite{parrow}:
+\begin{definition}
+  A \emph{strong open bisimulation} is a symmetric binary relation $\mathbf{R}$ on multi $\pi$ processes such that for all substitution $\sigma$: 
+\end{definition}
