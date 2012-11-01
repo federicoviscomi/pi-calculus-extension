@@ -1847,76 +1847,90 @@ In this subsection we introduce the early operational semantic for $\pi$ calculu
   The \emph{early transition relation with $\alpha$ conversion} $\rightarrow\subseteq \mathbb{P}\times \mathbb{A} \times \mathbb{P}$ is the smallest relation induced by the rules in table \ref{transitionrelationearlywithalphaconversion}.
 
   \begin{table}
+    \begin{tabular}{lll}  
+      	\multicolumn{3}{l}{\line(1,0){415}}\\\\
+	  $\inferrule* [left=\bf{Out}]{
+	  }{
+	    \overline{x}y.P \xrightarrow{\overline{x}y} P
+	  }$
+	&
+	  $\inferrule* [left=\bf{EInp}]{
+	  }{
+	    x(y).P \xrightarrow{xz} P\{z/y\}
+	  }$
+	&
+	  $\inferrule* [left=\bf{Tau}]{
+	  }{
+	    \tau.P \xrightarrow{\tau} P
+	  }$
+      \\
+    \end{tabular}
+    \\
     \begin{tabular}{ll}  
-      	\multicolumn{2}{l}{\line(1,0){415}}\\
-	  \bf{Out}
-	  \begin{tabular}{c}
-	      $\;\;$
-	    \\\hline
-	      $\overline{x}y.P \xrightarrow{\overline{x}y} P$
-	  \end{tabular}
+      \\
+	  $\inferrule* [left=\bf{ParL}]{
+	      P \xrightarrow{\alpha} P^{'}
+	    \\
+	      bn(\alpha)\cap fn(Q)=\emptyset
+	  }{
+	    P|Q \xrightarrow{\alpha} P^{'}|Q
+	  }$
 	&
-	  \bf{EInp}
-	  \begin{tabular}{c}
-	    \\\hline
-	      $x(y).P \xrightarrow{xz} P\{z/y\}$
-	  \end{tabular}
+	  $\inferrule* [left=\bf{ParR}]{
+	      Q \xrightarrow{\alpha} Q^{'}
+	    \\
+	      bn(\alpha)\cap fn(P)=\emptyset
+	  }{
+	    P|Q \xrightarrow{\alpha} P|Q^{'}
+	  }$
       \\\\
-	  \bf{ParL}
-	  \begin{tabular}{c}
-	      $P \xrightarrow{\alpha} P^{'}\;\; bn(\alpha)\cap fn(Q)=\emptyset$
-	    \\\hline
-	      $P|Q \xrightarrow{\alpha} P^{'}|Q$
-	  \end{tabular}
+	  $\inferrule* [left=\bf{SumL}]{
+	      P \xrightarrow{\alpha} P^{'}
+	    \\
+	      bn(\alpha)\cap fn(Q)=\emptyset
+	  }{
+	    P+Q \xrightarrow{\alpha} P^{'}
+	  }$
 	&
-	  \bf{ParR}
-	  \begin{tabular}{c}
-	      $Q \xrightarrow{\alpha} Q^{'}\;\; bn(\alpha)\cap fn(Q)=\emptyset$
-	    \\\hline
-	      $P|Q \xrightarrow{\alpha} P|Q^{'}$
-	  \end{tabular}
+	  $\inferrule* [left=\bf{SumR}]{
+	      Q \xrightarrow{\alpha} Q^{'}
+	    \\
+	      bn(\alpha)\cap fn(P)=\emptyset
+	  }{
+	    P+Q \xrightarrow{\alpha} Q^{'}
+	  }$
       \\\\
-	  \bf{SumL}
-	  \begin{tabular}{c}
-	      $P \xrightarrow{\alpha} P^{'}$
-	    \\\hline
-	      $P+Q \xrightarrow{\alpha} P^{'}$
-	  \end{tabular}
+	  $\inferrule* [left=\bf{Res}]{
+	      P \xrightarrow{\alpha} P^{'}
+	    \\
+	      z\notin n(\alpha)
+	  }{
+	    (\nu z) P \xrightarrow{\alpha} (\nu z) P^{'}
+	  }$
 	&
-	  \bf{SumR}
-	  \begin{tabular}{c}
-	      $Q \xrightarrow{\alpha} Q^{'}$
-	    \\\hline
-	      $P+Q \xrightarrow{\alpha} Q^{'}$
-	    \end{tabular}
+	  $\inferrule* [left=\bf{Alp}]{
+	      P\equiv_{\alpha}Q
+	    \\
+	      P\xrightarrow{\alpha}P^{'}
+	  }{
+	    Q\xrightarrow{\alpha}P^{'}
+	  }$
       \\\\
-	  \bf{Res}
-	  \begin{tabular}{c}
-	      $P \xrightarrow{\alpha} P^{'}\;\; z\notin n(\alpha)$
-	    \\\hline
-	      $(\nu z) P \xrightarrow{\alpha} (\nu z) P^{'}$
-	  \end{tabular}
+	  $\inferrule* [left=\bf{EComL}]{
+	      P \xrightarrow{xy} P^{'}
+	    \\
+	      Q\xrightarrow{\overline{x}y} Q^{'}
+	  }{
+	    P|Q \xrightarrow{\tau} P^{'}|Q^{'}
+	  }$
 	&
-	  \bf{Alp}
-	  \begin{tabular}{c}
-	      $P\equiv_{\alpha}Q\; P\xrightarrow{\alpha}P^{'}$
-	    \\\hline
-	      $Q\xrightarrow{\alpha}P^{'}$
-	  \end{tabular}
-      \\\\
-	  \bf{EComL}
-	  \begin{tabular}{c}
-	      $P \xrightarrow{xy} P^{'}\;\; Q\xrightarrow{\overline{x}y} Q^{'}$
-	    \\\hline
-	      $P|Q \xrightarrow{\tau} P^{'}|Q^{'}$
-	  \end{tabular}
-	&
-	  \bf{EComR}
-	  \begin{tabular}{c}
-	      $P \xrightarrow{\overline{x}y} P^{'}\;\; Q\xrightarrow{xy} Q^{'}$
-	    \\\hline
-	      $P|Q \xrightarrow{\tau} P^{'}|Q^{'}$
-	  \end{tabular}
+	  $\inferrule* [left=\bf{EComR}]{
+	      P \xrightarrow{\overline{x}y} P^{'}
+	    \\
+	      Q\xrightarrow{xy} Q^{'}
+	  }{
+	    P|Q \xrightarrow{\tau} P^{'}|Q^{'}
+	  }$
       \\\\
 	    \bf{ClsL}
 	    \begin{tabular}{c}
@@ -1936,33 +1950,63 @@ In this subsection we introduce the early operational semantic for $\pi$ calculu
 		$P|Q \xrightarrow{\tau} (\nu z)(P^{'}|Q^{'})$
 	    \end{tabular}
       \\\\
-	  \bf{Cns}
-	  \begin{tabular}{c}
-	      $A(\tilde{x}|\tilde{y}) \stackrel{def}{=} P\; P\{\tilde{w}/\tilde{x}\} \xrightarrow{\alpha} P^{'}$
-	    \\\hline
-	      $A(\tilde{x}|\tilde{y})\{\tilde{w}/\tilde{x}\} \xrightarrow{\alpha} P^{'}$
-	  \end{tabular}
+	  $\inferrule* [left=\bf{Ide}]{
+	      A(\tilde{x}) \stackrel{def}{=} P
+	    \\
+	      P\{\tilde{w}/\tilde{x}\} \xrightarrow{\alpha} P^{'}
+	  }{
+	    A \xrightarrow{\alpha} P^{'}
+	  }$
 	&
-	  \bf{Opn}
-	  \begin{tabular}{c}
-	      $P \;\xrightarrow{\overline{x}z} P^{'}\;\; z\neq x$
-	    \\\hline
-	      $(\nu z) P \;\xrightarrow{\overline{x}(z)} P^{'}$
-	  \end{tabular}
-      \\\\
-	  \bf{Tau}
-	  \begin{tabular}{c}
-	      $\;\;$
-	    \\\hline
-	      $\tau.P \xrightarrow{\tau} P$
-	  \end{tabular}
-	&
+	  $\inferrule* [left=\bf{Opn}]{
+	      P \xrightarrow{\overline{x}z} P^{'}
+	    \\
+	      z\neq x
+	  }{
+	    (\nu z) P \xrightarrow{\overline{x}(z)} P^{'}
+	  }$
       \\	\multicolumn{2}{l}{\line(1,0){415}}
     \end{tabular}
-    \caption{Early transition relation with $\alpha$ conversion}
+    \caption{Early transition relation with $\alpha$ conversion but without structural congruence}
     \label{transitionrelationearlywithalphaconversion}
   \end{table}
 \end{definition}
+
+The following example shows why the condition $bn(\alpha)\cap fn(Q)=\emptyset$ in the rule $Sum$ is desirable:
+\begin{example}
+  without the side condition we are able to prove:
+  \begin{center}
+    $\inferrule* [left=\bf{ClsL}]{
+	\inferrule* [left=\bf{Sum}]{
+	  \inferrule* [left=\bf{Opn}]{
+	    (\nu y)\overline{x}y.0
+	      \xrightarrow{\overline{x}y}
+		(\nu y)0
+	  }{
+	    (\nu y)\overline{x}y.0
+	      \xrightarrow{\overline{x}(y)}
+		(\nu y)0
+	  }
+	}{
+	  ((\nu y)\overline{x}y.0) + \overline{y}x.0
+	    \xrightarrow{\overline{x}(y)}
+	      (\nu y)0
+	}
+      \\
+	\inferrule* [left=\bf{EInp}]{
+	}{
+	  x(z).0
+	    \xrightarrow{xy}
+	      0
+	}
+    }{
+      (((\nu y)\overline{x}y.0) + \overline{y}x.0)|x(z).0
+	\xrightarrow{\tau}
+	  (\nu y)0
+    }$
+  \end{center}
+  but $(((\nu y)\overline{x}y.0) + \overline{y}x.0)|x(z).0 \not \equiv (\nu y)(\overline{x}y.0 + \overline{y}x.0|x(z).0)$
+\end{example}
 
 
 
@@ -1972,68 +2016,75 @@ In this subsection we introduce the early operational semantic for $\pi$ calculu
   The \emph{early transition relation with structural congruence} $\rightarrow\subseteq \mathbb{P}\times \mathbb{A} \times \mathbb{P}$ is the smallest relation induced by the rules in table \ref{earlysemanticwithstructuralcongruence}.
 
   \begin{table}
-    \begin{tabular}{lll}
-      	\multicolumn{3}{l}{\line(1,0){415}}\\
-	  \bf{Out}
-	  \begin{tabular}{c}
-	    \hline
-	    $\overline{x}y.P \xrightarrow{\overline{x}y} P$
-	  \end{tabular}
+    \begin{tabular}{lll}  
+      	\multicolumn{3}{l}{\line(1,0){415}}\\\\
+	  $\inferrule* [left=\bf{Out}]{
+	  }{
+	    \overline{x}y.P \xrightarrow{\overline{x}y} P
+	  }$
+	&
+	  $\inferrule* [left=\bf{EInp}]{
+	  }{
+	    x(y).P \xrightarrow{xz} P\{z/y\}
+	  }$
+	&
+	  $\inferrule* [left=\bf{Tau}]{
+	  }{
+	    \tau.P \xrightarrow{\tau} P
+	  }$
+      \\
+    \end{tabular}
+    \\
+    \begin{tabular}{ll}  
+      \\
+	  $\inferrule* [left=\bf{Par}]{
+	      P \xrightarrow{\alpha} P^{'}
+	    \\
+	      bn(\alpha)\cap fn(Q)=\emptyset
+	  }{
+	    P|Q \xrightarrow{\alpha} P^{'}|Q
+	  }$
 	  &
-	  \bf{EInp}
-	  \begin{tabular}{c}
-	    \hline
-	    $x(z).P \xrightarrow{xy} P\{y/z\}$
-	  \end{tabular}
-	  &
-	  \bf{Par}
-	  \begin{tabular}{c}
-	    $P \xrightarrow{\alpha} P^{'}\;\; bn(\alpha)\cap fn(Q)=\emptyset$\\
-	    \hline
-	    $P|Q \xrightarrow{\alpha} P^{'}|Q$
-	  \end{tabular}
+	  $\inferrule* [left=\bf{Sum}]{
+	      P \xrightarrow{\alpha} P^{'}
+	    \\
+	      bn(\alpha)\cap fn(Q)=\emptyset
+	  }{
+	    P+Q \xrightarrow{\alpha} P^{'}
+	  }$
       \\\\
-	  \bf{Sum}
-	  \begin{tabular}{c}
-	    $P \xrightarrow{\alpha} P^{'}$\\
-	    \hline
-	    $P+Q \xrightarrow{\alpha} P^{'}$
-	  \end{tabular}
+	  $\inferrule* [left=\bf{ECom}]{
+	      P \xrightarrow{xy} P^{'}
+	    \\
+	      Q\xrightarrow{\overline{x}y} Q^{'}
+	  }{
+	    P|Q \xrightarrow{\tau} P^{'}|Q^{'}
+	  }$
 	  &
-	    \bf{ECom}
-	    \begin{tabular}{c}
-	      $P \xrightarrow{xy} P^{'}\;\; Q\xrightarrow{\overline{x}y} Q^{'}$\\
-	      \hline
-	      $P|Q \xrightarrow{\tau} P^{'}|Q^{'}$
-	    \end{tabular}
-	  &
-	  \bf{Res}
-	  \begin{tabular}{c}
-	    $P \xrightarrow{\alpha} P^{'}\;\; z\notin n(\alpha)$\\
-	    \hline
-	    $(\nu z) P \xrightarrow{\alpha} (\nu z) P^{'}$
-	  \end{tabular}
+	  $\inferrule* [left=\bf{Cong}]{
+	      P\equiv P^{'}
+	    \\
+	      P^{'}\xrightarrow{\alpha} Q
+	  }{
+	    P \xrightarrow{\alpha} Q
+	  }$
       \\\\
-	  \bf{Tau}
-	  \begin{tabular}{c}
-	    \hline
-	    $\tau.P \xrightarrow{\tau} P$
-	  \end{tabular}
+	  $\inferrule* [left=\bf{Opn}]{
+	      P \xrightarrow{\overline{x}z} P^{'}
+	    \\
+	      z\neq x
+	  }{
+	    (\nu z) P \xrightarrow{\overline{x}(z)} P^{'}
+	  }$
 	  &
-	  \bf{Opn}
-	  \begin{tabular}{c}
-	    $P \xrightarrow{\overline{x}z} P^{'}\;\; z\neq x$\\
-	    \hline
-	    $(\nu z) P \xrightarrow{\overline{x}(z)} P^{'}$
-	  \end{tabular}
-	  &
-	  \bf{Str}
-	  \begin{tabular}{c}
-	    $P\equiv P^{'}\;\; P\xrightarrow{\alpha} Q\;\; Q\equiv Q^{'}$\\
-	    \hline
-	    $P^{'} \xrightarrow{\alpha} Q^{'}$
-	  \end{tabular}
-      \\	\multicolumn{3}{l}{\line(1,0){415}}
+	  $\inferrule* [left=\bf{Res}]{
+	      P \xrightarrow{\alpha} P^{'}
+	    \\
+	      z\notin n(\alpha)
+	  }{
+	    (\nu z) P \xrightarrow{\alpha} (\nu z) P^{'}
+	  }$
+      \\	\multicolumn{2}{l}{\line(1,0){415}}
     \end{tabular}
     \caption{Early semantic with structural congruence}
     \label{earlysemanticwithstructuralcongruence}
@@ -2806,11 +2857,226 @@ which is not want we want. So we prove a weaker version
 \end{theorem}
 
 
-\begin{theorem}
-  $P\xrightarrow{\alpha}_{2}P^{'}\; \Leftrightarrow\; \exists P^{''}: P^{'}\equiv P^{''}\; and\; P\xrightarrow{\alpha}_{3}P^{''}$
+\begin{lemma}\label{OpenClose}
+  If $P \xrightarrow{\overline{x}(y)}_{2} P^{'}$ then there is a process $R$ such that $P \equiv R \xrightarrow{\overline{x}(y)}_{2} P^{'}$ and the last rule in this derivation is the instance of rule $Opn$ used to open the scope of $y$.
   \begin{proof}
+    The derivation of $P \xrightarrow{\overline{x}(y)}_{2} P^{'}$ must contain an instance of $Opn$. The proof consists in showing that we can move this instance of $Opn$ downward in the inference tree of $P \xrightarrow{\overline{x}(y)}_{2} P^{'}$. The proof goes by induction on the depth of the derivation of $P \xrightarrow{\overline{x}(y)}_{2} P^{'}$ and then by cases on the last rule applied:
     \begin{description}
-      \item[$\Rightarrow$] 
+      \item[$Opn$] if the derivation ends with $Opn$ then the conclusion holds.
+% 	\begin{center}
+% 	  $\inferrule* [left=\bf{ClsL}]{
+% 	      \inferrule* [left=\bf{Opn}]{
+% 		  P_{1} \xrightarrow{\overline{x}y}_{2} P_{1}^{'}
+% 	      \\
+% 		x\neq y
+% 	    }{
+% 	      (\nu y)P_{1} \xrightarrow{\overline{x}(y)}_{2} P_{1}^{'}
+% 	    }
+% 	    \\
+% 	      Q \xrightarrow{xy}_{2} Q^{'}
+% 	    \\
+% 	      y\notin fn(Q)
+% 	  }{
+% 	    ((\nu y)P_{1})|Q \xrightarrow{\tau}_{2} (\nu y)(P_{1}^{'}|Q^{'})
+% 	  }$
+% 	\end{center}
+% 	became:
+% 	\begin{center}
+% 	  $\inferrule* [left=\bf{Res}]{
+% 	      \inferrule* [left=\bf{EComL}]{
+% 		P_{1} \xrightarrow{\overline{x}y}_{2} P_{1}^{'}
+% 	      \\
+% 		Q \xrightarrow{xy}_{2} Q^{'}
+% 	    }{
+% 	      P_{1}|Q \xrightarrow{\tau}_{2} P_{1}|Q
+% 	    }
+% 	  }{
+% 	    (\nu y)(P_{1}|Q) \xrightarrow{\tau}_{2} (\nu y)(P_{1}^{'}|Q^{'})
+% 	  }$
+% 	\end{center}
+% 	Since $y\notin fn(Q)$ it holds that $(\nu y)(\overline{x}y.P_{1})|Q\equiv (\nu y)(\overline{x}y.P_{1}|Q)$.
+      \item[$SumL$]:
+	\begin{center}
+	  $\inferrule* [left=\bf{SumL}]{
+	      \inferrule* [left=\bf{Opn}]{
+		P_{1} \xrightarrow{\overline{x}y}_{2} P^{'}
+	      \\
+		x\neq y
+	      }{
+		(\nu y)P_{1} \xrightarrow{\overline{x}(y)}_{2} P^{'}
+	      }
+	    \\
+	      bn(\overline{x}(y)) \cap fn(R) = \emptyset
+	  }{
+	    P=(\nu y)P_{1}+R \xrightarrow{\overline{x}(y)}_{2} P^{'}
+	  }$
+	\end{center}
+	became:
+	\begin{center}
+	  $\inferrule* [left=\bf{Opn}]{
+	      \inferrule* [left=\bf{SumL}]{
+		  P_{1} \xrightarrow{\overline{x}y}_{2} P^{'}
+	      }{
+		P_{1}+R \xrightarrow{\overline{x}y}_{2} P^{'}
+	      }
+	    \\
+	      x\neq y
+	  }{
+	    (\nu y)(P_{1}+R) \xrightarrow{\overline{x}(y)}_{2} P^{'}
+	  }$
+	\end{center}
+	$bn(\overline{x}(y)) \cap fn(R) = \emptyset$ imply $y\notin fn(R)$ and so $(\nu y)(P_{1}+R) \equiv (\nu y)P_{1}+R$.
+      \item[$SumR$] 
+	symmetric to the previous case.
+      \item[$ParL$]:
+	\begin{center}
+	  $\inferrule* [left=\bf{ParL}]{
+	      \inferrule* [left=\bf{Opn}]{
+		P_{1} \xrightarrow{\overline{x}y}_{2} P^{'}
+	      \\
+		x\neq y
+	      }{
+		(\nu y)P_{1} \xrightarrow{\overline{x}(y)}_{2} P^{'}
+	      }
+	    \\
+	      bn(\overline{x}(y)) \cap fn(R) = \emptyset
+	  }{
+	    P=(\nu y)P_{1}|R \xrightarrow{\overline{x}(y)}_{2} P^{'}|R
+	  }$
+	\end{center}
+	became:
+	\begin{center}
+	  $\inferrule* [left=\bf{Opn}]{
+	      \inferrule* [left=\bf{ParL}]{
+		  P_{1} \xrightarrow{\overline{x}y}_{2} P^{'}
+	      }{
+		P_{1}|R \xrightarrow{\overline{x}y}_{2} P^{'}|R
+	      }
+	    \\
+	      x\neq y
+	  }{
+	    (\nu y)(P_{1}|R) \xrightarrow{\overline{x}(y)}_{2} P^{'}|R
+	  }$
+	\end{center}
+	$bn(\overline{x}(y)) \cap fn(R) = \emptyset$ imply $y\notin fn(R)$ and so $(\nu y)(P_{1}|R) \equiv (\nu y)P_{1}|R$.
+      \item[$ParR$]
+	symmetric to the previous case.
+      \item[$Res$]:
+	\begin{center}
+	  $\inferrule* [left=\bf{Res}]{
+	      \inferrule* [left=\bf{Opn}]{
+		P_{1} \xrightarrow{\overline{x}y}_{2} P^{'}
+	      \\
+		x\neq y
+	      }{
+		(\nu y)P_{1} \xrightarrow{\overline{x}(y)}_{2} P^{'}
+	      }
+	    \\
+	      w \notin n(\overline{x}(y))
+	  }{
+	    P=(\nu w)(\nu y)P_{1} \xrightarrow{\overline{x}(y)}_{2} (\nu w)P^{'}
+	  }$
+	\end{center}
+	became:
+	\begin{center}
+	  $\inferrule* [left=\bf{Opn}]{
+	      \inferrule* [left=\bf{Res}]{
+		  P_{1} \xrightarrow{\overline{x}y}_{2} P^{'}
+		\\
+		  w \notin n(\overline{x}y)
+	      }{
+		(\nu w)P_{1} \xrightarrow{\overline{x}y}_{2} (\nu w)P^{'}
+	      }
+	    \\
+	      x\neq y
+	  }{
+	    (\nu y)(\nu w)P_{1} \xrightarrow{\overline{x}(y)}_{2} (\nu w)P^{'}
+	  }$
+	\end{center}
+	$(\nu y)(\nu w)P_{1} \equiv (\nu w)(\nu y)P_{1}$.
+      \item[$Alp(1)$]:
+	\begin{center}
+	  $\inferrule* [left=\bf{Alp}]{
+	      \inferrule* {
+		P_{1} \equiv_{\alpha} R_{1}
+	      }{
+		(\nu y)P_{1} \equiv_{\alpha} (\nu y)R_{1}
+	      }
+	    \\
+	      \inferrule* [left=\bf{Opn}]{
+		R_{1} \xrightarrow{\overline{x}y}_{2} R_{1}^{'}
+	      \\
+		x\neq y
+	      }{
+		(\nu y)R_{1} \xrightarrow{\overline{x}(y)}_{2} R_{1}^{'}
+	      }
+	  }{
+	    P=(\nu y)P_{1} \xrightarrow{\overline{x}(y)}_{2} R_{1}^{'}=P^{'}
+	  }$
+	\end{center}
+	became:
+	\begin{center}
+	  $\inferrule* [left=\bf{Opn}]{
+	      \inferrule* [left=\bf{Alp}]{
+		  P_{1} \equiv_{\alpha} R_{1}
+		\\
+		  R_{1} \xrightarrow{\overline{x}y}_{2} R_{1}^{'}
+	      }{
+		P_{1} \xrightarrow{\overline{x}y}_{2} R_{1}^{'}
+	      }
+	    \\
+	      x\neq y
+	  }{
+	    (\nu y)P_{1} \xrightarrow{\overline{x}(y)}_{2} R_{1}^{'}
+	  }$
+	\end{center}
+      \item[$Alp(2)$]:
+	\begin{center}
+	  $\inferrule* [left=\bf{Alp}]{
+	      \inferrule* {
+		  P_{1}\{w/y\} \equiv_{\alpha} R_{1}
+		\\
+		  w \notin n(P_{1})
+	      }{
+		(\nu w)P_{1} \equiv_{\alpha} (\nu y)R_{1}
+	      }
+	    \\
+	      \inferrule* [left=\bf{Opn}]{
+		R_{1} \xrightarrow{\overline{x}y}_{2} R_{1}^{'}
+	      \\
+		x\neq y
+	      }{
+		(\nu y)R_{1} \xrightarrow{\overline{x}(y)}_{2} R_{1}^{'}
+	      }
+	  }{
+	    P=(\nu w)P_{1} \xrightarrow{\overline{x}(y)}_{2} R_{1}^{'}=P^{'}
+	  }$
+	\end{center}
+	became:
+	\begin{center}
+	  $\inferrule* [left=\bf{Opn}]{
+	      \inferrule* [left=\bf{Alp}]{
+		  P_{1}\{y/w\} \equiv_{\alpha} R_{1}
+		\\
+		  R_{1} \xrightarrow{\overline{x}y}_{2} R_{1}^{'}
+	      }{
+		P_{1}\{y/w\} \xrightarrow{\overline{x}y}_{2} R_{1}^{'}
+	      }
+	    \\
+	      x\neq y
+	  }{
+	    (\nu y)P_{1}\{y/w\} \xrightarrow{\overline{x}(y)}_{2} R_{1}^{'}
+	  }$
+	\end{center}
+	and $(\nu y)P_{1}\{y/w\} \equiv (\nu w)P_{1}$
+    \end{description}
+  \end{proof}
+\end{lemma}
+
+
+\begin{theorem}
+  $P\xrightarrow{\alpha}_{2} P^{'}$ imply that there exist processes $Q, Q^{'}$ such that  $P \equiv Q \xrightarrow{\alpha}_{3} Q^{'} \equiv P^{'}$
+  \begin{proof}
 	First we prove $P\xrightarrow{\alpha}_{2}P^{'}\; \Rightarrow\; \exists P^{''}: P^{'}\equiv P^{''}\; and\; P\xrightarrow{\alpha}_{3}P^{''}$. The proof is by induction on the length of the derivation of $P\xrightarrow{\alpha}_{2}P^{'}$, and then both the base case and the inductive case proceed by cases on the last rule used.
 	\begin{description}
 	  \item[base case]
@@ -2890,6 +3156,66 @@ which is not want we want. So we prove a weaker version
 		\]		
 	      \item
 		if the last rule is $Alp$, then we just notice that this rule is a particular case of $Str$
+% 	      \item
+% 		if the last rule is $ClsL$(the case for $ClsR$ is simmetric) then we have
+% 		\[
+% 		    \inferrule* [left=ClsL]{
+% 			P\xrightarrow{\overline{x}(z)}_{2}P^{'}
+% 		      \\
+% 			Q\xrightarrow{xz}_{2}Q^{'}
+% 		      \\
+% 			z\notin fn(Q)
+% 		    }{
+% 		      P|Q\xrightarrow{\tau}_{2}(\nu z)(P^{'}|Q^{'})
+% 		    }
+% 		\]
+% 		there is no easy way to mimic this rule with the rules in $R_{3}$. But if in the derivation tree we have an introduction of the bound output $\overline{x}(z)$ followed directly by an elimination of the same bound output such as:
+% 		\[
+% 		    \inferrule* [left=ClsL]{
+% 			\inferrule* [left=Opn]{
+% 			    P\xrightarrow{\overline{x}z}_{2}P^{'}
+% 			  \\
+% 			    z\neq x
+% 			}{
+% 			  (\nu z)P\xrightarrow{\overline{x}(z)}_{2}P^{'}
+% 			}
+% 		      \\
+% 			Q\xrightarrow{xz}_{2}Q^{'}
+% 		      \\
+% 			z\notin fn(Q)
+% 		    }{
+% 		      ((\nu z)P)|Q\xrightarrow{\tau}_{2}(\nu z)(P^{'}|Q^{'})
+% 		    }
+% 		\]
+% 		we can apply the inductive hypothesis and get that 
+% 		\[
+% 		  P\xrightarrow{\overline{x}z}_{3}P^{''}\; and\; Q\xrightarrow{xz}_{3}Q^{''}
+% 		\]
+% 		where $P^{'}\equiv P^{''}$ and $Q^{'}\equiv Q^{''}$, so we create the needed proof in the following way
+% 		\[
+% 		    \inferrule* [left=Str]{
+% 			(\nu z)(P|Q)\equiv ((\nu z)P)|Q
+% 		      \\
+% 			\inferrule* [left=Res]{
+% 			  \inferrule* [left=Com]{
+% 			      P\xrightarrow{\overline{x}z}_{3}P^{''}
+% 			    \\
+% 			      Q\xrightarrow{xz}_{3}Q^{''}
+% 			  }{
+% 			    P|Q\xrightarrow{\tau}_{3}P^{''}|Q^{''}
+% 			  }
+% 			}{
+% 			  (\nu z)(P|Q)\xrightarrow{\tau}_{3}(\nu z)(P^{''}|Q^{''})
+% 			}
+% 		    }{
+% 		      ((\nu z)P)|Q\xrightarrow{\tau}_{3}(\nu z)(P^{''}|Q^{''})
+% 		    }
+% 		\]
+% 		We can always take a derivation tree in $R_{2}$ and move downward each occurrence of $Opn$ until we find the appropriate occurrence of $ClsL$. In this process we might need to use the structural congruence, in particular the scope extension axioms. We can attempt to prove that in the following way:
+% 		\[
+% 		  P\xrightarrow{\overline{x}(z)}_{2}P^{'}\; \Rightarrow\; \exists R: (\nu z)R\equiv P
+% 		\]
+% 		and if $(\nu z)R\xrightarrow{\overline{x}(z)}_{2}P^{'}$ then there exists a derivation tree for this transition such that the last rule used is $Opn$
 	      \item
 		if the last rule is $ClsL$(the case for $ClsR$ is simmetric) then we have
 		\[
@@ -2903,57 +3229,31 @@ which is not want we want. So we prove a weaker version
 		      P|Q\xrightarrow{\tau}_{2}(\nu z)(P^{'}|Q^{'})
 		    }
 		\]
-		there is no easy way to mimic this rule with the rules in $R_{3}$. But if in the derivation tree we have an introduction of the bound output $\overline{x}(z)$ followed directly by an elimination of the same bound output such as:
+		$P\xrightarrow{\overline{x}(z)}_{2}P^{'}$ for lemma \ref{OpenClose} imply that there exist processes $(\nu z)R$ such that $P \equiv (\nu z)R \xrightarrow{\overline{x}(z)}_{2} P^{'}$ and the derivation of $(\nu z)R \xrightarrow{\tau}_{2} R^{'}$ ends with the instance of $Opn$ that opens the scope of $z$. So 
 		\[
-		    \inferrule* [left=ClsL]{
-			\inferrule* [left=Opn]{
-			    P\xrightarrow{\overline{x}z}_{2}P^{'}
-			  \\
-			    z\neq x
-			}{
-			  (\nu z)P\xrightarrow{\overline{x}(z)}_{2}P^{'}
-			}
+		  \inferrule* [left=Res]{
+		    \inferrule* [left=EComL]{
+			R \xrightarrow{\overline{x}z}_{2} P^{'}
 		      \\
-			Q\xrightarrow{xz}_{2}Q^{'}
-		      \\
-			z\notin fn(Q)
+			Q \xrightarrow{xz}_{2} Q^{'}
 		    }{
-		      ((\nu z)P)|Q\xrightarrow{\tau}_{2}(\nu z)(P^{'}|Q^{'})
+		      R|Q \xrightarrow{\tau}_{2} P^{'}|Q^{'}
 		    }
+		  }{
+		    (\nu z)(R|Q) \xrightarrow{\tau}_{2} (\nu z)(P^{'}|Q^{'})
+		  }
 		\]
-		we can apply the inductive hypothesis and get that 
-		\[
-		  P\xrightarrow{\overline{x}z}_{3}P^{''}\; and\; Q\xrightarrow{xz}_{3}Q^{''}
-		\]
-		where $P^{'}\equiv P^{''}$ and $Q^{'}\equiv Q^{''}$, so we create the needed proof in the following way
-		\[
-		    \inferrule* [left=Str]{
-			(\nu z)(P|Q)\equiv ((\nu z)P)|Q
-		      \\
-			\inferrule* [left=Res]{
-			  \inferrule* [left=Com]{
-			      P\xrightarrow{\overline{x}z}_{3}P^{''}
-			    \\
-			      Q\xrightarrow{xz}_{3}Q^{''}
-			  }{
-			    P|Q\xrightarrow{\tau}_{3}P^{''}|Q^{''}
-			  }
-			}{
-			  (\nu z)(P|Q)\xrightarrow{\tau}_{3}(\nu z)(P^{''}|Q^{''})
-			}
-		    }{
-		      ((\nu z)P)|Q\xrightarrow{\tau}_{3}(\nu z)(P^{''}|Q^{''})
-		    }
-		\]
-		We can always take a derivation tree in $R_{2}$ and move downward each occurrence of $Opn$ until we find the appropriate occurrence of $ClsL$. In this process we might need to use the structural congruence, in particular the scope extension axioms. We can attempt to prove that in the following way:
-		\[
-		  P\xrightarrow{\overline{x}(z)}_{2}P^{'}\; \Rightarrow\; \exists R: (\nu z)R\equiv P
-		\]
-		and if $(\nu z)R\xrightarrow{\overline{x}(z)}_{2}P^{'}$ then there exists a derivation tree for this transition such that the last rule used is $Opn$
+		$P \equiv (\nu z)R$ and $z \notin fn(Q)$ imply $(\nu z)(R|Q) \equiv P|Q$. The conclusion follows after applying the inductive hypothesis on $(\nu z)(R|Q) \xrightarrow{\tau}_{3} (\nu z)(P^{'}|Q^{'})$ and the transitivity of structural congruence.
 	    \end{itemize}	    
 	\end{description}
-      \item[$\Leftarrow$] 
-	
+  \end{proof}
+\end{theorem}
+
+
+
+\begin{theorem}
+  $P\xrightarrow{\alpha}_{3}P^{'}$ imply that there exist processes $P^{''}, P^{'''}$ such that $P^{''}\equiv P$, $P^{'''}\equiv P^{'}$  and $P^{'}\xrightarrow{\alpha}_{2}P^{'''}$
+  \begin{proof}
 	PRIMA DEVO DIMOSTRARE IL LEMMA DI INVERSIONE PER LA CONGRUENZA STRUTTURALE(SE E' VERO)
 
 	Secondly we prove $P\xrightarrow{\alpha}_{3}P^{'}\; \Rightarrow\; \exists P^{''}: P^{'}\equiv P^{''}\; and\; P\xrightarrow{\alpha}_{2}P^{''}$. The proof is by induction on the length of the derivation of $P\xrightarrow{\alpha}_{3}P^{'}$, and then both the base case and the inductive case proceed by cases on the last rule used.
@@ -3338,7 +3638,6 @@ which is not want we want. So we prove a weaker version
 		\end{description}
 	    \end{itemize}	    
 	\end{description}
-    \end{description}
   \end{proof}
 \end{theorem}
 
