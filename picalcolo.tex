@@ -769,8 +769,6 @@ Structural congruences are a set of equations defining equality and congruence r
 
 
 It remains the problem of proving that $\alpha$ equivalence is well defined, i.e. if we change only some bound names in a process $P$ then we get a process $\alpha$ equivalent to $P$. 
-% We assume that there is a well order relation $\leq$ between the names. The condition $a\leq b$ in rule $AlpSubst$ ensure that we can apply this rule only a finite amount of times thus any proof tree of $\alpha$ equivalence is finite. 
-
 
 \begin{lemma}
   Inversion lemma for $\alpha$ equivalence
@@ -1624,10 +1622,6 @@ In the proof of equivalence of the semantics in the next section we need the fol
   \end{proof}
 \end{lemma}
 
-% \begin{definition}
-%   We call depth of a $\pi$ calculus process the depth of its syntax tree and we use the letter $\delta$ to represent it. Formally:
-% \end{definition}
-
 
 \begin{lemma}
   The $\alpha$ equivalence is an equivalence relation.
@@ -1801,41 +1795,6 @@ In the proof of equivalence of the semantics in the next section we need the fol
 \end{lemma}
 
 
-
-
-\begin{lemma}
-  E' FALSO!!!!! !!!! !!! !! !:\begin{itemize}
-    \item
-      If $P\equiv \tau.Q$ then $P=\tau.P_{1}$ for some $P_{1}$ such that $P_{1}\equiv Q$
-    \item
-      If $P\equiv \overline{x}y.Q$ then $P=\overline{x}y.P_{1}$ for some $P_{1}$ such that $P_{1}\equiv Q$
-    \item
-      If $P\equiv x(y).Q$ then one and only one of the following cases holds:
-      \begin{itemize}
-	\item 
-	  $P=x(z).P_{1}$ for some $P_{1}$ such that $P_{1}\{z/y\}\equiv Q$
-	\item
-	  $P=x(y).P_{1}$ for some $P_{1}$ such that $P_{1}\equiv Q$
-      \end{itemize}
-    \item
-      If $P\equiv Q_{1}+Q_{2}$ then $P=P_{1}+P_{2}$ for some $P_{1}$ and $P_{2}$ such that $P_{1}\equiv Q_{1}$ and $P_{2}\equiv Q_{2}$.
-    \item 
-      If $P\equiv Q_{1}|Q_{2}$ then $P=P_{1}|P_{2}$ for some $P_{1}$ and $P_{2}$ such that $P_{1}\equiv Q_{1}$ and $P_{2}\equiv Q_{2}$.
-    \item 
-      If $P\equiv (\nu y)Q$ then one and only one of the following cases holds:
-      \begin{itemize}
-        \item 
-	  $P=(\nu z)P_{1}$ such that $P_{1}\{z/y\}\equiv Q$
-	\item
-	  $P=(\nu y).P_{1}$ for some $P_{1}$ such that $P_{1}\equiv Q$
-      \end{itemize}
-    \item 
-      If $P\equiv A(\tilde{x}|\tilde{y})$ then ??? ?? ?
-  \end{itemize}
-  \begin{proof}
-    
-  \end{proof}
-\end{lemma}
 
 
 \section{Operational semantic with structural congruence}
@@ -3074,7 +3033,7 @@ which is not want we want. So we prove a weaker version
 \end{lemma}
 
 
-\begin{theorem}
+\begin{lemma}
   $P\xrightarrow{\alpha}_{2} P^{'}$ imply that there exist processes $Q, Q^{'}$ such that  $P \equiv Q \xrightarrow{\alpha}_{3} Q^{'} \equiv P^{'}$
   \begin{proof}
 	First we prove $P\xrightarrow{\alpha}_{2}P^{'}\; \Rightarrow\; \exists P^{''}: P^{'}\equiv P^{''}\; and\; P\xrightarrow{\alpha}_{3}P^{''}$. The proof is by induction on the length of the derivation of $P\xrightarrow{\alpha}_{2}P^{'}$, and then both the base case and the inductive case proceed by cases on the last rule used.
@@ -3247,27 +3206,305 @@ which is not want we want. So we prove a weaker version
 	    \end{itemize}	    
 	\end{description}
   \end{proof}
+  \label{2inCong3}
+\end{lemma}
+
+\begin{theorem}
+  $P\xrightarrow{\alpha}_{2} P^{'}$ imply that there exist processes $Q^{'}$ such that  $P \xrightarrow{\alpha}_{3} Q^{'} \equiv P^{'}$.
+  \begin{proof}
+    For lemma \ref{2inCong3} there exist processes $Q, Q^{'}$ such that $P \equiv Q \xrightarrow{\alpha}_{3} Q^{'} \equiv P^{'}$. So for rule $Cong$: $P \xrightarrow{\alpha}_{3} Q^{'} \equiv P^{'}$.
+  \end{proof}
+\end{theorem}
+
+VALE IL TEOREMA SEGUENTE?
+\begin{theorem}
+  $P\xrightarrow{\alpha}_{2} P^{'}$ imply $P \xrightarrow{\alpha}_{3} Q^{'}$
 \end{theorem}
 
 
 
-\begin{theorem}
-  $P\xrightarrow{\alpha}_{3}P^{'}$ imply that there exist processes $P^{''}, P^{'''}$ such that $P^{''}\equiv P$, $P^{'''}\equiv P^{'}$  and $P^{'}\xrightarrow{\alpha}_{2}P^{'''}$
+\begin{lemma}\label{moveCongDowPi}
+  Let $\twoheadrightarrow_{3}$ be the semantic in table \ref{earlysemanticwithstructuralcongruence} but without rule $Cong$. $P\xrightarrow{\alpha}_{3}P^{'}$ imply that there exist a process $Q$ such that $P\equiv Q \stackrel{\alpha}{\twoheadrightarrow}_{3} P^{'}$.
   \begin{proof}
-	PRIMA DEVO DIMOSTRARE IL LEMMA DI INVERSIONE PER LA CONGRUENZA STRUTTURALE(SE E' VERO)
+    The proof needs to show that in any proof tree we can move downward any instance of a rule $Cong$ until the proof tree has only on instance of the rule $Cong$ and this is at the end. There are some cases to consider:
+    \begin{description}
+      \item[$Sum$]:
+	\begin{center}
+	  $\inferrule* [left=\bf{Sum}]{
+	      \inferrule* [left=\bf{Cong}]{
+		  P\equiv R
+		\\
+		  R \xrightarrow{\alpha} P^{'}
+	      }{
+		P \xrightarrow{\alpha} P^{'}
+	      }
+	    \\
+	      bn(\alpha) \cap fn(Q) = \emptyset
+	  }{
+	    P+Q \xrightarrow{\alpha} P^{'}
+	  }$
+	\end{center}
+	became:
+	\begin{center}
+	  $\inferrule* [left=\bf{Cong}]{
+	      \inferrule* {
+		P \equiv R
+	      }{
+		P+Q \equiv R+Q
+	      }
+	    \\
+	      \inferrule* [left=\bf{Sum}]{
+		  R \xrightarrow{\alpha} P^{'}
+		\\
+		  bn(\alpha) \cap fn(Q) = \emptyset
+	      }{
+		R+Q \xrightarrow{\alpha} P^{'}
+	      }
+	  }{
+	    P+Q \xrightarrow{\alpha} P^{'}
+	  }$
+	\end{center}
+      \item[$Par$]:
+	\begin{center}
+	  $\inferrule* [left=\bf{Par}]{
+	      \inferrule* [left=\bf{Cong}]{
+		  P\equiv R
+		\\
+		  R \xrightarrow{\alpha} P^{'}
+	      }{
+		P \xrightarrow{\alpha} P^{'}
+	      }
+	    \\
+	      bn(\alpha) \cap fn(Q) = \emptyset
+	  }{
+	    P|Q \xrightarrow{\alpha} P^{'}|Q
+	  }$
+	\end{center}
+	became:
+	\begin{center}
+	  $\inferrule* [left=\bf{Cong}]{
+	      \inferrule* {
+		P \equiv R
+	      }{
+		P|Q \equiv R|Q
+	      }
+	    \\
+	      \inferrule* [left=\bf{Par}]{
+		  R \xrightarrow{\alpha} P^{'}
+		\\
+		  bn(\alpha) \cap fn(Q) = \emptyset
+	      }{
+		R|Q \xrightarrow{\alpha} P^{'}|Q
+	      }
+	  }{
+	    P+Q \xrightarrow{\alpha} P^{'}|Q
+	  }$
+	\end{center}
+      \item[$ECom$]:
+	\begin{center}
+	  $\inferrule* [left=\bf{ECom}]{
+	      \inferrule* [left=\bf{Cong}]{
+		  P\equiv R
+		\\
+		  R \xrightarrow{xy} P^{'}
+	      }{
+		P \xrightarrow{xy} P^{'}
+	      }
+	    \\
+	      Q \xrightarrow{\overline{x}y} Q^{'}
+	  }{
+	    P|Q \xrightarrow{\tau} P^{'}|Q^{'}
+	  }$
+	\end{center}
+	became:
+	\begin{center}
+	  $\inferrule* [left=\bf{Cong}]{
+	      \inferrule* {
+		P \equiv R
+	      }{
+		P|Q \equiv R|Q
+	      }
+	    \\
+	      \inferrule* [left=\bf{ECom}]{
+		  R \xrightarrow{xy} P^{'}
+		\\
+		  Q \xrightarrow{\overline{x}y} Q^{'}
+	      }{
+		R|Q \xrightarrow{\tau} P^{'}|Q^{'}
+	      }
+	  }{
+	    P|Q \xrightarrow{\alpha} P^{'}|Q^{'}
+	  }$
+	\end{center}
+      \item[$Res$]:
+	\begin{center}
+	  $\inferrule* [left=\bf{Res}]{
+	      \inferrule* [left=\bf{Cong}]{
+		  P\equiv R
+		\\
+		  R \xrightarrow{\alpha} P^{'}
+	      }{
+		P \xrightarrow{\alpha} P^{'}
+	      }
+	    \\
+	      x\notin n(\alpha)
+	  }{
+	    (\nu x)P \xrightarrow{\alpha} (\nu x)P^{'}
+	  }$
+	\end{center}
+	became:
+	\begin{center}
+	  $\inferrule* [left=\bf{Cong}]{
+	      \inferrule* {
+		P \equiv R
+	      }{
+		(\nu x)P \equiv (\nu x)R
+	      }
+	    \\
+	      \inferrule* [left=\bf{Res}]{
+		  R \xrightarrow{\alpha} P^{'}
+		\\
+		  x\notin n(\alpha)
+	      }{
+		(\nu x)R \xrightarrow{\alpha} (\nu x)P^{'}
+	      }
+	  }{
+	    (\nu x)P \xrightarrow{\alpha} (\nu x)P^{'}
+	  }$
+	\end{center}
+      \item[$Opn$]:
+	\begin{center}
+	  $\inferrule* [left=\bf{Opn}]{
+	      \inferrule* [left=\bf{Cong}]{
+		  P\equiv R
+		\\
+		  R \xrightarrow{\overline{y}x} P^{'}
+	      }{
+		P \xrightarrow{\overline{y}x} P^{'}
+	      }
+	  }{
+	    (\nu x)P \xrightarrow{\overline{y}(x)} P^{'}
+	  }$
+	\end{center}
+	became:
+	\begin{center}
+	  $\inferrule* [left=\bf{Cong}]{
+	      \inferrule* {
+		P \equiv R
+	      }{
+		(\nu x)P \equiv (\nu x)R
+	      }
+	    \\
+	      \inferrule* [left=\bf{Opn}]{
+		  R \xrightarrow{\overline{y}x} P^{'}
+	      }{
+		(\nu x)R \xrightarrow{\overline{y}(x)} P^{'}
+	      }
+	  }{
+	    (\nu x)P \xrightarrow{\overline{y}(x)} P^{'}
+	  }$
+	\end{center}
+      \item[$Cong$]:
+	\begin{center}
+	  $\inferrule* [left=\bf{Cong}]{
+	      P\equiv R
+	    \\
+	      \inferrule* [left=\bf{Cong}]{
+		  R\equiv S
+		\\
+		  S \xrightarrow{\alpha} P^{'}
+	      }{
+		R \xrightarrow{\alpha} P^{'}
+	      }
+	  }{
+	    P \xrightarrow{\alpha} P^{'}
+	  }$
+	\end{center}
+	became:
+	\begin{center}
+	  $\inferrule* [left=\bf{Cong}]{
+	      \inferrule* {
+		  P \equiv R
+		\\
+		  R \equiv S
+	      }{
+		P \equiv S
+	      }
+	    \\
+	      S \xrightarrow{\alpha} P^{'}
+	  }{
+	    P \xrightarrow{\alpha} P^{'}
+	  }$
+	\end{center}
+% 	since structural congruence is transitive we can assume that in every derivation of a transition there are no two consecutive instance of the rule $Cong$.
+    \end{description}
+  \end{proof}
+\end{lemma}
 
-	Secondly we prove $P\xrightarrow{\alpha}_{3}P^{'}\; \Rightarrow\; \exists P^{''}: P^{'}\equiv P^{''}\; and\; P\xrightarrow{\alpha}_{2}P^{''}$. The proof is by induction on the length of the derivation of $P\xrightarrow{\alpha}_{3}P^{'}$, and then both the base case and the inductive case proceed by cases on the last rule used.
-	\begin{description}
-	  \item[base case]
-	    in this case the rule used can be one of the following $Out, EInp, Tau$ which are also in $R_{2}$ so a derivation of $P\xrightarrow{\alpha}_{3}P^{'}$ is also a derivation of $P\xrightarrow{\alpha}_{2}P^{'}$
-	  \item[inductive case]:
-	    \begin{itemize}
-	      \item 
-		the last rule used can be one in $R_{2}\cap R_{3}=\{Res, Opn\}$, this goes like in the previous proof for the opposite direction with the transition numbers swapped.
-	      \item
-		the last rule used can be one of $Par$, $Sum$ or $ECom$, in this case we apply the inductive hypothesis to the premises and the apply the appropriate rule: $ParL$, $SumL$ or $EComL$. For example
+
+\begin{theorem}
+  $P\xrightarrow{\alpha}_{3}P^{'}$ imply that there exist a proces $Q$ such that $P\equiv Q \xrightarrow{\alpha}_{2} P^{'}$.	
+  \begin{proof}
+    This is a direct consequence of lemma \ref{moveCongDowPi} observing that $\twoheadrightarrow_{3} \subseteq \rightarrow_{2}$.
+  \end{proof}
+\end{theorem}
+
+
+We would like to prove that: $P\xrightarrow{\alpha}_{3}P^{'}$ imply that there exist a process $Q^{'}$ such that $P \xrightarrow{\alpha}_{2} Q^{'}\equiv P^{'}$. But this is false becuase: BECAUSE? E' VERO O FALSO?
+
+
+
+
+\begin{theorem}
+  $P\xrightarrow{\alpha}_{3}P^{'}$ imply that there exist a process $Q^{'}$ such that $P \xrightarrow{\alpha}_{2} Q^{'}\equiv P^{'}$
+  \begin{proof}
+LA DIMOSTRAZIONE E' INCOMPLETA O FORSE ADDIRITTURA ASSURDA
+    The proof is by induction on the rules in table \ref{earlysemanticwithstructuralcongruence}.
+    \begin{description}
+      \item[$Out$]:
+	\begin{center}
+	  \begin{tabular}{lll}
+	  $\inferrule* [left=\bf{Out}]{
+	  }{
+	    \overline{x}y.P \xrightarrow{\overline{x}y}_{3} P
+	  }$
+	  &
+	  imply
+	  &
+	  $\inferrule* [left=\bf{Out}]{
+	  }{
+	    \overline{x}y.P \xrightarrow{\overline{x}y}_{2} P
+	  }$
+	  \end{tabular}
+	\end{center}
+      \item[$EInp, Tau$] similar to the previous case.
+      \item[$Res$]:
+	\begin{center}
+	  \begin{tabular}{lll}
+	    $\inferrule* [left=\bf{Res}]{
+	      P \xrightarrow{\alpha}_{3} P^{'}
+	    \\
+	      z\notin n(\alpha)
+	    }{
+	    (\nu z) P \xrightarrow{\alpha}_{3} (\nu z) P^{'}
+	    }$
+	  &
+	    imply
+	  &
+	    $\inferrule* [left=\bf{Res}]{
+	      P \xrightarrow{\alpha}_{2} P^{'}
+	    \\
+	      z\notin n(\alpha)
+	    }{
+	    (\nu z) P \xrightarrow{\alpha}_{2} (\nu z) Q^{'}
+	    }$
+	  \end{tabular}
+	\end{center}
+	Note that we used the inductive hypothesis in: $P \xrightarrow{\alpha}_{3} P^{'}$ imply $P \xrightarrow{\alpha}_{2} Q^{'}\equiv P^{'}$. Since $Q^{'} \equiv P^{'}$ then $(\nu z)Q^{'} \equiv (\nu z)P^{'}$
+      \item[$Opn, ECom$] similar to the previous case.
+      \item[$Par$]:
 		\[
-		  \inferrule* [left=Par]{
+		  \inferrule* [left=\bf{Par}]{
 		      P\xrightarrow{\alpha}_{3}P^{'}
 		    \\
 		      bn(\alpha)\cap fn(Q)=\emptyset
@@ -3275,9 +3512,9 @@ which is not want we want. So we prove a weaker version
 		      P|Q\xrightarrow{\alpha}_{3}P^{'}|Q
 		  }
 		\]	
-		now we apply the inductive hypothesis to $P\xrightarrow{\alpha}_{3}P^{'}$ and get $P\xrightarrow{\alpha}_{2}P^{''}$ for a $P^{''}$ such that $P^{'}\equiv P^{''}$. The proof we want is
+		now we apply the inductive hypothesis to $P\xrightarrow{\alpha}_{3}P^{'}$ and get $P\xrightarrow{\alpha}_{2}Q^{'}$ for a $P^{''}$ such that $P^{'}\equiv Q^{'}$. The proof we want is
 		\[
-		      \inferrule* [left=ParL]{
+		      \inferrule* [left=\bf{ParL}]{
 			  P\xrightarrow{\alpha}_{2}P^{''}
 			\\
 			  bn(\alpha)\cap fn(Q)=\emptyset
@@ -3286,17 +3523,156 @@ which is not want we want. So we prove a weaker version
 		      }
 		\]
 		and $Q^{''}|P\equiv P|Q^{'}$
-	      \item
-		if the last rule is $Str$, then we have
-		\[
-		  \inferrule* [left=Str]{
-		      P\equiv Q
-		    \\
-		      Q\xrightarrow{\alpha}_{3}P^{'}
-		  }{
-		    P\xrightarrow{\alpha}_{3}P^{'}
-		  }
-		\]
+      \item[$Sum$] similar since $Sum=SumL$
+      \item[$Cong$]:
+	Having in mine lemma \ref{moveCongDowPi}, we proceed by cases on the last rule used to prove the structural congruence:
+	\begin{description}
+	  \item[$Symmetry$] 
+	    the rules of structural congruence are symmetric so there is no rule for symmetry.
+	  \item[$Commutativity\; of\; sum$]:
+	    \[\inferrule* [left=\bf{Cong}]{
+		\inferrule* [left=\bf{SumCom}]{
+		}{
+		  P + R \equiv R + P
+		}
+	      \\
+		\inferrule* [left=\bf{Sum}]{
+		    R \stackrel{\alpha}{\twoheadrightarrow}_{3} R^{'}
+		  \\
+		    bn(\alpha) \cap fn(P) = \emptyset
+		}{
+		  R + P \stackrel{\alpha}{\twoheadrightarrow}_{3} R^{'}
+		}
+	    }{
+	      P + R \xrightarrow{\alpha}_{3} R^{'}
+	    }\]
+	    became
+	    \[\inferrule* [left=\bf{SumR}]{
+		    R \xrightarrow{\alpha}_{2} R^{'}
+		  \\
+		    bn(\alpha) \cap fn(P) = \emptyset
+		}{
+		  P + R \xrightarrow{\alpha}_{2} R^{'}
+	    }\]
+	  \item[$Commutativity\; of\; parallel$]
+	    There are two cases to consider. The first is when the rule used in the premises of $Cong$ is $Par$. This case is similar to the previous. The second case is when the rule used in the premises is $ECom$:
+	    \[\inferrule* [left=\bf{Cong}]{
+		\inferrule* [left=\bf{ParCom}]{
+		}{
+		  P | R \equiv R | P
+		}
+	      \\
+		\inferrule* [left=\bf{ECom}]{
+		    R \xrightarrow{xy}_{3} R^{'}
+		  \\
+		    P \xrightarrow{\overline{x}y}_{3} P^{'}
+		}{
+		  R|P \stackrel{\tau}{\twoheadrightarrow}_{3} R^{'}|P^{'}
+		}
+	    }{
+	      P|R \xrightarrow{\alpha}_{3} R^{'}|P^{'}
+	    }\]
+	    became
+	    \[\inferrule* [left=\bf{EComR}]{
+		    P \xrightarrow{\overline{x}y}_{3} P^{'}
+		  \\
+		    R \xrightarrow{xy}_{3} R^{'}
+		}{
+		  P|R \xrightarrow{\tau}_{2} P^{'}|R^{'}
+	    }\]
+	  \item[$Commutativity\; of\; restriction$]
+	    Let $(\nu x)(\nu y)P \equiv (\nu y)(\nu x)P$ and $(\nu x)(\nu y)P \stackrel{\alpha}{\twoheadrightarrow}_{3} P^{'}$. The last two rule instance in a derivation of this transition can be: ($Opn$, $Res$), ($Res$, $Opn$) or ($Res$, $Res$). In each case we can swap the first instance with the second one and get $(\nu y)(\nu x)P \stackrel{\alpha}{\twoheadrightarrow}_{3} Q^{'}\equiv P^{'}$
+	  \item[$Associativity\; of\; sum$]
+	    \[\inferrule* [left=\bf{Cong}]{
+		\inferrule* [left=\bf{Sum}]{
+		    \inferrule* [left=\bf{Sum}]{
+			P \stackrel{\alpha}{\twoheadrightarrow}_{3} R^{'}
+		      \\
+			bn(\alpha) \cap fn(R) = \emptyset
+		    }{
+		      P + R \stackrel{\alpha}{\twoheadrightarrow}_{3} R^{'}
+		    }
+		  \\
+		    bn(\alpha) \cap fn(Q) = \emptyset
+		}{
+		  (P + R) + Q \stackrel{\alpha}{\twoheadrightarrow}_{3} R^{'}
+		}
+	    }{
+	      P + (R + Q) \xrightarrow{\alpha}_{3} R^{'}
+	    }\]
+	    became
+	    \[\inferrule* [left=\bf{SumL}]{
+		    P \stackrel{\alpha}{\twoheadrightarrow}_{3} R^{'}
+		  \\
+		    bn(\alpha) \cap fn(R+Q) = \emptyset
+		}{
+		  P + (R+Q) \xrightarrow{\alpha}_{2} R^{'}
+	    }\]
+	    and
+	    \[\inferrule* [left=\bf{Cong}]{
+		\inferrule* [left=\bf{Sum}]{
+		    P \stackrel{\alpha}{\twoheadrightarrow}_{3} R^{'}
+		  \\
+		    bn(\alpha) \cap fn(R+Q) = \emptyset
+		}{
+		  P + (R + Q) \stackrel{\alpha}{\twoheadrightarrow}_{3} R^{'}
+		}
+	    }{
+	      (P + R) + Q \xrightarrow{\alpha}_{3} R^{'}
+	    }\]
+	    became
+	    \[\inferrule* [left=\bf{SumL}]{
+	      \inferrule* [left=\bf{SumL}]{
+		    P \stackrel{\alpha}{\twoheadrightarrow}_{3} R^{'}
+		  \\
+		    bn(\alpha) \cap fn(R) = \emptyset
+	      }{
+		  P + R \xrightarrow{\alpha}_{2} R^{'}
+	      }
+	      \\
+		bn(\alpha) \cap fn(Q) = \emptyset
+	    }{
+		(P + R) + Q \xrightarrow{\alpha}_{2} R^{'}
+	    }\]
+	  \item[$Associativity\; of\; parallel$]
+	    There are two cases to consider. The first is when the rule used in the premises of $Cong$ is $Par$. This case is similar to the previous. The second case is when the rule used in the premises is $ECom$:
+	    \[\inferrule* [left=\bf{Cong}]{
+		\inferrule* [left=\bf{ECom}]{
+		    P \xrightarrow{xy}_{3} P^{'}
+		  \\
+		    \inferrule* [left=\bf{Par}]{
+		      R \xrightarrow{\overline{x}y}_{3} R^{'}
+		    }{
+		      R|Q \xrightarrow{\overline{x}y}_{3} R^{'}|Q
+		    }
+		}{
+		  P|(R|Q) \stackrel{\tau}{\twoheadrightarrow}_{3} P^{'}|(R^{'}|Q)
+		}
+	    }{
+	      (P|R)|Q\equiv P|(R|Q) \xrightarrow{tau}_{3} P^{'}|(R^{'}|Q)
+	    }\]
+	    became
+	    \[\inferrule* [left=\bf{Par}]{\inferrule* [left=\bf{EComL}]{
+		    P \xrightarrow{xy}_{2} P^{'}
+		  \\
+		    R \xrightarrow{\overline{x}y}_{2} R^{'}
+		}{
+		  P|R \xrightarrow{\tau}_{2} P^{'}|R^{'}
+	    }}{
+		(P|R)|Q \xrightarrow{\tau}_{2} (P^{'}|R^{'})|Q
+	    }\]
+	    The other case of associativity for parallel is similar.
+	  \item[$Identifier$]
+	    easy.
+	  \item[$Congruence\; for\; output$]
+	    easy.
+	  \item[$Congruence\; for\; tau$]
+	    easy.
+	  \item[$Congruence\; for\; input$]
+	  \item[$Congruence\; for\; restriction$]
+	  \item[$Congruence\; for\; parallel$]
+	  \item[$Congruence\; for\; sum$]
+	\end{description}
 		we proceed by cases on the premise $Q\xrightarrow{\alpha}_{3}P^{'}$. In the cases of prefix we can just use the appropriate prefix rule of $R_{2}$ and get rid of the $Str$. In the other cases we can move upward the occurrence of $Str$, after that we have one or two smaller derivation trees that are suitable to application of the inductive hypothesis and finally we apply some appropriate rules in $R_{2}$.
 		\begin{description}
 		  \item[Out]
@@ -3636,11 +4012,9 @@ which is not want we want. So we prove a weaker version
 			\]
 		  \end{itemize}
 		\end{description}
-	    \end{itemize}	    
-	\end{description}
+    \end{description}
   \end{proof}
 \end{theorem}
-
 
 
 \subsection{Equivalence of the late semantics}
