@@ -814,48 +814,175 @@ non ho una dimostrazione ma lo da per scontato in \cite{milnerparrowwalker} para
 
 
 
-\begin{definition}\index{structural congruence}
-  We define a \emph{structural congruence $\equiv$} as the smallest congruence on processes that satisfies the axioms in table \ref{structuralcongrunce}
+
+
+
+
+
+
+
+
+
+\begin{definition}
+  \emph{structural congruence $\equiv$} is the smallest relation on processes that satisfies the axioms in table \ref{structuralCongrunce}
   \begin{table}
-    \begin{tabular}{lll}
-      \multicolumn{3}{l}{\line(1,0){415}}\\
-	SC-ALP&$\begin{array}{c}P \equiv_{\alpha} Q\\\overline{P\equiv Q}\end{array}$&$\alpha$ conversion
-      \\\\
-	\multicolumn{3}{l}{abelian monoid laws for sum:}
+    \begin{tabular}{ll}
+      \multicolumn{2}{l}{\line(1,0){415}}\\
+	$\inferrule* [left=\bf{SumAsc1}]{}{M_{1}+(M_{2}+M_{3})\equiv (M_{1}+M_{2})+M_{3}}$ &$\inferrule* [left=\bf{ParAsc1}]{}{P_{1}|(P_{2}|P_{3})\equiv (P_{1}|P_{2})|P_{3}}$
       \\
-	SC-SUM-ASC& $M_{1}+(M_{2}+M_{3})\equiv (M_{1}+M_{2})+M_{3}$ &associativity
+	$\inferrule* [left=\bf{SumAsc2}]{}{(M_{1}+M_{2})+M_{3}\equiv M_{1}+(M_{2}+M_{3})}$ &$\inferrule* [left=\bf{ParAsc2}]{}{(P_{1}|P_{2})|P_{3}\equiv P_{1}|(P_{2}|P_{3})}$ 
       \\
-	SC-SUM-COM& $M_{1}+M_{2}\equiv M_{2}+M_{1}$ &commutativity
+	 & 
       \\
-	SC-SUM-INC& $M+0\equiv M$&zero element
-      \\\\
-	\multicolumn{3}{l}{abelian monoid laws for parallel:}
+      \end{tabular}
       \\
-	SC-COM-ASC& $P_{1}|(P_{2}|P_{3})\equiv (P_{1}|P_{2})|P_{3}$ &associativity
+      \begin{tabular}{lll}
       \\
-	SC-COM-COM& $P_{1}|P_{2}\equiv P_{2}|P_{1}$ &commutativity
+	$\inferrule* [left=\bf{ParCom}]{}{P_{1}|P_{2}\equiv P_{2}|P_{1}}$ &
+	$\inferrule* [left=\bf{ResCom}]{}{(\nu x) (\nu y) P \equiv (\nu y) (\nu x) P}$ &
+	$\inferrule* [left=\bf{SumCom}]{}{M_{1}+M_{2}\equiv M_{2}+M_{1}}$
       \\
-	SC-COM-INC& $P|0\equiv P$&zero element
-      \\\\
-	\multicolumn{3}{l}{scope extension laws:}
+      \end{tabular}
       \\
-	SC-RES& $(\nu z) (\nu w) P \equiv (\nu w) (\nu z) P$ &
+      \begin{tabular}{ll}
       \\
-	SC-RES-INC& $(\nu z) 0 \equiv 0$ &
+	$\inferrule* [left=\bf{ScpExtPar1}]{z\notin fn(P_{1})}{(\nu z) (P_{1}|P_{2}) \equiv P_{1}|(\nu z) P_{2}}$ & $\inferrule* [left=\bf{ScpExtPar2}]{z\notin fn(P_{1})}{P_{1}|(\nu z) P_{2} \equiv (\nu z) (P_{1}|P_{2})}$ 
       \\
-	SC-RES-COM& $(\nu z) (P_{1}|P_{2}) \equiv P_{1}|(\nu z) P_{2}$ if $z\notin fn(P_{1})$&
+	$\inferrule* [left=\bf{ScpExtSum1}]{z\notin fn(P_{1})}{(\nu z) (P_{1}+P_{2}) \equiv P_{1}+(\nu z) P_{2}}$ & $\inferrule* [left=\bf{ScpExtSum2}]{z\notin fn(P_{1})}{P_{1}+(\nu z) P_{2} \equiv (\nu z) (P_{1}+P_{2})}$ 
       \\
-	SC-RES-SUM& $(\nu z) (P_{1}+P_{2}) \equiv P_{1}+(\nu z) P_{2}$ if $z\notin fn(P_{1})$&
-      \\\\
-	\multicolumn{3}{l}{unfolding law:}
+      \end{tabular}
       \\
-	SC-IDE&$A(\tilde{w})\equiv P\{\tilde{w}/\tilde{x}\}$&if $A(\tilde{x})\stackrel{def}{=}P$
-      \\\multicolumn{3}{l}{\line(1,0){415}}
+      \begin{tabular}{lll}
+      \\
+	  $\inferrule* [left=\bf{Ide}]{A(\tilde{x})\stackrel{def}{=}P}{A(\tilde{w})\equiv P\{\tilde{w}/\tilde{x}\}}$
+	&
+	  $\inferrule* [left=\bf{Trans}]{P \equiv Q \\ Q \equiv R}{P \equiv R}$
+	&
+	  $\inferrule* [left=\bf{Alp}] {
+	    P \equiv_{\alpha} Q
+	  }{
+	    P\equiv Q
+	  }$
+      \\
+      \end{tabular}
+      \\
+      \begin{tabular}{ll}
+      \\
+	  $\inferrule* [left=\bf{Cong1}]{
+	    P \equiv Q
+	  }{
+	    C[P] \equiv C[Q]
+	  }$
+	&
+	  $\inferrule* [left=\bf{Cong2}]{
+	    P_{1} \equiv Q_{1} 
+	  \\ 
+	    P_{2} \equiv Q_{2}
+	  \\
+	    C[\_,\_]\in\{\_+\_, \_|\_ \}
+	  }{
+	    C[P_{1}, P_{2}] \equiv C[Q_{1}, Q_{2}]
+	  }$
+      \\
+      \\\multicolumn{2}{l}{\line(1,0){415}}
     \end{tabular}
-    \caption{Structural congruence axioms}
-    \label{structuralcongrunce}
+    \caption{Structural congruence rules}
+    \label{structuralCongrunce}
   \end{table}
 \end{definition}
+
+\begin{proposition}
+  $\equiv$ as defined in table \ref{structuralCongrunce} is a congruence and an equivalence relation.
+  \begin{proof}
+    $\equiv$ is a congruence thanks to rules $Cong1$ and $Cong2$. Reflexivity holds for rule $Alp$. Symmetry holds because all the rules are symmetric or have a symmetric counterpart. Transitivity holds because of rule $Trans$.
+  \end{proof}
+\end{proposition}
+
+% \begin{lemma}\label{moveTransDown}
+%   If $P \equiv Q$ then there is a derivation of $P \equiv Q$ such that the rule $Trans$ appears only at the end of the proof tree.
+%   \begin{proof}
+%     We have to show that whenever we have a derivation that contains an instance of $Trans$ immediately followed by an instance of any other rule then there is a derivation with the same conclusion but with the instance of $Trans$ moved downward. There can be the following cases:
+%     \begin{description}
+%       \item[]
+%     \end{description}
+%   \end{proof}
+% \end{lemma}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+% 
+% 
+% 
+% 
+% 
+% 
+% 
+% 
+% 
+% 
+% 
+% 
+% 
+% 
+% 
+% 
+% 
+% 
+% 
+% 
+% \begin{definition}\index{structural congruence}
+%   We define a \emph{structural congruence $\equiv$} as the smallest congruence on processes that satisfies the axioms in table \ref{structuralcongrunce}
+%   \begin{table}
+%     \begin{tabular}{lll}
+%       \multicolumn{3}{l}{\line(1,0){415}}\\
+% 	SC-ALP&$\begin{array}{c}P \equiv_{\alpha} Q\\\overline{P\equiv Q}\end{array}$&$\alpha$ conversion
+%       \\\\
+% 	\multicolumn{3}{l}{abelian monoid laws for sum:}
+%       \\
+% 	SC-SUM-ASC& $M_{1}+(M_{2}+M_{3})\equiv (M_{1}+M_{2})+M_{3}$ &associativity
+%       \\
+% 	SC-SUM-COM& $M_{1}+M_{2}\equiv M_{2}+M_{1}$ &commutativity
+%       \\
+% 	SC-SUM-INC& $M+0\equiv M$&zero element
+%       \\\\
+% 	\multicolumn{3}{l}{abelian monoid laws for parallel:}
+%       \\
+% 	SC-COM-ASC& $P_{1}|(P_{2}|P_{3})\equiv (P_{1}|P_{2})|P_{3}$ &associativity
+%       \\
+% 	SC-COM-COM& $P_{1}|P_{2}\equiv P_{2}|P_{1}$ &commutativity
+%       \\
+% 	SC-COM-INC& $P|0\equiv P$&zero element
+%       \\\\
+% 	\multicolumn{3}{l}{scope extension laws:}
+%       \\
+% 	SC-RES& $(\nu z) (\nu w) P \equiv (\nu w) (\nu z) P$ &
+%       \\
+% 	SC-RES-INC& $(\nu z) 0 \equiv 0$ &
+%       \\
+% 	SC-RES-COM& $(\nu z) (P_{1}|P_{2}) \equiv P_{1}|(\nu z) P_{2}$ if $z\notin fn(P_{1})$&
+%       \\
+% 	SC-RES-SUM& $(\nu z) (P_{1}+P_{2}) \equiv P_{1}+(\nu z) P_{2}$ if $z\notin fn(P_{1})$&
+%       \\\\
+% 	\multicolumn{3}{l}{unfolding law:}
+%       \\
+% 	SC-IDE&$A(\tilde{w})\equiv P\{\tilde{w}/\tilde{x}\}$&if $A(\tilde{x})\stackrel{def}{=}P$
+%       \\\multicolumn{3}{l}{\line(1,0){415}}
+%     \end{tabular}
+%     \caption{Structural congruence axioms}
+%     \label{structuralcongrunce}
+%   \end{table}
+% \end{definition}
 
 We can make some clarification on the axioms of the structural congruence:
 \begin{description}
@@ -4012,6 +4139,125 @@ LA DIMOSTRAZIONE E' INCOMPLETA O FORSE ADDIRITTURA ASSURDA
 			\]
 		  \end{itemize}
 		\end{description}
+    \end{description}
+  \end{proof}
+\end{theorem}
+
+
+\begin{theorem}
+  If $P \xrightarrow{\alpha}_{3} P^{'}$ then $P \xrightarrow{\alpha}_{2} Q^{'}\equiv P^{'}$.
+  \begin{proof}
+    For lemma \ref{moveCongDowPi} and for reflexivity of structural congruence we can assume that $P\equiv R \stackrel{\alpha}{\twoheadrightarrow}_{3} P^{'}$. 
+%     However we can avoid to consider the case where the proof tree of $P\equiv R$ ends with an application of the reflexivity because $\twoheadrightarrow_{3} \subseteq \rightarrow_{2}$. We can also avoid the case where the proof tree of $P\equiv R$ ends with $Trans$ because if a proof tree contains:
+% 	    \begin{center}
+% 	      $\inferrule* [left=\bf{Cong}]{
+% 		  \inferrule* [left=\bf{Trans}]{
+% 		      P \equiv Q
+% 		    \\
+% 		      Q \equiv R
+% 		  }{
+% 		    P \equiv R
+% 		  }
+% 		\\
+% 		  R \xrightarrow{\alpha}_{3} R^{'}
+% 	      }{
+% 		P \xrightarrow{\alpha}_{3} R^{'}
+% 	      }$
+% 	    \end{center}
+%     then there is the following proof tree with the same conclusion
+% 	    \begin{center}
+% 	      $\inferrule* [left=\bf{Cong}]{
+% 		  P \equiv Q
+% 		\\
+% 		  \inferrule* [left=\bf{Cong}]{
+% 		      Q \equiv R
+% 		    \\
+% 		      R \xrightarrow{\alpha}_{3} R^{'}
+% 		  }{
+% 		    Q \equiv R
+% 		  }
+% 	      }{
+% 		P \xrightarrow{\alpha}_{3} R^{'}
+% 	      }$
+% 	    \end{center}
+%     and such that the size does not change, if in the size of a proof tree we count also the size of the proof trees of structural congruence.
+    We call $\delta_{1}$ the depth of the proof tree of $P\equiv R$ and $\delta_{2}$ the depth of the proof tree of $R\stackrel{\alpha}{\twoheadrightarrow}_{3} P^{'}$. The proof is an induction on $\delta_{1}+\delta_{2}$, we call $S_{1}$ the instance of the last rule of the proof tree of $P\equiv R$ and $S_{2}$ the instance of the last rule of the proof tree of $R \stackrel{\alpha}{\twoheadrightarrow}_{3} P^{'}$.
+    MANCANO I CASI PER LA REGOLA TRANS!
+    \begin{description}
+      \item[$\delta_{1}=0\; and\; \delta_{2}=0$]
+	The only cases here are $P\equiv_{\alpha} R$ and $S_{2}\in \{Out, EInp, Tau\}$. For rule $Alp$ then $P \xrightarrow{\alpha}_{2} P^{'}$.
+      \item[$\delta_{1}=0\; and\; \delta_{2}>0$]
+	There are various cases here for $(S_{1}, S_{2})$:
+	\begin{description}
+	  \item[$(Alp, \_)$]: in this cases we can use the rule $Alp$ of table \ref{transitionrelationearlywithalphaconversion}.
+    However we can avoid to consider the case where the proof tree of $P\equiv R$ ends with an application of the reflexivity because $\twoheadrightarrow_{3} \subseteq \rightarrow_{2}$. We can also avoid the case where the proof tree of $P\equiv R$ ends with $Trans$ because if a proof tree contains:
+	    \begin{center}
+	      $\inferrule* [left=\bf{Cong}]{
+		  \inferrule* [left=\bf{Trans}]{
+		      P \equiv Q
+		    \\
+		      Q \equiv R
+		  }{
+		    P \equiv R
+		  }
+		\\
+		  R \xrightarrow{\alpha}_{3} R^{'}
+	      }{
+		P \xrightarrow{\alpha}_{3} R^{'}
+	      }$
+	    \end{center}
+    then there is the following proof tree with the same conclusion
+	    \begin{center}
+	      $\inferrule* [left=\bf{Cong}]{
+		  P \equiv Q
+		\\
+		  \inferrule* [left=\bf{Cong}]{
+		      Q \equiv R
+		    \\
+		      R \xrightarrow{\alpha}_{3} R^{'}
+		  }{
+		    Q \equiv R
+		  }
+	      }{
+		P \xrightarrow{\alpha}_{3} R^{'}
+	      }$
+	    \end{center}
+    and such that the size does not change, if in the size of a proof tree we count also the size of the proof trees of structural congruence.
+	  \item[$(SumAsc1, Sum)$]:
+	  \item[$(SumAsc2, Sum)$]:
+	  \item[$(SumCom, Sum)$]:
+	  \item[$(ScpExtSum2, Sum)$]:
+	  \item[$(ParAsc1, Par)$]:
+	  \item[$(ParAsc2, Par)$]:
+	  \item[$(ParCom, Par)$]:
+	  \item[$(ScpExtPar2, Par)$]:
+	  \item[$(ParAsc1, ECom)$]:
+	  \item[$(ParAsc2, ECom)$]:
+	  \item[$(ParCom, ECom)$]:
+	  \item[$(ScpExtPar2, ECom)$]:
+	  \item[$(Ide, Ide)$]:
+	  \item[$(ResCom, Res)$]:
+	  \item[$(ResCom, Opn)$]:
+	  \item[$(ScpExtPar1, Par)$]:
+	  \item[$(ScpExtPar1, ECom)$]:
+	  \item[$(ScpExtSum1, Sum)$]:
+	\end{description}
+      \item[$\delta_{1}>0\; and\; \delta_{2}=0$]
+	There are various cases here for $(S_{1}, S_{2})$:
+	\begin{description}	    
+	  \item[$(CongOut,Out)$]:
+	  \item[$(CongInp,EInp)$]:
+	  \item[$(CongTau,Tau)$]:
+	\end{description}	
+      \item[$\delta_{1}>0\; and\; \delta_{2}>0$]
+	There are various cases here for $(S_{1}, S_{2})$:
+	\begin{description}
+	  \item[$(CongRes, Res)$]:
+	  \item[$(CongRes, Opn)$]:
+	  \item[$(CongPar, Par)$]:
+	  \item[$(CongPar, ECom)$]:
+	  \item[$(CongSum, Sum)$]:
+	\end{description}	
     \end{description}
   \end{proof}
 \end{theorem}

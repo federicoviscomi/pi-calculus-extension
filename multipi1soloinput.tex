@@ -1,7 +1,7 @@
 
 \section{Syntax}
 
-As we did whit $\pi$ calculus, we suppose that we have a countable set of names $\mathbf{N}$, ranged over by lower case letters $a,b, \cdots, z$. This names are used for communication channels and values. Furthermore we have a set of identifiers, ranged over by $A$. We represent the agents or processes by upper case letters $P,Q, \cdots $. A multi $\pi$ process, in addiction to the same actions of a $\pi$ process, can perform also a strong prefix input:
+As we did with $\pi$ calculus, we suppose that we have a countable set of names $\mathbf{N}$, ranged over by lower case letters $a,b, \cdots, z$. This names are used for communication channels and values. Furthermore we have a set of identifiers, ranged over by $A$. We represent the agents or processes by upper case letters $P,Q, \cdots $. A multi $\pi$ process, in addiction to the same actions of a $\pi$ process, can perform also a strong prefix input:
 \begin{center}
   $\pi$ ::= $\overline{x}y$ | $x(z)$ | $\underline{x(y)}$ | $\tau$ 
 \end{center}
@@ -1358,86 +1358,6 @@ This section contains the definition of an alternative semantic for multi $\pi$.
 
 In the following section the symbol $\rightarrow$ will refer to the late semantic with structural congruence of multi $\pi$ calculus with strong input which is illustrated in table \ref{multipisoloinputlatewith}. Also we consider a structural congruence without the rules $P|0\equiv 0$ and $P+0\equiv 0$. For the purpose of clarity the rule of structural congruence are repeated in this secition.
 
-
-\begin{definition}
-  \emph{structural congruence $\equiv$} is the smallest relation on processes that satisfies the axioms in table \ref{structuralCongrunce}
-  \begin{table}
-    \begin{tabular}{ll}
-      \multicolumn{2}{l}{\line(1,0){415}}\\
-	$\inferrule* [left=\bf{SumAsc1}]{}{M_{1}+(M_{2}+M_{3})\equiv (M_{1}+M_{2})+M_{3}}$ &$\inferrule* [left=\bf{ParAsc1}]{}{P_{1}|(P_{2}|P_{3})\equiv (P_{1}|P_{2})|P_{3}}$
-      \\
-	$\inferrule* [left=\bf{SumAsc2}]{}{(M_{1}+M_{2})+M_{3}\equiv M_{1}+(M_{2}+M_{3})}$ &$\inferrule* [left=\bf{ParAsc2}]{}{(P_{1}|P_{2})|P_{3}\equiv P_{1}|(P_{2}|P_{3})}$ 
-      \\
-	 & 
-      \\
-      \end{tabular}
-      \\
-      \begin{tabular}{lll}
-      \\
-	$\inferrule* [left=\bf{ParCom}]{}{P_{1}|P_{2}\equiv P_{2}|P_{1}}$ &
-	$\inferrule* [left=\bf{ResCom}]{}{(\nu x) (\nu y) P \equiv (\nu y) (\nu x) P}$ &
-	$\inferrule* [left=\bf{SumCom}]{}{M_{1}+M_{2}\equiv M_{2}+M_{1}}$
-      \\
-      \end{tabular}
-      \\
-      \begin{tabular}{ll}
-      \\
-	$\inferrule* [left=\bf{ScpExtPar1}]{z\notin fn(P_{1})}{(\nu z) (P_{1}|P_{2}) \equiv P_{1}|(\nu z) P_{2}}$ & $\inferrule* [left=\bf{ScpExtPar2}]{z\notin fn(P_{1})}{P_{1}|(\nu z) P_{2} \equiv (\nu z) (P_{1}|P_{2})}$ 
-      \\
-	$\inferrule* [left=\bf{ScpExtSum1}]{z\notin fn(P_{1})}{(\nu z) (P_{1}+P_{2}) \equiv P_{1}+(\nu z) P_{2}}$ & $\inferrule* [left=\bf{ScpExtSum2}]{z\notin fn(P_{1})}{P_{1}+(\nu z) P_{2} \equiv (\nu z) (P_{1}+P_{2})}$ 
-      \\
-      \end{tabular}
-      \\
-      \begin{tabular}{lll}
-      \\
-	  $\inferrule* [left=\bf{Ide}]{A(\tilde{x})\stackrel{def}{=}P}{A(\tilde{w})\equiv P\{\tilde{w}/\tilde{x}\}}$
-	&
-	  $\inferrule* [left=\bf{Trans}]{P \equiv Q \\ Q \equiv R}{P \equiv R}$
-	&
-	  $\inferrule* [left=\bf{Alp}] {
-	    P \equiv_{\alpha} Q
-	  }{
-	    P\equiv Q
-	  }$
-      \\
-      \end{tabular}
-      \\
-      \begin{tabular}{ll}
-      \\
-	  $\inferrule* [left=\bf{Cong1}]{
-	    P \equiv Q
-	  }{
-	    C[P] \equiv C[Q]
-	  }$
-	&
-	  $\inferrule* [left=\bf{Cong2}]{
-	    P_{1} \equiv Q_{1} 
-	  \\ 
-	    P_{2} \equiv Q_{2}
-	  \\
-	    C[\_,\_]\in\{\_+\_, \_|\_ \}
-	  }{
-	    C[P_{1}, P_{2}] \equiv C[Q_{1}, Q_{2}]
-	  }$
-      \\
-      \\\multicolumn{2}{l}{\line(1,0){415}}
-    \end{tabular}
-    \caption{Structural congruence axioms}
-    \label{structuralCongrunce}
-  \end{table}
-\end{definition}
-
-\begin{proposition}
-  $\equiv$ as defined in table \ref{structuralCongrunce} is a congruence and an equivalence relation.
-  \begin{proof}
-    $\equiv$ is a congruence thanks to rules $Cong1$ and $Cong2$. Reflexivity holds for rule $Alp$. Symmetry holds because all the rules are symmetric or have a symmetric counterpart. Transitivity holds because of rule $Trans$.
-  \end{proof}
-\end{proposition}
-
-\begin{lemma}\label{structuralCongrunceTransitivityElimination}
-  If $P \equiv Q$ then there is a proof of $P \equiv Q$ that does not use the rule $Trans$.
-\end{lemma}
-
 \begin{definition}
   $\twoheadrightarrow$ is the smallest relation induced by the all the rules in table \ref{multipisoloinputlatewith} except $Cong$. 
 \end{definition}
@@ -1746,7 +1666,7 @@ In the following section the symbol $\rightarrow$ will refer to the late semanti
 \end{proposition}
 
 
-\begin{lemma}[Inversion lemma for structural congruence]\label{inversionlemmamultiinplatewhith}
+\begin{lemma}[Inversion lemma for structural congruence]\label{inversionlemmamultiinplatewithh}
   :\begin{description}
     \item[$Output$]
       $\overline{x}y.P \equiv R$ then $R$ is in the form $\overline{x}y.S$ such that $P\equiv S$
@@ -2162,7 +2082,7 @@ Is this definition a proper extension of the one in \cite{parrow}? The only way 
 	  \item[$Out$]
 	    $\overline{x}y.P \xrightarrow{\overline{x}y} P$ and $\overline{x}y.Q \xrightarrow{\overline{x}y} Q$ and $P \dot{\sim} Q$
 	  \item[$Cong$]
-	    For lemma \ref{inversionlemmamultiinplatewhith} a process structurally congruent to $\overline{x}y.P$ must be in the form $\overline{x}y.R$ where $P \equiv R$ so $\overline{x}y.P \xrightarrow{\overline{x}y} R$.
+	    For lemma \ref{inversionlemmamultiinplatewithh} a process structurally congruent to $\overline{x}y.P$ must be in the form $\overline{x}y.R$ where $P \equiv R$ so $\overline{x}y.P \xrightarrow{\overline{x}y} R$.
 	\end{description}
     \begin{description}
       \item[Tau prefix] similar.
@@ -2409,7 +2329,9 @@ Is this definition a proper extension of the one in \cite{parrow}? The only way 
 		(\nu z)P \xrightarrow{\widetilde{x(y)}} P^{'}
 	      }$
 	    \end{center}
-	    so the proof goes on by cases on the last rule of the inference of $(\nu z)P \equiv R$ which bearing in mind lemma \ref{structuralCongrunceTransitivityElimination} can be:
+	    so the proof goes on by cases on the last rule of the inference of $(\nu z)P \equiv R$ which bearing in mind lemma 
+	    RICONTROLLARE LA DIMOSTRAZIONE PERCHE' IL LEMMA ERA FALSO!
+	    can be:
 	    \begin{description}
 	      \item[$ResCom$]
 		so arranging some names in order to make it look more clear, the last part of the inference is:

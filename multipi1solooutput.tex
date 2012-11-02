@@ -1,6 +1,6 @@
 
 \section{Syntax}
-As we did whit $\pi$ calculus, we suppose that we have a countable set of names $\mathbb{N}$, ranged over by lower case letters $a,b, \cdots, z$. This names are used for communication channels and values. Furthermore we have a set of identifiers, ranged over by $A$. We represent the agents or processes by upper case letters $P,Q, \cdots $. A multi $\pi$ process, in addiction to the same actions of a $\pi$ process, can perform also a strong prefix output:
+As we did with $\pi$ calculus, we suppose that we have a countable set of names $\mathbb{N}$, ranged over by lower case letters $a,b, \cdots, z$. This names are used for communication channels and values. Furthermore we have a set of identifiers, ranged over by $A$. We represent the agents or processes by upper case letters $P,Q, \cdots $. A multi $\pi$ process, in addiction to the same actions of a $\pi$ process, can perform also a strong prefix output:
 \begin{center}
   $\pi$ ::= $\overline{x}y$ | $x(z)$ | $\underline{\overline{x}y}$ | $\tau$ 
 \end{center}
@@ -2341,7 +2341,7 @@ where $stop(P)$ is a multi $\pi$ process which cannot make any transition.
 	)
 	| T$
   \end{center}
-  This transition is not what we want because now the scope of the inner $\nu x$ hides in $P$ the scope of the outer $\nu x$, so $P$ and $S$ cannot use $x$ to communicate. But whit the rules of table \ref{MultiOutScopeExtrusionRules} the following transition can be inferred:
+  This transition is not what we want because now the scope of the inner $\nu x$ hides in $P$ the scope of the outer $\nu x$, so $P$ and $S$ cannot use $x$ to communicate. But with the rules of table \ref{MultiOutScopeExtrusionRules} the following transition can be inferred:
   \begin{center}
     $(\nu x)(\underline{\overline{y}x}.\underline{\overline{a}b}.\underline{\overline{y}x}.\overline{a}b.P)
       | y(z).Q
