@@ -2485,7 +2485,7 @@ where $stop(P)$ is a multi $\pi$ process which cannot make any transition.
   The transition relation $\twoheadrightarrow_{E}$ is the smallest relation induced by the rules in table \ref{multipioutearlywithout} excluding the rule $Alp$, and in table \ref{MultiOutScopeExtrusionRules}.
 \end{definition}
 
-% \begin{lemma}\label{moveAlpDown}
+% \begin{lemma}\label{multipiOutMoveAlpDown}
 %   Let $T_{1}$ be a proof tree of $P \xrightarrow{\gamma} Q$ and let $\delta(T)$ be the depth of $T$ and suppose that we modify the rule $Opn$ in the following way:
 %   \begin{center}
 % 	  $\inferrule* [left=\bf{Opn}]{
@@ -2531,7 +2531,7 @@ but this does not hold because
 \end{center}
 
 So we have to use another proof technique:
-\begin{lemma}\label{moveAlpDown}
+\begin{lemma}\label{multipiOutMoveAlpDown}
   If $P \xrightarrow{\gamma} Q$ then $P\equiv_{\alpha}R \stackrel{\gamma}{\twoheadrightarrow} S\equiv_{\alpha}Q$.
 \end{lemma}
 
@@ -2871,7 +2871,7 @@ In the following section, $\rightarrow$ is the transition relation defined in ta
 	  \item[$OpnAlp$]
 	    
  	  \item[$Alp(1)$]
-	    let $(\nu x)P \xrightarrow{\gamma} P^{'}$, having in mind lemma \ref{moveAlpDown} 
+	    let $(\nu x)P \xrightarrow{\gamma} P^{'}$, having in mind lemma \ref{multipiOutMoveAlpDown} 
    	    \begin{center}
    	      $\inferrule* [left=\bf{Res}]{
    		  P \stackrel{\gamma}{\longtwoheadrightarrow} R^{'}
@@ -2887,7 +2887,7 @@ In the following section, $\rightarrow$ is the transition relation defined in ta
  	    \end{center}
  	    so $Res(\sim_{E})$ is a bisimulation up to $\alpha$ equivalence hence it is a bisimulation.
   	  \item[$Alp(2)$]:
- 	    let $(\nu x)P \xrightarrow{\gamma} P^{'}$, having in mind lemma \ref{moveAlpDown}:
+ 	    let $(\nu x)P \xrightarrow{\gamma} P^{'}$, having in mind lemma \ref{multipiOutMoveAlpDown}:
  	    \begin{center}
  	      $\inferrule* [left=\bf{Opn}]{
  		P \stackrel{\widetilde{\overline{a}b}}{\longtwoheadrightarrow} R^{'}
@@ -2987,7 +2987,7 @@ In the following section, $\rightarrow$ is the transition relation defined in ta
 % 		}$
 % 	    \end{center}
 %  	  \item[$Alp(3)$]:
-%  	    for lemma \ref{moveAlpDown}:
+%  	    for lemma \ref{multipiOutMoveAlpDown}:
 %  	    \begin{center}
 %  	      $\inferrule* [left=\bf{Alp}]{
 %  		  \inferrule* {
@@ -3036,7 +3036,7 @@ In the following section, $\rightarrow$ is the transition relation defined in ta
 %  		}$
 %  	    \end{center}
 % 	  \item[$Alp(4)$]:
-% 	    for lemma \ref{moveAlpDown}:
+% 	    for lemma \ref{multipiOutMoveAlpDown}:
 % 	    \begin{center}
 % 	      $\inferrule* [left=\bf{Alp}]{
 % 		  \inferrule* {
