@@ -1,0 +1,294 @@
+\section{Ultimo tentativo}
+
+\begin{definition}
+  \emph{structural congruence $\equiv$} is the smallest relation on processes that satisfies the axioms in table \ref{structuralCongrunce}
+  \begin{table}
+    \begin{tabular}{ll}
+      \multicolumn{2}{l}{\line(1,0){415}}\\
+	$\inferrule* [left=\bf{SumAsc1}]{
+	  P \equiv S
+	\\
+	  Q \equiv T
+	\\
+	  R \equiv U
+	}{
+	  P+(Q+R)\equiv (S+T)+U
+	}$ 
+      &
+	$\inferrule* [left=\bf{ParAsc1}]{
+	  P \equiv S
+	\\
+	  Q \equiv T
+	\\
+	  R \equiv U
+	}{
+	  P|(Q|R)\equiv (S|T)|U
+	}$ 
+      \\\\
+	$\inferrule* [left=\bf{SumAsc2}]{
+	  P \equiv S
+	\\
+	  Q \equiv T
+	\\
+	  R \equiv U
+	}{
+	  (P+Q)+R\equiv S+(T+U)
+	}$ 
+      &
+	$\inferrule* [left=\bf{ParAsc1}]{
+	  P \equiv S
+	\\
+	  Q \equiv T
+	\\
+	  R \equiv U
+	}{
+	  (P|Q)|R\equiv S|(T|U)
+	}$ 
+      \\
+      \end{tabular}
+      \\
+      \begin{tabular}{ll}
+      \\
+	$\inferrule* [left=\bf{ParCom}]{
+	  P\equiv S
+	\\
+	  Q\equiv T
+	}{
+	  P|Q\equiv T|S
+	}$ 
+	&
+	$\inferrule* [left=\bf{SumCom}]{
+	  P\equiv S
+	\\
+	  Q\equiv T
+	}{
+	  P+Q\equiv T+S
+	}$
+      \\
+      \end{tabular}
+      \\
+      \begin{tabular}{l}
+      \\
+	$\inferrule* [left=\bf{ScpExtPar1}]{
+	  z\notin fn(P)
+	\\
+	  P\equiv S
+	\\
+	  Q\equiv T
+	}{
+	  (\nu z) (P|Q) \equiv S|(\nu z) T
+	}$ 
+      \\
+	$\inferrule* [left=\bf{ScpExtPar2}]{
+	  z\notin fn(P)
+	\\
+	  P\equiv S
+	\\
+	  Q\equiv T
+	}{
+	  P|(\nu z) Q \equiv (\nu z) (S|T)
+	}$ 
+      \\
+	  $\inferrule* [left=\bf{ScpExtSum1}]{
+	    z\notin fn(P)
+	  \\
+	    P\equiv S
+	  \\
+	    Q\equiv T
+	  }{(\nu z) (P+Q) \equiv S+(\nu z) T
+	  }$ 
+	\\
+	  $\inferrule* [left=\bf{ScpExtSum2}]{
+	    z\notin fn(P)
+	  \\
+	    P\equiv S
+	  \\
+	    Q\equiv T
+	  }{
+	    P+(\nu z) Q \equiv (\nu z) (S+T)
+	  }$ 
+      \\
+      \end{tabular}
+      \\
+      \begin{tabular}{lll}
+      \\
+	  regola $Ide$ da rimuovere
+	&
+	$\inferrule* [left=\bf{ResCom}]{
+	  P \equiv S
+	}{
+	  (\nu x) (\nu y) P \equiv (\nu y) (\nu x) S
+	}$ 
+	&
+	  $\inferrule* [left=\bf{Alp}] {
+	    P \equiv_{\alpha} Q
+	  }{
+	    P\equiv Q
+	  }$
+      \\
+      \end{tabular}
+      \\
+      \begin{tabular}{ll}
+      \\
+	  $\inferrule* [left=\bf{Cong1}]{
+	    P \equiv S
+	  }{
+	    C[P] \equiv C[S]
+	  }$
+	&
+	  $\inferrule* [left=\bf{Cong2}]{
+	    P \equiv S 
+	  \\ 
+	    Q \equiv T
+	  \\
+	    C[\_,\_]\in\{\_+\_, \_|\_ \}
+	  }{
+	    C[P, Q] \equiv C[S, T]
+	  }$
+      \\
+      \\\multicolumn{2}{l}{\line(1,0){415}}
+    \end{tabular}
+    \caption{Structural congruence rules}
+    \label{structuralCongrunce2}
+  \end{table}
+\end{definition}
+
+\begin{lemma}
+  Structural congruence is symmetric.
+  \begin{proof}
+    Each rule is symmetric or it has a symmetric counterpart.
+  \end{proof}
+\end{lemma}
+
+\begin{lemma}
+  Structural congruence is transitive.
+  \begin{proof}
+    The proof is an induction on the sum of the sizes of the derivation of $A\equiv B$ and of $B\equiv C$. We have various case to consider according to the last rule pair of rule used. For symmetry if we deal with a case then we do not need to deal with the symmetric case.
+    \begin{description}
+      \item[$(SumAsc1, SumAsc2)$]
+      \item[$(SumAsc1, SumCom)$]
+      \item[$(SumAsc1, ScpExtSum2)$]
+      \item[$(SumAsc1, Cong2)$]
+      \item[$(SumAsc1, Alp)$]
+
+      \item[$(SumAsc2, SumAsc1)$]
+      \item[$(SumAsc2, SumCom)$]
+      \item[$(SumAsc2, ScpExtSum2)$]
+      \item[$(SumAsc2, Cong2)$]
+      \item[$(SumAsc2, Alp)$]
+
+      \item[$(ParAsc1, ParAsc2)$]
+      \item[$(ParAsc1, ParCom)$]
+      \item[$(ParAsc1, ScpExtPar2)$]
+      \item[$(ParAsc1, Cong2)$]
+      \item[$(ParAsc1, Alp)$]
+
+      \item[$(ParAsc2, ParAsc1)$]
+      \item[$(ParAsc2, ParCom)$]
+      \item[$(ParAsc2, ScpExtPar2)$]
+      \item[$(ParAsc2, Cong2)$]
+      \item[$(ParAsc2, Alp)$]
+
+      \item[$(ParCom, ParAsc1)$] symmetric to a previous case.
+      \item[$(ParCom, ParAsc2)$] symmetric to a previous case.
+      \item[$(ParCom, ParCom)$]
+      \item[$(ParCom, ScpExtPar2)$]
+      \item[$(ParCom, Cong2)$]
+      \item[$(ParCom, Alp)$]
+      
+      \item[$(SumCom, SumAsc1)$] symmetric to a previous case.
+      \item[$(SumCom, SumAsc2)$] symmetric to a previous case.
+      \item[$(SumCom, SumCom)$]
+      \item[$(SumCom, ScpExtSum2)$]
+      \item[$(SumCom, Cong2)$]
+      \item[$(SumCom, Alp)$]
+
+      \item[$(ResCom, ResCom)$]
+      \item[$(ResCom, ScpExtPar1)$]
+      \item[$(ResCom, ScpExtSum1)$]
+      \item[$(ResCom, Cong2)$]
+      \item[$(ResCom, Alp)$]
+
+      \item[$(ScpExtPar1, ParAsc1)$] symmetric to a previous case.
+      \item[$(ScpExtPar1, ParAsc2)$] symmetric to a previous case.
+      \item[$(ScpExtPar1, ScpExtPar2)$] 
+      \item[$(ScpExtPar1, Cong2)$]
+      \item[$(ScpExtPar1, Alp)$]
+
+      \item[$(ScpExtSum1, SumAsc1)$] symmetric to a previous case.
+      \item[$(ScpExtSum1, SumAsc2)$] symmetric to a previous case.
+      \item[$(ScpExtSum1, ScpExtSum2)$] 
+      \item[$(ScpExtSum1, Cong2)$]
+      \item[$(ScpExtSum1, Alp)$]
+
+      \item[$(ScpExtPar2, ParAsc1)$] symmetric to a previous case.
+      \item[$(ScpExtPar2, ParAsc2)$] symmetric to a previous case.
+      \item[$(ScpExtPar2, ScpExtPar1)$] 
+      \item[$(ScpExtPar2, Cong2)$]
+      \item[$(ScpExtPar2, Alp)$]
+
+      \item[$(ScpExtSum2, SumAsc1)$] symmetric to a previous case.
+      \item[$(ScpExtSum2, SumAsc2)$] symmetric to a previous case.
+      \item[$(ScpExtSum2, ScpExtSum1)$] 
+      \item[$(ScpExtSum2, Cong2)$]
+      \item[$(ScpExtSum2, Alp)$]
+
+      \item[$(Alp, ParAsc1)$] symmetric to a previous case.
+      \item[$(Alp, ParAsc2)$] symmetric to a previous case.
+      \item[$(Alp, SumAsc1)$] symmetric to a previous case.
+      \item[$(Alp, SumAsc2)$] symmetric to a previous case.
+      \item[$(Alp, ParCom)$] symmetric to a previous case.
+      \item[$(Alp, SumCom)$] symmetric to a previous case.
+      \item[$(Alp, ResCom)$] symmetric to a previous case.
+      \item[$(Alp, ScpExtPar1)$] symmetric to a previous case.
+      \item[$(Alp, ScpExtPar2)$] symmetric to a previous case.
+      \item[$(Alp, ScpExtSum1)$] symmetric to a previous case.
+      \item[$(Alp, ScpExtSum2)$] symmetric to a previous case.
+      \item[$(Alp, Cong1)$] 
+      \item[$(Alp, Cong2)$] 
+      \item[$(Alp, Alp)$] 
+
+      \item[$(Cong1, ParAsc1)$] symmetric to a previous case.
+      \item[$(Cong1, ParAsc2)$] symmetric to a previous case.
+      \item[$(Cong1, SumAsc1)$] symmetric to a previous case.
+      \item[$(Cong1, SumAsc2)$] symmetric to a previous case.
+      \item[$(Cong1, ParCom)$] symmetric to a previous case.
+      \item[$(Cong1, SumCom)$] symmetric to a previous case.
+      \item[$(Cong1, ResCom)$] symmetric to a previous case.
+      \item[$(Cong1, ScpExtPar1)$] symmetric to a previous case.
+      \item[$(Cong1, ScpExtPar2)$] symmetric to a previous case.
+      \item[$(Cong1, ScpExtSum1)$] symmetric to a previous case.
+      \item[$(Cong1, ScpExtSum2)$] symmetric to a previous case.
+      \item[$(Cong1, Cong1)$] 
+      \item[$(Cong1, Cong2)$] 
+      \item[$(Cong1, Alp)$] symmetric to a previous case.
+
+      \item[$(Cong2, ParAsc1)$] symmetric to a previous case.
+      \item[$(Cong2, ParAsc2)$] symmetric to a previous case.
+      \item[$(Cong2, SumAsc1)$] symmetric to a previous case.
+      \item[$(Cong2, SumAsc2)$] symmetric to a previous case.
+      \item[$(Cong2, ParCom)$] symmetric to a previous case.
+      \item[$(Cong2, SumCom)$] symmetric to a previous case.
+      \item[$(Cong2, ResCom)$] symmetric to a previous case.
+      \item[$(Cong2, ScpExtPar1)$] symmetric to a previous case.
+      \item[$(Cong2, ScpExtPar2)$] symmetric to a previous case.
+      \item[$(Cong2, ScpExtSum1)$] symmetric to a previous case.
+      \item[$(Cong2, ScpExtSum2)$] symmetric to a previous case.
+      \item[$(Cong2, Cong1)$] symmetric to a previous case.
+      \item[$(Cong2, Cong2)$] 
+      \item[$(Cong2, Alp)$] symmetric to a previous case.
+
+    \end{description}
+  \end{proof}
+\end{lemma}
+
+
+\begin{theorem}
+  $P \xrightarrow{\alpha}_{3} Q$ imply $P \xrightarrow{\alpha}_{2} R\equiv Q$
+  \begin{proof}
+    $P \xrightarrow{\alpha}_{3} Q$ imply $P\equiv S \stackrel{\alpha}{\twoheadrightarrow} Q$. The proof is an induction on the proof trees of $P\equiv S$ and $S \stackrel{\alpha}{\twoheadrightarrow} Q$:
+    \begin{description}
+      \item[]
+    \end{description}
+  \end{proof}
+\end{theorem}
