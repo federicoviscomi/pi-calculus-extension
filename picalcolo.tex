@@ -1031,7 +1031,7 @@ We can make some clarification on the axioms of the structural congruence:
   \item[$unfolding$] 
     this just helps replace an identifier by its definition, with the appropriate parameter instantiation. The alternative is to use the rule $Cns$ in table \ref{transitionrelationearlywithoutstructuralcongruence}.
   \item[$\alpha\; conversion$]
-    is the $\alpha$ conversion, i.e., the choice of bound names, it identifies agents like $x(y).\overline{z}y$ and $x(w).\overline{z}w$. In the semantic of $\pi$ calculus we can use the structural congruence with the rule SC-ALP or we can embed the $\alpha$ conversion in the SOS rules. 
+    is the $\alpha$ conversion, i.e., the choice of bound names, it identifies agents like $x(y).\overline{z}y$ and $x(w).\overline{z}w$. In the semantic of $\pi$ calculus we can use the structural congruence with the rule $Alp$ or we can embed the $\alpha$ conversion in the SOS rules. 
     In the early case, the rule for input and the rules $ResAlp1, OpnAlp, Cns$ take care of $\alpha$ conversion, whether in the late case the rule for communication and the rules is $ResAlp1, OpnAlp, Cns$ are in charge for $\alpha$ conversion.
   \item[$abelian\; monoidal\; properties\; of\; some\; operators$]
     We can deal with associativity and commutativity properties of sum and parallel composition by using SOS rules or by axiom of the structural congruence. For example the commutativity of the sum can be expressed by the following two rules:
@@ -1062,7 +1062,7 @@ We can make some clarification on the axioms of the structural congruence:
 	    $P+Q \xrightarrow{\alpha} P^{'}$
 	  \end{tabular}
 	 &
-	 \bf{SC-SUM}
+	 \bf{SumCom}
 	   \begin{tabular}{c}
 	    $P+Q \equiv Q+P$
 	   \end{tabular}
@@ -1170,10 +1170,10 @@ We can make some clarification on the axioms of the structural congruence:
   \end{proof}
 \end{lemma}
 
-\begin{lemma}\label{alphaequivalencecommutativity}
-  $x\notin n(P)$, $y\in fn(P)$, $a\in fn(P)$ imply $P\{x/y\}\{b/a\}\equiv_{\alpha}P\{b/a\}\{x/y\}$ 
-\end{lemma}
 
+\begin{lemma}\label{alphaequivalenceSubstitutionInversion}
+  $P \equiv_{\alpha} P\{a/b\}\{b/a\}$
+\end{lemma}
 
 
 \begin{lemma}\label{alphaequivalencesubstitution}
@@ -1200,347 +1200,347 @@ We can make some clarification on the axioms of the structural congruence:
     \\
     \end{tabular}
   \end{center}
-  \begin{proof}:
-    If $a$ and $b$ are the same name then the substitution has no effect and the lemma holds. Otherwise:
-    \begin{center}
-      \begin{tabular}{ll}
-	&lemma hypothesis\\
-	$P \equiv_{\alpha} Q$&lemma \ref{alphaequivalentsamefreenames}\\
-	$\Rightarrow fn(P) = fn(Q)$&\\
-	$\Rightarrow a\notin fn(P) \wedge a\notin fn(Q)$ or $a\in fn(P) \wedge a\in fn(Q)$&\\
-      \end{tabular}
-    \end{center}
-    In the former case $a$ is not a free name in $P$ and $Q$ so the substitutions have no effects and the lemma holds. In the latter case $a$ is a free names in both processes: the proof goes by induction on the length of the proof tree of $P\equiv_{\alpha}Q$ and then by cases on the last rule of the proof tree. Let $x,y,a$ and $b$ be pairwise different.
-    \begin{description}
-      \item[$AlpZero,\; AlpIde$] 
-	The length of the proof is one and the rule used can be only: $AlpZero$ or $AlpIde$: the lemma holds because $P$ and $Q$ are syntacticly the same process.
-      \item[$AlpTau$]:
-	    \begin{center}
-	      \begin{tabular}{ll}
-		&rule premise\\
-		$P_{1}\equiv_{\alpha}Q_{1}$&inductive hypothesis\\
-		$\Rightarrow P_{1}\{b/a\}\equiv_{\alpha}Q_{1}\{b/a\}$&rule $AlpTau$\\
-		$\Rightarrow \tau.(P_{1}\{b/a\})\equiv_{\alpha}\tau.(Q_{1}\{b/a\}) $&definition of substitution\\
-		$\Rightarrow (\tau.P_{1})\{b/a\}\equiv_{\alpha}(\tau.Q_{1})\{b/a\} $&\\
-	      \end{tabular}
-	    \end{center}
-      \item[$AlpSum$]:
-	    \begin{center}
-	      \begin{tabular}{ll}
-		&rule premises\\
-		$P_{1}\equiv Q_{1}$ and $P_{2}\equiv Q_{2}$&inductive hypothesis\\
-		$\Rightarrow P_{1}\{b/a\}\equiv Q_{1}\{b/a\}$ and $P_{2}\{b/a\}\equiv Q_{2}\{b/a\}$&rule $AlpSum$\\
-		$\Rightarrow P_{1}\{b/a\}+P_{2}\{b/a\}\equiv Q_{1}\{b/a\}+Q_{2}\{b/a\} $&definition of substitution\\
-		$\Rightarrow (P_{1}+P_{2})\{b/a\}\equiv_{\alpha}(Q_{1}+Q_{2})\{b/a\} $&\\
-	      \end{tabular}
-	    \end{center}
-      \item[$AlpPar$]:
-	    this case is very similar to the previous one.
-      \item[$AlpOut$]:
-	    \begin{center}
-	      \begin{tabular}{ll}
-		&rule premise\\
-		$P_{1}\equiv_{\alpha}Q_{1}$&inductive hypothesis\\
-		$\Rightarrow P_{1}\{b/a\}\equiv_{\alpha}Q_{1}\{b/a\}$&rule $AlpOut$\\
-		$\Rightarrow \overline{x}\{b/a\}y\{b/a\}.P_{1}\{b/a\}\equiv_{\alpha}\overline{x}\{b/a\}y\{b/a\}.Q_{1}\{b/a\} $&definition of substitution\\
-		$\Rightarrow (\overline{x}y.P_{1})\{b/a\}\equiv_{\alpha}(\overline{x}y.Q_{1})\{b/a\} $&\\
-	      \end{tabular}
-	    \end{center}
-      \item[$AlpInp$]:
-	    \begin{center}
-	      \begin{tabular}{ll}
-		  &
-		    rule premise
-		\\
-		    $P_{1}\equiv_{\alpha}Q_{1}$
-		  &
-		    inductive hypothesis
-		\\
-		    $\Rightarrow P_{1}\{b/a\}\equiv_{\alpha}Q_{1}\{b/a\}$
-		  &
-		    rule $AlpInp$
-		\\
-		    $\Rightarrow x\{b/a\}(y).P_{1}\{b/a\}\equiv_{\alpha}x\{b/a\}(y).Q_{1}\{b/a\} $
-		  &
-		    definition of substitution
-		\\
-		    $\Rightarrow (x(y).P_{1})\{b/a\}\equiv_{\alpha}(x(y).Q_{1})\{b/a\} $
-		  &
-		\\
-	      \end{tabular}
-	    \end{center}	    	    
- 	    \begin{center}
- 	      \begin{tabular}{ll}
- 		&rule premise\\
- 		$P_{1}\equiv_{\alpha}Q_{1}$&rule $AlpInp$\\
- 		$\Rightarrow b(a).P_{1}\equiv_{\alpha}b(a).Q_{1} $&definition of substitution\\
- 		$\Rightarrow a\{b/a\}(a).P_{1}\equiv_{\alpha}a\{b/a\}(a).Q_{1} $&definition of substitution\\
- 		$\Rightarrow (a(a).P_{1})\{b/a\}\equiv_{\alpha}(a(a).Q_{1})\{b/a\} $&\\
- 	      \end{tabular}
- 	    \end{center}	    	    
-	    \begin{center}
-	      \begin{tabular}{ll}
-		&rule premise\\
-		$P_{1}\equiv_{\alpha}Q_{1}$&inductive hypothesis\\
-		$\Rightarrow P_{1}\{b/a\}\equiv_{\alpha}Q_{1}\{b/a\} $&rule $AlpInp$\\
-		$\Rightarrow b\{b/a\}(x).(P_{1}\{b/a\})\equiv_{\alpha}b\{b/a\}(x).(Q_{1}\{b/a\}) $&definition of substitution\\
-		$\Rightarrow (b(x).P_{1})\{b/a\}\equiv_{\alpha}(b(x).Q_{1})\{b/a\} $&\\
-	      \end{tabular}
-	    \end{center}	    	    
-      \item[$AlpInp1$]:
-% 	    we have various cases:
-% 	    \begin{itemize}
-% 	      \item 
-% 		the last part of the proof tree of $P\equiv_{\alpha}Q$ is
-% 		\[\inferrule*[left=AlpInp1]{
-% 		    P_{1}\equiv_{\alpha}Q_{1}\{x/y\}
-% 		  \\
-% 		    x\neq y	      
-% 		  \\
-% 		    x\notin n(Q_{1})
-% 		  \\
-% 		    y\in fn(Q_{1})
-% 		}{
-% 		  \underbrace{z(x).P_{1}}_{P}
-% 		    \equiv_{\alpha}
-% 		      \underbrace{z(y).Q_{1}}_{Q}
-% 		}\]
-% 		\begin{center}
-% 		  \begin{tabular}{ll}
-% 		      &
-% 		    rule premise
-% 		  \\
-% 		    $P_{1}\equiv_{\alpha}Q_{1}\{x/y\}$ and $x\notin fn(Q_{1})$ 
-% 		      &
-% 		    inductive hypothesis
-% 		  \\
-% 		    $\Rightarrow P_{1}\{b/a\}\equiv_{\alpha}Q_{1}\{x/y\}\{b/a\}$
-% 		      &
-% 		    transitivity and lemma \ref{alphaequivalencecommutativity}
-% 		  \\
-% 		    $\Rightarrow P_{1}\{b/a\}\equiv_{\alpha}Q_{1}\{b/a\}\{x/y\}$
-% 		      &
-% 		    rule $AlpInp1$
-% 		  \\
-% 		    $\Rightarrow z(x).(P_{1}\{b/a\})\equiv_{\alpha}z(y).(Q_{1}\{b/a\})$
-% 		      &
-% 		    definition of substitution
-% 		  \\
-% 		    $\Rightarrow (z(x).P_{1})\{b/a\}\equiv_{\alpha}(z(y).Q_{1})\{b/a\}$
-% 		      &
-% 		    
-% 		  \\
-% 		  \end{tabular}
-% 		\end{center}	    	
-% 	      \item 
-% 		the last part of the proof tree of $P\equiv_{\alpha}Q$ is
-% 		\[\inferrule*[left=AlpInp1]{
-% 		    P_{1}\equiv_{\alpha}Q_{1}\{x/y\}
-% 		  \\
-% 		    x\neq y	      
-% 		  \\
-% 		    x\notin fn(Q_{1})
-% 		}{
-% 		  \underbrace{b(x).P_{1}}_{P}
-% 		    \equiv_{\alpha}
-% 		      \underbrace{b(y).Q_{1}}_{Q}
-% 		}\]
-% 		\begin{center}
-% 		  \begin{tabular}{ll}
-% 		      &
-% 		    rule premise
-% 		  \\
-% 		    $P_{1}\equiv_{\alpha}Q_{1}\{x/y\}$ and $x\notin fn(Q_{1})$ 
-% 		      &
-% 		    inductive hypothesis
-% 		  \\
-% 		    $\Rightarrow P_{1}\{b/a\}\equiv_{\alpha}Q_{1}\{x/y\}\{b/a\}$
-% 		      &
-% 		    transitivity and lemma \ref{alphaequivalencecommutativity}
-% 		  \\
-% 		    $\Rightarrow P_{1}\{b/a\}\equiv_{\alpha}Q_{1}\{b/a\}\{x/y\}$
-% 		      &
-% 		    rule $AlpInp1$
-% 		  \\
-% 		    $\Rightarrow b(x).(P_{1}\{b/a\})\equiv_{\alpha}b(y).(Q_{1}\{b/a\})$
-% 		      &
-% 		    definition of substitution
-% 		  \\
-% 		    $\Rightarrow (b(x).P_{1})\{b/a\}\equiv_{\alpha}(b(y).Q_{1})\{b/a\}$
-% 		      &
-% 		    
-% 		  \\
-% 		  \end{tabular}
-% 		\end{center}	    	
-% 	      \item 
-% 		the last part of the proof tree of $P\equiv_{\alpha}Q$ is
-% 		\[\inferrule*[left=AlpInp1]{
-% 		    P_{1}\equiv_{\alpha}Q_{1}\{x/y\}
-% 		  \\
-% 		    x\neq y	      
-% 		  \\
-% 		    x\notin fn(Q_{1})
-% 		}{
-% 		  \underbrace{a(x).P_{1}}_{P}
-% 		    \equiv_{\alpha}
-% 		      \underbrace{a(y).Q_{1}}_{Q}
-% 		}\]
-% 		\begin{center}
-% 		  \begin{tabular}{ll}
-% 		      &
-% 		    rule premise
-% 		  \\
-% 		    $P_{1}\equiv_{\alpha}Q_{1}\{x/y\}$ and $x\notin fn(Q_{1})$ 
-% 		      &
-% 		    inductive hypothesis
-% 		  \\
-% 		    $\Rightarrow P_{1}\{b/a\}\equiv_{\alpha}Q_{1}\{x/y\}\{b/a\}$
-% 		      &
-% 		    transitivity and lemma \ref{alphaequivalencecommutativity}
-% 		  \\
-% 		    $\Rightarrow P_{1}\{b/a\}\equiv_{\alpha}Q_{1}\{b/a\}\{x/y\}$
-% 		      &
-% 		    rule $AlpInp1$
-% 		  \\
-% 		    $\Rightarrow a(x).(P_{1}\{b/a\})\equiv_{\alpha}a(y).(Q_{1}\{b/a\})$
-% 		      &
-% 		    definition of substitution
-% 		  \\
-% 		    $\Rightarrow (a(x).P_{1})\{b/a\}\equiv_{\alpha}(a(y).Q_{1})\{b/a\}$
-% 		      &
-% 		    
-% 		  \\
-% 		  \end{tabular}
-% 		\end{center}	    	
-% 	      \item 
-% 		the last part of the proof tree of $P\equiv_{\alpha}Q$ is
-% 		\[\inferrule*[left=AlpInp1]{
-% 		    P_{1}\equiv_{\alpha}Q_{1}\{a/y\}
-% 		  \\
-% 		    a\neq y	      
-% 		  \\
-% 		    a\notin fn(Q_{1})
-% 		}{
-% 		  \underbrace{a(a).P_{1}}_{P}
-% 		    \equiv_{\alpha}
-% 		      \underbrace{a(y).Q_{1}}_{Q}
-% 		}\]
-% 		\begin{center}
-% 		  \begin{tabular}{ll}
-% 		      &
-% 		    rule premise
-% 		  \\
-% 		    $P_{1}\equiv_{\alpha}Q_{1}\{a/y\}$ and $x\notin fn(Q_{1})$ 
-% 		      &
-% 		    inductive hypothesis
-% 		  \\
-% 		    $\Rightarrow P_{1}\{b/a\}\equiv_{\alpha}Q_{1}\{a/y\}\{b/a\}$
-% 		      &
-% 		    transitivity and lemma \ref{alphaequivalencecommutativity}
-% 		  \\
-% 		    $\Rightarrow P_{1}\{b/a\}\equiv_{\alpha}Q_{1}\{b/a\}\{a/y\}$
-% 		      &
-% 		    rule $AlpInp1$
-% 		  \\
-% 		    $\Rightarrow a(a).(P_{1}\{b/a\})\equiv_{\alpha}a(y).(Q_{1}\{b/a\})$
-% 		      &
-% 		    definition of substitution
-% 		  \\
-% 		    $\Rightarrow (a(a).P_{1})\{b/a\}\equiv_{\alpha}(a(y).Q_{1})\{b/a\}$
-% 		      &
-% 		    
-% 		  \\
-% 		  \end{tabular}
-% 		\end{center}	    	
-% 	      \item 
-% 		the last part of the proof tree of $P\equiv_{\alpha}Q$ is
-% 		\[\inferrule*[left=AlpInp1]{
-% 		    P_{1}\equiv_{\alpha}Q_{1}\{x/a\}
-% 		  \\
-% 		    x\neq a
-% 		  \\
-% 		    x\notin fn(Q_{1})
-% 		}{
-% 		  \underbrace{a(x).P_{1}}_{P}
-% 		    \equiv_{\alpha}
-% 		      \underbrace{a(a).Q_{1}}_{Q}
-% 		}\]
-% 		\begin{center}
-% 		  \begin{tabular}{ll}
-% 		      &
-% 		    rule premise
-% 		  \\
-% 		    $P_{1}\equiv_{\alpha}Q_{1}\{x/a\}$ and $x\notin fn(Q_{1})$ 
-% 		      &
-% 		    inductive hypothesis
-% 		  \\
-% 		    $\Rightarrow P_{1}\{b/a\}\equiv_{\alpha}Q_{1}\{x/a\}\{b/a\}$
-% 		      &
-% 		    transitivity and lemma \ref{alphaequivalencecommutativity}
-% 		  \\
-% 		    $\Rightarrow P_{1}\{b/a\}\equiv_{\alpha}Q_{1}\{b/a\}\{x/a\}$
-% 		      &
-% 		    rule $AlpInp1$
-% 		  \\
-% 		    $\Rightarrow a(x).(P_{1}\{b/a\})\equiv_{\alpha}a(a).(Q_{1}\{b/a\})$
-% 		      &
-% 		    definition of substitution
-% 		  \\
-% 		    $\Rightarrow (a(x).P_{1})\{b/a\}\equiv_{\alpha}(a(a).Q_{1})\{b/a\}$
-% 		      &		    
-% 		  \\
-% 		  \end{tabular}
-% 		\end{center}	    	
-% 	      \item mancano x x y e x y x
-% 	    \end{itemize}
-	  \item[$AlpRes$]:
-	    \begin{center}
-	      \begin{tabular}{ll}
-		&rule premise\\
-		$P_{1}\equiv_{\alpha}Q_{1}$&inductive hypothesis\\
-		$\Rightarrow P_{1}\{b/a\}\equiv_{\alpha}Q_{1}\{b/a\}$&rule $AlpRes$\\
-		$\Rightarrow (\nu x)(P_{1}\{b/a\})\equiv_{\alpha}(\nu x)(Q_{1}\{b/a\}) $&definition of substitution\\
-		$\Rightarrow ((\nu x)P_{1})\{b/a\}\equiv_{\alpha}((\nu x)Q_{1})\{b/a\} $&\\
-	      \end{tabular}
-	    \end{center}	    	    
-      \item[$AlpRes1$]:
-% 	    \[\inferrule*[left=AlpRes1]{
-% 		P_{1}\equiv_{\alpha}Q_{1}\{x/y\}
-% 	      \\
-% 		x\neq y
-% 	      \\
-% 		x\notin fn(Q_{1})
-% 	    }{
-% 	      \underbrace{(\nu x)P_{1}}_{P}\equiv_{\alpha}\underbrace{(\nu y)Q_{1}}_{Q}
-% 	    }\]
+%   \begin{proof}:
+%     If $a$ and $b$ are the same name then the substitution has no effect and the lemma holds. Otherwise:
+%     \begin{center}
+%       \begin{tabular}{ll}
+% 	&lemma hypothesis\\
+% 	$P \equiv_{\alpha} Q$&lemma \ref{alphaequivalentsamefreenames}\\
+% 	$\Rightarrow fn(P) = fn(Q)$&\\
+% 	$\Rightarrow a\notin fn(P) \wedge a\notin fn(Q)$ or $a\in fn(P) \wedge a\in fn(Q)$&\\
+%       \end{tabular}
+%     \end{center}
+%     In the former case $a$ is not a free name in $P$ and $Q$ so the substitutions have no effects and the lemma holds. In the latter case $a$ is a free names in both processes: the proof goes by induction on the length of the proof tree of $P\equiv_{\alpha}Q$ and then by cases on the last rule of the proof tree. Let $x,y,a$ and $b$ be pairwise different.
+%     \begin{description}
+%       \item[$AlpZero,\; AlpIde$] 
+% 	The length of the proof is one and the rule used can be only: $AlpZero$ or $AlpIde$: the lemma holds because $P$ and $Q$ are syntacticly the same process.
+%       \item[$AlpTau$]:
+% 	    \begin{center}
+% 	      \begin{tabular}{ll}
+% 		&rule premise\\
+% 		$P_{1}\equiv_{\alpha}Q_{1}$&inductive hypothesis\\
+% 		$\Rightarrow P_{1}\{b/a\}\equiv_{\alpha}Q_{1}\{b/a\}$&rule $AlpTau$\\
+% 		$\Rightarrow \tau.(P_{1}\{b/a\})\equiv_{\alpha}\tau.(Q_{1}\{b/a\}) $&definition of substitution\\
+% 		$\Rightarrow (\tau.P_{1})\{b/a\}\equiv_{\alpha}(\tau.Q_{1})\{b/a\} $&\\
+% 	      \end{tabular}
+% 	    \end{center}
+%       \item[$AlpSum$]:
+% 	    \begin{center}
+% 	      \begin{tabular}{ll}
+% 		&rule premises\\
+% 		$P_{1}\equiv Q_{1}$ and $P_{2}\equiv Q_{2}$&inductive hypothesis\\
+% 		$\Rightarrow P_{1}\{b/a\}\equiv Q_{1}\{b/a\}$ and $P_{2}\{b/a\}\equiv Q_{2}\{b/a\}$&rule $AlpSum$\\
+% 		$\Rightarrow P_{1}\{b/a\}+P_{2}\{b/a\}\equiv Q_{1}\{b/a\}+Q_{2}\{b/a\} $&definition of substitution\\
+% 		$\Rightarrow (P_{1}+P_{2})\{b/a\}\equiv_{\alpha}(Q_{1}+Q_{2})\{b/a\} $&\\
+% 	      \end{tabular}
+% 	    \end{center}
+%       \item[$AlpPar$]:
+% 	    this case is very similar to the previous one.
+%       \item[$AlpOut$]:
+% 	    \begin{center}
+% 	      \begin{tabular}{ll}
+% 		&rule premise\\
+% 		$P_{1}\equiv_{\alpha}Q_{1}$&inductive hypothesis\\
+% 		$\Rightarrow P_{1}\{b/a\}\equiv_{\alpha}Q_{1}\{b/a\}$&rule $AlpOut$\\
+% 		$\Rightarrow \overline{x}\{b/a\}y\{b/a\}.P_{1}\{b/a\}\equiv_{\alpha}\overline{x}\{b/a\}y\{b/a\}.Q_{1}\{b/a\} $&definition of substitution\\
+% 		$\Rightarrow (\overline{x}y.P_{1})\{b/a\}\equiv_{\alpha}(\overline{x}y.Q_{1})\{b/a\} $&\\
+% 	      \end{tabular}
+% 	    \end{center}
+%       \item[$AlpInp$]:
 % 	    \begin{center}
 % 	      \begin{tabular}{ll}
 % 		  &
-% 		    rule premises
+% 		    rule premise
 % 		\\
-% 		    $P_{1}\equiv_{\alpha}Q_{1}\{x/y\}$ and $x\neq y$ and $x\notin fn(Q_{1})$
+% 		    $P_{1}\equiv_{\alpha}Q_{1}$
 % 		  &
 % 		    inductive hypothesis
 % 		\\
-% 		    $P_{1}\{b/a\}\equiv_{\alpha} Q_{1}\{x/y\}\{b/a\}$
+% 		    $\Rightarrow P_{1}\{b/a\}\equiv_{\alpha}Q_{1}\{b/a\}$
 % 		  &
-% 		    lemma \ref{alphaequivalencecommutativity} and transitivity
+% 		    rule $AlpInp$
 % 		\\
-% 		    $P_{1}\{b/a\}\equiv_{\alpha} Q_{1}\{b/a\}\{x/y\}$
-% 		  &
-% 		    rule $AlpRes1$
-% 		\\
-% 		    $(\nu x)(P_{1}\{b/a\})\equiv_{\alpha} (\nu y)(Q_{1}\{b/a\})$
+% 		    $\Rightarrow x\{b/a\}(y).P_{1}\{b/a\}\equiv_{\alpha}x\{b/a\}(y).Q_{1}\{b/a\} $
 % 		  &
 % 		    definition of substitution
 % 		\\
-% 		    $((\nu x)P_{1})\{b/a\}\equiv_{\alpha} ((\nu y)Q_{1})\{b/a\}$
+% 		    $\Rightarrow (x(y).P_{1})\{b/a\}\equiv_{\alpha}(x(y).Q_{1})\{b/a\} $
 % 		  &
 % 		\\
 % 	      \end{tabular}
-% 	    \end{center}
-    \end{description}
-  \end{proof}
+% 	    \end{center}	    	    
+%  	    \begin{center}
+%  	      \begin{tabular}{ll}
+%  		&rule premise\\
+%  		$P_{1}\equiv_{\alpha}Q_{1}$&rule $AlpInp$\\
+%  		$\Rightarrow b(a).P_{1}\equiv_{\alpha}b(a).Q_{1} $&definition of substitution\\
+%  		$\Rightarrow a\{b/a\}(a).P_{1}\equiv_{\alpha}a\{b/a\}(a).Q_{1} $&definition of substitution\\
+%  		$\Rightarrow (a(a).P_{1})\{b/a\}\equiv_{\alpha}(a(a).Q_{1})\{b/a\} $&\\
+%  	      \end{tabular}
+%  	    \end{center}	    	    
+% 	    \begin{center}
+% 	      \begin{tabular}{ll}
+% 		&rule premise\\
+% 		$P_{1}\equiv_{\alpha}Q_{1}$&inductive hypothesis\\
+% 		$\Rightarrow P_{1}\{b/a\}\equiv_{\alpha}Q_{1}\{b/a\} $&rule $AlpInp$\\
+% 		$\Rightarrow b\{b/a\}(x).(P_{1}\{b/a\})\equiv_{\alpha}b\{b/a\}(x).(Q_{1}\{b/a\}) $&definition of substitution\\
+% 		$\Rightarrow (b(x).P_{1})\{b/a\}\equiv_{\alpha}(b(x).Q_{1})\{b/a\} $&\\
+% 	      \end{tabular}
+% 	    \end{center}	    	    
+%       \item[$AlpInp1$]:
+% % 	    we have various cases:
+% % 	    \begin{itemize}
+% % 	      \item 
+% % 		the last part of the proof tree of $P\equiv_{\alpha}Q$ is
+% % 		\[\inferrule*[left=AlpInp1]{
+% % 		    P_{1}\equiv_{\alpha}Q_{1}\{x/y\}
+% % 		  \\
+% % 		    x\neq y	      
+% % 		  \\
+% % 		    x\notin n(Q_{1})
+% % 		  \\
+% % 		    y\in fn(Q_{1})
+% % 		}{
+% % 		  \underbrace{z(x).P_{1}}_{P}
+% % 		    \equiv_{\alpha}
+% % 		      \underbrace{z(y).Q_{1}}_{Q}
+% % 		}\]
+% % 		\begin{center}
+% % 		  \begin{tabular}{ll}
+% % 		      &
+% % 		    rule premise
+% % 		  \\
+% % 		    $P_{1}\equiv_{\alpha}Q_{1}\{x/y\}$ and $x\notin fn(Q_{1})$ 
+% % 		      &
+% % 		    inductive hypothesis
+% % 		  \\
+% % 		    $\Rightarrow P_{1}\{b/a\}\equiv_{\alpha}Q_{1}\{x/y\}\{b/a\}$
+% % 		      &
+% % 		    transitivity and lemma \ref{alphaequivalencecommutativity}
+% % 		  \\
+% % 		    $\Rightarrow P_{1}\{b/a\}\equiv_{\alpha}Q_{1}\{b/a\}\{x/y\}$
+% % 		      &
+% % 		    rule $AlpInp1$
+% % 		  \\
+% % 		    $\Rightarrow z(x).(P_{1}\{b/a\})\equiv_{\alpha}z(y).(Q_{1}\{b/a\})$
+% % 		      &
+% % 		    definition of substitution
+% % 		  \\
+% % 		    $\Rightarrow (z(x).P_{1})\{b/a\}\equiv_{\alpha}(z(y).Q_{1})\{b/a\}$
+% % 		      &
+% % 		    
+% % 		  \\
+% % 		  \end{tabular}
+% % 		\end{center}	    	
+% % 	      \item 
+% % 		the last part of the proof tree of $P\equiv_{\alpha}Q$ is
+% % 		\[\inferrule*[left=AlpInp1]{
+% % 		    P_{1}\equiv_{\alpha}Q_{1}\{x/y\}
+% % 		  \\
+% % 		    x\neq y	      
+% % 		  \\
+% % 		    x\notin fn(Q_{1})
+% % 		}{
+% % 		  \underbrace{b(x).P_{1}}_{P}
+% % 		    \equiv_{\alpha}
+% % 		      \underbrace{b(y).Q_{1}}_{Q}
+% % 		}\]
+% % 		\begin{center}
+% % 		  \begin{tabular}{ll}
+% % 		      &
+% % 		    rule premise
+% % 		  \\
+% % 		    $P_{1}\equiv_{\alpha}Q_{1}\{x/y\}$ and $x\notin fn(Q_{1})$ 
+% % 		      &
+% % 		    inductive hypothesis
+% % 		  \\
+% % 		    $\Rightarrow P_{1}\{b/a\}\equiv_{\alpha}Q_{1}\{x/y\}\{b/a\}$
+% % 		      &
+% % 		    transitivity and lemma \ref{alphaequivalencecommutativity}
+% % 		  \\
+% % 		    $\Rightarrow P_{1}\{b/a\}\equiv_{\alpha}Q_{1}\{b/a\}\{x/y\}$
+% % 		      &
+% % 		    rule $AlpInp1$
+% % 		  \\
+% % 		    $\Rightarrow b(x).(P_{1}\{b/a\})\equiv_{\alpha}b(y).(Q_{1}\{b/a\})$
+% % 		      &
+% % 		    definition of substitution
+% % 		  \\
+% % 		    $\Rightarrow (b(x).P_{1})\{b/a\}\equiv_{\alpha}(b(y).Q_{1})\{b/a\}$
+% % 		      &
+% % 		    
+% % 		  \\
+% % 		  \end{tabular}
+% % 		\end{center}	    	
+% % 	      \item 
+% % 		the last part of the proof tree of $P\equiv_{\alpha}Q$ is
+% % 		\[\inferrule*[left=AlpInp1]{
+% % 		    P_{1}\equiv_{\alpha}Q_{1}\{x/y\}
+% % 		  \\
+% % 		    x\neq y	      
+% % 		  \\
+% % 		    x\notin fn(Q_{1})
+% % 		}{
+% % 		  \underbrace{a(x).P_{1}}_{P}
+% % 		    \equiv_{\alpha}
+% % 		      \underbrace{a(y).Q_{1}}_{Q}
+% % 		}\]
+% % 		\begin{center}
+% % 		  \begin{tabular}{ll}
+% % 		      &
+% % 		    rule premise
+% % 		  \\
+% % 		    $P_{1}\equiv_{\alpha}Q_{1}\{x/y\}$ and $x\notin fn(Q_{1})$ 
+% % 		      &
+% % 		    inductive hypothesis
+% % 		  \\
+% % 		    $\Rightarrow P_{1}\{b/a\}\equiv_{\alpha}Q_{1}\{x/y\}\{b/a\}$
+% % 		      &
+% % 		    transitivity and lemma \ref{alphaequivalencecommutativity}
+% % 		  \\
+% % 		    $\Rightarrow P_{1}\{b/a\}\equiv_{\alpha}Q_{1}\{b/a\}\{x/y\}$
+% % 		      &
+% % 		    rule $AlpInp1$
+% % 		  \\
+% % 		    $\Rightarrow a(x).(P_{1}\{b/a\})\equiv_{\alpha}a(y).(Q_{1}\{b/a\})$
+% % 		      &
+% % 		    definition of substitution
+% % 		  \\
+% % 		    $\Rightarrow (a(x).P_{1})\{b/a\}\equiv_{\alpha}(a(y).Q_{1})\{b/a\}$
+% % 		      &
+% % 		    
+% % 		  \\
+% % 		  \end{tabular}
+% % 		\end{center}	    	
+% % 	      \item 
+% % 		the last part of the proof tree of $P\equiv_{\alpha}Q$ is
+% % 		\[\inferrule*[left=AlpInp1]{
+% % 		    P_{1}\equiv_{\alpha}Q_{1}\{a/y\}
+% % 		  \\
+% % 		    a\neq y	      
+% % 		  \\
+% % 		    a\notin fn(Q_{1})
+% % 		}{
+% % 		  \underbrace{a(a).P_{1}}_{P}
+% % 		    \equiv_{\alpha}
+% % 		      \underbrace{a(y).Q_{1}}_{Q}
+% % 		}\]
+% % 		\begin{center}
+% % 		  \begin{tabular}{ll}
+% % 		      &
+% % 		    rule premise
+% % 		  \\
+% % 		    $P_{1}\equiv_{\alpha}Q_{1}\{a/y\}$ and $x\notin fn(Q_{1})$ 
+% % 		      &
+% % 		    inductive hypothesis
+% % 		  \\
+% % 		    $\Rightarrow P_{1}\{b/a\}\equiv_{\alpha}Q_{1}\{a/y\}\{b/a\}$
+% % 		      &
+% % 		    transitivity and lemma \ref{alphaequivalencecommutativity}
+% % 		  \\
+% % 		    $\Rightarrow P_{1}\{b/a\}\equiv_{\alpha}Q_{1}\{b/a\}\{a/y\}$
+% % 		      &
+% % 		    rule $AlpInp1$
+% % 		  \\
+% % 		    $\Rightarrow a(a).(P_{1}\{b/a\})\equiv_{\alpha}a(y).(Q_{1}\{b/a\})$
+% % 		      &
+% % 		    definition of substitution
+% % 		  \\
+% % 		    $\Rightarrow (a(a).P_{1})\{b/a\}\equiv_{\alpha}(a(y).Q_{1})\{b/a\}$
+% % 		      &
+% % 		    
+% % 		  \\
+% % 		  \end{tabular}
+% % 		\end{center}	    	
+% % 	      \item 
+% % 		the last part of the proof tree of $P\equiv_{\alpha}Q$ is
+% % 		\[\inferrule*[left=AlpInp1]{
+% % 		    P_{1}\equiv_{\alpha}Q_{1}\{x/a\}
+% % 		  \\
+% % 		    x\neq a
+% % 		  \\
+% % 		    x\notin fn(Q_{1})
+% % 		}{
+% % 		  \underbrace{a(x).P_{1}}_{P}
+% % 		    \equiv_{\alpha}
+% % 		      \underbrace{a(a).Q_{1}}_{Q}
+% % 		}\]
+% % 		\begin{center}
+% % 		  \begin{tabular}{ll}
+% % 		      &
+% % 		    rule premise
+% % 		  \\
+% % 		    $P_{1}\equiv_{\alpha}Q_{1}\{x/a\}$ and $x\notin fn(Q_{1})$ 
+% % 		      &
+% % 		    inductive hypothesis
+% % 		  \\
+% % 		    $\Rightarrow P_{1}\{b/a\}\equiv_{\alpha}Q_{1}\{x/a\}\{b/a\}$
+% % 		      &
+% % 		    transitivity and lemma \ref{alphaequivalencecommutativity}
+% % 		  \\
+% % 		    $\Rightarrow P_{1}\{b/a\}\equiv_{\alpha}Q_{1}\{b/a\}\{x/a\}$
+% % 		      &
+% % 		    rule $AlpInp1$
+% % 		  \\
+% % 		    $\Rightarrow a(x).(P_{1}\{b/a\})\equiv_{\alpha}a(a).(Q_{1}\{b/a\})$
+% % 		      &
+% % 		    definition of substitution
+% % 		  \\
+% % 		    $\Rightarrow (a(x).P_{1})\{b/a\}\equiv_{\alpha}(a(a).Q_{1})\{b/a\}$
+% % 		      &		    
+% % 		  \\
+% % 		  \end{tabular}
+% % 		\end{center}	    	
+% % 	      \item mancano x x y e x y x
+% % 	    \end{itemize}
+% 	  \item[$AlpRes$]:
+% 	    \begin{center}
+% 	      \begin{tabular}{ll}
+% 		&rule premise\\
+% 		$P_{1}\equiv_{\alpha}Q_{1}$&inductive hypothesis\\
+% 		$\Rightarrow P_{1}\{b/a\}\equiv_{\alpha}Q_{1}\{b/a\}$&rule $AlpRes$\\
+% 		$\Rightarrow (\nu x)(P_{1}\{b/a\})\equiv_{\alpha}(\nu x)(Q_{1}\{b/a\}) $&definition of substitution\\
+% 		$\Rightarrow ((\nu x)P_{1})\{b/a\}\equiv_{\alpha}((\nu x)Q_{1})\{b/a\} $&\\
+% 	      \end{tabular}
+% 	    \end{center}	    	    
+%       \item[$AlpRes1$]:
+% % 	    \[\inferrule*[left=AlpRes1]{
+% % 		P_{1}\equiv_{\alpha}Q_{1}\{x/y\}
+% % 	      \\
+% % 		x\neq y
+% % 	      \\
+% % 		x\notin fn(Q_{1})
+% % 	    }{
+% % 	      \underbrace{(\nu x)P_{1}}_{P}\equiv_{\alpha}\underbrace{(\nu y)Q_{1}}_{Q}
+% % 	    }\]
+% % 	    \begin{center}
+% % 	      \begin{tabular}{ll}
+% % 		  &
+% % 		    rule premises
+% % 		\\
+% % 		    $P_{1}\equiv_{\alpha}Q_{1}\{x/y\}$ and $x\neq y$ and $x\notin fn(Q_{1})$
+% % 		  &
+% % 		    inductive hypothesis
+% % 		\\
+% % 		    $P_{1}\{b/a\}\equiv_{\alpha} Q_{1}\{x/y\}\{b/a\}$
+% % 		  &
+% % 		    lemma \ref{alphaequivalencecommutativity} and transitivity
+% % 		\\
+% % 		    $P_{1}\{b/a\}\equiv_{\alpha} Q_{1}\{b/a\}\{x/y\}$
+% % 		  &
+% % 		    rule $AlpRes1$
+% % 		\\
+% % 		    $(\nu x)(P_{1}\{b/a\})\equiv_{\alpha} (\nu y)(Q_{1}\{b/a\})$
+% % 		  &
+% % 		    definition of substitution
+% % 		\\
+% % 		    $((\nu x)P_{1})\{b/a\}\equiv_{\alpha} ((\nu y)Q_{1})\{b/a\}$
+% % 		  &
+% % 		\\
+% % 	      \end{tabular}
+% % 	    \end{center}
+%     \end{description}
+%   \end{proof}
 \end{lemma}
 
 
@@ -1610,7 +1610,7 @@ In the proof of equivalence of the semantics in the next section we need the fol
 	    }{
 	      (\nu x)P_{1}\equiv_{\alpha}(\nu x)P_{1}
 	    }\]
-	  \item[$A(\tilde{x}|\tilde{y})$]:
+	  \item[$A(\tilde{x})$]:
 	    \[\inferrule* [left=AlpIde]{
 	    }{
 	      A(\tilde{x})\equiv_{\alpha}A(\tilde{x})
@@ -1628,10 +1628,10 @@ In the proof of equivalence of the semantics in the next section we need the fol
 
 \begin{lemma}\label{alphaEquivalenceTransitive}
   $\alpha$ equivalence is transitive.
-%   \begin{proof}
+%    \begin{proof}
 %     Suppose $P\equiv_{\alpha}Q$ and $Q\equiv_{\alpha}R$. We prove the thesis $P\equiv_{\alpha}R$ by induction on the sum of the size of the derivation of $P\equiv_{\alpha}Q$ and $Q\equiv_{\alpha}R$. The last rules pair used in the derivations can be:
-%     \begin{description}
-%       \item[$(AlpOut, AlpOut)$]:
+%       \begin{description}
+% 	\item[$(AlpOut, AlpOut)$]:
 % 	\begin{center}
 % 	  \begin{tabular}{ll}
 % 	      $\inferrule* [left=\bf{AlpOut}]{
@@ -1696,7 +1696,6 @@ In the proof of equivalence of the semantics in the next section we need the fol
 % 	  \end{tabular}
 % 	\end{center}
 % 	for inductive hypothesis $P\equiv R$ and for rule $AlpInp1$: $a(b).P \equiv_{\alpha} a(c).(R\{c/b\})$
-% %       \item[$(AlpInp, AlpInp2)$] this case does not exist.
 %       \item[$(AlpRes, AlpRes1)$]:
 % 	\begin{center}
 % 	  \begin{tabular}{ll}
@@ -1714,24 +1713,45 @@ In the proof of equivalence of the semantics in the next section we need the fol
 % 	  \end{tabular}
 % 	\end{center}
 % 	for inductive hypothesis $P\equiv R$ and for rule $AlpRes1$: $(\nu x)P \equiv_{\alpha} (\nu y)(R\{y/x\})$
-% %       \item[$(AlpRes, AlpRes2)$] this case does not exist.
-%       \item[$(AlpInp1, AlpInp)$]:
+%        \item[$(AlpRes, AlpRes2)$] 
+%        \item[$(AlpInp1, AlpInp)$]:
+%  	\begin{center}
+%  	  \begin{tabular}{ll}
+%  	      $\inferrule* [left=\bf{AlpInp1}]{
+%  		P \equiv_{\alpha} Q
+%  	      }{
+%  		a(b).P \equiv_{\alpha} a(c).(Q\{c/b\})
+%  	      }$
+%  	    &
+%  	      $\inferrule* [left=\bf{AlpInp}]{
+%  		Q\{c/b\} \equiv_{\alpha} R
+%  	      }{
+%  		a(c).(Q\{c/b\}) \equiv_{\alpha} a(c).R
+%  	      }$
+%  	  \end{tabular}
+%  	\end{center}
+%  	for lemma \ref{alphaequivalencesubstitution} and inductive hypothesis: $P\{c/b\}\equiv_{\alpha} R$ and for rule $AlpInp2$: 
+% 	\begin{center}
+% 	  $a(b).(P\{c/b\}\{b/c\})\equiv_{\alpha} a(c).R$ 
+% 	\end{center}
+% 	which imply for lemma \ref{alphaequivalenceSubstitutionInversion} and rule $AlpInp1$: $a(b).P \equiv_{\alpha} a(c).R$
+%       \item[$(AlpInp, AlpInp2)$]:
 % 	\begin{center}
 % 	  \begin{tabular}{ll}
-% 	      $\inferrule* [left=\bf{AlpInp1}]{
+% 	      $\inferrule* [left=\bf{AlpInp}]{
 % 		P \equiv_{\alpha} Q
 % 	      }{
-% 		a(b).P \equiv_{\alpha} a(c).(Q\{c/b\})
+% 		a(b).P \equiv_{\alpha} a(b).Q
 % 	      }$
 % 	    &
-% 	      $\inferrule* [left=\bf{AlpInp}]{
-% 		Q\{c/b\} \equiv_{\alpha} R
+% 	      $\inferrule* [left=\bf{AlpInp2}]{
+% 		R \equiv_{\alpha} S
 % 	      }{
-% 		a(c).(Q\{c/b\}) \equiv_{\alpha} a(c).R
+% 		a(b).(R\{b/c\}) \equiv_{\alpha} a(c).S
 % 	      }$
 % 	  \end{tabular}
 % 	\end{center}
-% 	for inductive hypothesis and lemma \ref{alphaequivalencesubstitution}: $P\{c/b\}\equiv R$ and for rule $AlpInp2$: $a(b).(P\{c/b\}) \equiv_{\alpha} a(c).R$
+% 	where $Q=R\{b/c\}$. For lemma \ref{alphaequivalencesubstitution} and inductive hypothesis: $P\equiv_{\alpha} S\{b/c\}$ which imply for rule $AlpInp1$: $a(b).P \equiv_{\alpha} a(c).(S\{b/c\}\{c/b\})$ which imply $a(b).P \equiv_{\alpha} a(c).S$
 %       \item[$(AlpInp1, AlpInp1)$]:
 % 	\begin{center}
 % 	  \begin{tabular}{ll}
@@ -1748,19 +1768,18 @@ In the proof of equivalence of the semantics in the next section we need the fol
 % 	      }$
 % 	  \end{tabular}
 % 	\end{center}
-%       \item[$(AlpInp1, AlpInp2)$]
-%       \item[$(AlpInp2, AlpInp)$]
-%       \item[$(AlpInp2, AlpInp1)$]
-%       \item[$(AlpInp2, AlpInp2)$]
-% 
-%       \item[$(AlpRes1, AlpRes)$]
-%       \item[$(AlpRes1, AlpRes1)$]
-%       \item[$(AlpRes1, AlpRes2)$]
-%       \item[$(AlpRes2, AlpRes)$]
-%       \item[$(AlpRes2, AlpRes1)$]
-%       \item[$(AlpRes2, AlpRes2)$]
-%     \end{description}
-%   \end{proof}
+%       \item[$(AlpInp1, AlpInp2)$]:
+%       \item[$(AlpInp2, AlpInp)$]:
+%       \item[$(AlpInp2, AlpInp1)$]:
+%       \item[$(AlpInp2, AlpInp2)$]:
+%       \item[$(AlpRes1, AlpRes)$]:
+%       \item[$(AlpRes1, AlpRes1)$]:
+%       \item[$(AlpRes1, AlpRes2)$]:
+%       \item[$(AlpRes2, AlpRes)$]:
+%       \item[$(AlpRes2, AlpRes1)$]:
+%       \item[$(AlpRes2, AlpRes2)$]:
+%      \end{description}
+%    \end{proof}
 \end{lemma}
 
 \begin{theorem}
@@ -2924,19 +2943,17 @@ which is not want we want. But we prove some weaker results.
 \end{lemma}
 
 
-\begin{lemma}
+\begin{lemma}\label{2inCong3}
   $P\xrightarrow{\alpha}_{2} P^{'}$ imply that there exist processes $Q, Q^{'}$ such that  $P \equiv Q \xrightarrow{\alpha}_{3} Q^{'} \equiv P^{'}$
   \begin{proof}
-	First we prove $P\xrightarrow{\alpha}_{2}P^{'}\; \Rightarrow\; \exists P^{''}: P^{'}\equiv P^{''}\; and\; P\xrightarrow{\alpha}_{3}P^{''}$. The proof is by induction on the length of the derivation of $P\xrightarrow{\alpha}_{2}P^{'}$, and then both the base case and the inductive case proceed by cases on the last rule used.
-	\begin{description}
-	  \item[base case]
-	    in this case the rule used can be one of the following $Out, EInp, Tau$ which are also in $R_{3}$ so a derivation of $P\xrightarrow{\alpha}_{2}P^{'}$ is also a derivation of $P\xrightarrow{\alpha}_{3}P^{'}$
-	  \item[inductive case]:
-	    \begin{itemize}
-	      \item 
+    The proof is by induction on the length of the derivation of $P\xrightarrow{\alpha}_{2}P^{'}$ and then both the base case and the inductive case proceed by cases on the last rule used:
+    \begin{description}
+      \item[$Out, EInp, Tau$]
+	in this case the rule used can be one of the following $Out, EInp, Tau$ which are also in $R_{3}$ so a derivation of $P\xrightarrow{\alpha}_{2}P^{'}$ is also a derivation of $P\xrightarrow{\alpha}_{3}P^{'}$
+      \item[$Res, Opn$]
 		the last rule used can be one in $R_{2}\cap R_{3}=\{Res, Opn\}$ and so for example we have 
 		\[
-		  \inferrule* [left=Res]{
+		  \inferrule* [left=\bf{Res}]{
 		      P\xrightarrow{\alpha}_{2} P^{'}
 		    \\
 		      z\notin n(\alpha)
@@ -2944,9 +2961,9 @@ which is not want we want. But we prove some weaker results.
 		    (\nu z) P\xrightarrow{\alpha}_{2}(\nu z) P^{'}
 		  }
 		\]
-		we apply the inductive hypothesis on $P\xrightarrow{\alpha}_{2} P^{'}$ and get $\exists P^{''}$ such that $P^{'}\equiv P^{''}$ and $P\xrightarrow{\alpha}_{3} P^{''}$. The proof we want is:
+		we apply the inductive hypothesis on $P\xrightarrow{\alpha}_{2} P^{'}$ and get that there exists a process $P^{''}$ such that $P^{'}\equiv P^{''}$ and $P\xrightarrow{\alpha}_{3} P^{''}$. The proof we want is:
 		\[
-		  \inferrule* [left=Res]{
+		  \inferrule* [left=\bf{Res}]{
 		      P\xrightarrow{\alpha}_{3} P^{''}
 		    \\
 		      z\notin n(\alpha)
@@ -2955,10 +2972,10 @@ which is not want we want. But we prove some weaker results.
 		  }
 		\]
 		and $(\nu z) P^{''}\equiv (\nu z) P^{'}$
-	      \item
-		the last rule used can be one in $\{ParL, ParR, SumL, SumR, EComL, EComR\}$, in this case we can proceed as in the previous case and if necessary add an application of $Cong$ thus exploiting the commutativity of sum or parallel composition. For example
+      \item[$ParL, ParR, SumL, SumR, EComL, EComR$]
+		In this cases we can proceed as in the previous case and if necessary add an application of $Cong$ thus exploiting the commutativity of sum or parallel composition. For example
 		\[
-		  \inferrule* [left=ParR]{
+		  \inferrule* [left=\bf{ParR}]{
 		      Q\xrightarrow{\alpha}_{2}Q^{'}
 		    \\
 		      bn(\alpha)\cap fn(Q)=\emptyset
@@ -2968,10 +2985,10 @@ which is not want we want. But we prove some weaker results.
 		\]	
 		now we apply the inductive hypothesis to $Q\xrightarrow{\alpha}_{2}Q^{'}$ and get $Q\xrightarrow{\alpha}_{3}Q^{''}$ for a $Q^{''}$ such that $Q^{'}\equiv Q^{''}$. The proof we want is
 		\[
-		  \inferrule* [left=Str]{
+		  \inferrule* [left=\bf{Cong}]{
 		      P|Q\equiv Q|P
 		    \\
-		      \inferrule* [left=Par]{
+		      \inferrule* [left=\bf{Par}]{
 			  Q\xrightarrow{\alpha}_{3}Q^{''}
 			\\
 			  bn(\alpha)\cap fn(Q)=\emptyset
@@ -2983,93 +3000,33 @@ which is not want we want. But we prove some weaker results.
 		    }
 		\]
 		and $Q^{''}|P\equiv P|Q^{'}$
-	      \item
-		if the last rule used is $Cns$:
+      \item[$Ide$]
+		if the last rule used is $Ide$:
 		\[
-		    \inferrule* [left=Cns]{
-			A(\tilde{x}|\tilde{z})\stackrel{def}{=}P
+		    \inferrule* [left=\bf{Ide}]{
+			A(\tilde{x}) \stackrel{def}{=} P
 		      \\
-			P\{\tilde{y}/\tilde{x}\}\xrightarrow{\alpha}_{2}P^{'}
+			P\{\tilde{y}/\tilde{x}\} \xrightarrow{\alpha}_{2} P^{'}
 		    }{
-		      A(\tilde{y}|\tilde{z})\xrightarrow{\alpha}_{2}P^{'}
+		      A(\tilde{y}) \xrightarrow{\alpha}_{2} P^{'}
 		    }
 		\]
-		we apply the inductive hypothesis on the premise and get $P\{\tilde{y}/\tilde{x}\}\xrightarrow{\alpha}_{3}P^{''}$ such that $P^{''}\equiv P^{'}$. Now the proof we want is
+		we apply the inductive hypothesis on the premise and get that there exists a process $P^{''}$ such that $P\{\tilde{y}/\tilde{x}\}\xrightarrow{\alpha}_{3}P^{''}$ and $P^{''}\equiv P^{'}$. Now the proof we want is
 		\[
-		    \inferrule* [left=Str]{
-			A(\tilde{y}|\tilde{z})\equiv P\{\tilde{y}/\tilde{x}\}
+		    \inferrule* [left=\bf{Cong}]{
+			A(\tilde{y}) \equiv P\{\tilde{y}/\tilde{x}\}
 		      \\
 			P\{\tilde{y}/\tilde{x}\}\xrightarrow{\alpha}_{3}P^{''}
 		    }{
-		      A(\tilde{y}|\tilde{z})\xrightarrow{\alpha}_{3}P^{''}
+		      A(\tilde{y})\xrightarrow{\alpha}_{3}P^{''}
 		    }
 		\]		
-	      \item
-		if the last rule is $Alp$, then we just notice that this rule is a particular case of $Cong$
-% 	      \item
-% 		if the last rule is $ClsL$(the case for $ClsR$ is simmetric) then we have
-% 		\[
-% 		    \inferrule* [left=ClsL]{
-% 			P\xrightarrow{\overline{x}(z)}_{2}P^{'}
-% 		      \\
-% 			Q\xrightarrow{xz}_{2}Q^{'}
-% 		      \\
-% 			z\notin fn(Q)
-% 		    }{
-% 		      P|Q\xrightarrow{\tau}_{2}(\nu z)(P^{'}|Q^{'})
-% 		    }
-% 		\]
-% 		there is no easy way to mimic this rule with the rules in $R_{3}$. But if in the derivation tree we have an introduction of the bound output $\overline{x}(z)$ followed directly by an elimination of the same bound output such as:
-% 		\[
-% 		    \inferrule* [left=ClsL]{
-% 			\inferrule* [left=Opn]{
-% 			    P\xrightarrow{\overline{x}z}_{2}P^{'}
-% 			  \\
-% 			    z\neq x
-% 			}{
-% 			  (\nu z)P\xrightarrow{\overline{x}(z)}_{2}P^{'}
-% 			}
-% 		      \\
-% 			Q\xrightarrow{xz}_{2}Q^{'}
-% 		      \\
-% 			z\notin fn(Q)
-% 		    }{
-% 		      ((\nu z)P)|Q\xrightarrow{\tau}_{2}(\nu z)(P^{'}|Q^{'})
-% 		    }
-% 		\]
-% 		we can apply the inductive hypothesis and get that 
-% 		\[
-% 		  P\xrightarrow{\overline{x}z}_{3}P^{''}\; and\; Q\xrightarrow{xz}_{3}Q^{''}
-% 		\]
-% 		where $P^{'}\equiv P^{''}$ and $Q^{'}\equiv Q^{''}$, so we create the needed proof in the following way
-% 		\[
-% 		    \inferrule* [left=Str]{
-% 			(\nu z)(P|Q)\equiv ((\nu z)P)|Q
-% 		      \\
-% 			\inferrule* [left=Res]{
-% 			  \inferrule* [left=Com]{
-% 			      P\xrightarrow{\overline{x}z}_{3}P^{''}
-% 			    \\
-% 			      Q\xrightarrow{xz}_{3}Q^{''}
-% 			  }{
-% 			    P|Q\xrightarrow{\tau}_{3}P^{''}|Q^{''}
-% 			  }
-% 			}{
-% 			  (\nu z)(P|Q)\xrightarrow{\tau}_{3}(\nu z)(P^{''}|Q^{''})
-% 			}
-% 		    }{
-% 		      ((\nu z)P)|Q\xrightarrow{\tau}_{3}(\nu z)(P^{''}|Q^{''})
-% 		    }
-% 		\]
-% 		We can always take a derivation tree in $R_{2}$ and move downward each occurrence of $Opn$ until we find the appropriate occurrence of $ClsL$. In this process we might need to use the structural congruence, in particular the scope extension axioms. We can attempt to prove that in the following way:
-% 		\[
-% 		  P\xrightarrow{\overline{x}(z)}_{2}P^{'}\; \Rightarrow\; \exists R: (\nu z)R\equiv P
-% 		\]
-% 		and if $(\nu z)R\xrightarrow{\overline{x}(z)}_{2}P^{'}$ then there exists a derivation tree for this transition such that the last rule used is $Opn$
-	      \item
-		if the last rule is $ClsL$(the case for $ClsR$ is simmetric) then we have
+      \item[$Alp$]
+	the rule $Alp$ is a particular case of the rule $Cong$
+      \item[$ClsL$]
+	if the last rule is $ClsL$ then we have
 		\[
-		    \inferrule* [left=ClsL]{
+		    \inferrule* [left=\bf{ClsL}]{
 			P\xrightarrow{\overline{x}(z)}_{2}P^{'}
 		      \\
 			Q\xrightarrow{xz}_{2}Q^{'}
@@ -3079,10 +3036,10 @@ which is not want we want. But we prove some weaker results.
 		      P|Q\xrightarrow{\tau}_{2}(\nu z)(P^{'}|Q^{'})
 		    }
 		\]
-		$P\xrightarrow{\overline{x}(z)}_{2}P^{'}$ for lemma \ref{OpenClose} imply that there exist processes $(\nu z)R$ such that $P \equiv (\nu z)R \xrightarrow{\overline{x}(z)}_{2} P^{'}$ and the derivation of $(\nu z)R \xrightarrow{\tau}_{2} R^{'}$ ends with the instance of $Opn$ that opens the scope of $z$. So 
+	for lemma \ref{OpenClose}: $P\xrightarrow{\overline{x}(z)}_{2}P^{'}$ imply that there exist a process $(\nu z)R$ such that $P \equiv (\nu z)R$, $(\nu z)R \xrightarrow{\overline{x}(z)}_{2} P^{'}$ and the derivation of $(\nu z)R \xrightarrow{\tau}_{2} R^{'}$ ends with the instance of $Opn$ that opens the scope of $z$. So 
 		\[
-		  \inferrule* [left=Res]{
-		    \inferrule* [left=EComL]{
+		  \inferrule* [left=\bf{Res}]{
+		    \inferrule* [left=\bf{EComL}]{
 			R \xrightarrow{\overline{x}z}_{2} P^{'}
 		      \\
 			Q \xrightarrow{xz}_{2} Q^{'}
@@ -3094,10 +3051,9 @@ which is not want we want. But we prove some weaker results.
 		  }
 		\]
 		$P \equiv (\nu z)R$ and $z \notin fn(Q)$ imply $(\nu z)(R|Q) \equiv P|Q$. The conclusion follows after applying the inductive hypothesis on $(\nu z)(R|Q) \xrightarrow{\tau}_{3} (\nu z)(P^{'}|Q^{'})$ and the transitivity of structural congruence.
-	    \end{itemize}	    
-	\end{description}
+      \item[$ClsR$] symmetric.
+    \end{description}
   \end{proof}
-  \label{2inCong3}
 \end{lemma}
 
 \begin{theorem}
@@ -4040,7 +3996,7 @@ We present here some behavioural equivalences and some of their properties. In t
 \subsection{Late bisimilarity}
 
 \begin{definition}
-  A \emph{strong late bisimulation}(according to \cite{parrow}) is a binary simmetric relation $\mathbf{S}$ on processes such that for each process $P$ and $Q$, $P\mathbf{S}Q$ implies:
+  A \emph{strong late bisimulation}(according to \cite{parrow}) is a binary symmetric relation $\mathbf{S}$ on processes such that for each process $P$ and $Q$, $P\mathbf{S}Q$ implies:
   \begin{itemize}
     \item
       if $P \xrightarrow{a(x)}_{L} P^{'}$ and $x\notin fn(P)\cup fn(Q)$ then there exists a process $Q^{'}$ such that $Q \xrightarrow{a(x)}_{L} Q^{'}$ and for all $u$ $P^{'}\{u/x\}\mathbf{S}Q^{'}\{u/x\}$
@@ -4055,7 +4011,7 @@ We present here some behavioural equivalences and some of their properties. In t
   \[
     a(u).0|\overline{b}v.0\; \dot{\sim}_{L}\; a(u).\overline{b}v.0 + \overline{b}v.a(u).0
   \]
-  and the bisimulation(without the simmetric part) is  the following:
+  and the bisimulation(without the symmetric part) is  the following:
   \[
     \{(a(u).0|\overline{b}v.0, a(u).\overline{b}v.0 + \overline{b}v.a(u).0),\;\; (a(u).0|0,a(u).0),\;\; (0|0,0),\;\; (0|\overline{b}v.0,\overline{b}v.0)\} 
   \]
