@@ -549,17 +549,11 @@ This section contains the definition of an alternative semantic for multi $\pi$.
     \end{tabular}
   \end{center}
   \begin{proof}
-    The proof is by induction on the depth of the derivation tree of $P\xrightarrow{\sigma} Q$:
+    The proof is by induction on the depth of the derivation tree of $P\xrightarrow{\sigma} Q$ and by cases on the last rule used in the derivation:
     \begin{description}
-      \item[base case]
-    \end{description}
-	If the depth is one then the rule used has to be one of: $EInp$, $Out$, $Tau$. These rules are also in table \ref{lowleveltransitionrelationearlyoutonly} so we can derive $P \stackrel{\sigma}{\longmapsto}Q$.
-    \begin{description}
-      \item[inductive case]
-    \end{description}
-	If the depth is greater than one then the last rule used in the derivation can be:
-	\begin{description}
-	  \item[$SOutSeq$]: 
+      \item[$EInp, Out, Tau$]
+      These rules are also in table \ref{lowleveltransitionrelationearlyoutonly} so we can derive $P \stackrel{\sigma}{\longmapsto}Q$.
+      \item[$SOutSeq$]: 
 	    the last part of the derivation tree looks like this:
 	    \begin{center}
 	      $\inferrule* [left=\bf{SOutSeq}]{
@@ -595,9 +589,9 @@ This section contains the definition of an alternative semantic for multi $\pi$.
  		}$
 	      \end{tabular}
 	    \end{center}
-	  \item[$SOut$]: this case is similar to the previous.
-	  \item[$SOutTau$]: this case is similar to the previous observing that $\overline{x}y \cdot \tau = \overline{x}y$.
-	  \item[$Sum$]: 
+      \item[$SOut$]: this case is similar to the previous.
+      \item[$SOutTau$]: this case is similar to the previous observing that $\overline{x}y \cdot \tau = \overline{x}y$.
+      \item[$Sum$]: 
 	the last part of the derivation tree looks like this:
 	\begin{center}
 	  $\inferrule* [left=\bf{Sum}]{
@@ -778,7 +772,7 @@ We would like to prove the converse of the previous proposition, namely: if ther
       $\gamma_{1} \cdot \ldots \cdot \gamma_{k+1} =  \sigma$  
     \end{tabular}
   \end{center}
-  then $P\xrightarrow{\sigma} Q$. But this is false as shown by those examples:
+  then $P\xrightarrow{\sigma} Q$. But this is false as shown by these examples:
 
 \begin{example}Interleaving
   \begin{center}
@@ -956,46 +950,42 @@ There is a much weaker propositions we can prove:
 \begin{proposition}
   Let $\rightarrow$ be the relation defined in table \ref{multipiearlywith}. Let $\alpha$ be an action. If $P \stackrel{\alpha}{\longmapsto} Q$ then $P\xrightarrow{\alpha} Q$.
   \begin{proof}
-    The proof is by induction the depth of the derivation of $P \stackrel{\alpha}{\longmapsto} Q$:
+    The proof is by induction the depth of the derivation of $P \stackrel{\alpha}{\longmapsto} Q$ and by cases on the last rule used in the derivation:
     \begin{description}
-      \item[base case]
-	in this case the derivation of this transition has depth one. The last(and only) rule used can be: $Out$, $EInp$ or $Tau$; these rules are also in table \ref{multipisoloinputearlywith} so we can derive $P\xrightarrow{\alpha} Q$. 
-      \item[inductive case]
-	in this case the last rule in the derivation can be: $Sum$, $Com1$, $Res$, $Par1L$, $Par1R$, $Cong$:
-	\begin{description}
-	  \item[$Com1$]:
-	    \begin{center}
-	      $\inferrule* [left=\bf{Com1}]{
-		  P_{1} \stackrel{\overline{x}y}{\longmapsto} Q_{1}
-		\\
-		  P_{2} \stackrel{xy}{\longmapsto} Q_{2}
-	      }{
-		P_{1}|P_{2} \stackrel{\tau}{\longmapsto} Q_{1}|Q_{2}
-	      }$ 
-	    \end{center}
-	    for inductive hypothesis $P_{1} \xrightarrow{\overline{x}y} Q_{1}$ and $P_{2} \xrightarrow{xy} Q_{2}$ so for rule $Com$ $P_{1}|P_{2} \xrightarrow{\tau} Q_{1}|Q_{2}$
-	  \item[$Sum$]:
-	    \begin{center}
-	      $\inferrule* [left=\bf{Sum}]{
-		P_{1} \stackrel{\alpha}{\longmapsto} Q
-	      }{
-		P_{1}+P_{2} \stackrel{\alpha}{\longmapsto} Q
-	      }$ 
-	    \end{center}
-	    for inductive hypothesis $P_{1} \xrightarrow{\alpha} Q$ and for rule $Sum$ $P_{1}+P_{2} \xrightarrow{\alpha} Q$.
-	      \item[$Res$] the first transition is:
-		\begin{center}
-		  $\inferrule* [left=\bf{Res}]{
-			P_{1} \stackrel{\alpha}{\longmapsto} Q_{1}
-		      \\
-			z\notin n(\gamma_{1})
-		    }{
-		      (\nu z) P_{1} \stackrel{\alpha}{\longmapsto} (\nu z)Q_{1}
-		  }$ 
-		\end{center}		
-		for inductive hypothesis $P_{1} \xrightarrow{\alpha} Q_{1}$ and for rule $Res$ $(\nu z)P_{1} \xrightarrow{\alpha} (\nu z)Q_{1}$.
-	      \item[$others$]: other cases are similar.
-	    \end{description}	    
+      \item[$Out, EInp, Tau$]
+	These rules are also in table \ref{multipisoloinputearlywith} so we can derive $P\xrightarrow{\alpha} Q$. 
+      \item[$Com1$]:
+	\begin{center}
+	  $\inferrule* [left=\bf{Com1}]{
+	    P_{1} \stackrel{\overline{x}y}{\longmapsto} Q_{1}
+	  \\
+	    P_{2} \stackrel{xy}{\longmapsto} Q_{2}
+	  }{
+	    P_{1}|P_{2} \stackrel{\tau}{\longmapsto} Q_{1}|Q_{2}
+	  }$ 
+	\end{center}
+	for inductive hypothesis $P_{1} \xrightarrow{\overline{x}y} Q_{1}$ and $P_{2} \xrightarrow{xy} Q_{2}$ so for rule $Com$ $P_{1}|P_{2} \xrightarrow{\tau} Q_{1}|Q_{2}$
+      \item[$Sum$]:
+	\begin{center}
+	  $\inferrule* [left=\bf{Sum}]{
+	    P_{1} \stackrel{\alpha}{\longmapsto} Q
+	  }{
+	    P_{1}+P_{2} \stackrel{\alpha}{\longmapsto} Q
+	  }$ 
+	\end{center}
+	for inductive hypothesis $P_{1} \xrightarrow{\alpha} Q$ and for rule $Sum$ $P_{1}+P_{2} \xrightarrow{\alpha} Q$.
+      \item[$Res$] the first transition is:
+	\begin{center}
+	  $\inferrule* [left=\bf{Res}]{
+	      P_{1} \stackrel{\alpha}{\longmapsto} Q_{1}
+	    \\
+	      z\notin n(\gamma_{1})
+	  }{
+	    (\nu z) P_{1} \stackrel{\alpha}{\longmapsto} (\nu z)Q_{1}
+	  }$ 
+	\end{center}		
+	for inductive hypothesis $P_{1} \xrightarrow{\alpha} Q_{1}$ and for rule $Res$ $(\nu z)P_{1} \xrightarrow{\alpha} (\nu z)Q_{1}$.
+      \item[$others$]: other cases are similar.
     \end{description}	    
   \end{proof}
 \end{proposition}
@@ -1045,11 +1035,9 @@ where $stop(P)$ is a multi $\pi$ process which cannot make any transition.
 \end{definition}
 
 
+
 \begin{proposition}
-  Let $\rightarrow$ be the relation defined in table \ref{multipiearlywith}.
-  \begin{itemize}
-    \item
-      If $P\xrightarrow{\sigma} Q$ then there exist $L_{1}, \cdots, L_{k}$ with $k\geq 0$ such that 
+  Let $\rightarrow$ be the relation defined in table \ref{multipiearlywith}. If $P\xrightarrow{\sigma} Q$ then there exist $L_{1}, \cdots, L_{k}$ with $k\geq 0$ such that 
       \begin{center}
 	\begin{tabular}{lllll}
 	  $P 
@@ -1073,8 +1061,13 @@ where $stop(P)$ is a multi $\pi$ process which cannot make any transition.
 	  $er(Q^{'})=Q$
 	\end{tabular}
       \end{center}
-    \item 
-      If there exist $L_{1}$, $\cdots$, $L_{k}$ with $k\geq 1$ such that
+  \begin{proof}
+    The proof of the first part of this proposition is almost exactly as the proof of proposition \ref{equivalencehightolow}. 
+  \end{proof}
+\end{proposition}
+
+\begin{proposition}
+  Let $\rightarrow$ be the relation defined in table \ref{multipiearlywith}. If there exist $L_{1}$, $\cdots$, $L_{k}$ with $k\geq 1$ such that
       \begin{center}
 	  $P 
 	    \stackrel{\gamma_{1}}{\longmapsto} 
@@ -1088,13 +1081,17 @@ where $stop(P)$ is a multi $\pi$ process which cannot make any transition.
 			    \stackrel{\gamma_{k+1}}{\longmapsto} 
 			      Q$ 
       \end{center}
-      where at most one $\gamma$ is an output whether all the other $\gamma$s are $\epsilon$ or $\tau$ then $P\xrightarrow{\tau} er(Q)$ or if there is an output $\overline{x}y$ in the $\gamma$s then $P\xrightarrow{\overline{x}y} er(Q)$. 
+  and
+  \begin{itemize}
+    \item
+      if all $\gamma$s are $\epsilon$ or $\tau$ then $P\xrightarrow{\tau} er(Q)$
+    \item
+      if there is an output $\overline{x}y$ in the $\gamma$s and all the other all $\gamma$s are $\epsilon$ or $\tau$ then $P\xrightarrow{\overline{x}y} er(Q)$
   \end{itemize}
   \begin{proof}
-    The proof of the first part of this proposition is almost exactly as the proof of proposition \ref{equivalencehightolow}. The proof of the second part is by induction on the depth of the derivation of the first transition:
+    The proof is by induction on the depth of the derivation of $P \stackrel{\gamma_{1}}{\longmapsto} L_{1}$ and by cases on the last rule used in the derivation:
     \begin{description}
-      \item[base case]
- 	The last rule in the derivation of $P \stackrel{\gamma_{1}}{\longmapsto} L_{1}$ can be only $SOutLow$:
+      \item[$SOutLow$]:
 	    \begin{center}
  		  $\inferrule* [left=\bf{SOutLow}]{
  		    }{
@@ -1113,10 +1110,7 @@ where $stop(P)$ is a multi $\pi$ process which cannot make any transition.
 	      \underline{\overline{x}y}.P_{1} \xrightarrow{\overline{x}y} er(Q)
 	    }$
 	    \end{center}
-      \item[inductive case]
-	The last rule in the derivation of $P \stackrel{\gamma_{1}}{\longmapsto} L_{1}$ can be:
-	\begin{description}
-	  \item[$Sum$] the first transition is:
+      \item[$Sum$] the first transition is:
 	    \begin{center}
 		  $\inferrule* [left=\bf{Sum}]{
 		      P_{1} \stackrel{\gamma_{1}}{\longmapsto} L_{1}
@@ -1136,7 +1130,7 @@ where $stop(P)$ is a multi $\pi$ process which cannot make any transition.
 	      P_{1}+P_{2} \xrightarrow{\alpha} er(Q)
 	    }$
 	    \end{center}
-	  \item[$Res$] the first transition is:
+    \item[$Res$] the first transition is:
 	    \begin{center}
 	      $\inferrule* [left=\bf{Res}]{
 		  P_{1} \stackrel{\gamma_{1}}{\longmapsto} L_{1}^{'}
@@ -1190,7 +1184,7 @@ where $stop(P)$ is a multi $\pi$ process which cannot make any transition.
 		(\nu z)P_{1} \xrightarrow{\alpha} (\nu z)er(Q^{'})=er((\nu z)Q^{'})
 	      }$
 	    \end{center}
-	  \item[$Cong$]
+    \item[$Cong$]
 	    the last rule of the derivation of the first transition is:
 	    \begin{center}
 	      $\inferrule* [left=\bf{Cong}]{
@@ -1225,7 +1219,7 @@ where $stop(P)$ is a multi $\pi$ process which cannot make any transition.
 		P \xrightarrow{\alpha} er(Q)
 	      }$ 
 	    \end{center}
-	  \item[$Com3LStop$]: 
+    \item[$Com3LStop$]: 
 	    the last part of the derivation of the first transition is:
 	    \begin{center}
 	    $\inferrule* [left=\bf{Com3LStop}]{
@@ -1280,7 +1274,7 @@ where $stop(P)$ is a multi $\pi$ process which cannot make any transition.
 	      P_{1}|P_{2} \xrightarrow{\tau} er(Q_{1})|Q_{2}
 	    }$ 
 	    \end{center}
-	  \item[$Par1L$]: 
+    \item[$Par1L(1)$]: 
 	    the last part of the derivation of the first transition is:
 	    \begin{center}
 	      $\inferrule* [left=\bf{Par1L}]{
@@ -1289,9 +1283,6 @@ where $stop(P)$ is a multi $\pi$ process which cannot make any transition.
 		    P_{1}|P_{2} \stackrel{\gamma_{1}}{\longmapsto} L_{1}^{'}|P_{2}
 	      }$
 	    \end{center}
-	    there can be three cases:
-	    \begin{itemize}
-	      \item 
 		the derivations of all the other transitions end with an instance of $Par1L$. We derive the following chain of transition:
  		    \begin{center}
  		      $P_{1} 
@@ -1314,7 +1305,15 @@ where $stop(P)$ is a multi $\pi$ process which cannot make any transition.
  			P_{1}|P_{2} \xrightarrow{\alpha} er(Q_{1})|P_{2}^{'}
  		      }$ 
  		    \end{center}
-	      \item 
+    \item[$Par1L(2)$]: 
+	    the last part of the derivation of the first transition is:
+	    \begin{center}
+	      $\inferrule* [left=\bf{Par1L}]{
+		      P_{1} \stackrel{\gamma_{1}}{\longmapsto} L_{1}^{'}
+		  }{
+		    P_{1}|P_{2} \stackrel{\gamma_{1}}{\longmapsto} L_{1}^{'}|P_{2}
+	      }$
+	    \end{center}
 		there is one derivation that ends with an instance of $Com2LStop$ and the derivations of all the other transitions end with an instance of $Par1L$. We present here the case when the second transition ends with a $Com2LStop$, the other cases are similar. So  
  		    \begin{center}
  		      $\inferrule* [left=\bf{Com2LStop}]{
@@ -1349,7 +1348,15 @@ where $stop(P)$ is a multi $\pi$ process which cannot make any transition.
  			P_{1}|P_{2} \xrightarrow{\tau} er(Q_{1})|P_{2}^{'}
  		      }$ 
  		    \end{center}
-	      \item 
+    \item[$Par1L(3)$]: 
+	    the last part of the derivation of the first transition is:
+	    \begin{center}
+	      $\inferrule* [left=\bf{Par1L}]{
+		      P_{1} \stackrel{\gamma_{1}}{\longmapsto} L_{1}^{'}
+		  }{
+		    P_{1}|P_{2} \stackrel{\gamma_{1}}{\longmapsto} L_{1}^{'}|P_{2}
+	      }$
+	    \end{center}
 		the derivation of the last transition ends with an instance of $Com4L$ and the derivations of all the other transitions end with an instance of $Par1L$. We derive the following chain of transition:
  		    \begin{center}
  		      $P_{1} 
@@ -1374,8 +1381,6 @@ where $stop(P)$ is a multi $\pi$ process which cannot make any transition.
  			P_{1}|P_{2} \xrightarrow{\tau} er(Q_{1})|P_{2}^{'}
  		      }$ 
  		    \end{center}
-	    \end{itemize} 		
-      \end{description}
     \end{description}
   \end{proof}
 \end{proposition}
@@ -2117,7 +2122,7 @@ where $stop(P)$ is a multi $\pi$ process which cannot make any transition.
 	    \\
 	      P\{\tilde{y}/\tilde{x}\} \xrightarrow{\sigma} Q
 	  }{
-	      A \xrightarrow{\sigma} Q
+	      A(\tilde{y}) \xrightarrow{\sigma} Q
 	  }$
 % 	  $\inferrule* [left=\bf{Cong}]{
 % 	      P\equiv P^{'}
@@ -2175,6 +2180,14 @@ where $stop(P)$ is a multi $\pi$ process which cannot make any transition.
 	    (\nu y)P \xrightarrow{opn(\sigma, y)} P^{'}
 	  }$
 	&
+	  $\inferrule* [left=\bf{Cls}]{
+	      P \xrightarrow{\overline{x}(y) \cdot (\nu y)} P^{'}
+	    \\
+	      Q \xrightarrow{xy} Q^{'}
+	  }{
+	      P|Q \xrightarrow{\tau} (\nu y)(P^{'}|Q^{'})
+	  }$
+
 % 	\\\\
 % 	  $\inferrule* [left=\bf{Cls}]{
 % 	      P \xrightarrow{(\nu y)} Q
@@ -2191,15 +2204,7 @@ where $stop(P)$ is a multi $\pi$ process which cannot make any transition.
     \end{tabular}
       \\
     \begin{tabular}{ll}
-      \\	
-	  $\inferrule* [left=\bf{Cls}]{
-	      P \xrightarrow{\overline{x}(y) \cdot (\nu y)} P^{'}
-	    \\
-	      Q \xrightarrow{xy} Q^{'}
-	  }{
-	      P|Q \xrightarrow{\tau} (\nu y)(P^{'}|Q^{'})
-	  }$
-	&
+      \\
 	  $\inferrule* [left=\bf{ClsSeq1}]{
 	      P \xrightarrow{\overline{x}(y) \cdot (\nu y) \cdot \sigma} P^{'}
 	    \\
@@ -2207,16 +2212,17 @@ where $stop(P)$ is a multi $\pi$ process which cannot make any transition.
 	  }{
 	      P|Q \xrightarrow{\sigma} (\nu y)(P^{'}|Q^{'})
 	  }$
-      \\
+	&
 	  $\inferrule* [left=\bf{ClsSeq2}]{
-	      P \xrightarrow{\overline{x}(y) \cdot \sigma} P^{'}
+	      P \xrightarrow{\overline{x}(y) \cdot \gamma} P^{'}
 	    \\
 	      Q \xrightarrow{xy} Q^{'}
 	  }{
-	      P|Q \xrightarrow{\sigma} P^{'}|Q^{'}
+	      P|Q \xrightarrow{\gamma} P^{'}|Q^{'}
 	  }$
+      \\
 	&
-	  $\sigma$ does not start with $\nu $
+	  $\gamma$ does not start with a $\nu$
       \\
     \end{tabular}
       \\
@@ -2363,7 +2369,6 @@ where $stop(P)$ is a multi $\pi$ process which cannot make any transition.
   \begin{center}
     $\overline{y}x.P|(\nu x)(y(z).Q) \xrightarrow{\tau} P|(\nu w)(Q\{w/x\}\{x/z\})$
   \end{center}
-  This transition cannot be derived without $alpha$ conversion.
 \end{example}
 
 \begin{example} Scope extrusion without strong prefixing.
@@ -2400,13 +2405,20 @@ where $stop(P)$ is a multi $\pi$ process which cannot make any transition.
 
 
 \begin{example} Scope extrusion with strong prefixing(2).
-  $x\in fn(y(z).Q|a(b).R|y(z).S)$ and  $x^{'}\notin fn(y(z).Q|a(b).R|y(z).S)$
+  $x\in fn(y(z).Q|a(b).R|y(z).S)$ and  $x^{'}\notin fn(y(z).Q|a(b).R|y(z).S)$:
   \begin{center}
-    $(\nu x)(\underline{\overline{y}x}.\underline{\overline{a}b}.\underline{\overline{y}x}.\overline{a}b.P)|y(z).Q|a(b).R|y(z).S|a(b).T \xrightarrow{\tau} 
-      (\nu x^{'})(P\{x^{'}/x\}|Q\{x^{'}/z\}|R|S\{x^{'}/z\})|T
-    $
+    $(\nu x)(\underline{\overline{y}x}.\underline{\overline{a}b}.\underline{\overline{y}x}.\overline{a}b.P)|y(z).Q|a(b).R|y(z).S|a(b).T 
+	  \xrightarrow{\tau} 
+	    (\nu x^{'})(P\{x^{'}/x\}|Q\{x^{'}/z\}|R|S\{x^{'}/z\})|T$
   \end{center}
-  This transition cannot be derived without $\alpha$ conversion.
+%   \begin{center}
+%     $\inferrule* [left=\bf{Alp}]{ 
+%     }{
+% 	(\nu x^{'})(\underline{\overline{y}x^{'}}.\underline{\overline{a}b}.\underline{\overline{y}x^{'}}.\overline{a}b.P\{x^{'}/x\})|y(z).Q\{x^{'}/z\}|a(b).R|y(z).S\{x^{'}/z\}|a(b).T
+% 	  \xrightarrow{\tau} 
+% 	    (\nu x^{'})(P\{x^{'}/x\}|Q\{x^{'}/z\}|R|S\{x^{'}/z\})|T
+%     }$
+%   \end{center}
 \end{example}
 
 
@@ -2414,7 +2426,6 @@ where $stop(P)$ is a multi $\pi$ process which cannot make any transition.
   \begin{center}
     $\underline{\overline{y}x}.\overline{a}b.P|(\nu x)(y(z).Q)|(\nu b)(a(c).R) \xrightarrow{\tau} P|(\nu w)(Q\{w/x\}\{x/z\})|(\nu d)(R\{d/b\}\{b/c\})$
   \end{center}
-  This transition cannot be derived without $\alpha$ conversion.
 \end{example}
 
 % It is now natural to ask what the semantic of
@@ -2481,10 +2492,6 @@ where $stop(P)$ is a multi $\pi$ process which cannot make any transition.
 % \end{example}
 
 
-\begin{definition}
-  The transition relation $\twoheadrightarrow_{E}$ is the smallest relation induced by the rules in table \ref{multipioutearlywithout} excluding the rule $Alp$, and in table \ref{MultiOutScopeExtrusionRules}.
-\end{definition}
-
 % \begin{lemma}\label{multipiOutMoveAlpDown}
 %   Let $T_{1}$ be a proof tree of $P \xrightarrow{\gamma} Q$ and let $\delta(T)$ be the depth of $T$ and suppose that we modify the rule $Opn$ in the following way:
 %   \begin{center}
@@ -2503,25 +2510,23 @@ where $stop(P)$ is a multi $\pi$ process which cannot make any transition.
 %   Then there exist a proof tree $T_{2}$ of $P \stackrel{\gamma}{\twoheadrightarrow} S$ where $S\equiv_{\alpha} Q$ and $\delta(T_{2})\leq \delta(T_{1})$
 % \end{lemma}
 
-In the following section we will try to prove that strong early bisimulation is preserved by some operators. We would like to use the following lemma:
-\begin{example}
-  Let $P \xrightarrow{\gamma} Q$ and suppose that we modify the rule $Opn$ in the following way:
-  \begin{center}
-	  $\inferrule* [left=\bf{Opn}]{
-	      P \xrightarrow{\sigma} P^{'}
-	    \\
-	      y \in obj(\sigma)
-	    \\
-	      y \notin sbj(\sigma)
-	    \\
-	      z \notin fn(P)
-	  }{
-	    (\nu y)P \xrightarrow{opn(\sigma\{z/y\}, z)} P^{'}\{z/y\}
-	  }$    
-  \end{center}
-  Then $P \stackrel{\gamma}{\twoheadrightarrow} S$ and $S\equiv_{\alpha} Q$.
-\end{example}
-but this does not hold because
+%   and suppose that we modify the rule $Opn$ in the following way:
+%   \begin{center}
+% 	  $\inferrule* [left=\bf{Opn}]{
+% 	      P \xrightarrow{\sigma} P^{'}
+% 	    \\
+% 	      y \in obj(\sigma)
+% 	    \\
+% 	      y \notin sbj(\sigma)
+% 	    \\
+% 	      z \notin fn(P)
+% 	  }{
+% 	    (\nu y)P \xrightarrow{opn(\sigma\{z/y\}, z)} P^{'}\{z/y\}
+% 	  }$    
+%   \end{center}
+
+
+In the following section we will try to prove that strong early bisimulation is preserved by some operators. Let $\twoheadrightarrow$ be the smallest relation induced by the rules in table \ref{multipioutearlywithout} excluding the rule $Alp$, and by the rules in table \ref{MultiOutScopeExtrusionRules}. We would like to use the fact that: $P \xrightarrow{\gamma} Q$ imply $P \stackrel{\gamma}{\twoheadrightarrow} S$ and $S\equiv_{\alpha} Q$. But this does not hold because for example:
 \begin{center}
   \begin{tabular}{ll}
       $(\nu x) z(a).0 \equiv_{\alpha} (\nu y) z(a).0 \xrightarrow{zx} (\nu y)0$
@@ -2530,9 +2535,12 @@ but this does not hold because
   \end{tabular}
 \end{center}
 
-So we have to use another proof technique:
+But we do have to following:
 \begin{lemma}\label{multipiOutMoveAlpDown}
   If $P \xrightarrow{\gamma} Q$ then $P\equiv_{\alpha}R \stackrel{\gamma}{\twoheadrightarrow} S\equiv_{\alpha}Q$.
+  \begin{proof}
+    Similar to the proof of lemma \ref{moveAlpDown}
+  \end{proof}
 \end{lemma}
 
 
@@ -2665,39 +2673,318 @@ In the following section, $\rightarrow$ is the transition relation defined in ta
 
 
 \begin{proposition}
-  $\equiv_{\alpha}$ is a strong bisimulation.
+  $\equiv_{\alpha}$ is a strong early bisimulation.
   \begin{proof}
-    We prove that if $P \equiv_{\alpha} Q$ and $P \xrightarrow{\gamma} P^{'}$ then $Q \xrightarrow{\gamma} Q^{'}$ and $P^{'}\equiv_{\alpha} Q^{'}$. The simmetric holds because $\alpha$ equivalence is simmetric. The proof proceed by induction on the derivation of $P \xrightarrow{\gamma} P^{'}$. The last rule used can be:
+    We prove by induction on the derivation of $P \equiv_{\alpha} Q$ and the derivation of $P \xrightarrow{\gamma} P^{'}$ that $Q \xrightarrow{\gamma} Q^{'}$ and $Q^{'} \equiv P^{'}$. This imply that also the symmetric holds because $\alpha$ equivalence is symmetric. The last pair of rule used can be:
     \begin{description}
-%       \item[Out]:
-% 	$P$ is $\overline{x}y.P_{1}$ and $\gamma$ is $\overline{x}y$ for some names $x,y$ and process $P_{1}$. $P \equiv_{\alpha} Q$ and the inversion lemma for $\alpha$ equivalence imply $Q$ is $\overline{x}y.Q_{1}$ and $P_{1}\equiv_{\alpha}Q_{1}$ for a process $Q_{1}$. Rule $Out$ proves $\overline{x}y.Q_{1} \xrightarrow{\overline{x}y} Q_{1}$
-      \item[EInp]:
-	$P$ is $x(y).P_{1}$ and $\gamma$ is $xz$ for some names $x,y,z$ and process $P_{1}$.	$P \equiv_{\alpha} Q$ and the inversion lemma for $\alpha$ equivalence imply $Q$ is $x(w).Q_{1}$ and $P_{1}\equiv_{\alpha}Q_{1}\{y/w\}$ for a process $Q_{1}$ such that $y\notin fn(Q_{1})$ and a name $w$ which is not necessarily different from $y$. Rule $EInp$ proves $x(w).Q_{1} \xrightarrow{xz} Q_{1}$
-      \item[Res]: similar to the previous case.
-      \item[Tau]:
-	$P$ is $\tau.P_{1}$ and $\gamma$ is $\tau$ for some process $P_{1}$. $P \equiv_{\alpha} Q$ and the inversion lemma for $\alpha$ equivalence imply $Q$ is $\tau.Q_{1}$ and $P_{1}\equiv_{\alpha}Q_{1}$ for a process $Q_{1}$. Rule $Tau$ proves $\tau.Q_{1} \xrightarrow{\tau} Q_{1}$
-      \item[SOut]:
-	$P$ is $\underline{\overline{x_{1}}y_{1}}.\ldots.\underline{\overline{x_{n}}y_{n}}.\overline{x}y.P_{1}$ and $\gamma$ is $\overline{x_{1}}y_{1} \cdot \cdots \cdot \overline{x_{n}}y_{n}\cdot \overline{x}y$ for some names $x,y,\tilde{x},\tilde{y}$, process $P_{1}$. $P \equiv_{\alpha} Q$ and the inversion lemma for $\alpha$ equivalence imply $Q$ is $\underline{\overline{x_{1}}y_{1}}.\ldots.\underline{\overline{x_{n}}y_{n}}.\overline{x}y.Q_{1}$ and $P_{1}\equiv_{\alpha}Q_{1}$ for a process $Q_{1}$. For rule $SOut$: $Q\xrightarrow{\gamma}Q_{1}$.
-% 	$P$ is $\underline{\overline{x}y}.P_{1}$ and $\gamma$ is $\overline{x}y \cdot \gamma^{'}$ for some names $x,y$, process $P_{1}$ and a non empty sequence of outputs $\gamma^{'}$. $P \equiv_{\alpha} Q$ and the inversion lemma for $\alpha$ equivalence imply $Q$ is $\underline{\overline{x}y}.Q_{1}$ and $P_{1}\equiv_{\alpha}Q_{1}$ for a process $Q_{1}$. The premise is $P_{1} \xrightarrow{\gamma^{'}} P_{1}^{'}$, for inductive hypothesis $Q_{1} \xrightarrow{\gamma^{'}} Q_{1}^{'}$ and $P_{1}^{'} \equiv_{\alpha} Q_{1}^{'}$. Rule $SOut$ proves $\underline{\overline{x}y}.Q_{1} \xrightarrow{\overline{x}y \cdot \gamma^{'}} Q_{1}$
-%       \item[EComSeq]:
-% 	\begin{center}
-% 	  $\inferrule* {
-% 	      P_{1} \xrightarrow{xy} P_{1}^{'}
-% 	    \\
-% 	      P_{2}\xrightarrow{\overline{x}y\cdot \sigma} P_{2}^{'}
-% 	  }{
-% 	    \underbrace{P_{1}|P_{2}}_{P} \xrightarrow{\sigma} \underbrace{P_{1}^{'}|P_{2}^{'}}_{P^{'}}
-% 	  }$
-% 	\end{center}
-% 	The conclusion follows for inversion lemma of $\alpha$ conversion, inductive hypothesis and rule $EComSeq$
-      \item[EComSeq, ECom, ParL, ParR, SumL, SumR, Ide]: similar to the previous case.
-      \item[Opn]:
-      \item[Cls]:
-      \item[ClsSeq1]:
-      \item[ClsSeq2]:
+      \item[$(AlpOut, Out)$]:
+	\begin{center}
+	  \begin{tabular}{lll}
+	      $\inferrule* [left=\bf{AlpOut}]{
+		P \equiv_{\alpha} Q
+	      }{
+		\overline{x}y.P \equiv_{\alpha} \overline{x}y.Q
+	      }$
+	    &
+	      $\inferrule* [left=\bf{Out}]{
+	      }{
+		\overline{x}y.P \xrightarrow{\overline{x}y} P
+	      }$	      
+	    &
+	      $\inferrule* [left=\bf{Out}]{
+	      }{
+		\overline{x}y.Q \xrightarrow{\overline{x}y} Q
+	      }$	      
+	  \end{tabular}
+	\end{center}
+      \item[$(AlpSOut, SOut)$]:
+	\begin{center}
+	  \begin{tabular}{ll}
+	      $\inferrule* [left=\bf{AlpSOut}]{
+		P \equiv_{\alpha} Q
+	      }{
+		\underline{\overline{x}y}.P \equiv_{\alpha} \underline{\overline{x}y}.Q
+	      }$
+	    &
+	      $\inferrule* [left=\bf{SOut}]{
+		P \xrightarrow{\gamma} P^{'}
+	      }{
+		\underline{\overline{x}y}.P \xrightarrow{\overline{x}y \cdot \gamma} P^{'}
+	      }$	      
+	  \end{tabular}
+	\end{center}
+	$Q\equiv_{\alpha}P\xrightarrow{\gamma}P^{'}$ imply for inductive hypothesis that $Q \xrightarrow{\gamma} Q^{'} \equiv P^{'}$. So for rule $SOut$: $\underline{\overline{x}y}.Q \xrightarrow{\overline{x}y \cdot \gamma} Q^{'}$
+      \item[$(AlpTau, Tau)$]:
+	\begin{center}
+	  \begin{tabular}{lll}
+	      $\inferrule* [left=\bf{AlpTau}]{
+		P \equiv_{\alpha} Q
+	      }{
+		\tau.P \equiv_{\alpha} \tau.Q
+	      }$
+	    &
+	      $\inferrule* [left=\bf{Tau}]{
+	      }{
+		\tau.P \xrightarrow{\tau} P
+	      }$	      
+	    &
+	      $\inferrule* [left=\bf{Tau}]{
+	      }{
+		\tau.Q \xrightarrow{\tau} Q
+	      }$	      
+	  \end{tabular}
+	\end{center}
+      \item[$(AlpInp, EInp)$]:
+	\begin{center}
+	  \begin{tabular}{lll}
+	      $\inferrule* [left=\bf{AlpInp}]{
+		P \equiv_{\alpha} Q
+	      }{
+		x(y).P \equiv_{\alpha} x(y).Q
+	      }$
+	    &
+	      $\inferrule* [left=\bf{EInp}]{
+	      }{
+		x(y).P \xrightarrow{xz} P\{z/y\}
+	      }$	      
+	    &
+	      $\inferrule* [left=\bf{EInp}]{
+	      }{
+		x(y).Q \xrightarrow{xz} Q\{z/y\}
+	      }$
+	  \end{tabular}
+	\end{center}
+	$P \equiv_{\alpha} Q$ imply for lemma \ref{alphaequivalencesubstitution}: $P\{z/y\} \equiv_{\alpha} Q\{z/y\}$
+      \item[$(AlpInp1, EInp)$]:
+	\begin{center}
+	  \begin{tabular}{ll}
+	      $\inferrule* [left=\bf{AlpInp1}]{
+		P \equiv_{\alpha} Q
+	      }{
+		x(y).P \equiv_{\alpha} x(z).Q\{z/y\}
+	      }$
+	    &
+	      $\inferrule* [left=\bf{EInp}]{
+	      }{
+		x(y).P \xrightarrow{xw} P\{w/y\}
+	      }$	      
+	  \end{tabular}
+	\end{center}
+	For rule $EInp$: $x(z).Q\{z/y\} \xrightarrow{xw} Q\{z/y\}\{w/z\}$. $P \equiv_{\alpha} Q$ imply for lemma \ref{alphaequivalencesubstitution}: $P\{w/y\} \equiv_{\alpha} Q\{w/y\}$, for transitivity $P\{w/y\} \equiv_{\alpha} Q\{z/y\}\{w/z\}$
+      \item[$(AlpInp2, EInp)$] similar.
+      \item[$(AlpIde, Ide)$] in this case $P$ and $Q$ are both equal to some identifier.
+      \item[$(AlpPar, Par)$]:
+	\begin{center}
+	  \begin{tabular}{ll}
+	      $\inferrule* [left=\bf{AlpPar}]{
+		  P_{1} \equiv_{\alpha} Q_{1}
+		\\
+		  P_{2} \equiv_{\alpha} Q_{2}
+	      }{
+		P_{1}|P_{2} \equiv_{\alpha} Q_{1}|Q_{2}
+	      }$
+	    &
+	      $\inferrule* [left=\bf{Par}]{
+		  P_{1} \xrightarrow{\gamma} P_{1}^{'}
+	      }{
+		P_{1}|P_{2} \xrightarrow{\gamma} P_{1}^{'}
+	      }$	      
+	  \end{tabular}
+	\end{center}
+	For induction $Q_{1} \xrightarrow{\gamma} Q_{1}^{'}$ and $P_{1}^{'} \equiv_{\alpha} Q_{1}^{'}$. For rule $Par$: $Q_{1}|Q_{2} \xrightarrow{\gamma} Q_{1}^{'}$.
+      \item[$(AlpPar, ECom)$]:
+	\begin{center}
+	  \begin{tabular}{ll}
+	      $\inferrule* [left=\bf{AlpPar}]{
+		  P_{1} \equiv_{\alpha} Q_{1}
+		\\
+		  P_{2} \equiv_{\alpha} Q_{2}
+	      }{
+		P_{1}|P_{2} \equiv_{\alpha} Q_{1}|Q_{2}
+	      }$
+	    &
+	      $\inferrule* [left=\bf{ECom}]{
+		  P_{1} \xrightarrow{\overline{x}y} P_{1}^{'}
+		\\
+		  P_{2} \xrightarrow{xy} P_{2}^{'}
+	      }{
+		P_{1}|P_{2} \xrightarrow{\tau} P_{1}^{'}|P_{2}^{'}
+	      }$	      
+	  \end{tabular}
+	\end{center}
+	For induction on the first premise of $ECom$: $Q_{1} \xrightarrow{\overline{x}y} Q_{1}^{'}$ and $P_{1}^{'} \equiv_{\alpha} Q_{1}^{'}$. For induction on the second premise: $Q_{2} \xrightarrow{xy} Q_{2}^{'}$ and $P_{2}^{'} \equiv_{\alpha} Q_{2}^{'}$. For rule $ECom$: $Q_{1}|Q_{2} \xrightarrow{\tau} Q_{1}^{'}|Q_{2}^{'}$ and for rule $AlpPar$: $P_{1}^{'}|P_{2}^{'} \equiv_{\alpha} Q_{1}^{'}|Q_{2}^{'}$.
+      \item[$(AlpPar, EComSeq)$] similar.
+      \item[$(AlpPar, Cls)$]:
+	\begin{center}
+	  \begin{tabular}{ll}
+	      $\inferrule* [left=\bf{AlpPar}]{
+		  P_{1} \equiv_{\alpha} Q_{1}
+		\\
+		  P_{2} \equiv_{\alpha} Q_{2}
+	      }{
+		P_{1}|P_{2} \equiv_{\alpha} Q_{1}|Q_{2}
+	      }$
+	    &
+	      $\inferrule* [left=\bf{Cls}]{
+		  P_{1} \xrightarrow{\overline{x}(y) \cdot (\nu x)} P_{1}^{'}
+		\\
+		  P_{2} \xrightarrow{xy} P_{2}^{'}
+	      }{
+		P_{1}|P_{2} \xrightarrow{\tau} (\nu x)(P_{1}^{'}|P_{2}^{'})
+	      }$	      
+	  \end{tabular}
+	\end{center}
+	For induction on the first premise of $ECom$: $Q_{1} \xrightarrow{\overline{x}(y) \cdot (\nu x)} Q_{1}^{'}$ and $P_{1}^{'} \equiv_{\alpha} Q_{1}^{'}$. For induction on the second premise: $Q_{2} \xrightarrow{xy} Q_{2}^{'}$ and $P_{2}^{'} \equiv_{\alpha} Q_{2}^{'}$. For rule $Cls$: $Q_{1}|Q_{2} \xrightarrow{\tau} (\nu x)(Q_{1}^{'}|Q_{2}^{'})$ and for rules $AlpPar$ and $AlpRes$: $(\nu x)(P_{1}^{'}|P_{2}^{'}) \equiv_{\alpha} (\nu x)(Q_{1}^{'}|Q_{2}^{'})$.
+      \item[$(AlpPar, ClsSeq1)$] similar.
+      \item[$(AlpPar, ClsSeq2)$] similar.
+      \item[$(AlpRes, Res)$]:
+	\begin{center}
+	  \begin{tabular}{ll}
+	      $\inferrule* [left=\bf{AlpRes}]{
+		P \equiv_{\alpha} Q
+	      }{
+		(\nu y)P \equiv_{\alpha} (\nu y)Q
+	      }$
+	    &
+	      $\inferrule* [left=\bf{Res}]{
+		  P \xrightarrow{\gamma} P^{'}
+		\\
+		  y\notin n(\gamma)
+	      }{
+		(\nu y)P \xrightarrow{\gamma} (\nu y)P^{'}
+	      }$	      
+	  \end{tabular}
+	\end{center}
+	$P \equiv_{\alpha} Q$ and $P \xrightarrow{\gamma} P^{'}$ imply for inductive hypothesis that $Q \xrightarrow{\gamma} Q^{'}$ and $Q^{'}\equiv_{\alpha} P^{'}$. For rule $Res$ and $AlpRes$: $(\nu y)Q \xrightarrow{\gamma} (\nu y)Q^{'}$ and $(\nu y)Q^{'} \equiv_{\alpha} (\nu y)P^{'}$.
+      \item[$(AlpRes, Opn)$] similar.
+      \item[$(AlpRes1, Res)$]:
+	\begin{center}
+	  \begin{tabular}{ll}
+	      $\inferrule* [left=\bf{AlpRes1}]{
+		P \equiv_{\alpha} Q
+	      }{
+		(\nu y) \equiv_{\alpha} (\nu z)Q\{z/y\}
+	      }$
+	    &
+	      $\inferrule* [left=\bf{Res}]{
+		  P \xrightarrow{\gamma} P^{'}
+		\\
+		  y\notin n(\gamma)
+	      }{
+		(\nu y)P \xrightarrow{\gamma} (\nu y)P^{'}
+	      }$	      
+	  \end{tabular}
+	\end{center}
+	$P \equiv_{\alpha} Q$ and $P \xrightarrow{\gamma} P^{'}$ imply for inductive hypothesis that $Q \xrightarrow{\gamma} Q^{'}$ and $Q^{'}\equiv_{\alpha} P^{'}$. So:
+	\begin{center}
+	  $\inferrule* [left=\bf{Alp}]{
+	      \inferrule* [left=\bf{AlpRes2}]{
+		Q \equiv_{\alpha} Q
+	      }{
+		(\nu z)Q\{z/y\} \equiv_{\alpha} (\nu y)Q
+	      }
+	    \\
+	      \inferrule* [left=\bf{Res}]{
+		  Q \xrightarrow{\gamma} Q^{'}
+		\\
+		  y\notin n(\gamma)
+	      }{
+		(\nu y)Q \xrightarrow{\gamma} (\nu y)Q^{'}
+	      }
+	  }{
+	    (\nu z)Q\{z/y\} \xrightarrow{\gamma} (\nu y)Q^{'}
+	  }$
+	\end{center}
+	and $Q^{'}\equiv_{\alpha} P^{'}$ imply for rule $Res$ that $(\nu y)Q^{'} \equiv_{\alpha} (\nu y)P^{'}$.
+      \item[$(AlpRes1, Opn)$] similar.
+      \item[$(AlpRes2, Res)$] similar.
+      \item[$(AlpRes2, Opn)$] similar.
     \end{description}
   \end{proof}
 \end{proposition}
+
+% \begin{proposition}
+%   $\equiv_{\alpha}$ is a strong bisimulation.
+%   \begin{proof}
+%     We prove that if $P \equiv_{\alpha} Q$ and $P \xrightarrow{\gamma} P^{'}$ then $Q \xrightarrow{\gamma} Q^{'}$ and $P^{'}\equiv_{\alpha} Q^{'}$. The simmetric holds because $\alpha$ equivalence is simmetric. The proof proceed by induction on the derivation of $P \xrightarrow{\gamma} P^{'}$. The last rule used can be:
+%     \begin{description}
+% %       \item[Out]:
+% % 	$P$ is $\overline{x}y.P_{1}$ and $\gamma$ is $\overline{x}y$ for some names $x,y$ and process $P_{1}$. $P \equiv_{\alpha} Q$ and the inversion lemma for $\alpha$ equivalence imply $Q$ is $\overline{x}y.Q_{1}$ and $P_{1}\equiv_{\alpha}Q_{1}$ for a process $Q_{1}$. Rule $Out$ proves $\overline{x}y.Q_{1} \xrightarrow{\overline{x}y} Q_{1}$
+%       \item[EInp]:
+% 	$x(y).P_{1}\xrightarrow{xz} P_{1}\{z/y\}$. $x(y).P_{1} \equiv_{\alpha} Q$ and the inversion lemma for $\alpha$ equivalence imply $Q$ is $x(w).Q_{1}$ and one of the following cases hold:
+% 	\begin{itemize}
+% 	 \item 
+% 	  $P_{1}\equiv_{\alpha}Q_{1}\{y/w\}$ for a process $Q_{1}$ and a name $w$ which is not necessarily different from $y$. Rule $EInp$ proves $x(w).Q_{1} \xrightarrow{xz} Q_{1}\{z/w\}$. $P_{1}\equiv_{\alpha}Q_{1}\{y/w\}$ imply $P_{1}\{z/y\} \equiv_{\alpha}Q_{1}\{y/w\}\{z/y\}$ which in turn imply $P_{1}\{z/y\} \equiv_{\alpha}Q_{1}\{z/w\}$.
+% 	\item
+% 	  $P_{1}\{w/y\}\equiv_{\alpha}Q_{1}$: this case is similar.
+% 	\end{itemize}
+%       \item[Res]: similar to the previous case.
+%       \item[Tau]:
+% 	$P$ is $\tau.P_{1}$ and $\gamma$ is $\tau$ for some process $P_{1}$. $P \equiv_{\alpha} Q$ and the inversion lemma for $\alpha$ equivalence imply $Q$ is $\tau.Q_{1}$ and $P_{1}\equiv_{\alpha}Q_{1}$ for a process $Q_{1}$. Rule $Tau$ proves $\tau.Q_{1} \xrightarrow{\tau} Q_{1}$
+%       \item[SOut]:
+% 	$P$ is $\underline{\overline{x_{1}}y_{1}}.\ldots.\underline{\overline{x_{n}}y_{n}}.\overline{x}y.P_{1}$ and $\gamma$ is $\overline{x_{1}}y_{1} \cdot \cdots \cdot \overline{x_{n}}y_{n}\cdot \overline{x}y$ for some names $x,y,\tilde{x},\tilde{y}$, process $P_{1}$. $P \equiv_{\alpha} Q$ and the inversion lemma for $\alpha$ equivalence imply $Q$ is $\underline{\overline{x_{1}}y_{1}}.\ldots.\underline{\overline{x_{n}}y_{n}}.\overline{x}y.Q_{1}$ and $P_{1}\equiv_{\alpha}Q_{1}$ for a process $Q_{1}$. For rule $SOut$: $Q\xrightarrow{\gamma}Q_{1}$.
+% % 	$P$ is $\underline{\overline{x}y}.P_{1}$ and $\gamma$ is $\overline{x}y \cdot \gamma^{'}$ for some names $x,y$, process $P_{1}$ and a non empty sequence of outputs $\gamma^{'}$. $P \equiv_{\alpha} Q$ and the inversion lemma for $\alpha$ equivalence imply $Q$ is $\underline{\overline{x}y}.Q_{1}$ and $P_{1}\equiv_{\alpha}Q_{1}$ for a process $Q_{1}$. The premise is $P_{1} \xrightarrow{\gamma^{'}} P_{1}^{'}$, for inductive hypothesis $Q_{1} \xrightarrow{\gamma^{'}} Q_{1}^{'}$ and $P_{1}^{'} \equiv_{\alpha} Q_{1}^{'}$. Rule $SOut$ proves $\underline{\overline{x}y}.Q_{1} \xrightarrow{\overline{x}y \cdot \gamma^{'}} Q_{1}$
+% %       \item[EComSeq]:
+% % 	\begin{center}
+% % 	  $\inferrule* {
+% % 	      P_{1} \xrightarrow{xy} P_{1}^{'}
+% % 	    \\
+% % 	      P_{2}\xrightarrow{\overline{x}y\cdot \sigma} P_{2}^{'}
+% % 	  }{
+% % 	    \underbrace{P_{1}|P_{2}}_{P} \xrightarrow{\sigma} \underbrace{P_{1}^{'}|P_{2}^{'}}_{P^{'}}
+% % 	  }$
+% % 	\end{center}
+% % 	The conclusion follows for inversion lemma of $\alpha$ conversion, inductive hypothesis and rule $EComSeq$
+%       \item[EComSeq, ECom, ParL, ParR, SumL, SumR, Ide]: similar to the previous case.
+%       \item[Opn]:
+% 	\begin{center}
+% 	  $\inferrule* [left=\bf{Opn}]{
+% 	      P_{1} \xrightarrow{\sigma} P_{1}^{'}
+% 	    \\
+% 	      y \in obj(\sigma)
+% 	    \\
+% 	      y \notin sbj(\sigma)
+% 	  }{
+% 	    (\nu y)P_{1} \xrightarrow{opn(\sigma, y)} P_{1}^{'}
+% 	  }$
+% 	\end{center}
+% 	$(\nu y).P_{1} \equiv_{\alpha} Q$ and the inversion lemma for $\alpha$ equivalence imply $Q$ is $(\nu w).Q_{1}$ and one of the following cases hold:
+% 	\begin{itemize}
+% 	 \item 
+% 	  $P_{1}\equiv_{\alpha}Q_{1}\{y/w\}$ for a process $Q_{1}$ and a name $w$ which is not necessarily different from $y$. For inductive hypothesis $Q_{1}\{y/w\} \xrightarrow{\sigma} Q_{1}^{'}$ and $Q_{1}^{'}\equiv_{\alpha} P_{1}^{'}$. Rule $Opn$ proves $(\nu w)Q_{1}\{y/w\} \xrightarrow{xz} Q_{1}\{z/w\}$. $P_{1}\equiv_{\alpha}Q_{1}\{y/w\}$ imply $P_{1}\{z/y\} \equiv_{\alpha}Q_{1}\{y/w\}\{z/y\}$ which in turn imply $P_{1}\{z/y\} \equiv_{\alpha}Q_{1}\{z/w\}$.
+% 	\item 
+% 	  $P_{1}\{w/y\}\equiv_{\alpha}Q_{1}$: this case is similar.
+% 	\end{itemize}
+%       \item[Cls]:
+% 	  $\inferrule* [left=\bf{Cls}]{
+% 	      P \xrightarrow{\overline{x}(y) \cdot (\nu y)} P^{'}
+% 	    \\
+% 	      Q \xrightarrow{xy} Q^{'}
+% 	  }{
+% 	      P|Q \xrightarrow{\tau} (\nu y)(P^{'}|Q^{'})
+% 	  }$
+% 
+%       \item[ClsSeq1]:
+% 	  $\inferrule* [left=\bf{ClsSeq1}]{
+% 	      P \xrightarrow{\overline{x}(y) \cdot (\nu y) \cdot \sigma} P^{'}
+% 	    \\
+% 	      Q \xrightarrow{xy} Q^{'}
+% 	  }{
+% 	      P|Q \xrightarrow{\sigma} (\nu y)(P^{'}|Q^{'})
+% 	  }$
+% 
+%       \item[ClsSeq2]:
+% 	  $\inferrule* [left=\bf{ClsSeq2}]{
+% 	      P \xrightarrow{\overline{x}(y) \cdot \gamma} P^{'}
+% 	    \\
+% 	      Q \xrightarrow{xy} Q^{'}
+% 	  }{
+% 	      P|Q \xrightarrow{\gamma} P^{'}|Q^{'}
+% 	  }$
+% 	$\gamma$ does not start with a $\nu$
+%     \end{description}
+%   \end{proof}
+% \end{proposition}
 
 
 \begin{lemma}\label{earlyBisimulationProprerties}
