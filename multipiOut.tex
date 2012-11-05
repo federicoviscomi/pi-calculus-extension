@@ -2903,89 +2903,6 @@ In the following section, $\rightarrow$ is the transition relation defined in ta
   \end{proof}
 \end{proposition}
 
-% \begin{proposition}
-%   $\equiv_{\alpha}$ is a strong bisimulation.
-%   \begin{proof}
-%     We prove that if $P \equiv_{\alpha} Q$ and $P \xrightarrow{\gamma} P^{'}$ then $Q \xrightarrow{\gamma} Q^{'}$ and $P^{'}\equiv_{\alpha} Q^{'}$. The simmetric holds because $\alpha$ equivalence is simmetric. The proof proceed by induction on the derivation of $P \xrightarrow{\gamma} P^{'}$. The last rule used can be:
-%     \begin{description}
-% %       \item[Out]:
-% % 	$P$ is $\overline{x}y.P_{1}$ and $\gamma$ is $\overline{x}y$ for some names $x,y$ and process $P_{1}$. $P \equiv_{\alpha} Q$ and the inversion lemma for $\alpha$ equivalence imply $Q$ is $\overline{x}y.Q_{1}$ and $P_{1}\equiv_{\alpha}Q_{1}$ for a process $Q_{1}$. Rule $Out$ proves $\overline{x}y.Q_{1} \xrightarrow{\overline{x}y} Q_{1}$
-%       \item[EInp]:
-% 	$x(y).P_{1}\xrightarrow{xz} P_{1}\{z/y\}$. $x(y).P_{1} \equiv_{\alpha} Q$ and the inversion lemma for $\alpha$ equivalence imply $Q$ is $x(w).Q_{1}$ and one of the following cases hold:
-% 	\begin{itemize}
-% 	 \item 
-% 	  $P_{1}\equiv_{\alpha}Q_{1}\{y/w\}$ for a process $Q_{1}$ and a name $w$ which is not necessarily different from $y$. Rule $EInp$ proves $x(w).Q_{1} \xrightarrow{xz} Q_{1}\{z/w\}$. $P_{1}\equiv_{\alpha}Q_{1}\{y/w\}$ imply $P_{1}\{z/y\} \equiv_{\alpha}Q_{1}\{y/w\}\{z/y\}$ which in turn imply $P_{1}\{z/y\} \equiv_{\alpha}Q_{1}\{z/w\}$.
-% 	\item
-% 	  $P_{1}\{w/y\}\equiv_{\alpha}Q_{1}$: this case is similar.
-% 	\end{itemize}
-%       \item[Res]: similar to the previous case.
-%       \item[Tau]:
-% 	$P$ is $\tau.P_{1}$ and $\gamma$ is $\tau$ for some process $P_{1}$. $P \equiv_{\alpha} Q$ and the inversion lemma for $\alpha$ equivalence imply $Q$ is $\tau.Q_{1}$ and $P_{1}\equiv_{\alpha}Q_{1}$ for a process $Q_{1}$. Rule $Tau$ proves $\tau.Q_{1} \xrightarrow{\tau} Q_{1}$
-%       \item[SOut]:
-% 	$P$ is $\underline{\overline{x_{1}}y_{1}}.\ldots.\underline{\overline{x_{n}}y_{n}}.\overline{x}y.P_{1}$ and $\gamma$ is $\overline{x_{1}}y_{1} \cdot \cdots \cdot \overline{x_{n}}y_{n}\cdot \overline{x}y$ for some names $x,y,\tilde{x},\tilde{y}$, process $P_{1}$. $P \equiv_{\alpha} Q$ and the inversion lemma for $\alpha$ equivalence imply $Q$ is $\underline{\overline{x_{1}}y_{1}}.\ldots.\underline{\overline{x_{n}}y_{n}}.\overline{x}y.Q_{1}$ and $P_{1}\equiv_{\alpha}Q_{1}$ for a process $Q_{1}$. For rule $SOut$: $Q\xrightarrow{\gamma}Q_{1}$.
-% % 	$P$ is $\underline{\overline{x}y}.P_{1}$ and $\gamma$ is $\overline{x}y \cdot \gamma^{'}$ for some names $x,y$, process $P_{1}$ and a non empty sequence of outputs $\gamma^{'}$. $P \equiv_{\alpha} Q$ and the inversion lemma for $\alpha$ equivalence imply $Q$ is $\underline{\overline{x}y}.Q_{1}$ and $P_{1}\equiv_{\alpha}Q_{1}$ for a process $Q_{1}$. The premise is $P_{1} \xrightarrow{\gamma^{'}} P_{1}^{'}$, for inductive hypothesis $Q_{1} \xrightarrow{\gamma^{'}} Q_{1}^{'}$ and $P_{1}^{'} \equiv_{\alpha} Q_{1}^{'}$. Rule $SOut$ proves $\underline{\overline{x}y}.Q_{1} \xrightarrow{\overline{x}y \cdot \gamma^{'}} Q_{1}$
-% %       \item[EComSeq]:
-% % 	\begin{center}
-% % 	  $\inferrule* {
-% % 	      P_{1} \xrightarrow{xy} P_{1}^{'}
-% % 	    \\
-% % 	      P_{2}\xrightarrow{\overline{x}y\cdot \sigma} P_{2}^{'}
-% % 	  }{
-% % 	    \underbrace{P_{1}|P_{2}}_{P} \xrightarrow{\sigma} \underbrace{P_{1}^{'}|P_{2}^{'}}_{P^{'}}
-% % 	  }$
-% % 	\end{center}
-% % 	The conclusion follows for inversion lemma of $\alpha$ conversion, inductive hypothesis and rule $EComSeq$
-%       \item[EComSeq, ECom, ParL, ParR, SumL, SumR, Ide]: similar to the previous case.
-%       \item[Opn]:
-% 	\begin{center}
-% 	  $\inferrule* [left=\bf{Opn}]{
-% 	      P_{1} \xrightarrow{\sigma} P_{1}^{'}
-% 	    \\
-% 	      y \in obj(\sigma)
-% 	    \\
-% 	      y \notin sbj(\sigma)
-% 	  }{
-% 	    (\nu y)P_{1} \xrightarrow{opn(\sigma, y)} P_{1}^{'}
-% 	  }$
-% 	\end{center}
-% 	$(\nu y).P_{1} \equiv_{\alpha} Q$ and the inversion lemma for $\alpha$ equivalence imply $Q$ is $(\nu w).Q_{1}$ and one of the following cases hold:
-% 	\begin{itemize}
-% 	 \item 
-% 	  $P_{1}\equiv_{\alpha}Q_{1}\{y/w\}$ for a process $Q_{1}$ and a name $w$ which is not necessarily different from $y$. For inductive hypothesis $Q_{1}\{y/w\} \xrightarrow{\sigma} Q_{1}^{'}$ and $Q_{1}^{'}\equiv_{\alpha} P_{1}^{'}$. Rule $Opn$ proves $(\nu w)Q_{1}\{y/w\} \xrightarrow{xz} Q_{1}\{z/w\}$. $P_{1}\equiv_{\alpha}Q_{1}\{y/w\}$ imply $P_{1}\{z/y\} \equiv_{\alpha}Q_{1}\{y/w\}\{z/y\}$ which in turn imply $P_{1}\{z/y\} \equiv_{\alpha}Q_{1}\{z/w\}$.
-% 	\item 
-% 	  $P_{1}\{w/y\}\equiv_{\alpha}Q_{1}$: this case is similar.
-% 	\end{itemize}
-%       \item[Cls]:
-% 	  $\inferrule* [left=\bf{Cls}]{
-% 	      P \xrightarrow{\overline{x}(y) \cdot (\nu y)} P^{'}
-% 	    \\
-% 	      Q \xrightarrow{xy} Q^{'}
-% 	  }{
-% 	      P|Q \xrightarrow{\tau} (\nu y)(P^{'}|Q^{'})
-% 	  }$
-% 
-%       \item[ClsSeq1]:
-% 	  $\inferrule* [left=\bf{ClsSeq1}]{
-% 	      P \xrightarrow{\overline{x}(y) \cdot (\nu y) \cdot \sigma} P^{'}
-% 	    \\
-% 	      Q \xrightarrow{xy} Q^{'}
-% 	  }{
-% 	      P|Q \xrightarrow{\sigma} (\nu y)(P^{'}|Q^{'})
-% 	  }$
-% 
-%       \item[ClsSeq2]:
-% 	  $\inferrule* [left=\bf{ClsSeq2}]{
-% 	      P \xrightarrow{\overline{x}(y) \cdot \gamma} P^{'}
-% 	    \\
-% 	      Q \xrightarrow{xy} Q^{'}
-% 	  }{
-% 	      P|Q \xrightarrow{\gamma} P^{'}|Q^{'}
-% 	  }$
-% 	$\gamma$ does not start with a $\nu$
-%     \end{description}
-%   \end{proof}
-% \end{proposition}
-
 
 \begin{lemma}\label{earlyBisimulationProprerties}
   $\sim_{E}$ is preserved by all operators except input prefixing.
@@ -2993,6 +2910,7 @@ In the following section, $\rightarrow$ is the transition relation defined in ta
     The proof goes by cases on operators:
     \begin{description}
       \item[Output prefixing]
+    \end{description}
 	The relation $\{(\overline{x}y.P, \overline{x}y.Q): P\sim_{E} Q\} \cup \sim_{E}$ is a strong early bisimulation. We can apply the following rules to $\overline{x}y$:
 	\begin{description}
 	  \item[$Out$]
@@ -3011,9 +2929,11 @@ In the following section, $\rightarrow$ is the transition relation defined in ta
 		  \overline{x}y.P \xrightarrow{\overline{x}y} R
 	      }$
 	    \end{center}
-	    $\overline{x}y.P \xrightarrow{\overline{x}y} R \equiv_{\alpha} P \sim_{E} Q$ and $\overline{x}y.Q \xrightarrow{\overline{x}y} Q$ imply $\overline{x}y.P$ and $\overline{x}y.Q$ are early bisimilar up to $\alpha$ equivalence. For proposition \ref{earlyBisimilarityUpToImplyEarlyBisimilarity}: $\overline{x}y.P$ and $\overline{x}y.Q$ are early bisimilar.
+	    $\overline{x}y.P \xrightarrow{\overline{x}y} R$, $\overline{x}y.Q \xrightarrow{\overline{x}y} Q$ and $R \equiv_{\alpha} P \sim_{E} Q$ imply $\overline{x}y.P$ and $\overline{x}y.Q$ are early bisimilar up to $\alpha$ equivalence. For proposition \ref{earlyBisimilarityUpToImplyEarlyBisimilarity}: $\overline{x}y.P$ and $\overline{x}y.Q$ are early bisimilar.
 	\end{description}
+    \begin{description}
       \item[Strong output prefixing]
+    \end{description}
 	The relation $\{(\underline{\overline{x}y}.P, \underline{\overline{x}y}.Q): P\sim_{E} Q\} \cup \sim_{E}$ is a strong early bisimulation: there are three cases to consider:
 	\begin{itemize}
 	  \item 
@@ -3049,7 +2969,9 @@ In the following section, $\rightarrow$ is the transition relation defined in ta
 	  \item
 	    Otherwise there is no transition starting from $\underline{\overline{x}y}.P$ or from $\underline{\overline{x}y}.Q$ so these processes are strongly bisimilar.
 	\end{itemize}
+    \begin{description}
       \item[Tau prefixing]
+    \end{description}
 	The relation $\{(\tau.P, \tau.Q): P\sim_{E} Q\} \cup \sim_{E}$ is a strong early bisimulation. We have to consider in turn each rule that can be applied to $\tau.P$:
 	\begin{description}
 	  \item[$Tau$]
@@ -3070,7 +2992,9 @@ In the following section, $\rightarrow$ is the transition relation defined in ta
 	    \end{center}
 	    $\tau.P \xrightarrow{\tau} R \equiv_{\alpha} P \sim_{E} Q$ and $\tau.Q \xrightarrow{\tau} Q$ imply $\tau.P$ and $\tau.Q$ are early bisimilar up to $\alpha$ equivalence. For proposition \ref{earlyBisimilarityUpToImplyEarlyBisimilarity}: $\tau.P$ and $\tau.Q$ are early bisimilar.	    
 	\end{description}
+    \begin{description}
       \item[Sum]
+    \end{description}
 	The relation $\{(P+R, Q+R): P\sim_{E} Q\} \cup \sim_{E}$ is a strong early bisimulation. The rules that can be applied to $P+Q$ are:
 	\begin{description}
 	  \item[$Sum$]
@@ -3130,255 +3054,117 @@ In the following section, $\rightarrow$ is the transition relation defined in ta
 % 	      }$
 % 	    \end{center}
 	\end{description}
+    \begin{description}
       \item[Restriction]
-	The relation $Res(\sim_{E})=\{((\nu x)P, (\nu x)Q): P\sim_{E} Q\} \cup \sim_{E}$ is a strong early bisimulation. The last rule applicable to $(\nu x)P$ can be:
+    \end{description}
+      We prove that the relation $Res(\sim_{E})=\{((\nu x)P, (\nu x)Q): P\sim_{E} Q\} \cup \sim_{E}$ is a strong early bisimulation up to $\alpha$ equivalence. This imply that $Res(\sim_{E})$ is a strong early bisimulation. For lemma \ref{multipiOutMoveAlpDown} and for reflexivity of $\alpha$ equivalence we can assume that every transition that starts from $(\nu x)P$ is in the form $(\nu x)P \equiv_{\alpha} R$ and $R\stackrel{\gamma}{\twoheadrightarrow} R^{'}$. Where $\twoheadrightarrow$ is the semantic in table \ref{multipioutearlywithout} and \ref{MultiOutScopeExtrusionRules} but without rule $Alp$. So we can proceed by induction on both the derivation of $(\nu x)P \equiv_{\alpha} R$ and of $R\stackrel{\gamma}{\twoheadrightarrow} R^{'}$. There are some cases depending on the last pair of rule used in the derivation of $(\nu x)P \equiv_{\alpha} R$ and of $R\stackrel{\gamma}{\twoheadrightarrow} R^{'}$:
 	\begin{description}
-	  \item[$Res$]:
-	    \begin{center}
-	      $\inferrule* [left=\bf{Res}]{
-		  P \xrightarrow{\gamma} P^{'}
+ 	  \item[$(AlpRes, Res)$]:
+   	    \begin{center}
+   	      $\inferrule*[left=\bf{Alp}]{
+		  \inferrule* [left=\bf{AlpRes}]{
+		    P \equiv_{\alpha} R
+		  }{
+		    (\nu x)P \equiv_{\alpha} (\nu x)R
+		  }
 		\\
-		  x \notin n(\gamma)
+		  \inferrule* [left=\bf{Res}]{
+		    R \stackrel{\gamma}{\longtwoheadrightarrow} R^{'}
+		  \\
+		    x \notin n(\gamma)
+		  }{
+		    (\nu x)R \stackrel{\gamma}{\longtwoheadrightarrow} (\nu x)R^{'}
+		  }
 	      }{
-		(\nu x)P \xrightarrow{\gamma} (\nu x)P^{'}
+		(\nu x)P \stackrel{\gamma}{\longtwoheadrightarrow} (\nu x)R^{'}
 	      }$
-	    \end{center}
-	    $P \xrightarrow{\gamma} P^{'}$ imply $Q \xrightarrow{\gamma} Q^{'}$ and $P^{'} \sim_{E} Q^{'}$ so for rule $Res$: $(\nu x)Q \xrightarrow{\gamma} (\nu x)Q^{'}$ and $((\nu x)P^{'}, (\nu x)Q^{'})\in Res(\sim_{E})$. 
-	  \item[$Opn$]:
-	    \begin{center}
-	      $\inferrule* [left=\bf{Opn}]{
-		  P \xrightarrow{\overline{x}y} P^{'}
-	      }{
-		(\nu y)P \xrightarrow{\overline{x}(y)} P^{'}
-	      }$
-	    \end{center}
-	    $P \xrightarrow{\overline{x}y} P^{'}$ imply $Q \xrightarrow{\overline{x}y} Q^{'}$ and $P^{'} \sim_{E} Q^{'}$. For rule $Opn$: $(\nu y)Q \xrightarrow{\overline{x}(y)} Q^{'}$.
-	  \item[$ResAlp$]
-	    
-	  \item[$OpnAlp$]
-	    
- 	  \item[$Alp(1)$]
+   	    \end{center}
+ 	    $P\equiv_{\alpha} R \stackrel{\gamma}{\longtwoheadrightarrow} R^{'}$ imply $P\xrightarrow{\gamma} R^{'}$ which together with $P\sim_{E}Q$ imply $Q \xrightarrow{\gamma} Q^{'}$ and $Q^{'} \sim_{E} R^{'}$. For rule $Res$: $(\nu x)Q \xrightarrow{\gamma} (\nu x)Q^{'}$. Putting it all together:
+ 	    \begin{center}
+ 	      $(\nu x)P \xrightarrow{\gamma} (\nu x)P^{'} \equiv_{\alpha} (\nu x)R^{'} Res(\sim_{E}) (\nu x)Q^{'} \stackrel{\gamma}{\leftarrow} (\nu x)Q$
+ 	    \end{center}
+ 	  \item[$(AlpRes, Res1)$]:
 	    let $(\nu x)P \xrightarrow{\gamma} P^{'}$, having in mind lemma \ref{multipiOutMoveAlpDown} 
    	    \begin{center}
-   	      $\inferrule* [left=\bf{Res}]{
-   		  P \stackrel{\gamma}{\longtwoheadrightarrow} R^{'}
- 		\\
- 		  x \notin n(\gamma)
-   	      }{
-   		  (\nu x)P \stackrel{\gamma}{\longtwoheadrightarrow} (\nu x)R^{'} \equiv_{\alpha} P^{'}
-   	      }$
+   	      $\inferrule*[left=\bf{Alp}]{
+		  \inferrule* [left=\bf{AlpRes1}]{
+		      P \equiv_{\alpha} R
+		    \\
+		      y\notin bn(R)
+		  }{
+		    (\nu x)P \equiv_{\alpha} (\nu y)R\{y/x\}_{nb}
+		  }
+		\\
+		  \inferrule* [left=\bf{Res}]{
+		    R\{y/x\}_{nb} \stackrel{\gamma}{\longtwoheadrightarrow} R^{'}
+		  \\
+		    y \notin n(\gamma)
+		  }{
+		    (\nu y)R\{y/x\}_{nb} \stackrel{\gamma}{\longtwoheadrightarrow} (\nu y)R^{'}
+		  }
+	      }{
+		(\nu x)P \stackrel{\gamma}{\longtwoheadrightarrow} (\nu y)R^{'}
+	      }$
    	    \end{center}
- 	    $P \sim_{E} Q$ and $P \stackrel{\gamma}{\longtwoheadrightarrow} R^{'}$ imply $Q \xrightarrow{\gamma} S$ and $S\sim_{E} R^{'}$. For rule $Res$: $(\nu x)Q \xrightarrow{\gamma} (\nu x)S$. Putting it all together:
+	    \begin{center}
+	      \begin{tabular}{ll}
+		  $R\{y/x\}_{nb} \stackrel{\gamma}{\longtwoheadrightarrow} R^{'}$ 
+		&
+		  lemma \ref{propagationOfSubstitionNBOverTransition}
+	      \\
+		  imply $R \stackrel{\gamma\{x/y\}_{nb}}{\longtwoheadrightarrow} R^{'}\{x/y\}_{nb}$
+		&
+		  $P \equiv_{\alpha} R$ and rule $Alp$
+	      \\
+		  imply $P \xrightarrow{\gamma\{x/y\}_{nb}} R^{'}\{x/y\}_{nb}$.
+		&
+		  $P\sim_{E} Q$
+	      \\
+		imply $Q \xrightarrow{\gamma\{x/y\}_{nb}} Q^{'}$ and $Q^{'}\sim_{E} R^{'}\{x/y\}_{nb}$.
+		&
+	      \\
+	      \end{tabular}
+	      \\
+	      \begin{tabular}{ll}
+	      \\
+		  $Q \xrightarrow{\gamma\{x/y\}_{nb}} Q^{'}$ 
+		&
+		  lemma \ref{propagationOfSubstitionNBOverTransition}
+	      \\
+		  imply $Q\{y/x\}_{nb} \xrightarrow{\gamma} Q^{'}\{y/x\}_{nb}$.
+		&
+		  rule $Res$
+	      \\
+		  imply $(\nu y)Q\{y/x\}_{nb} \xrightarrow{\gamma} (\nu y)Q^{'}\{y/x\}_{nb}$
+		&
+		  rule $Alp$ and $(\nu x)Q \equiv_{\alpha} (\nu y)Q\{y/x\}_{nb}$
+	      \\
+		  imply $(\nu x)Q \xrightarrow{\gamma} (\nu y)Q^{'}\{y/x\}_{nb}$
+		&
+	      \end{tabular}
+	      \\
+	      \begin{tabular}{ll}
+	      \\
+		  $Q^{'} \sim_{E} R^{'}\{x/y\}_{nb}$
+		&
+	      \\
+		  imply $(\nu x)Q^{'} Res(\sim_{E}) (\nu x)R^{'}\{x/y\}_{nb}$
+		&
+	      \\
+	      \end{tabular}
+	    \end{center}
+	    Putting it all together:
  	    \begin{center}
- 	      $(\nu x)P \xrightarrow{\gamma} P^{'} \equiv_{\alpha} (\nu x)R^{'} Res(\sim_{E}) (\nu x)S \stackrel{\gamma}{\leftarrow} (\nu x)Q$
+ 	      $(\nu x)P \xrightarrow{\gamma} (\nu y)R^{'} \equiv_{\alpha} (\nu x)R^{'}\{x/y\}_{nb} Res(\sim_{E}) (\nu x)Q^{'} \equiv_{\alpha} (\nu y)Q^{'}\{y/x\}_{nb} \stackrel{\gamma}{\leftarrow} (\nu x)Q$
  	    \end{center}
- 	    so $Res(\sim_{E})$ is a bisimulation up to $\alpha$ equivalence hence it is a bisimulation.
-  	  \item[$Alp(2)$]:
- 	    let $(\nu x)P \xrightarrow{\gamma} P^{'}$, having in mind lemma \ref{multipiOutMoveAlpDown}:
- 	    \begin{center}
- 	      $\inferrule* [left=\bf{Opn}]{
- 		P \stackrel{\widetilde{\overline{a}b}}{\longtwoheadrightarrow} R^{'}
- 	      }{
- 		(\nu x)P \stackrel{opn(\widetilde{\overline{a}b}, x)}{\longtwoheadrightarrow} R^{'} \equiv_{\alpha} P^{'}
- 	      }$ 
-  	    \end{center}
- 	    $P \stackrel{\widetilde{\overline{a}b}}{\longtwoheadrightarrow} R^{'}$ and $P \sim_{E} Q$ imply $Q \xrightarrow{\widetilde{\overline{a}b}} S$ and $S\sim_{E} R^{'}$. For rule $Opn$: $(\nu x)Q \xrightarrow{\gamma} S$. Putting it all together:
- 	    \begin{center}
- 	      $(\nu x)P \xrightarrow{\gamma} P^{'} \equiv_{\alpha} R^{'} \sim_{E} S \stackrel{\gamma}{\twoheadleftarrow} (\nu x)Q$
- 	    \end{center}
- 	    so $Res(\sim_{E})$ is a bisimulation up to $\alpha$ equivalence hence it is a bisimulation.
-% 	  \item[$Alp(1)$]:
-% 	    \begin{center}
-% 	      $\inferrule* [left=\bf{Alp}]{
-% 		  \inferrule* {
-% 		      P \equiv_{\alpha} R
-% 		  }{
-% 		    (\nu x)P \equiv_{\alpha} (\nu x)R
-% 		  }
-% 		\\
-% 		  \inferrule* [left=\bf{Opn}]{
-% 		    R \xrightarrow{\overline{y}x} R^{'}
-% 		  }{
-% 		    (\nu x)R \xrightarrow{\overline{y}(x)} R^{'}
-% 		  }
-% 	      }{
-% 		  (\nu x)P \xrightarrow{\overline{y}(x)} R^{'}
-% 	      }$
-% 	    \end{center}
-% 	    which imply:
-% 	    \begin{center}
-% 	      $\inferrule* [left=\bf{Opn}]{
-% 		  \inferrule* {
-% 		      \inferrule* [left=\bf{Alp}]{
-% 			  P \equiv_{\alpha} R
-% 			\\
-% 			  R \xrightarrow{\overline{y}x} R^{'}
-% 		      }{
-% 			P \xrightarrow{\overline{y}x} R^{'}
-% 		      }
-% 		    \\
-% 		      P \sim_{E} Q
-% 		  }{
-% 		    Q \xrightarrow{\overline{y}x} Q^{'}
-% 		      \sim_{E} R^{'}
-% 		      \stackrel{\overline{y}x}{\longleftarrow} P
-% 		  }
-% 		}{
-% 		  (\nu x)Q  \xrightarrow{\overline{y}(x)} Q^{'}
-% 			    \sim_{E} R^{'}
-% 			    \stackrel{\overline{y}(x)}{\longleftarrow} (\nu x)P
-% 		}$
-% 	    \end{center}
-% 	  \item[$Alp(2)$]:
-% 	    \begin{center}
-% 	      $\inferrule* [left=\bf{Alp}]{
-% 		  \inferrule* {
-% 		      P \equiv_{\alpha} R
-% 		  }{
-% 		    (\nu x)P \equiv_{\alpha} (\nu x)R
-% 		  }
-% 		\\
-% 		  \inferrule* [left=\bf{Res}]{
-% 		      R \xrightarrow{\gamma} R^{'}
-% 		    \\
-% 		      x \notin n(\gamma)
-% 		  }{
-% 		    (\nu x)R \xrightarrow{\gamma} (\nu x)R^{'}
-% 		  }
-% 	      }{
-% 		  (\nu x)P \xrightarrow{\gamma} (\nu x)R^{'}
-% 	      }$
-% 	    \end{center}
-% 	    which imply:
-% 	    \begin{center}
-% 	      $\inferrule* [left=\bf{Res}]{
-% 		  \inferrule* {
-% 		      \inferrule* [left=\bf{Alp}]{
-% 			  P \equiv_{\alpha} R
-% 			\\
-% 			  R \xrightarrow{\gamma} R^{'}
-% 		      }{
-% 			P \xrightarrow{\gamma} R^{'}
-% 		      }
-% 		    \\
-% 		      P \sim_{E} Q
-% 		  }{
-% 		    Q \xrightarrow{\gamma} Q^{'}
-% 		      \sim_{E} R^{'}
-% 		      \stackrel{\gamma}{\longleftarrow} P
-% 		  }
-% 		}{
-% 		  (\nu x)Q  \xrightarrow{\gamma} (\nu x)Q^{'}
-% 			    Res(\sim_{E}) (\nu x)R^{'}
-% 			    \stackrel{\gamma}{\longleftarrow} (\nu x)P
-% 		}$
-% 	    \end{center}
-%  	  \item[$Alp(3)$]:
-%  	    for lemma \ref{multipiOutMoveAlpDown}:
-%  	    \begin{center}
-%  	      $\inferrule* [left=\bf{Alp}]{
-%  		  \inferrule* {
-%  		      P \equiv_{\alpha} R\{x/z\}
-%  		    \\
-%  		      z \notin n(R)
-%  		  }{
-%  		    (\nu x)P \equiv_{\alpha} (\nu z)R
-%  		  }
-%  		\\
-%  		  \inferrule* [left=\bf{Opn}]{
-%  		      R \stackrel{\overline{y}z}{\twoheadrightarrow} R^{'}
-%  		  }{
-%  		    (\nu z)R \stackrel{\overline{y}(z)}{\twoheadrightarrow} R^{'}
-%  		  }
-%  	      }{
-%  		  (\nu x)P \xrightarrow{\overline{y}(z)} R^{'}
-%  	      }$
-%  	    \end{center}
-%  	    which imply:
-%  	    \begin{center}
-%  	      $\inferrule* [left=\bf{Opn}] {
-%  		\inferrule* {
-%  		  \inferrule* [left=\bf{Alp}] {
-%  		    P \equiv_{\alpha} R\{x/z\}
-%  		  \\
-%  		      \inferrule* {
-%  			  R \stackrel{\overline{y}z}{\twoheadrightarrow} R^{'}
-%  		      }{
-%  			R\{x/z\} \xrightarrow{\overline{y}x} R^{''}
-%  		      }
-%  		  }{
-%  		    P \xrightarrow{\overline{y}x} R^{''}
-%  		  }
-%  		  \\
-%  		    P \sim_{E} Q
-%  		}{
-%  		  Q  \xrightarrow{\overline{y}x} Q^{'}
-%  			    \sim_{E} R^{''}
-%  			    \stackrel{\overline{y}x}{\longleftarrow} P
-%  		}
-%  		}{
-%  		  (\nu x)Q  \xrightarrow{\overline{y}(x)} Q^{'}
-%  			    \sim_{E} R^{''}
-%  			    \stackrel{\overline{y}(x)}{\longleftarrow} (\nu x)P
-%  		}$
-%  	    \end{center}
-% 	  \item[$Alp(4)$]:
-% 	    for lemma \ref{multipiOutMoveAlpDown}:
-% 	    \begin{center}
-% 	      $\inferrule* [left=\bf{Alp}]{
-% 		  \inferrule* {
-% 		      P \equiv_{\alpha} R\{x/z\}
-% 		    \\
-% 		      z \notin n(R)
-% 		  }{
-% 		    (\nu x)P \equiv_{\alpha} (\nu z)R
-% 		  }
-% 		\\
-% 		  \inferrule* [left=\bf{Res}]{
-% 		      R \stackrel{\gamma}{\twoheadrightarrow} R^{'}
-% 		    \\
-% 		      z \notin n(\gamma)
-% 		  }{
-% 		    (\nu z)R \stackrel{\gamma}{\twoheadrightarrow} (\nu z)R^{'}
-% 		  }
-% 	      }{
-% 		  (\nu x)P \xrightarrow{\gamma} (\nu z)R^{'}
-% 	      }$
-% 	    \end{center}
-% 	    which imply:
-% 	    \begin{center}
-% 	      $\inferrule* [left=\bf{Res}] {
-% 		\inferrule* {
-% 		  \inferrule* [left=\bf{Alp}] {
-% 		    P \equiv_{\alpha} R\{x/z\}
-% 		  \\
-% 		      \inferrule* {
-% 			  R \stackrel{\gamma}{\twoheadrightarrow} R^{'}
-% 			\\
-% 			  z\notin n(R)
-% 		      }{
-% 			R\{x/z\} \xrightarrow{\gamma\{x/z\}} R^{''}
-% 		      }
-% 		  }{
-% 		    P \xrightarrow{\gamma\{x/z\}} R^{''}
-% 		  }
-% 		  \\
-% 		    P \sim_{E} Q
-% 		}{
-% 		  Q  \xrightarrow{\gamma\{x/z\}} Q^{'}
-% 			    \sim_{E} R^{''}
-% 			    \stackrel{\gamma\{x/z\}}{\longleftarrow} P
-% 		}
-% 		\\
-% 		  x\notin n(\gamma\{x/z\})
-% 		}{
-% 		  (\nu x)Q  \xrightarrow{\gamma\{x/z\}} (\nu x)Q^{'}
-% 			    Res(\sim_{E}) (\nu x)R^{''}
-% 			    \stackrel{\gamma\{x/z\}}{\longleftarrow} (\nu x)P
-% 		}$
-% 	    \end{center}
+ 	  \item[$(AlpRes, Res2)$] similar.
+  	  \item[$(AlpRes, Opn)$] similar.
+  	  \item[$(AlpRes1, Opn)$] similar.
+  	  \item[$(AlpRes2, Opn)$] similar.
 	\end{description}
+    \begin{description}
       \item[Parallel composition]
+    \end{description}
 	The relation $\{(P|R, Q|R): P\sim_{E} Q\} \cup \sim_{E}$ is a strong early bisimulation. The last rule applicable to $P|R$ can be:
 	\begin{description}
 	  \item[ECom]:
@@ -3404,7 +3190,6 @@ In the following section, $\rightarrow$ is the transition relation defined in ta
 	    \end{center}
 	    $P \xrightarrow{\overline{x}(y) \cdot (\nu y)} P^{'}$ and $P\sim_{E} Q$ imply that there exists a process $Q^{'}$ such that $Q \xrightarrow{\overline{x}y \cdot (\nu y)} Q^{'}$ and $P^{'}\sim_{E} Q^{'}$. So for rule $Cls$: $Q|R \xrightarrow{\tau} (\nu y)(Q^{'}|R^{'})$ and $(\nu y)(P^{'}|R^{'}) \sim_{E} (\nu y)(Q^{'}|R^{'})$
 	  \item[ClsSeq1, ClsSeq2, ParL, ParR] similar.
-	\end{description}
     \end{description}
   \end{proof}
 \end{lemma}
