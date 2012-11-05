@@ -2688,38 +2688,52 @@ which is not want we want. But we prove some weaker results.
 \begin{theorem}
   $P\xrightarrow{\alpha}_{1}P^{'}\; \Rightarrow\; P\xrightarrow{\alpha}_{2}P^{'}$
   \begin{proof}
-    The proof can go by induction on the length of the derivation of a transaction, and then both the base case and the inductive case proceed by cases on the last rule used in the derivation. However it is not necessary to show all the details of the proof because the rules in $R_{2}$ are almost the same as the rules in $R_{1}$, the only difference is that in $R_{2}$ we have the rule $Alp$ instead of $ResAlp1$ and $OpnAlp$. The rule $Alp$ can mimic the rule $ResAlp1$ in the following way:
+    The proof can go by induction on the length of the derivation of a transaction, and then both the base case and the inductive case proceed by cases on the last rule used in the derivation. However it is not necessary to show all the details of the proof because the rules in $R_{2}$ are almost the same as the rules in $R_{1}$, the only difference is that in $R_{2}$ we have the rule $Alp$ instead of $ResAlp1, ResAlp2$ and $OpnAlp$. The rule $Alp$ can mimic the rule $ResAlp1$ in the following way:
 	\[
-	  \inferrule *{
-	      (\nu z)P\equiv_{\alpha} (\nu w)P\{w/z\}
+	  \inferrule* [left=\bf{Alp}]{
+	      \inferrule* [left=\bf{AlpRes1}]{
+		w\notin n(P)
+	      }{
+		(\nu z)P\equiv_{\alpha} (\nu w)P\{w/z\}
+	      }
 	    \\
-	      w\notin n(P)
-	    \\
-	      (\nu w)P\{w/z\}\;
-		\xrightarrow{xz}\;
-		  P^{'}
+	      (\nu w)P\{w/z\} \xrightarrow{xz}  P^{'}
 	  }{
-	    (\nu z)P\; 
-	      \xrightarrow{xz}\;
-		P^{'}
+	    (\nu z)P \xrightarrow{xz} P^{'}
 	  }
 	\]
-	And the rule $Alp$ can mimic the rule $OpnAlp$ in the following way:
+    The rule $Alp$ can mimic the rule $ResAlp2$ in the following way:
 	\[
-	  \inferrule *{
-	      (\nu z)P\equiv_{\alpha} (\nu w)P\{w/z\}
+	  \inferrule* [left=\bf{Alp}]{
+	      \inferrule* [left=\bf{AlpRes2}]{
+		w\notin n(P)
+	      }{
+		(\nu w)P\{w/z\} \equiv_{\alpha} (\nu z)P
+	      }
 	    \\
-	      w\notin n(P)
-	    \\
-	      (\nu w)P\{w/z\}\;
-		\xrightarrow{\overline{x}(w)}\;
-		  P^{'}
-	    \\
-	      x\neq w\neq z
+	      \inferrule* [left=\bf{Alp}]{
+		  P \xrightarrow{\alpha} P^{'}
+		\\
+		  z\notin n(\alpha)
+	      }{
+		(\nu z)P \xrightarrow{\alpha} (\nu z)P^{'}
+	      }
 	  }{
-	    (\nu z)P\; 
-	      \xrightarrow{\overline{x}(w)}\;
-		P^{'}
+	    (\nu w)P\{w/z\} \xrightarrow{\alpha} (\nu z)P^{'}
+	  }
+	\]
+    The rule $Alp$ can mimic the rule $OpnAlp$ in the following way:
+	\[
+	  \inferrule* [left=\bf{Alp}]{
+	      \inferrule* [left=\bf{AlpRes1}]{
+		w\notin n(P)
+	      }{
+		(\nu z)P\equiv_{\alpha} (\nu w)P\{w/z\}
+	      }
+	    \\
+	      (\nu w)P\{w/z\}\xrightarrow{\overline{x}(w)}P^{'}
+	  }{
+	    (\nu z)P\xrightarrow{\overline{x}(w)}P^{'}
 	  }
 	\]
   \end{proof}
@@ -3013,7 +3027,7 @@ which is not want we want. But we prove some weaker results.
 		\]
 		we apply the inductive hypothesis on the premise and get that there exists a process $P^{''}$ such that $P\{\tilde{y}/\tilde{x}\}\xrightarrow{\alpha}_{3}P^{''}$ and $P^{''}\equiv P^{'}$. Now the proof we want is
 		\[
-		    \inferrule* [left=\bf{Cong}]{
+		    \inferrule* [left=\bf{Ide}]{
 			A(\tilde{y}) \equiv P\{\tilde{y}/\tilde{x}\}
 		      \\
 			P\{\tilde{y}/\tilde{x}\}\xrightarrow{\alpha}_{3}P^{''}
