@@ -702,17 +702,11 @@ This section contains the definition of an alternative semantic for multi $\pi$.
     \end{tabular}
   \end{center}
   \begin{proof}
-    The proof is by induction on the depth of the derivation tree of $P\xrightarrow{\sigma} Q$:
+    The proof is by induction on the depth of the derivation tree of $P\xrightarrow{\sigma} Q$ and by cases on the last rule used in the derivation:
     \begin{description}
-      \item[base case]
-    \end{description}
-	If the depth is one then the rule used have to be one of: $EInp$, $Out$, $Tau$. These rules are also in table \ref{lowleveltransitionrelationinput} so we can derive $P \stackrel{\sigma}{\longmapsto}Q$.
-    \begin{description}
-      \item[inductive case]
-    \end{description}
-	If the depth is greater than one then the last rule used in the derivation can be:
-	\begin{description}
-	  \item[$SInpSeq$]
+      \item[$EInp, Out, Tau$]
+	These rules are also in table \ref{lowleveltransitionrelationinput} so we can derive $P \stackrel{\sigma}{\longmapsto}Q$.
+      \item[$SInpSeq$]
 	    the last part of the derivation tree looks like this:
 	    \begin{center}
 	      $\inferrule* [left=\bf{SInpSeq}]{
@@ -931,12 +925,9 @@ This section contains the definition of an alternative semantic for multi $\pi$.
   \begin{proof}
     The proof is by induction the depth of the derivation of $P \stackrel{\alpha}{\longmapsto} Q$:
     \begin{description}
-      \item[base case]
-	in this case the derivation of this transition has depth one. The last(and only) rule used can be: $Out$, $EInp$ or $Tau$; these rules are also in table \ref{multipisoloinputearlywith} so we can derive $P\xrightarrow{\alpha} Q$. 
-      \item[inductive case]
-	in this case the last rule in the derivation can be: $Sum$, $Com1$, $Res$, $Par1L$, $Par1R$, $Cong$, $Opn$:
-	\begin{description}
-	  \item[$Com1$]\hfill \\
+      \item[$Out, EInp, Tau$]
+	These rules are also in table \ref{multipisoloinputearlywith} so we can derive $P\xrightarrow{\alpha} Q$. 
+      \item[$Com1$]\hfill \\
 	    \begin{center}
 	      $\inferrule* [left=\bf{Com1}]{
 		  P_{1} \stackrel{xy}{\longmapsto} Q_{1}
@@ -947,7 +938,7 @@ This section contains the definition of an alternative semantic for multi $\pi$.
 	      }$ 
 	    \end{center}
 	    for inductive hypothesis $P_{1} \xrightarrow{xy} Q_{1}$ and $P_{2} \xrightarrow{\overline{x}y} Q_{2}$ so for rule $Com$ $P_{1}|P_{2} \xrightarrow{\tau} Q_{1}|Q_{2}$
-	  \item[$Sum$]\hfill \\
+      \item[$Sum$]\hfill \\
 	    \begin{center}
 	      $\inferrule* [left=\bf{Sum}]{
 		P_{1} \stackrel{\alpha}{\longmapsto} Q
@@ -956,7 +947,7 @@ This section contains the definition of an alternative semantic for multi $\pi$.
 	      }$ 
 	    \end{center}
 	    for inductive hypothesis $P_{1} \xrightarrow{\alpha} Q$ and for rule $Sum$ $P_{1}+P_{2} \xrightarrow{\alpha} Q$.
-	  \item[$Res$] the first transition is:
+      \item[$Res$] the first transition is:
 	    \begin{center}
 	      $\inferrule* [left=\bf{Res}]{
 		  P_{1} \stackrel{\alpha}{\longmapsto} Q_{1}
@@ -967,8 +958,7 @@ This section contains the definition of an alternative semantic for multi $\pi$.
 	      }$ 
 	    \end{center}		
 	    for inductive hypothesis $P_{1} \xrightarrow{\alpha} Q_{1}$ and for rule $Res$ $(\nu z)P_{1} \xrightarrow{\alpha} (\nu z)Q_{1}$.
-	 \item[$others$] other cases are similar.
-      \end{description}	    
+      \item[$others$] other cases are similar.
     \end{description}	    
   \end{proof}
 \end{proposition}
