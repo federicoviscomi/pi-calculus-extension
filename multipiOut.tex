@@ -2544,6 +2544,144 @@ But we do have to following:
 \end{lemma}
 
 
+\begin{lemma}\label{propagationOfSubstitionNBOverTransition}
+  Let $\twoheadrightarrow$ be the semantic in table \ref{multipioutearlywithout} and \ref{MultiOutScopeExtrusionRules} but without rule $Alp$. $P \stackrel{\gamma}{\twoheadrightarrow} Q$ and $b\notin n(P)$ imply $P\{b/a\}  \xrightarrow{\gamma\{b/a\}} S$ and $S \equiv_{\alpha} Q\{b/a\}$.
+  \begin{proof}
+    By induction on the derivation of $P \stackrel{\gamma}{\twoheadrightarrow} Q$ and by cases on the last rule used in the derivation:
+    \begin{description}
+      \item[$Out$]: $\overline{x}y.P \stackrel{\overline{x}y}{\twoheadrightarrow} P$. For definition $(\overline{x}y.P)\{b/a\} =\overline{x}\{b/a\}y\{b/a\}.(P\{b/a\} )$ and for rule $Out$:
+	\begin{center}
+	  $\overline{x}\{b/a\}y\{b/a\}.(P\{b/a\} ) \stackrel{(\overline{x}y)\{b/a\}}{\verylongtwoheadrightarrow} P\{b/a\} $
+	\end{center}
+      \item[$Tau$] similar.
+      \item[$SOut$]
+	suppose for induction hypothesis that $P\{b/a\}  \stackrel{\gamma\{b/a\}}{\verylongtwoheadrightarrow} Q\{b/a\} $ and that $\gamma$ is a non empty sequence of outputs. Then for rule $SOut$: $\underline{\overline{x}y}\{b/a\}.P\{b/a\}  \stackrel{\underline{\overline{x}y}\{b/a\} \cdot \gamma\{b/a\}}{\HeartAttacktwoheadrightarrow} Q\{b/a\} $ which for definition of substitution imply 
+	\begin{center}
+	  $(\underline{\overline{x}y}.P)\{b/a\}  \stackrel{(\underline{\overline{x}y} \cdot \gamma)\{b/a\}}{\HUGEtwoheadrightarrow} Q\{b/a\}$
+	\end{center}
+      \item[$EInp(1)$] let $y\neq b$, $y\neq a$ and $z\neq a$:
+	$x(y).P \stackrel{xz}{\twoheadrightarrow} P\{z/y\}$. For definition $(x(y).P)\{b/a\} =x\{b/a\}(y).(P\{b/a\})$ and for rule $EInp$: 
+	\begin{center}
+	  $x\{b/a\}(y).P\{b/a\}  \stackrel{x\{b/a\}z}{\HUGEtwoheadrightarrow} P\{b/a\} \{z/y\}$ 
+	\end{center}
+	and $P\{b/a\}\{z/y\} \equiv_{\alpha} P\{z/y\}\{b/a\}$
+      \item[$EInp(2)$] let $y\neq b$, $y\neq a$:
+	$x(y).P \stackrel{xa}{\twoheadrightarrow} P\{a/y\}$. For definition $(x(y).P)\{b/a\} =x\{b/a\}(y).(P\{b/a\})$ and for rule $EInp$: 
+	\begin{center}
+	  $x\{b/a\}(y).P\{b/a\}  \stackrel{x\{b/a\}a}{\HUGEtwoheadrightarrow} P\{b/a\} \{a/y\}$ 
+	\end{center}
+	and $P\{b/a\} \{a/y\} \equiv_{\alpha} P\{a/y\}\{b/a\}$
+      \item[$EInp(3)$] let $a\neq z$:
+	$x(a).P \stackrel{xz}{\twoheadrightarrow} P\{z/a\}$. For definition $(x(a).P)\{b/a\} =x\{b/a\}(a).P$ and for rule $EInp$: 
+	\begin{center}
+	  $x\{b/a\}(a).P \stackrel{x\{b/a\}z}{\HUGEtwoheadrightarrow} P\{z/a\}$
+	\end{center}
+	and $P\{z/a\}\{b/a\} \equiv_{\alpha} P\{z/a\}$
+      \item[$EInp(4)$]
+	$x(a).P \stackrel{xa}{\twoheadrightarrow} P$. For definition $(x(a).P)\{b/a\} =x\{b/a\}(a).P$ and for rule $EInp$:
+	\begin{center}
+	  $x\{b/a\}(a).P \stackrel{x\{b/a\}b}{\HUGEtwoheadrightarrow} P\{b/a\}$.
+	\end{center}
+	and $P\{b/a\} \equiv_{\alpha} P\{b/a\}$
+      \item[$ParL$]:
+	\begin{center}
+	  $\inferrule* [left=\bf{ParL}]{
+	      P \stackrel{\gamma}{\longtwoheadrightarrow} P^{'}
+	    \\
+	      bn(\gamma) \cap fn(P)=\emptyset
+	  }{
+	    P+Q \stackrel{\gamma}{\longtwoheadrightarrow} P^{'}
+	  }$
+	\end{center}
+	for induction $P\{b/a\} \xrightarrow{\gamma\{b/a\}}S $ and $S \equiv_{\alpha} P^{'}\{b/a\}$. For rule $Sum$ and definition of substitution: $(P+Q)\{b/a\} \xrightarrow{\gamma\{b/a\}} P^{'}\{b/a\}$ and the conclusion holds.
+      \item[$ParR$] similar.
+      \item[$SumL$] similar.
+      \item[$SumR$] similar.
+      \item[$ECom$]:
+	\begin{center}
+	  $\inferrule* [left=\bf{ECom}]{
+	      P \stackrel{\overline{x}y}{\longtwoheadrightarrow} P^{'}
+	    \\
+	      Q \stackrel{xy}{\longtwoheadrightarrow} Q^{'}
+	  }{
+	    P|Q \stackrel{\tau}{\longtwoheadrightarrow} P^{'}|Q^{'}
+	  }$
+	\end{center}
+	for induction on the first premise $P\{b/a\} \xrightarrow{(\overline{x}y)\{b/a\}} S_{1}$ and $S_{1} \equiv_{\alpha} P^{'}\{b/a\}$. For induction on the second premise $Q\{b/a\} \xrightarrow{(xy)\{b/a\}} S_{2}$ and $S_{2} \equiv_{\alpha} Q^{'}\{b/a\}$. For rule $ECom$ and definition of substitution: $(P|Q)\{b/a\} \xrightarrow{\tau} S_{1}|S_{2}$ and $S_{1}|S_{2} \equiv (P^{'}|Q^{'})\{b/a\}$.
+      \item[$EComSeq$] similar.
+      \item[$Res(1)$] $x\neq a$:
+	\begin{center}
+	  $\inferrule* [left=\bf{Res}]{
+	      P \stackrel{\gamma}{\longtwoheadrightarrow} P^{'}
+	    \\
+	      x\notin n(\gamma)
+	  }{
+	    (\nu x)P \stackrel{\gamma}{\longtwoheadrightarrow} (\nu x)P^{'}
+	  }$
+	\end{center}
+	for induction $P\{b/a\} \xrightarrow{\gamma\{b/a\}} S$ and $S \equiv_{\alpha} P^{'}\{b/a\}$. For rule $Res$ and definition of substitution: $(\nu x)P\{b/a\} \xrightarrow{\gamma\{b/a\}} (\nu x)S$ and $(\nu x)S \equiv_{\alpha} (\nu x)P^{'}\{b/a\}$.
+      \item[$Res(2)$]:
+	\begin{center}
+	  $\inferrule* [left=\bf{Res}]{
+	      P \stackrel{\gamma}{\longtwoheadrightarrow} P^{'}
+	    \\
+	      a\notin n(\gamma)
+	  }{
+	    (\nu a)P \stackrel{\gamma}{\longtwoheadrightarrow} (\nu a)P^{'}
+	  }$
+	\end{center}
+	the conclusion holds because $((\nu a)P)\{b/a\}=(\nu a)P$ and $\gamma\{b/a\}=\gamma$.
+      \item[$Ide$]:
+	\begin{center}
+	  $\inferrule* [left=\bf{Ide}]{
+	      A(\tilde{x}) \stackrel{def}{=} P
+	    \\
+	      P\{\tilde{w}/\tilde{x}\} \stackrel{\gamma}{\longtwoheadrightarrow} P^{'}
+	  }{
+	    A(\tilde{x}) \stackrel{\gamma}{\longtwoheadrightarrow} P^{'}
+	  }$
+	\end{center}
+	for induction $P\{\tilde{w}/\tilde{x}\}\{b/a\} \xrightarrow{\gamma\{b/a\}} S$ and $S \equiv_{\alpha} P^{'}\{b/a\}$
+      \item[$Opn(1)$] $y \neq a$:
+	\begin{center}
+	  $\inferrule* [left=\bf{Opn}]{
+	      P \stackrel{\overline{y}x}{\longtwoheadrightarrow} P^{'}
+	    \\
+	      y \neq x
+	  }{
+	    (\nu y)P \stackrel{\overline{y}(x)}{\longtwoheadrightarrow} P^{'}
+	  }$
+	\end{center}
+	for induction $P\{b/a\} \xrightarrow{\overline{y}x} S$ and $S \equiv_{\alpha} P^{'}\{b/a\}$
+      \item[$Opn(2)$]:
+	\begin{center}
+	  $\inferrule* [left=\bf{Opn}]{
+	      P \stackrel{\overline{a}x}{\longtwoheadrightarrow} P^{'}
+	    \\
+	      a \neq x
+	  }{
+	    (\nu a)P \stackrel{\overline{a}(x)}{\longtwoheadrightarrow} P^{'}
+	  }$
+	\end{center}
+	for induction $P\{b/a\} \xrightarrow{\overline{b}x} S$ and $S \equiv_{\alpha} P^{'}\{b/a\}$. So for rule $Opn$: $(\nu b)P\{b/a\} \xrightarrow{\overline{b}(x)} S$ and for rule $Alp$: $(\nu a)P\xrightarrow{\overline{b}(x)} S$
+      \item[$Cls$]:
+	\begin{center}
+	  $\inferrule* [left=\bf{Cls}]{
+	      P \stackrel{\overline{x}(y) \cdot (\nu y)}{\longtwoheadrightarrow} P^{'}
+	    \\
+	      Q \stackrel{xy}{\longtwoheadrightarrow} Q^{'}
+	  }{
+	    P|Q \stackrel{\tau}{\longtwoheadrightarrow} (\nu y)(P^{'}|Q^{'})
+	  }$
+	\end{center}
+	for induction on the first premise $P\{b/a\} \xrightarrow{\overline{x}\{b/a\}(y) \cdot (\nu y)} S$ and $S \equiv_{\alpha} P^{'}\{b/a\}$. For induction on the second premise $Q\{b/a\} \xrightarrow{\overline{x}\{b/a\}(y) \cdot (\nu y)} T$ and $T \equiv_{\alpha} Q^{'}\{b/a\}$. For rule $Cls$ and definition of substitution: $(P|Q)\{b/a\} \xrightarrow{\tau} (\nu y)(S|T)$ and $(\nu y)S|T \equiv_{\alpha} (\nu y)(P^{'}\{b/a\}|Q^{'}\{b/a\})$.
+      \item[$ClsSeq1$] similar.
+      \item[$ClsSeq2$] similar.
+    \end{description}
+  \end{proof}
+\end{lemma}
+
+
 \section{Strong bisimilarity and equivalence}
 \subsection{Strong bisimilarity}
 
@@ -2675,7 +2813,7 @@ In the following section, $\rightarrow$ is the transition relation defined in ta
 \begin{proposition}
   $\equiv_{\alpha}$ is a strong early bisimulation.
   \begin{proof}
-    We prove by induction on the derivation of $P \equiv_{\alpha} Q$ and the derivation of $P \xrightarrow{\gamma} P^{'}$ that $Q \xrightarrow{\gamma} Q^{'}$ and $Q^{'} \equiv P^{'}$. This imply that also the symmetric holds because $\alpha$ equivalence is symmetric. The last pair of rule used can be:
+    We prove by induction on the derivation of $P \equiv_{\alpha} Q$ and the derivation of $P \xrightarrow{\gamma} P^{'}$ that $Q \xrightarrow{\gamma} Q^{'}$ and $Q^{'} \equiv_{\alpha} P^{'}$. This imply that also the symmetric holds because $\alpha$ equivalence is symmetric. The last pair of rules used can be:
     \begin{description}
       \item[$(AlpOut, Out)$]:
 	\begin{center}
@@ -3090,17 +3228,17 @@ In the following section, $\rightarrow$ is the transition relation defined in ta
 		  \inferrule* [left=\bf{AlpRes1}]{
 		      P \equiv_{\alpha} R
 		    \\
-		      y\notin bn(R)
+		      y\notin n(R)
 		  }{
-		    (\nu x)P \equiv_{\alpha} (\nu y)R\{y/x\}_{nb}
+		    (\nu x)P \equiv_{\alpha} (\nu y)R\{y/x\} 
 		  }
 		\\
 		  \inferrule* [left=\bf{Res}]{
-		    R\{y/x\}_{nb} \stackrel{\gamma}{\longtwoheadrightarrow} R^{'}
-		  \\
-		    y \notin n(\gamma)
+		      R\{y/x\}  \stackrel{\gamma}{\longtwoheadrightarrow} R^{'}
+		    \\
+		      y \notin n(\gamma)
 		  }{
-		    (\nu y)R\{y/x\}_{nb} \stackrel{\gamma}{\longtwoheadrightarrow} (\nu y)R^{'}
+		    (\nu y)R\{y/x\}  \stackrel{\gamma}{\longtwoheadrightarrow} (\nu y)R^{'}
 		  }
 	      }{
 		(\nu x)P \stackrel{\gamma}{\longtwoheadrightarrow} (\nu y)R^{'}
@@ -3108,54 +3246,54 @@ In the following section, $\rightarrow$ is the transition relation defined in ta
    	    \end{center}
 	    \begin{center}
 	      \begin{tabular}{ll}
-		  $R\{y/x\}_{nb} \stackrel{\gamma}{\longtwoheadrightarrow} R^{'}$ 
+		  $R\{y/x\}  \stackrel{\gamma}{\longtwoheadrightarrow} R^{'}$ 
 		&
 		  lemma \ref{propagationOfSubstitionNBOverTransition}
 	      \\
-		  imply $R \stackrel{\gamma\{x/y\}_{nb}}{\longtwoheadrightarrow} R^{'}\{x/y\}_{nb}$
+		  imply $R \stackrel{\gamma\{x/y\} }{\Hugetwoheadrightarrow} S$ and $S\equiv_{\alpha} R^{'}\{x/y\} $
 		&
 		  $P \equiv_{\alpha} R$ and rule $Alp$
 	      \\
-		  imply $P \xrightarrow{\gamma\{x/y\}_{nb}} R^{'}\{x/y\}_{nb}$.
+		  imply $P \xrightarrow{\gamma\{x/y\} } S$.
 		&
 		  $P\sim_{E} Q$
 	      \\
-		imply $Q \xrightarrow{\gamma\{x/y\}_{nb}} Q^{'}$ and $Q^{'}\sim_{E} R^{'}\{x/y\}_{nb}$.
+		imply $Q \xrightarrow{\gamma\{x/y\} } Q^{'}$ and $Q^{'}\sim_{E} S$.
 		&
 	      \\
 	      \end{tabular}
 	      \\
 	      \begin{tabular}{ll}
 	      \\
-		  $Q \xrightarrow{\gamma\{x/y\}_{nb}} Q^{'}$ 
+		  $Q \xrightarrow{\gamma\{x/y\} } Q^{'}$ 
 		&
 		  lemma \ref{propagationOfSubstitionNBOverTransition}
 	      \\
-		  imply $Q\{y/x\}_{nb} \xrightarrow{\gamma} Q^{'}\{y/x\}_{nb}$.
+		  imply $Q\{y/x\}  \xrightarrow{\gamma} Q^{'}\{y/x\} $.
 		&
 		  rule $Res$
 	      \\
-		  imply $(\nu y)Q\{y/x\}_{nb} \xrightarrow{\gamma} (\nu y)Q^{'}\{y/x\}_{nb}$
+		  imply $(\nu y)Q\{y/x\}  \xrightarrow{\gamma} (\nu y)Q^{'}\{y/x\} $
 		&
-		  rule $Alp$ and $(\nu x)Q \equiv_{\alpha} (\nu y)Q\{y/x\}_{nb}$
+		  rule $Alp$ and $(\nu x)Q \equiv_{\alpha} (\nu y)Q\{y/x\} $
 	      \\
-		  imply $(\nu x)Q \xrightarrow{\gamma} (\nu y)Q^{'}\{y/x\}_{nb}$
+		  imply $(\nu x)Q \xrightarrow{\gamma} (\nu y)Q^{'}\{y/x\} $
 		&
 	      \end{tabular}
 	      \\
 	      \begin{tabular}{ll}
 	      \\
-		  $Q^{'} \sim_{E} R^{'}\{x/y\}_{nb}$
+		  $Q^{'} \sim_{E} R^{'}\{x/y\} $
 		&
 	      \\
-		  imply $(\nu x)Q^{'} Res(\sim_{E}) (\nu x)R^{'}\{x/y\}_{nb}$
+		  imply $(\nu x)Q^{'} Res(\sim_{E}) (\nu x)R^{'}\{x/y\} $
 		&
 	      \\
 	      \end{tabular}
 	    \end{center}
 	    Putting it all together:
  	    \begin{center}
- 	      $(\nu x)P \xrightarrow{\gamma} (\nu y)R^{'} \equiv_{\alpha} (\nu x)R^{'}\{x/y\}_{nb} Res(\sim_{E}) (\nu x)Q^{'} \equiv_{\alpha} (\nu y)Q^{'}\{y/x\}_{nb} \stackrel{\gamma}{\leftarrow} (\nu x)Q$
+ 	      $(\nu x)P \xrightarrow{\gamma} (\nu y)R^{'} \equiv_{\alpha} (\nu x)R^{'}\{x/y\}  \equiv_{\alpha} (\nu x)S\; Res(\sim_{E})\; (\nu x)Q^{'} \equiv_{\alpha} (\nu y)Q^{'}\{y/x\}  \stackrel{\gamma}{\leftarrow} (\nu x)Q$
  	    \end{center}
  	  \item[$(AlpRes, Res2)$] similar.
   	  \item[$(AlpRes, Opn)$] similar.
@@ -3165,19 +3303,31 @@ In the following section, $\rightarrow$ is the transition relation defined in ta
     \begin{description}
       \item[Parallel composition]
     \end{description}
-	The relation $\{(P|R, Q|R): P\sim_{E} Q\} \cup \sim_{E}$ is a strong early bisimulation. The last rule applicable to $P|R$ can be:
-	\begin{description}
-	  \item[ECom]:
+    We prove that the relation $Par(\sim_{E})=\{(P|R, Q|R): P\sim_{E} Q\} \cup \sim_{E}$ is a strong early bisimulation up to $\alpha$ equivalence. This imply that $Par(\sim_{E})$ is a strong early bisimulation. For lemma \ref{multipiOutMoveAlpDown} and for reflexivity of $\alpha$ equivalence we can assume that every transition that starts from $P|R$ is in the form $P|R \equiv_{\alpha} S$ and $S\stackrel{\gamma}{\twoheadrightarrow} S^{'}$. Where $\twoheadrightarrow$ is the semantic in table \ref{multipioutearlywithout} and \ref{MultiOutScopeExtrusionRules} but without rule $Alp$. We can proceed by induction on both the derivation of $P|R \equiv_{\alpha} Q|R$ and of $S\stackrel{\gamma}{\twoheadrightarrow} S^{'}$. The last rule used in the derivation of $P|R \equiv_{\alpha} Q|R$ can only be $AlpPar$, but there are some different cases on the last rule used to prove that $S\stackrel{\gamma}{\twoheadrightarrow} S^{'}$:
+    \begin{description}
+      \item[$ECom$]:
 	    \begin{center}
-	      $\inferrule* {
-		  P \xrightarrow{\overline{x}y} P^{'}
+	      $\inferrule* [left=\bf{Alp}]{
+		  \inferrule* [left=\bf{Alp}]{
+		      P \equiv_{\alpha} P_{2}
+		    \\
+		      R \equiv_{\alpha} R_{2}
+		  }{
+		    P|R \equiv_{\alpha} P_{2}|R_{2}
+		  }
 		\\
-		  R \xrightarrow{xy} R^{'}
+		  \inferrule* [left=\bf{ECom}]{
+		      P_{2} \stackrel{\overline{x}y}{\twoheadrightarrow} P_{2}^{'}
+		    \\
+		      R_{2} \stackrel{xy}{\twoheadrightarrow} R_{2}^{'}
+		  }{
+		    P_{2}|R_{2} \stackrel{\tau}{\twoheadrightarrow} P_{2}^{'}|R_{2}^{'}
+		  }
 	      }{
-		P|R \xrightarrow{\tau} P^{'}|R^{'}
+		  P|R \xrightarrow{\tau} P_{2}^{'}|R_{2}^{'}
 	      }$
 	    \end{center}
-	    $P \xrightarrow{\overline{x}y} P^{'}$ and $P\sim_{E} Q$ imply that there exists a process $Q^{'}$ such that $Q \xrightarrow{\overline{x}y} Q^{'}$ and $P^{'}\sim_{E} Q^{'}$. So for rule $ECom$: $Q|R \xrightarrow{\tau} Q^{'}|R^{'}$ and $P^{'}|R^{'}\sim_{E} Q^{'}|R^{'}$
+	    $P \equiv_{\alpha} P_{2}$ and  $P_{2} \xrightarrow{\overline{x}y} P_{2}^{'}$ for rule $Alp$ imply $P \xrightarrow{\overline{x}y} P_{2}^{'}$. $P\sim_{E} Q$ imply that there exists a process $Q^{'}$ such that $Q \xrightarrow{\overline{x}y} Q^{'}$ and $P_{2}^{'}\sim_{E} Q^{'}$. $R \equiv_{\alpha} R_{2}$ and $R_{2} \stackrel{xy}{\twoheadrightarrow} R_{2}^{'}$ imply for rule $Alp$ that $R \stackrel{xy}{\twoheadrightarrow} R_{2}^{'}$. So for rule $ECom$: $Q|R \xrightarrow{\tau} Q^{'}|R_{2}^{'}$ and $P_{2}^{'}|R_{2}^{'}\sim_{E} Q^{'}|R_{2}^{'}$
 	  \item[Cls]:
 	    \begin{center}
 	      $\inferrule* {
@@ -3265,9 +3415,6 @@ In the following section, $\rightarrow$ is the transition relation defined in ta
 According to \cite{milnerparrowwalker} the following holds:
 \begin{lemma}\label{distinctionSubstitution2}
   Let $\sigma$ be a substitution, $D$ be a distinction and $y \sigma = y$. If $\sigma$ respects $D-\{x\}$ then $\{y/x\}\sigma$ respects $D$.
-  \begin{proof}
-    NON RIESCO A DIMOSTRARLO!
-  \end{proof}
 \end{lemma}
 
 
@@ -3313,6 +3460,7 @@ According to \cite{milnerparrowwalker} the following holds:
 \begin{lemma}\label{strongDEquivalencePreservedByInput}
   If $P \sim^{D} Q$ and for all $v\in fn(P,Q)$ such that $(v,y)\in D$ it holds that $P\{v/y\} \sim^{D} Q\{v/y\}$ then $x(y).P \sim^{D} x(y).Q$
   \begin{proof}
+    DA RIGUARDARE ! !
     Let $\sigma$ be a substitution that respects $D$. If $y \sigma^{-1} = \{y\}$ then 
     \begin{center}
       \begin{tabular}{ll}

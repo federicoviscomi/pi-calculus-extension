@@ -1656,43 +1656,43 @@ In the following section the symbol $\rightarrow$ will refer to the late semanti
 \end{proposition}
 
 
-\begin{lemma}[Inversion lemma for structural congruence]\label{inversionlemmamultiinplatewithh}
-  :\begin{description}
-    \item[$Output$]
-      $\overline{x}y.P \equiv R$ then $R$ is in the form $\overline{x}y.S$ such that $P\equiv S$
-    \item[$Tau$]
-      $\tau.P \equiv R$ then $R$ is in the form $\tau.S$ such that $P\equiv S$
-    \item[$Sum$]
-      $P+Q \equiv R$ then $R$ is in the form $A+B$ such that $(P\equiv A\; \wedge\; Q\equiv B)$ or $(P\equiv B\; \wedge\; Q\equiv A)$ NON FUNZIONA PERCHE' C'E' LO SCOPE EXTRUSION ANCHE PER LA SOMMA!
-  \end{description}
-  DA CONTINUARE
-  \begin{proof}
-  We can assume that the property of being a congruence amounts to having these rules:
-  \begin{center}
-    \begin{tabular}{ll}
-	$\inferrule* [left=\bf{Congr1}]{
-	  P\equiv Q
-	}{
-	  C[P]\equiv C[Q]
-	}$
-      &
-	$\inferrule* [left=\bf{Congr2}]{
-	    P_{1}\equiv Q_{1}
-	  \\
-	    P_{2}\equiv Q_{2}
-	}{
-	  C[P_{1}, P_{2}]\equiv C[Q_{1}, Q_{2}]
-	}$
-    \end{tabular}
-  \end{center}
-  \begin{description}
-    \item[$Output$] the only rules that can be applied to a process whose top level is an output are: the $\alpha$ conversion rule, $Congr1$ and $Congr2$.
-    \item[$Tau$] similar.
-    \item[$Summation$] the only rules that can be applied to a process whose top level is a sum are: the $\alpha$ conversion rule, $Congr1$, $Congr2$ and the commutativity of sum.
-
-  \end{description}
-  \end{proof}
-\end{lemma}
+% \begin{lemma}[Inversion lemma for structural congruence]\label{inversionlemmamultiinplatewithh}
+%   :\begin{description}
+%     \item[$Output$]
+%       $\overline{x}y.P \equiv R$ then $R$ is in the form $\overline{x}y.S$ such that $P\equiv S$
+%     \item[$Tau$]
+%       $\tau.P \equiv R$ then $R$ is in the form $\tau.S$ such that $P\equiv S$
+%     \item[$Sum$]
+%       $P+Q \equiv R$ then $R$ is in the form $A+B$ such that $(P\equiv A\; \wedge\; Q\equiv B)$ or $(P\equiv B\; \wedge\; Q\equiv A)$ NON FUNZIONA PERCHE' C'E' LO SCOPE EXTRUSION ANCHE PER LA SOMMA!
+%   \end{description}
+%   DA CONTINUARE
+%   \begin{proof}
+%   We can assume that the property of being a congruence amounts to having these rules:
+%   \begin{center}
+%     \begin{tabular}{ll}
+% 	$\inferrule* [left=\bf{Congr1}]{
+% 	  P\equiv Q
+% 	}{
+% 	  C[P]\equiv C[Q]
+% 	}$
+%       &
+% 	$\inferrule* [left=\bf{Congr2}]{
+% 	    P_{1}\equiv Q_{1}
+% 	  \\
+% 	    P_{2}\equiv Q_{2}
+% 	}{
+% 	  C[P_{1}, P_{2}]\equiv C[Q_{1}, Q_{2}]
+% 	}$
+%     \end{tabular}
+%   \end{center}
+%   \begin{description}
+%     \item[$Output$] the only rules that can be applied to a process whose top level is an output are: the $\alpha$ conversion rule, $Congr1$ and $Congr2$.
+%     \item[$Tau$] similar.
+%     \item[$Summation$] the only rules that can be applied to a process whose top level is a sum are: the $\alpha$ conversion rule, $Congr1$, $Congr2$ and the commutativity of sum.
+% 
+%   \end{description}
+%   \end{proof}
+% \end{lemma}
 
 % \begin{definition}
 %   Let $(\nu x)Q$ be an occurrence in a process $P$, i.e., there is a context $C[\_]$ such that $C[(\nu x)Q]=P$. We say that this occurrence is \emph{guarded} if it occurs inside a prefix. Otherwise we say that the occurrence is \emph{unguarded}. More formally the occurrence is \emph{guarded} if there are two contexts $C[\_], D[\_]$ and an action prefixing $\alpha$ such that $P=D[\alpha.C[(\nu x)Q]]$
@@ -1921,6 +1921,7 @@ In the following section the symbol $\rightarrow$ will refer to the late semanti
     \label{multipiInpNorm}
   \end{table}
 \end{definition}
+
 
 \begin{lemma}\label{moveCongDownNorm2}
   $P\xrightarrow{\gamma}Q$ imply $P\equiv N \xrightarrow{\gamma}_{n} M\equiv Q$ for some processes $N$ and $M$ in normal form. Also $N \xrightarrow{\gamma}_{n} M$ imply $N \xrightarrow{\gamma} M$

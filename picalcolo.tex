@@ -644,7 +644,7 @@ Structural congruences are a set of equations defining equality and congruence r
 \end{definition}
 
 \begin{definition}
-  Processes $P$ and $Q$ are \emph{$\alpha$ convertible} or \emph{$\alpha$ equivalent} if $Q$ can be obtained from $P$ by a finite number of changes of bound names. If $P$ and $Q$ are $\alpha$ equivalent then we write $P\equiv_{\alpha}Q$. Specifically the $\alpha$ equivalence is the smallest binary relation on processes that satisfies the laws in table \ref{alphaequivalence}
+  Processes $P$ and $Q$ are \emph{$\alpha$ convertible} or \emph{$\alpha$ equivalent} if $Q$ can be obtained from $P$ by a finite number of changes of bound names. If $P$ and $Q$ are $\alpha$ equivalent then we write $P\equiv_{\alpha}Q$. Specifically the $\alpha$ equivalence is the smallest binary relation on processes that satisfies the laws in table \ref{alphaequivalence}. In a process $P$ we can assume that all bound names are different.
   \begin{table}
     \begin{tabular}{lll}
       \multicolumn{3}{l}{\line(1,0){415}}\\
@@ -1791,6 +1791,314 @@ In the proof of equivalence of the semantics in the next section we need the fol
 
 
 
+% \subsection{Alternative definition of $\alpha$ equivalence}
+% 
+% \begin{definition}
+%   $P\{b/a\}_{nb}$ is the syntactic substitution of name $b$ for a different name $a$ inside a $\pi$ calculus process but it differs from the previous definition in that this substitution does not change any bound name. When it reaches a bound name that would capture $b$, it stops. $P\{b/a\}_{nb}$ is defined in table \ref{syntacticsubstitutionNoChangeOfBoundNames}.
+%   \begin{table}
+%     \begin{tabular}{lll}
+%       \multicolumn{3}{l}{\line(1,0){415}}\\\\
+% 	$0\{b/a\}_{nb} = 0$
+%       &
+% 	$(\overline{x}y.Q)\{b/a\}_{nb} = \overline{x}\{b/a\}y\{b/a\}.(Q\{b/a\}_{nb})$
+%       &
+% 	$(\tau.Q)\{b/a\}_{nb} = \tau.(Q\{b/a\}_{nb})$
+%       \\
+%     \end{tabular}
+%       \\
+%     \begin{tabular}{l}
+%       \\
+% 	$\inferrule{
+% 	    y\neq a 
+% 	  \\ 
+% 	    y\neq b
+% 	}{
+% 	  (x(y).Q)\{b/a\}_{nb} = x\{b/a\}(y).(Q\{b/a\}_{nb})
+% 	}$
+%       \\
+%     \end{tabular}
+%       \\
+%     \begin{tabular}{ll}
+%       \\
+% 	$(x(a).Q)\{b/a\}_{nb} = x\{b/a\}(a).Q$
+%       &
+% 	$(x(b).Q)\{b/a\}_{nb} = x\{b/a\}(c).Q$
+%       \\
+%     \end{tabular}
+%       \\
+%     \begin{tabular}{l}
+%       \\
+% 	$\inferrule{
+% 	    a \in \tilde{x}
+% 	  \\
+% 	    A(\tilde{x}) \stackrel{def}{=} P
+% 	}{
+% 	    A(\tilde{x})\{b/a\}_{nb} = A(\tilde{x}\{b/a\})
+% 	}$
+%       \\
+%     \end{tabular}
+%       \\
+%     \begin{tabular}{ll}
+%       \\
+% 	$(Q+R)\{b/a\}_{nb} = Q\{b/a\}_{nb} + R\{b/a\}_{nb}$
+%       &
+% 	$(Q|R)\{b/a\}_{nb} = Q\{b/a\}_{nb} | R\{b/a\}_{nb}$
+%       \\
+%     \end{tabular}
+%       \\
+%     \begin{tabular}{lll}
+%       \\
+% 	$\inferrule{
+% 	    y\neq a 
+% 	  \\ 
+% 	    y\neq b
+% 	}{
+% 	  ((\nu y)Q)\{b/a\}_{nb} =(\nu y)(Q\{b/a\}_{nb})
+% 	}$ 
+% 	&
+% 	  $((\nu a)Q)\{b/a\}_{nb} =(\nu a)Q$
+% 	&
+% 	  $((\nu b)Q)\{b/a\}_{nb} = ((\nu b)Q)$ 
+%       \\
+%       \\\multicolumn{3}{l}{\line(1,0){415}}
+%     \end{tabular}
+%     \caption{Syntatic substitution without change of bound names}
+%     \label{syntacticsubstitutionNoChangeOfBoundNames}
+%   \end{table}
+% 
+% \end{definition}
+% 
+% 
+% \begin{definition}
+%   Processes $P$ and $Q$ are \emph{$\alpha$ convertible} or \emph{$\alpha$ equivalent} if $Q$ can be obtained from $P$ by a finite number of changes of bound names. If $P$ and $Q$ are $\alpha$ equivalent then we write $P \equiv_{\alpha}^{nb}Q$. Specifically the $\alpha$ equivalence is the smallest binary relation on processes that satisfies the laws in table \ref{alphaequivalenceNoChangeOfBoundNames}.
+%   \begin{table}
+%     \begin{tabular}{lll}
+%       \multicolumn{3}{l}{\line(1,0){415}}\\
+% 	  $\inferrule*[left=\bf{AlpOut}]{
+% 	      P \equiv_{\alpha}^{nb} Q
+% 	  }{
+% 	    \overline{x}y.P \equiv_{\alpha}^{nb} \overline{x}y.Q
+% 	  }$
+% 	&
+% 	  $\inferrule*[left=\bf{AlpTau}]{
+% 	      P \equiv_{\alpha}^{nb} Q
+% 	  }{
+% 	    \tau.P \equiv_{\alpha}^{nb} \tau.Q
+% 	  }$
+% 	&
+% 	  $\inferrule*[left=\bf{AlpInp}]{
+% 	      P \equiv_{\alpha}^{nb} Q
+% 	  }{
+% 	    x(y).P \equiv_{\alpha}^{nb} x(y).Q
+% 	  }$
+%       \\
+%     \end{tabular}
+%     \\
+%     \begin{tabular}{lll}
+%       \\
+% 	  $\inferrule*[left=\bf{AlpIde}]{
+% 	  }{
+% 	    A(\tilde{x}) \equiv_{\alpha}^{nb} A(\tilde{x})
+% 	  }$
+% 	&
+% 	  $\inferrule*[left=\bf{AlpZero}]{
+% 	  }{
+% 	    0 \equiv_{\alpha}^{nb} 0
+% 	  }$
+% 	&
+% 	  $\inferrule*[left=\bf{AlpRes}]{
+% 	      P \equiv_{\alpha}^{nb} Q
+% 	  }{
+% 	    (\nu x)P \equiv_{\alpha}^{nb} (\nu x)Q
+% 	  }$
+%       \\
+%     \end{tabular}
+%     \\
+%     \begin{tabular}{ll}
+%       \\
+% 	  $\inferrule*[left=\bf{AlpPar}]{
+% 	      P_{1} \equiv_{\alpha}^{nb} Q_{1}
+% 	    \\
+% 	      P_{2} \equiv_{\alpha}^{nb} Q_{2}
+% 	  }{
+% 	    P_{1}|P_{2} \equiv_{\alpha}^{nb} Q_{1}|Q_{2}
+% 	  }$
+%       &
+% 	  $\inferrule*[left=\bf{AlpSum}]{
+% 	      P_{1} \equiv_{\alpha}^{nb} Q_{1}
+% 	    \\
+% 	      P_{2} \equiv_{\alpha}^{nb} Q_{2}
+% 	  }{
+% 	    P_{1}+P_{2} \equiv_{\alpha}^{nb} Q_{1}+Q_{2}
+% 	  }$
+%       \\
+%     \end{tabular}
+%     \\
+%     \begin{tabular}{l}
+%       \\
+% 	  $\inferrule*[left=\bf{AlpRes1}]{
+% 	      P \equiv_{\alpha}^{nb} Q
+% 	    \\
+% 	      x\neq y
+% 	    \\
+% 	      y\notin n(Q)
+% 	    \\
+% 	      x\in fn(Q)
+% 	  }{
+% 	    (\nu x)P \equiv_{\alpha}^{nb} (\nu y)Q\{y/x\}_{nb}
+% 	  }$
+%       \\\\
+% 	  $\inferrule*[left=\bf{AlpInp1}]{
+% 	      P \equiv_{\alpha}^{nb} Q
+% 	    \\
+% 	      x\neq y
+% 	    \\
+% 	      y\notin n(Q)
+% 	    \\
+% 	      x\in fn(Q)
+% 	  }{
+% 	    z(x).P \equiv_{\alpha}^{nb} z(y).Q\{y/x\}_{nb}
+% 	  }$
+%       \\
+%     \end{tabular}
+%     \\
+%     \begin{tabular}{l}
+%       \\
+% 	  $\inferrule*[left=\bf{AlpRes2}]{
+% 	      P \equiv_{\alpha}^{nb} Q
+% 	    \\
+% 	      x\neq y
+% 	    \\
+% 	      x\notin n(P)
+% 	    \\
+% 	      y\in fn(P)
+% 	  }{
+% 	    (\nu x)P\{x/y\}_{nb} \equiv_{\alpha}^{nb} (\nu y)Q
+% 	  }$
+%       \\\\
+% 	  $\inferrule*[left=\bf{AlpInp2}]{
+% 	      P \equiv_{\alpha}^{nb} Q
+% 	    \\
+% 	      x\neq y
+% 	    \\
+% 	      x\notin n(P)
+% 	    \\
+% 	      y\in fn(P)
+% 	  }{
+% 	    z(x).P\{x/y\}_{nb} \equiv_{\alpha}^{nb} z(y).Q
+% 	  }$
+%     \\\\\multicolumn{1}{l}{\line(1,0){415}}
+%     \end{tabular}
+%     \caption{$\alpha$ equivalence laws}
+%     \label{alphaequivalenceNoChangeOfBoundNames}
+%   \end{table}
+% \end{definition}
+% 
+% \begin{proposition}
+%   $\equiv_{\alpha}^{nb}$ is an equivalence relation.
+%   \begin{proof}
+%     
+%   \begin{description}
+%     \item[transitivity]
+%   \end{description}
+%   the proof is by induction on the depths of the derivation of $P \equiv_{\alpha}^{nb} Q$ and $Q \equiv_{\alpha}^{nb} P$ and by cases on the last pair of rule used:
+%   \begin{description}
+%     \item[$AlpRes, AlpRes1$]:
+%       \begin{center}
+% 	\begin{tabular}{ll}
+% 	  $\inferrule* [left=\bf{AlpRes}]{
+% 	    P \equiv_{alpha}^{nb} Q
+% 	  }{
+% 	    (\nu x)P \equiv_{alpha}^{nb} (\nu x)Q
+% 	  }$
+% 	&
+% 	  $\inferrule* [left=\bf{AlpRes1}]{
+% 	    Q \equiv_{alpha}^{nb} R
+% 	  }{
+% 	    (\nu x)Q \equiv_{alpha}^{nb} (\nu y)R\{y/x\}_{nb}
+% 	  }$
+% 	\end{tabular}
+%       \end{center}
+%     \item[$AlpRes1, AlpRes$]:
+%       \begin{center}
+% 	\begin{tabular}{ll}
+% 	  $\inferrule* [left=\bf{AlpRes1}]{
+% 	    P \equiv_{alpha}^{nb} Q
+% 	  }{
+% 	    (\nu x)P \equiv_{alpha}^{nb} (\nu y)Q\{y/x\}_{nb}
+% 	  }$
+% 	&
+% 	  $\inferrule* [left=\bf{AlpRes}]{
+% 	    Q \equiv_{alpha}^{nb} R
+% 	  }{
+% 	    (\nu y)Q\{y/x\}_{nb} \equiv_{alpha}^{nb} (\nu y)R
+% 	  }$
+% 	\end{tabular}
+%       \end{center}
+%   \end{description}
+%   \end{proof}
+% \end{proposition}
+% 
+% 
+% \begin{lemma}\label{alphaequivalenceOfSubstitutions}
+%   $P\{x/y\} \equiv_{\alpha}^{nb} P\{x/y\}_{nb}$.
+%   \begin{proof}
+%     
+%   \end{proof}
+% \end{lemma}
+% 
+% 
+% \begin{proposition}
+%   $P\equiv_{\alpha} Q$ if and only if $P \equiv_{\alpha}^{nb} Q$.
+%   \begin{proof}
+%     \begin{description}
+%       \item[$\Rightarrow$]
+%     \end{description}
+%     $P\equiv_{\alpha} Q$ imply $P \equiv_{\alpha}^{nb} Q$. The proof is an induction on the depth of the proof tree of $P \equiv_{\alpha} Q$ and by cases on the last rule used. If the last rule is in common between $\equiv_{\alpha}$ and $\equiv_{\alpha}^{nb}$ then the conclusion holds. Here is an example:
+%     \begin{description}
+%       \item[$AlpSum$]:
+% 	\begin{center}
+% 	  $\inferrule* [left=\bf{AlpSum}]{
+% 	      P_{1} \equiv_{\alpha} Q_{1}
+% 	    \\
+% 	      P_{2} \equiv_{\alpha} Q_{2}
+% 	  }{
+% 	    P_{1}+P_{2} \equiv_{\alpha} Q_{1}+Q_{2}
+% 	  }$
+% 	\end{center}
+% 	for inductive hypothesis $P_{1} \equiv_{\alpha}^{nb} Q_{1}$ and $P_{2} \equiv_{\alpha}^{nb} Q_{2}$. For rule $AlpSum$: $P_{1}+P_{2} \equiv_{\alpha}^{nb} Q_{1}+Q_{2}$
+%     \end{description}
+%     Otherwise the last rule is not in common and for example we can have:
+%     \begin{description}
+%       \item[$AlpRes1$]:
+% 	\begin{center}
+% 	  $\inferrule* [left=\bf{AlpRes1}]{
+% 	      P \equiv_{\alpha} Q
+% 	  }{
+% 	    (\nu x)P \equiv_{\alpha} (\nu y)Q\{y/x\}
+% 	  }$
+% 	\end{center}
+% 	for inductive hypothesis $P \equiv_{\alpha}^{nb} Q$. For rule $AlpRes1$: $(\nu x)P \equiv_{\alpha}^{nb} (\nu y)Q\{y/x\}_{nb}$. For lemma \ref{alphaequivalenceOfSubstitutions}: $Q\{y/x\}_{nb} \equiv_{\alpha}^{nb} Q\{y/x\}$, for rule $AlpRes$: $(\nu y)Q\{y/x\}_{nb} \equiv_{\alpha} (\nu y)Q\{y/x\}$. For transitivity $(\nu x)P \equiv_{\alpha}^{nb} (\nu y)Q\{y/x\}$.
+%     \end{description}
+%     the other cases are similar.
+%     
+% 
+%     \begin{description}
+%       \item[$\Leftarrow$]
+%     \end{description}
+%     $P \equiv_{\alpha}^{nb} Q$ imply $P\equiv_{\alpha} Q$.
+%   \end{proof}
+% \end{proposition}
+% 
+% \begin{proposition}
+%   $P\{y/x\}_{nb}\{x/y\}_{nb}=P$.
+%   \begin{proof}
+%     It is an easy structural induction on $P$.
+%   \end{proof}
+% \end{proposition}
+% 
+% 
+% 
 \section{Operational semantic with structural congruence}
 
 \subsection{Early semantic with $\alpha$ conversion only}
