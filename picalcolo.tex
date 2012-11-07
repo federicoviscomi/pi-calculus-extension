@@ -613,8 +613,6 @@ In this case the set of actions $\mathbb{A}$ contains
 
 
 
-
-
 \section{Structural congruence}
 
 Structural congruences are a set of equations defining equality and congruence relations on process. They can be used in combination with an SOS semantic for languages. In some cases structural congruences help simplifying the SOS rules: for example they can capture inherent properties of composition operators(e.g. commutativity, associativity and zero element). Also, in process calculi, structural congruences let processes interact even in case they are not adjacent in the syntax. There is a possible trade off between what to include in the structural congruence and what to include in the transition rules: for example in the case of the commutativity of the sum operator. It is worth noticing that in most process calculi every structurally congruent processes should never be distinguished and thus any semantic must assign them the same behaviour.
@@ -3618,6 +3616,328 @@ which is not want we want. But we prove some weaker results.
   \end{proof}
 \end{theorem}
 
+We would like to prove that $P\xrightarrow{\alpha}_{3}P^{'}$ imply that $P\xrightarrow{\alpha}_{2}Q^{'}$ and $Q^{'}\equiv P^{'}$ but this does not hold because:
+\begin{center}
+  $\inferrule*[left=\bf{Cong}]{
+      \inferrule* [left=\bf{ScpExtSum1}]{
+	x\notin fn(\tau.a(b).0)
+      }{
+	(\nu x)(\tau.a(b).0+Q) \equiv \tau.a(b).0 + (\nu x)Q
+      }
+    \\
+      \inferrule* [left=\bf{Sum}]{
+	\tau.a(b).0 \xrightarrow{\tau}_{3} a(b).0
+      }{
+	\tau.a(b).0 + (\nu x)Q \xrightarrow{\tau}_{3} a(b).0
+      }
+  }{
+    (\nu x)(\tau.a(b).0+Q) \xrightarrow{\tau}_{3} a(b).0
+  }$
+\end{center}
+but there is no way to prove that $(\nu x)(\tau.0+Q) \xrightarrow{\tau}_{2} a(b).0$ because: the only rules whose head's conclusion has a restriction at the top level are $Res$ and $Opn$. Any instance of $Res$ cannot match the transition we want to prove, because the head has $(\nu x)$ at the top level whether the body has not. Any instance of $Opn$ cannot match either because the transition's label is not an output. We can prove $(\nu x)(\tau.a(b).0+Q) \xrightarrow{\tau}_{2} (\nu x)a(b).0$ but $(\nu x)a(b).0 \not \equiv a(b).0$. 
+
+
+
+\begin{lemma}
+  Let $\equiv_{2}$ be the smallest congruence defined by only the rules $ScpExtPar1$ and $ScpExtSum1$. If $P\equiv Q$ and $Q \xrightarrow{\alpha}_{2} Q^{'}$ then $P \equiv_{2} R \xrightarrow{\alpha}_{2} R^{'}$ and $R^{'} \equiv Q^{'}$.
+  \begin{proof}
+    The proof is an induction on the sum of the size of the derivations of $P\equiv Q$ and of $Q \xrightarrow{\alpha}_{2} Q^{'}$. First we notice that we can get rid ot the rules $ScpExtPar2$ and $ScpExtSum2$ because they can be mimicked by $ScpExtPar1$, $ScpExtSum1$ and the commutativity. In a similar way we can ignore the rules $SumAsc2$ and $ParAsc2$. The last pair of rules used can be:
+    \begin{description}
+      \item[$(SumAsc1, SumL)(1)$]:
+	\begin{center}
+	  \begin{tabular}{ll}
+	      $\inferrule* [left=\bf{SumAsc1}]{
+		  P_{1}\equiv Q_{1}
+		\\
+		  P_{2}\equiv Q_{2}
+		\\
+		  P_{3}\equiv Q_{3}
+	      }{
+		P_{1}+(P_{2}+P_{3})\equiv (Q_{1}+Q_{2})+Q_{3}
+	      }$
+	    &
+	      $\inferrule* [left=\bf{SumL}]{
+		\inferrule* [left=\bf{SumL}]{
+		  Q_{1} \xrightarrow{\gamma}_{2}Q^{'}
+		}{
+		  Q_{1}+Q_{2} \xrightarrow{\gamma}_{2}Q^{'}
+		}
+	      }{
+		(Q_{1}+Q_{2})+Q_{3} \xrightarrow{\gamma}_{2} Q^{'}
+	      }$
+	  \end{tabular}
+	\end{center}
+	for inductive hypothesis on $P_{1}\equiv Q_{1}\xrightarrow{\gamma}_{2}Q^{'}$: $P_{1} \equiv_{2} R_{1}$, $R_{1} \xrightarrow{\gamma}_{2} R_{1}^{'} $ and $Q^{'} \equiv R_{1}^{'}$. Then $P_{1}+(P_{2}+P_{3})\equiv_{2}R_{1}+(P_{2}+P_{3})$ and for rule $SumL$: $R_{1}+(P_{2}+P_{3})\xrightarrow{\gamma}_{2} R_{1}^{'}$.
+      \item[$(SumAsc1, SumL)(2)$]:
+	\begin{center}
+	  \begin{tabular}{ll}
+	      $\inferrule* [left=\bf{SumAsc1}]{
+		  P_{1}\equiv Q_{1}
+		\\
+		  P_{2}\equiv Q_{2}
+		\\
+		  P_{3}\equiv Q_{3}
+	      }{
+		P_{1}+(P_{2}+P_{3})\equiv (Q_{1}+Q_{2})+Q_{3}
+	      }$
+	    &
+	      $\inferrule* [left=\bf{SumL}]{
+		\inferrule* [left=\bf{SumR}]{
+		  Q_{2} \xrightarrow{\gamma}_{2}Q_{2}^{'}
+		}{
+		  Q_{1}+Q_{2} \xrightarrow{\gamma}_{2}Q_{2}^{'}
+		}
+	      }{
+		(Q_{1}+Q_{2})+Q_{3} \xrightarrow{\gamma}_{2} Q_{2}^{'}
+	      }$
+	  \end{tabular}
+	\end{center}
+	similar.
+      \item[$(SumAsc1, SumR)$] similar to the cases $(SumAsc1, SumL)$.
+      \item[$(ParAsc1, ParL)$] similar.
+      \item[$(ParAsc1, ParR)$] similar.
+      \item[$(SumCom, SumL)$]:
+	\begin{center}
+	  \begin{tabular}{ll}
+	      $\inferrule* [left=\bf{SumCom}]{
+		  P_{1}\equiv Q_{1}
+		\\
+		  P_{2}\equiv Q_{2}
+	      }{
+		P_{1}+P_{2}\equiv Q_{2}+Q_{1}
+	      }$
+	    &
+	      $\inferrule* [left=\bf{SumL}]{
+		Q_{2} \xrightarrow{\gamma}_{2}Q_{2}^{'}
+	      }{
+		Q_{2}+Q_{1} \xrightarrow{\gamma}_{2} Q_{2}^{'}
+	      }$
+	  \end{tabular}
+	\end{center}
+	for inductive hypothesis on $P_{2}\equiv Q_{2} \xrightarrow{\gamma}_{2}Q_{2}^{'}$: $P_{2}\equiv_{2} R_{2}$ and $R_{2} \xrightarrow{\gamma}_{2} R_{2}^{'}$ and $R_{2}^{'} \equiv Q_{2}^{'}$. $P_{1}+P_{2} \equiv_{2} P_{1}+R_{2}$Then for rule $SumR$: $P_{1}+R_{2} \xrightarrow{\gamma}_{2} R_{2}^{'}$
+      \item[$(SumCom, SumR)$] 
+	similar to the previous case.
+      \item[$(ParCom, ParL)$]
+	similar to the previous case.
+      \item[$(ParCom, ParR)$]
+	similar to the previous case.
+      \item[$(ScpExtSum1, \_)$] 
+	in this case the conclusion holds because $ScpExtSum1$ is also in $\equiv_{2}$.
+      \item[$(ScpExtPar1, \_)$]
+	in this case the conclusion holds because $ScpExtPar1$ is also in $\equiv_{2}$.
+      \item[$(CongSum, \_)$] 
+	in this case the conclusion holds because $CongSum$ is also in $\equiv_{2}$. Every other cases the first rule is congruence rule, hold for the same reason.
+      \item[$(Alp, \_)$] in this case the conclusion holds thanks to rule $Alp$ of $\rightarrow_{2}$.
+      \item[$(Ide, Ide)$] similar to the previous case.
+
+      \item[$(ParAsc1, EComL)$]
+      \item[$(ParAsc1, EComR)$]
+      \item[$(ParAsc1, ClsL)$]
+      \item[$(ParAsc1, ClsR)$]
+      \item[$(ParCom, EComL)$]
+      \item[$(ParCom, EComR)$]
+      \item[$(ParCom, ClsL)$]
+      \item[$(ParCom, ClsR)$]
+    \end{description}
+  \end{proof}
+\end{lemma}
+
+\begin{lemma}\label{sem2Extension}
+  If $P\equiv_{2} Q$ and $Q \xrightarrow{\alpha}_{2} Q^{'}$ and we add the rules
+  \begin{center}
+    \begin{tabular}{ll}
+	$\inferrule* [left=\bf{ScpExtPar}]{
+	    P \xrightarrow{\alpha}_{2} P^{'}
+	  \\
+	    x\notin fn(P)
+	}{
+	  P|(\nu x)Q \xrightarrow{\alpha}_{2} (\nu x)(P|Q)
+	}$
+      &
+	$\inferrule* [left=\bf{ScpExtSum}]{
+	    P \xrightarrow{\alpha}_{2} P^{'}
+	  \\
+	    x\notin fn(P)
+	}{
+	  P+(\nu x)Q \xrightarrow{\alpha}_{2} (\nu x)(P+Q)
+	}$	
+    \end{tabular}
+  \end{center}
+  then $P \xrightarrow{\alpha}_{2} R^{'}$ and $R^{'} \equiv Q^{'}$.
+  \begin{proof}
+    
+  \end{proof}
+\end{lemma}
+
+\begin{theorem}
+  Let $\rightarrow_{2}$ be the extended semantic of lemma \ref{sem2Extension}. If $P\xrightarrow{\alpha}_{3} P^{'}$ then $P\xrightarrow{\alpha}_{3} Q^{'}$ and $P^{'} \equiv Q^{'}$.
+\end{theorem}
+
+% \begin{lemma}
+%   If $P\equiv Q$ and $Q \xrightarrow{\alpha}_{2} Q^{'}$ then $P \xrightarrow{\alpha}_{2} P^{'}$ and $P^{'} \equiv Q^{'}$.
+%   \begin{proof}
+%     The proof is an induction on the size of the derivation of $P\equiv Q$, $Q \xrightarrow{\alpha}_{2} Q^{'}$ and by cases on the last pair of rules used:
+%     \begin{description}
+%       \item[$(SumAsc1, SumL)(1)$]:
+% 	\begin{center}
+% 	  \begin{tabular}{ll}
+% 	      $\inferrule* [left=\bf{SumAsc1}]{
+% 		  P_{1}\equiv Q_{1}
+% 		\\
+% 		  P_{2}\equiv Q_{2}
+% 		\\
+% 		  P_{3}\equiv Q_{3}
+% 	      }{
+% 		P_{1}+(P_{2}+P_{3})\equiv (Q_{1}+Q_{2})+Q_{3}
+% 	      }$
+% 	    &
+% 	      $\inferrule* [left=\bf{SumL}]{
+% 		\inferrule* [left=\bf{SumL}]{
+% 		  Q_{1} \xrightarrow{\gamma}_{2}Q^{'}
+% 		}{
+% 		  Q_{1}+Q_{2} \xrightarrow{\gamma}_{2}Q^{'}
+% 		}
+% 	      }{
+% 		(Q_{1}+Q_{2})+Q_{3} \xrightarrow{\gamma}_{2} Q^{'}
+% 	      }$
+% 	  \end{tabular}
+% 	\end{center}
+% 	for inductive hypothesis on $P_{1}\equiv Q_{1}\xrightarrow{\gamma}_{2}Q^{'}$: $P_{1} \xrightarrow{\gamma}_{2} P^{'}\equiv Q^{'}$. Then for rule $SumL$: $P_{1}+(P_{2}+P_{3})\xrightarrow{\gamma}_{2} Q^{'}$.
+%       \item[$(SumAsc1, SumL)(2)$]:
+% 	\begin{center}
+% 	  \begin{tabular}{ll}
+% 	      $\inferrule* [left=\bf{SumAsc1}]{
+% 		  P_{1}\equiv Q_{1}
+% 		\\
+% 		  P_{2}\equiv Q_{2}
+% 		\\
+% 		  P_{3}\equiv Q_{3}
+% 	      }{
+% 		P_{1}+(P_{2}+P_{3})\equiv (Q_{1}+Q_{2})+Q_{3}
+% 	      }$
+% 	    &
+% 	      $\inferrule* [left=\bf{SumL}]{
+% 		\inferrule* [left=\bf{SumR}]{
+% 		  Q_{2} \xrightarrow{\gamma}_{2}Q_{2}^{'}
+% 		}{
+% 		  Q_{1}+Q_{2} \xrightarrow{\gamma}_{2}Q_{2}^{'}
+% 		}
+% 	      }{
+% 		(Q_{1}+Q_{2})+Q_{3} \xrightarrow{\gamma}_{2} Q_{2}^{'}
+% 	      }$
+% 	  \end{tabular}
+% 	\end{center}
+% 	for inductive hypothesis on $P_{2}\equiv Q_{2}\xrightarrow{\gamma}_{2}Q_{2}^{'}$: $P_{2} \xrightarrow{\gamma}_{2} P_{2}^{'}\equiv Q_{2}^{'}$. Then for rules $SumR$ and $SumL$: $P_{1}+(P_{2}+P_{3})\xrightarrow{\gamma}_{2} Q_{2}^{'}$.
+%       \item[$(SumAsc1, SumR)$] similar to the cases $(SumAsc1, SumL)$.
+%       \item[$(SumAsc2, \_)$] $SumAsc2$ is unnecessary because it can be emulated by $SumAsc1$ and $SumCom$.
+%       \item[$(SumCom, SumL)$]:
+% 	\begin{center}
+% 	  \begin{tabular}{ll}
+% 	      $\inferrule* [left=\bf{SumCom}]{
+% 		  P_{1}\equiv Q_{1}
+% 		\\
+% 		  P_{2}\equiv Q_{2}
+% 	      }{
+% 		P_{1}+P_{2}\equiv Q_{1}+Q_{2}
+% 	      }$
+% 	    &
+% 	      $\inferrule* [left=\bf{SumL}]{
+% 		Q_{1} \xrightarrow{\gamma}_{2}Q_{1}^{'}
+% 	      }{
+% 		Q_{1}+Q_{2} \xrightarrow{\gamma}_{2} Q_{1}^{'}
+% 	      }$
+% 	  \end{tabular}
+% 	\end{center}
+% 	for inductive hypothesis on $P_{1}\equiv Q_{1} \xrightarrow{\gamma}_{2}Q_{1}^{'}$: $P_{1} \xrightarrow{\gamma}_{2} P_{1}^{'} \equiv Q_{1}^{'}$. The for rules $SumL$: $P_{1}+P_{2} \xrightarrow{\gamma}_{2} P_{1}^{'}$
+%       \item[$(SumCom, SumR)$] similar to the previous case.
+%       \item[$(ScpExtSum1, SumL)$]:
+% 	\begin{center}
+% 	  \begin{tabular}{ll}
+% 	      $\inferrule* [left=\bf{ScpExtSum1}]{
+% 		  P_{1}\equiv Q_{1}
+% 		\\
+% 		  P_{2}\equiv Q_{2}
+% 		\\
+% 		  x\notin fn(P_{1},Q_{1})
+% 	      }{
+% 		(\nu x)(P_{1}+P_{2})\equiv Q_{1}+(\nu x)(Q_{2})
+% 	      }$
+% 	    &
+% 	      $\inferrule* [left=\bf{SumL}]{
+% 		Q_{1} \xrightarrow{\gamma}_{2}Q_{1}^{'}
+% 	      }{
+% 		Q_{1}+(\nu x)(Q_{2}) \xrightarrow{\gamma}_{2} Q_{1}^{'}
+% 	      }$
+% 	  \end{tabular}
+% 	\end{center}
+% 	for inductive hypothesis on $P_{1}\equiv Q_{1} \xrightarrow{\gamma}_{2}Q_{1}^{'}$: $P_{1} \xrightarrow{\gamma}_{2} P_{1}^{'} \equiv Q_{1}^{'}$. Then for rules $SumL$: $P_{1}+P_{2} \xrightarrow{\gamma}_{2} P_{1}^{'}$
+%       \item[$(ScpExtSum1, SumR)$]
+%       \item[$(ScpExtSum2, SumL)$]
+%       \item[$(ScpExtSum2, SumR)$]
+%       \item[$(CongSum, SumL)$]:
+% 	\begin{center}
+% 	  \begin{tabular}{ll}
+% 	      $\inferrule* [left=\bf{CongSum}]{
+% 		  P_{1}\equiv Q_{1}
+% 		\\
+% 		  P_{2}\equiv Q_{2}
+% 	      }{
+% 		P_{1}+P_{2}\equiv Q_{1}+Q_{2}
+% 	      }$
+% 	    &
+% 	      $\inferrule* [left=\bf{Sum}]{
+% 		Q_{1}\xrightarrow{\gamma}_{2}Q_{1}^{'}
+% 	      }{
+% 		Q_{1}+Q_{2}\xrightarrow{\gamma}_{2}Q_{1}^{'}
+% 	      }$
+% 	  \end{tabular}
+% 	\end{center}
+% 	for inductive hypothesis on $P_{1} \equiv Q_{1} \xrightarrow{\gamma}_{2} Q_{1}^{'}$: $P_{1}\xrightarrow{\gamma}_{2} P_{1}^{'}$ and $P_{1}^{'} \equiv Q_{1}^{'}$. For rule $SumL$: $P_{1}+P_{2}\xrightarrow{\gamma}_{2} P_{1}^{'}$
+%       \item[$(CongSum, SumR)$] similar to the previous case.
+% 
+%       \item[$(ParAsc1, ParL)$]
+%       \item[$(ParAsc1, ParR)$]
+%       \item[$(ParAsc1, EComL)$]
+%       \item[$(ParAsc1, EComR)$]
+%       \item[$(ParAsc1, ClsL)$]
+%       \item[$(ParAsc1, ClsR)$]
+%       \item[$(ParAsc2, \_)$] $ParAsc2$ is unnecessary because it can be emulated by $ParAsc1$ and $ParCom$.
+%       \item[$(ParCom, ParL)$]
+%       \item[$(ParCom, ParR)$]
+%       \item[$(ParCom, EComL)$]
+%       \item[$(ParCom, EComR)$]
+%       \item[$(ParCom, ClsL)$]
+%       \item[$(ParCom, ClsR)$]
+%       \item[$(ScpExtPar1, ParL)$]
+%       \item[$(ScpExtPar1, ParR)$]
+%       \item[$(ScpExtPar1, EComL)$]
+%       \item[$(ScpExtPar1, EComR)$]
+%       \item[$(ScpExtPar1, ClsL)$]
+%       \item[$(ScpExtPar1, ClsR)$]
+%       \item[$(ScpExtPar2, ParL)$]
+%       \item[$(ScpExtPar2, ParR)$]
+%       \item[$(ScpExtPar2, EComL)$]
+%       \item[$(ScpExtPar2, EComR)$]
+%       \item[$(ScpExtPar2, ClsL)$]
+%       \item[$(ScpExtPar2, ClsR)$]
+%       \item[$(CongPar, ParL)$]
+%       \item[$(CongPar, ParR)$]
+%       \item[$(CongPar, EComL)$]
+%       \item[$(CongPar, EComR)$]
+%       \item[$(CongPar, ClsL)$]
+%       \item[$(CongPar, ClsR)$]
+% 
+%       \item[$(Ide, Ide)$]
+%       \item[$(Alp, Alp)$]
+%       \item[$(CongInp, EInp)$]
+%       \item[$(CongOut, Out)$]
+%       \item[$(CongTau, Tau)$]
+%       \item[$(CongRes, Res)$]
+%       \item[$(CongRes, Opn)$]
+%     \end{description}
+%   \end{proof}
+% \end{lemma}
+
 
 % We would like to prove that: $P\xrightarrow{\alpha}_{3}P^{'}$ imply that there exist a process $Q^{'}$ such that $P \xrightarrow{\alpha}_{2} Q^{'}\equiv P^{'}$. But this is false becuase: BECAUSE? E' VERO O FALSO?
 % 
@@ -4394,6 +4714,8 @@ We refer to strong late bisimulation as strong \emph{ground} late bisimulation, 
   Two processes $P$ and $Q$ are \emph{strong early equivalent} written $P\sim_{E}Q$ if for each substitution $\sigma$ $P\sigma \dot{\sim}_{E}Q\sigma$
 \end{definition}
 
+
+
 \subsection{Congruence}
 
 \begin{definition}
@@ -4424,8 +4746,6 @@ We refer to strong late bisimulation as strong \emph{ground} late bisimulation, 
       if $\alpha$ is not a bound output then there exists $Q^{'}$ such that $Q\sigma \xrightarrow{\alpha} Q^{'}$ and $P^{'} S_{D\sigma} Q^{'}$
   \end{itemize}
   $P$ and $Q$ are \emph{open D bisimilar}, written $P \dot{\sim}_{O}^{D} Q$ if there exists a member $S_{D}$ of an open bisimulation such that $P S_{D} Q$; they are \emph{open bisimilar} if they are open $\emptyset$ bisimilar, written $P \dot{\sim}_{O} D$.
- 
-
 \end{definition}
  
  
