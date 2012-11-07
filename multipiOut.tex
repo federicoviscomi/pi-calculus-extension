@@ -41,7 +41,7 @@ The semantic of a multi $\pi$ process is labeled transition system such that
 In this case, a label can be a sequence of prefixes, whether in the original $\pi$ calculus a label can be only a prefix. We use the symbol $\cdot$ to denote the concatenation operator.
 
 \begin{definition}
-  The \emph{early transition relation} is the smallest relation induced by the rules in table \ref{multipiearlywith}. 
+  The \emph{early transition relation} is the smallest relation induced by the rules in table \ref{multipiOutEarlySemantiWithStructuralCongruence}. 
 % The relation $opn$ is defined in table \ref{opn}.
   \begin{table}
     \begin{tabular}{lll}
@@ -148,7 +148,7 @@ In this case, a label can be a sequence of prefixes, whether in the original $\p
       \\\\	\multicolumn{2}{l}{\line(1,0){415}}
     \end{tabular}
     \caption{Multi $\pi$ early semantic with structural congruence}
-    \label{multipiearlywith}
+    \label{multipiOutEarlySemantiWithStructuralCongruence}
   \end{table}
 \end{definition}
 
@@ -538,7 +538,7 @@ This section contains the definition of an alternative semantic for multi $\pi$.
 
 
 \begin{proposition}\label{equivalencehightolow}
-  Let $\rightarrow$ be the relation defined in table \ref{multipiearlywith}. If $P\xrightarrow{\sigma} Q$ then there exist $L_{1}, \cdots, L_{k}$ and $\gamma_{1}, \cdots, \gamma_{k+1}$ with $k\geq 0$ such that 
+  Let $\rightarrow$ be the relation defined in table \ref{multipiOutEarlySemantiWithStructuralCongruence}. If $P\xrightarrow{\sigma} Q$ then there exist $L_{1}, \cdots, L_{k}$ and $\gamma_{1}, \cdots, \gamma_{k+1}$ with $k\geq 0$ such that 
   \begin{center}
     \begin{tabular}{lll}
       $P \stackrel{\gamma_{1}}{\longmapsto} L_{1} \stackrel{\gamma_{2}}{\longmapsto} L_{2} \cdots L_{k-1} \stackrel{\gamma_{k}}{\longmapsto} L_{k} \stackrel{\gamma_{k+1}}{\longmapsto} Q$ 
@@ -948,7 +948,7 @@ We would like to prove the converse of the previous proposition, namely: if ther
 
 There is a much weaker propositions we can prove:
 \begin{proposition}
-  Let $\rightarrow$ be the relation defined in table \ref{multipiearlywith}. Let $\alpha$ be an action. If $P \stackrel{\alpha}{\longmapsto} Q$ then $P\xrightarrow{\alpha} Q$.
+  Let $\rightarrow$ be the relation defined in table \ref{multipiOutEarlySemantiWithStructuralCongruence}. Let $\alpha$ be an action. If $P \stackrel{\alpha}{\longmapsto} Q$ then $P\xrightarrow{\alpha} Q$.
   \begin{proof}
     The proof is by induction the depth of the derivation of $P \stackrel{\alpha}{\longmapsto} Q$ and by cases on the last rule used in the derivation:
     \begin{description}
@@ -1037,7 +1037,7 @@ where $stop(P)$ is a multi $\pi$ process which cannot make any transition.
 
 
 \begin{proposition}
-  Let $\rightarrow$ be the relation defined in table \ref{multipiearlywith}. If $P\xrightarrow{\sigma} Q$ then there exist $L_{1}, \cdots, L_{k}$ with $k\geq 0$ such that 
+  Let $\rightarrow$ be the relation defined in table \ref{multipiOutEarlySemantiWithStructuralCongruence}. If $P\xrightarrow{\sigma} Q$ then there exist $L_{1}, \cdots, L_{k}$ with $k\geq 0$ such that 
       \begin{center}
 	\begin{tabular}{lllll}
 	  $P 
@@ -1067,7 +1067,7 @@ where $stop(P)$ is a multi $\pi$ process which cannot make any transition.
 \end{proposition}
 
 \begin{proposition}
-  Let $\rightarrow$ be the relation defined in table \ref{multipiearlywith}. If there exist $L_{1}$, $\cdots$, $L_{k}$ with $k\geq 1$ such that
+  Let $\rightarrow$ be the relation defined in table \ref{multipiOutEarlySemantiWithStructuralCongruence}. If there exist $L_{1}$, $\cdots$, $L_{k}$ with $k\geq 1$ such that
       \begin{center}
 	  $P 
 	    \stackrel{\gamma_{1}}{\longmapsto} 
@@ -1648,7 +1648,7 @@ where $stop(P)$ is a multi $\pi$ process which cannot make any transition.
 % \subsection{Late bisimilarity}
 % 
 % \begin{definition}
-%   A \emph{strong late bisimulation} is a binary simmetric relation $\mathbf{S}$ on processes such that for each process $P$ and $Q$, $P\mathbf{S}Q$ implies:
+%   A \emph{strong late bisimulation} is a binary symmetric relation $\mathbf{S}$ on processes such that for each process $P$ and $Q$, $P\mathbf{S}Q$ implies:
 %   \begin{itemize}
 %     \item
 %       if $P \xrightarrow{a(x)}_{L} P^{'}$ and $x\notin fn(P)\cup fn(Q)$ then there exists a process $Q^{'}$ such that $Q \xrightarrow{a(x)}_{L} Q^{'}$ and for all $u$ $P^{'}\{u/x\}\mathbf{S}Q^{'}\{u/x\}$
@@ -1663,7 +1663,7 @@ where $stop(P)$ is a multi $\pi$ process which cannot make any transition.
 %   \[
 %     a(u).0|\overline{b}v.0\; \dot{\sim}_{L}\; a(u).\overline{b}v.0 + \overline{b}v.a(u).0
 %   \]
-%   and the bisimulation(without the simmetric part) is  the following:
+%   and the bisimulation(without the symmetric part) is  the following:
 %   \[
 %     \{(a(u).0|\overline{b}v.0, a(u).\overline{b}v.0 + \overline{b}v.a(u).0),\;\; (a(u).0|0,a(u).0),\;\; (0|0,0),\;\; (0|\overline{b}v.0,\overline{b}v.0)\} 
 %   \]
@@ -1808,7 +1808,7 @@ where $stop(P)$ is a multi $\pi$ process which cannot make any transition.
 % \end{lemma}
 % 
 % \begin{definition}
-%   A \emph{strong late bisimulation up to $\dot{\sim}_{L}$} is a binary simmetric relation $\mathbf{S}$ on processes such that for each process $P$ and $Q$, $P\mathbf{S}Q$ implies:
+%   A \emph{strong late bisimulation up to $\dot{\sim}_{L}$} is a binary symmetric relation $\mathbf{S}$ on processes such that for each process $P$ and $Q$, $P\mathbf{S}Q$ implies:
 %   \begin{itemize}
 %     \item
 %       if $P \xrightarrow{a(x)}_{L} P^{'}$ and $x\notin fn(P)\cup fn(Q)$ then there exists a process $Q^{'}$ such that $Q \xrightarrow{a(x)}_{L} Q^{'}$ and for all $u$ there exist processes $A,B$ such that $P^{'}\{u/x\}\dot{\sim}_{L}A\mathbf{S}B\dot{\sim}_{L}Q^{'}\{u/x\}$
@@ -2688,7 +2688,7 @@ But we do have to following:
 In the following section, $\rightarrow$ is the transition relation defined in table \ref{multipioutearlywithout}.
 
 \begin{definition}\label{strongEarlyBisimulation}
-  A \emph{strong early bisimulation} is a simmetric binary relation $\mathbf{S}$ on multi $\pi$ processes such that for all $P$ and $Q$: $P \mathbf{S} Q$, $P \xrightarrow{\gamma} P^{'}$ and $bn(\gamma)$ is fresh imply that
+  A \emph{strong early bisimulation} is a symmetric binary relation $\mathbf{S}$ on multi $\pi$ processes such that for all $P$ and $Q$: $P \mathbf{S} Q$, $P \xrightarrow{\gamma} P^{'}$ and $bn(\gamma)$ is fresh imply that
   \begin{center}
     $\exists Q^{'}:$ $Q \xrightarrow{\gamma} Q^{'}$ and $P^{'}\mathbf{S} Q^{'}$
   \end{center}
@@ -2696,7 +2696,7 @@ In the following section, $\rightarrow$ is the transition relation defined in ta
 \end{definition}
 
 \begin{definition}\label{strongEarlyBisimulationUpTo}
-  A \emph{strong early bisimulation up to $\sim_{E}$} is a simmetric binary relation $\mathbf{S}$ on multi $\pi$ processes such that for all $P$ and $Q$: $P \mathbf{S} Q$, $P \xrightarrow{\gamma} P^{'}$ and $bn(\gamma)$ is fresh imply that
+  A \emph{strong early bisimulation up to $\sim_{E}$} is a symmetric binary relation $\mathbf{S}$ on multi $\pi$ processes such that for all $P$ and $Q$: $P \mathbf{S} Q$, $P \xrightarrow{\gamma} P^{'}$ and $bn(\gamma)$ is fresh imply that
   \begin{center}
     $\exists P^{''},Q^{'},Q^{''}:$ $Q \xrightarrow{\gamma} Q^{'}$ and $P^{'} \sim_{E} P^{''} \mathbf{S} Q^{''} \sim_{E} Q^{'} $
   \end{center}
@@ -2705,7 +2705,7 @@ In the following section, $\rightarrow$ is the transition relation defined in ta
 
 
 \begin{definition}\label{strongEarlyBisimulationUpToRestriction}
-  A \emph{strong early bisimulation up to restriction} is a simmetric binary relation $\mathbf{S}$ on multi $\pi$ processes such that for all $P$ and $Q$: $P \mathbf{S} Q$ imply
+  A \emph{strong early bisimulation up to restriction} is a symmetric binary relation $\mathbf{S}$ on multi $\pi$ processes such that for all $P$ and $Q$: $P \mathbf{S} Q$ imply
   \begin{itemize}
     \item
       for all $w\notin (fn(P)\cup fn(Q))$: $P\{w/z\} \sim_{E} Q\{w/z\}$
@@ -2788,7 +2788,7 @@ In the following section, $\rightarrow$ is the transition relation defined in ta
 	$\Rightarrow$ $A^{'} \sim_{E} B^{''} \mathbf{S} C^{''} \sim_{E} D^{'}$
       \end{tabular}
     \end{center}
-    It is easy to see that the simmetric also holds.
+    It is easy to see that the symmetric also holds.
   \end{proof}
 \end{proposition}
 
@@ -3328,7 +3328,7 @@ In the following section, $\rightarrow$ is the transition relation defined in ta
 	      }$
 	    \end{center}
 	    $P \equiv_{\alpha} P_{2}$ and  $P_{2} \xrightarrow{\overline{x}y} P_{2}^{'}$ for rule $Alp$ imply $P \xrightarrow{\overline{x}y} P_{2}^{'}$. $P\sim_{E} Q$ imply that there exists a process $Q^{'}$ such that $Q \xrightarrow{\overline{x}y} Q^{'}$ and $P_{2}^{'}\sim_{E} Q^{'}$. $R \equiv_{\alpha} R_{2}$ and $R_{2} \stackrel{xy}{\twoheadrightarrow} R_{2}^{'}$ imply for rule $Alp$ that $R \stackrel{xy}{\twoheadrightarrow} R_{2}^{'}$. So for rule $ECom$: $Q|R \xrightarrow{\tau} Q^{'}|R_{2}^{'}$ and $P_{2}^{'}|R_{2}^{'}\sim_{E} Q^{'}|R_{2}^{'}$
-	  \item[Cls]:
+      \item[$Cls$]:
 	    \begin{center}
 	      $\inferrule* {
 		  P \xrightarrow{\overline{x}(y) \cdot (\nu y)} P^{'}
@@ -3338,8 +3338,8 @@ In the following section, $\rightarrow$ is the transition relation defined in ta
 		P|R \xrightarrow{\tau} (\nu y)(P^{'}|R^{'})
 	      }$
 	    \end{center}
-	    $P \xrightarrow{\overline{x}(y) \cdot (\nu y)} P^{'}$ and $P\sim_{E} Q$ imply that there exists a process $Q^{'}$ such that $Q \xrightarrow{\overline{x}y \cdot (\nu y)} Q^{'}$ and $P^{'}\sim_{E} Q^{'}$. So for rule $Cls$: $Q|R \xrightarrow{\tau} (\nu y)(Q^{'}|R^{'})$ and $(\nu y)(P^{'}|R^{'}) \sim_{E} (\nu y)(Q^{'}|R^{'})$
-	  \item[ClsSeq1, ClsSeq2, ParL, ParR] similar.
+	    $P \xrightarrow{\overline{x}(y) \cdot (\nu y)} P^{'}$ and $P\sim_{E} Q$ imply that there exists a process $Q^{'}$ such that $Q \xrightarrow{\overline{x}(y) \cdot (\nu y)} Q^{'}$ and $P^{'} \sim_{E} Q^{'}$. So for rule $Cls$: $Q|R \xrightarrow{\tau} (\nu y)(Q^{'}|R^{'})$ and $(\nu y)(P^{'}|R^{'}) \sim_{E} (\nu y)(Q^{'}|R^{'})$
+      \item[$ClsSeq1, ClsSeq2, ParL, ParR$] similar.
     \end{description}
   \end{proof}
 \end{lemma}
@@ -3457,21 +3457,22 @@ According to \cite{milnerparrowwalker} the following holds:
 % \end{lemma}
 
 
+NON HA SENSO QUESTO LEMMA IN QUESTO CONTESTO
 \begin{lemma}\label{strongDEquivalencePreservedByInput}
   If $P \sim^{D} Q$ and for all $v\in fn(P,Q)$ such that $(v,y)\in D$ it holds that $P\{v/y\} \sim^{D} Q\{v/y\}$ then $x(y).P \sim^{D} x(y).Q$
-  \begin{proof}
-    DA RIGUARDARE ! !
-    Let $\sigma$ be a substitution that respects $D$. If $y \sigma^{-1} = \{y\}$ then 
-    \begin{center}
-      \begin{tabular}{ll}
-	  $(x(y).P)\sigma = x\sigma(y).P\sigma \xrightarrow{x\sigma z} P\sigma\{z/y\}$
-	&
-	  $(x(y).Q)\sigma = x\sigma(y).Q\sigma \xrightarrow{x\sigma z} Q\sigma\{z/y\}$
-      \end{tabular}
-    \end{center}
-
-    If $y \notin (y \sigma^{-1})$ then $(x(y).P)\sigma = x\sigma (w).P\{w/y\}\sigma \xrightarrow{x\sigma z} P\{w/y\}\sigma\{z/w\}$ where $w\notin n(x(y).P)$.
-  \end{proof}
+%   \begin{proof}
+%     DA RIGUARDARE ! !
+%     Let $\sigma$ be a substitution that respects $D$. If $y \sigma^{-1} = \{y\}$ then 
+%     \begin{center}
+%       \begin{tabular}{ll}
+% 	  $(x(y).P)\sigma = x\sigma(y).P\sigma \xrightarrow{x\sigma z} P\sigma\{z/y\}$
+% 	&
+% 	  $(x(y).Q)\sigma = x\sigma(y).Q\sigma \xrightarrow{x\sigma z} Q\sigma\{z/y\}$
+%       \end{tabular}
+%     \end{center}
+% 
+%     If $y \notin (y \sigma^{-1})$ then $(x(y).P)\sigma = x\sigma (w).P\{w/y\}\sigma \xrightarrow{x\sigma z} P\{w/y\}\sigma\{z/w\}$ where $w\notin n(x(y).P)$.
+%   \end{proof}
 \end{lemma}
 
 
@@ -3655,7 +3656,22 @@ According to \cite{milnerparrowwalker} the following holds:
 
 \subsection{Open bisimulation}
 
-The following is an extension of the definition of strong open bisimulation found in \cite{parrow}:
+
+Let $\rightarrow$ be the semantic defined in table \ref{multipiOutEarlySemantiWithStructuralCongruence} the following is an attempt to extend the definition of strong open bisimulation found in \cite{parrow}:
 \begin{definition}
-  A \emph{strong open bisimulation} is a symmetric binary relation $\mathbf{R}$ on multi $\pi$ processes such that for all substitution $\sigma$: 
+  An \emph{strong open simulation} is $\{S_{D}\}_{D\in \mathbb{D}}$ a family of binary relations on processes such that for each process $P, Q$, for each distinction $D\in \mathbb{D}$, for each name substitution $\sigma$ which respects $D$ if $P S_{D} Q$, $P\sigma \xrightarrow{\gamma} P^{'}$ and $bn(\gamma)\cap (fn(P\sigma)\cup fn(Q\sigma))=\emptyset$ then:
+   \begin{itemize}
+    \item 
+      if $\gamma$ is the sequence of bound outputs $\widetilde{\overline{a}(x)}$ then there exists $Q^{'}$ such that $Q\sigma \xrightarrow{\widetilde{\overline{a}(x)}} Q^{'}$ and $P^{'} S_{D^{'}} Q^{'}$ where $D^{'}=D\sigma \cup \{\tilde{x}\}\times (fn(P\sigma)\cup fn(Q\sigma)) \cup  (fn(P\sigma)\cup fn(Q\sigma))\times\{\tilde{x}\}$
+    \item
+      if $\alpha$ is not a bound output then there exists $Q^{'}$ such that $Q\sigma \xrightarrow{\alpha} Q^{'}$ and $P^{'} S_{D\sigma} Q^{'}$
+  \end{itemize}
+  $P$ and $Q$ are \emph{open D bisimilar}, written $P \dot{\sim}_{O}^{D} Q$ if there exists a member $S_{D}$ of an open bisimulation such that $P S_{D} Q$; they are \emph{open bisimilar} if they are open $\emptyset$ bisimilar, written $P \dot{\sim}_{O} D$.
 \end{definition}
+
+\begin{theorem}
+  $P \dot{\sim}_{O}^{D} Q$ is a congruence.
+  \begin{proof}
+    
+  \end{proof}
+\end{theorem}
