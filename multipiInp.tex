@@ -1706,7 +1706,7 @@ In the following section the symbol $\rightarrow$ will refer to the late semanti
   We say that a process is in \emph{normal form} if all bound names are distinct and all unguarded restrictions are at the top level, i.e., of the form $(\nu \tilde{x})P$ where $P$ has no unguarded restrictions, note that $\tilde{x}$ can eventually be empty. If a process $P$ is in normal form, we write for short $P$ n.f.. 
 \end{definition}
 
-\begin{lemma}\label{existenceOfNormalForm}
+\begin{lemma}[Existence of a normal form]\label{existenceOfNormalForm}
   Every process is structurally congruent to a process in normal form.
   \begin{proof}
     Let $P$ be a process. We have to show that there exists a process $N$ such that $P \equiv N$ and $N$ is in normal form. We prove this by structural induction on $P$:
@@ -1732,14 +1732,176 @@ In the following section the symbol $\rightarrow$ will refer to the late semanti
   \end{proof}
 \end{lemma}
 
+A normal form always exists but it is not unique.
 
-\begin{lemma}\label{mapToNormalForm}
-  $P \xrightarrow{\gamma} Q$, $P\equiv N$, $N$ is in normal form then $N \xrightarrow{\gamma} M$, $Q\equiv M$, $M$ is in normal form and the depth of the inference tree of $N \xrightarrow{\gamma} M$ is not greater than the depth of the inference tree of $P \xrightarrow{\gamma} Q$.
+% \begin{lemma}
+%   If $P$ is a normal form, $P \xrightarrow{\gamma} P^{'}$ and $\gamma$ is not a bound output then there exists a process $(\nu \tilde{x})Q$ such that $Q$ is a normal form, have no restrictions at the top level, $P \equiv (\nu \tilde{x})Q$, $(\nu \tilde{x})Q \xrightarrow{\gamma} Q^{'}$, $P^{'} \equiv Q^{'}$ and the last $|\tilde{x}|$  rules in the derivation of $(\nu \tilde{x})Q \xrightarrow{\gamma} Q^{'}$ are $Res$. $\tilde{x}$ can be empty.
+%   \begin{proof}
+%     If $P$ has no restrictions at the top level then the lemma holds. Otherwise 
+%   \end{proof}
+% \end{lemma}
+% 
+% \begin{lemma}
+%   If $P$ is a normal form, $P \xrightarrow{\overline{a}(b)} P^{'}$ then there exists a process $(\nu \tilde{x})Q$ such that $Q$ is a normal form, have no restrictions at the top level, $(\nu \tilde{x})Q \xrightarrow{\overline{a}(b)} Q^{'}$, $P^{'} \equiv Q^{'}$ and the last rule used in the derivation of $(\nu \tilde{x})Q \xrightarrow{\overline{a}(b)} Q^{'}$ is the rule that opens the scope of $b$.
+%   \begin{proof}
+%     
+%   \end{proof}
+% \end{lemma}
+
+
+\begin{lemma}[Reduction to normal form]\label{mapToNormalForm}
+  $P \xrightarrow{\gamma} Q$ imply that there exist $N$ in normal form such that $P\equiv N$, $N \xrightarrow{\gamma} M$, $M\equiv Q$ and the depth of the inference tree of $N \xrightarrow{\gamma} M$ is not greater than the depth of the inference tree of $P \xrightarrow{\gamma} Q$.
   \begin{proof}
-    The proof is by induction on the derivation of $P\equiv N$. The last rule used can be:
+    The proof is by induction on the derivation of $P \xrightarrow{\gamma} Q$. The last rule used can be:
     \begin{description}
-      \item[$\alpha\; conversion$] 
-	?? ???
+      \item[$Out$]
+	$\overline{x}y.P \xrightarrow{\overline{x}y} P$. For lemma \ref{existenceOfNormalForm}: there exists a process $N$ in normal form such that $P \equiv N$. For rule $Out$: $\overline{x}y.N \xrightarrow{\overline{x}y} N$. It also holds that $\overline{x}y.P$ is structurally congruent to $ \overline{x}y.N$ and that $\overline{x}y.N$ is in normal form.
+      \item[$Tau$] similar.
+      \item[$EInp$]
+	$x(y).P \xrightarrow{xz} P\{z/y\}$. For lemma \ref{existenceOfNormalForm}: there exists a process $N$ in normal form such that $P \equiv N$ so:
+	\begin{center}
+	  \begin{tabular}{ll}
+	    $\inferrule* {
+	      P \equiv N
+	    }{
+	      x(y).P \equiv x(y).N
+	    }$
+	  &
+	    $\inferrule* [left=\bf{EInp}]{
+	    }{
+	      x(y).N \xrightarrow{xz} N\{z/y\}
+	    }$
+	  \end{tabular}
+	\end{center}
+	and $x(y).N$ is a normal form.
+      \item[$SInp$]:
+	\begin{center}	
+	  $\inferrule* [left=\bf{SInp}]{
+	      P \xrightarrow{\gamma} P^{'}
+	  }{
+	    \underline{x(y)}.P \xrightarrow{x(y) \cdot \gamma} P^{'}
+	  }$
+	\end{center}
+	for inductive hypothesis there exist processes $N,N^{'}$ in normal form such that $P \equiv N$, $N \xrightarrow{\gamma} N^{'}$ and $N^{'} \equiv P^{'}$. So:
+	\begin{center}
+	  \begin{tabular}{ll}
+	      $\inferrule* {
+		P \equiv N
+	      }{
+		\underline{x(y)}.P \equiv \underline{x(y)}.N
+	      }$
+	    &
+	      $\inferrule* [left=\bf{SInp}]{
+	      }{
+		\underline{x(y)}.N \xrightarrow{x(y) \cdot \gamma} N^{'}
+	      }$
+	  \end{tabular}
+	\end{center}
+      \item[$LComSeq$]:
+	\begin{center}
+	  $\inferrule* [left=\bf{LComSeq}]{
+	      P \xrightarrow{x(y) \cdot \gamma} P^{'}
+	    \\
+	      Q \xrightarrow{\overline{x}z} Q^{'}
+	    \\
+	      bn(\gamma) \cap fn(Q) = \emptyset
+	  }{
+	    P|Q \xrightarrow{\gamma\{z/y\}} P^{'}\{z/y\}|Q
+	  }$
+	\end{center}
+	for inductive hypothesis there exist processes $N,N^{'},M,M^{'}$ such that $N,M$ are normal forms, $P \equiv N$, $N \xrightarrow{x(y) \cdot \gamma} N^{'}$, $N^{'} \equiv P^{'}$, $Q \equiv M$, $M \xrightarrow{\overline{x}z} M^{'}$ and $M^{'} \equiv Q^{'}$. So:
+	\begin{center}	
+	  \begin{tabular}{ll}
+	      $\inferrule* {
+		  P \equiv N
+		\\
+		  Q \equiv M
+	      }{
+		P|Q \equiv N|M
+	      }$
+	    &
+	      $\inferrule* [left=\bf{LComSeq}]{
+		  N \xrightarrow{x(y) \cdot \gamma} N^{'}
+		\\
+		  M \xrightarrow{\overline{x}z} M^{'}
+		\\
+		  bn(\gamma) \cap fn(Q) = \emptyset
+	      }{
+		N|M \xrightarrow{\gamma\{z/y\}} N^{'}\{z/y\}|M^{'}
+	      }$
+	  \end{tabular}
+	\end{center}
+NON FUNZIONA PERCHE' $N|M$ POTREBBE NON ESSERE UNA FORMA NORMALE!
+      \item[$LCom$] similar.
+      \item[$Par$]:
+	\begin{center}	
+	  $\inferrule* [left=\bf{Par}]{
+	      P \xrightarrow{\gamma} P^{'}
+	    \\
+	      bn(\gamma) \cap fn(Q) = \emptyset
+	  }{
+	    P|Q \xrightarrow{\gamma} P^{'}|Q
+	  }$
+	\end{center}
+	for inductive hypothesis there exist processes $N,N^{'}$ in normal form such that $P \equiv N$, $N \xrightarrow{\gamma} N^{'}$, $N^{'} \equiv P^{'}$. So:
+	\begin{center}
+	  \begin{tabular}{ll}
+	    $\inferrule* {
+	      P \equiv N
+	    }{
+	      P|Q \equiv N|Q
+	    }$
+	  &  
+	    $\inferrule* [left=\bf{Par}]{
+		N \xrightarrow{\gamma} N^{'}
+	      \\
+		bn(\gamma) \cap fn(Q) = \emptyset
+	    }{
+	      N|Q \xrightarrow{\gamma} N^{'}|Q
+	    }$
+	  \end{tabular}
+	\end{center}
+      \item[$Sum$] similar.
+      \item[$Cong$]:
+	\begin{center}	
+	  $\inferrule* [left=\bf{Cong}]{
+	      P \equiv Q
+	    \\
+	      Q \xrightarrow{\gamma} Q^{'}
+	  }{
+	    P \xrightarrow{\gamma} Q^{'}
+	  }$
+	\end{center}
+	for inductive hypothesis there exist processes $N,N^{'}$ in normal form such that $Q \equiv N$, $N \xrightarrow{\gamma} N^{'}$, $N^{'} \equiv Q^{'}$. For transitivity $P \equiv N$.
+      \item[$Res$]:
+	\begin{center}	
+	  $\inferrule* [left=\bf{Res}]{
+	      P \xrightarrow{\gamma} P^{'}
+	    \\
+	      x\notin n(\gamma)
+	  }{
+	    (\nu x)P \xrightarrow{\gamma} (\nu x)P^{'}
+	  }$
+	\end{center}
+	for inductive hypothesis there exist processes $N,N^{'}$ in normal form such that $P \equiv N$, $N \xrightarrow{\gamma} N^{'}$, $N^{'} \equiv P^{'}$. So:
+	\begin{center}
+	  \begin{tabular}{ll}
+	    $\inferrule* {
+	      P \equiv N
+	    }{
+	      (\nu x)P \equiv (\nu x)N
+	    }$
+	  &  
+	    $\inferrule* [left=\bf{Res}]{
+		N \xrightarrow{\gamma} N^{'}
+	      \\
+		x\notin n(\gamma)
+	    }{
+	      (\nu x)N \xrightarrow{\gamma} (\nu x)N^{'}
+	    }$
+	  \end{tabular}
+	\end{center}
+      \item[$Opn$] similar.
     \end{description}
   \end{proof}
 \end{lemma}
@@ -2060,6 +2222,11 @@ Is this definition a proper extension of the one in \cite{parrow}? The only way 
     Let $P\equiv Q$. If $P\xrightarrow{\sigma}P^{'}$ then for symmetry of $\equiv$ and rule $Cong$: $Q\xrightarrow{\sigma}P^{'}$. If $Q\xrightarrow{\sigma}Q^{'}$ then for rule $Cong$: $P\xrightarrow{\sigma}Q^{'}$
   \end{proof}
 \end{proposition}
+
+
+% IDEA PER LA DIMOSTRAZIONE:
+% 
+% $P \xrightarrow{\gamma}_{3} P^{'}$ implica $P\equiv Q \xrightarrow{\gamma}_{2} P^{'}$ implica $P\equiv Q\equiv_{\alpha} N \xrightarrow{\gamma}_{2} P^{''}\equiv P^{'}$, $N$ e' in forma normale e $N\xrightarrow{\gamma}_{2} P^{''}$ non usa $Cls, ClsSeq$.
 
 \begin{proposition}
   $\dot{\sim}$ is preserved by all operators except input prefix.
@@ -2452,3 +2619,6 @@ Is this definition a proper extension of the one in \cite{parrow}? The only way 
 % \subsection{Strong equivalence and distinctions}
 % \subsection{Properties of strong bisimilarity}
 % \subsection{Properties of strong $D-$ equivalence}
+
+
+
