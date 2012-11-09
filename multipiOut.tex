@@ -2059,7 +2059,7 @@ where $stop(P)$ is a multi $\pi$ process which cannot make any transition.
 	  }$
 	&
 	  $\inferrule* [left=\bf{EInp}]{
-% 	    w \notin (fn(P)-\{z\})
+ 	    w \notin (fn(P)-\{z\})
 	  }{
 	    x(z).P \xrightarrow{xw} P\{w/z\}
 	  }$
@@ -2703,19 +2703,6 @@ In the following section, $\rightarrow$ is the transition relation defined in ta
   Two processes $P,Q$ are \emph{strong early bisimilar up to $\sim_{E}$}, written $P \sim_{E}^{up} Q$, if they are related by a strong early bisimulation up to $\sim_{E}$.
 \end{definition}
 
-
-\begin{definition}\label{strongEarlyBisimulationUpToRestriction}
-  A \emph{strong early bisimulation up to restriction} is a symmetric binary relation $\mathbf{S}$ on multi $\pi$ processes such that for all $P$ and $Q$: $P \mathbf{S} Q$ imply
-  \begin{itemize}
-    \item
-      for all $w\notin (fn(P)\cup fn(Q))$: $P\{w/z\} \sim_{E} Q\{w/z\}$
-    \item
-      $P \xrightarrow{\gamma} P^{'}$ and $\gamma$ is not a $\tau$ imply there exists $Q^{'}$ such that $Q \xrightarrow{\gamma} Q^{'}$ and $P^{'} \mathbf{S} Q^{'}$
-    \item
-      $P \xrightarrow{\tau} P^{'}$ then for some $Q^{'}$: $Q \xrightarrow{\tau} Q^{'}$ and either $P^{'} \mathbf{S} Q^{'}$ or for some $P^{''},Q^{''}$ and $w$: $P^{'}\equiv (\nu w)P^{''}$, $Q^{'}\equiv (\nu w)Q^{''}$ and $P^{''} \mathbf{S} Q^{''}$
-  \end{itemize}
-  Two processes $P,Q$ are \emph{strong early bisimilar up to restriction}, written $P \sim_{E}^{\nu} Q$, if they are related by a strong early bisimulation up to restriction.
-\end{definition}
 
 
 \subsection{Properties of strong early bisimilarity}
@@ -3457,10 +3444,18 @@ According to \cite{milnerparrowwalker} the following holds:
 % \end{lemma}
 
 
-NON HA SENSO QUESTO LEMMA IN QUESTO CONTESTO
-\begin{lemma}\label{strongDEquivalencePreservedByInput}
-  If $P \sim^{D} Q$ and for all $v\in fn(P,Q)$ such that $(v,y)\in D$ it holds that $P\{v/y\} \sim^{D} Q\{v/y\}$ then $x(y).P \sim^{D} x(y).Q$
-%   \begin{proof}
+ NON HA SENSO QUESTO LEMMA IN QUESTO CONTESTO
+ \begin{lemma}\label{strongDEquivalencePreservedByInput}
+    If $P \sim^{D} Q$ and for all $v\in fn(P,Q)$ such that $(v,y)\in D$ it holds that $P\{v/y\} \sim^{D} Q\{v/y\}$ then $x(y).P \sim^{D} x(y).Q$
+    \begin{proof}
+%       Let $P \sim^{D} Q$ and let $\sigma$ be a substitution that respects $D$. 
+%       \begin{description}
+% 	\item[df]
+% 	  If $(x(y).P)\sigma = x\sigma (y).(P\sigma)$ then $x\sigma (y).(P\sigma) \xrightarrow{x\sigma z} P\sigma \{z/y\}$ and $z\notin (fn(P\sigma)-\{y\})$. Let $(y z)$ be a permutation of names that swaps $z$ and $y$: $P\sigma \{z/y\} \equiv_{\alpha} P\sigma (y z)$ and $Q\sigma \{z/y\} \equiv_{\alpha} Q\sigma (y z)$. $P\sigma \sim_{E} Q\sigma$ imply $P\sigma(y z) \sim_{E} Q\sigma(y z)$ and $Q\sigma \sim_{E} Q$ imply $Q\sigma(y z) \sim_{E} Q(y z)$. Putting it all together: $P\sigma \{z/y\} \equiv_{\alpha} \sim_{E} \equiv_{\alpha} Q\sigma \{z/y\}$.
+% 	\item[df]
+% 	  If $(x(y).P)\sigma = x\sigma (z).(P\{z/y\}\sigma)$ with $z\notin fn(P)$, then $x\sigma (z).(P\{z/y\}\sigma) \xrightarrow{x\sigma w} P\{z/y\}\sigma \{w/z\}$
+%       \end{description}
+% 
 %     DA RIGUARDARE ! !
 %     Let $\sigma$ be a substitution that respects $D$. If $y \sigma^{-1} = \{y\}$ then 
 %     \begin{center}
@@ -3472,8 +3467,8 @@ NON HA SENSO QUESTO LEMMA IN QUESTO CONTESTO
 %     \end{center}
 % 
 %     If $y \notin (y \sigma^{-1})$ then $(x(y).P)\sigma = x\sigma (w).P\{w/y\}\sigma \xrightarrow{x\sigma z} P\{w/y\}\sigma\{z/w\}$ where $w\notin n(x(y).P)$.
-%   \end{proof}
-\end{lemma}
+   \end{proof}
+ \end{lemma}
 
 
 \begin{lemma}\label{stringDEquivalencePreservedByAllExceptInput}
@@ -3657,14 +3652,14 @@ NON HA SENSO QUESTO LEMMA IN QUESTO CONTESTO
 \subsection{Open bisimulation}
 
 
-Let $\rightarrow$ be the semantic defined in table \ref{multipiOutEarlySemantiWithStructuralCongruence} the following is an attempt to extend the definition of strong open bisimulation found in \cite{parrow}:
+Let $\rightarrow_{L}$ be the semantic defined in table \ref{multipiOutEarlySemantiWithStructuralCongruence} the following is an attempt to extend the definition of strong open bisimulation found in \cite{parrow}:
 \begin{definition}
-  An \emph{strong open simulation} is $\{S_{D}\}_{D\in \mathbb{D}}$ a family of binary relations on processes such that for each process $P, Q$, for each distinction $D\in \mathbb{D}$, for each name substitution $\sigma$ which respects $D$ if $P S_{D} Q$, $P\sigma \xrightarrow{\gamma} P^{'}$ and $bn(\gamma)\cap (fn(P\sigma)\cup fn(Q\sigma))=\emptyset$ then:
+  An \emph{strong open simulation} is $\{S_{D}\}_{D\in \mathbb{D}}$ a family of binary relations on processes such that for each process $P, Q$, for each distinction $D\in \mathbb{D}$, for each name substitution $\sigma$ which respects $D$ if $P S_{D} Q$, $P\sigma \xrightarrow{\gamma}_{L} P^{'}$ and $bn(\gamma)\cap (fn(P\sigma)\cup fn(Q\sigma))=\emptyset$ then:
    \begin{itemize}
     \item 
-      if $\gamma$ is the sequence of bound outputs $\widetilde{\overline{a}(x)}$ then there exists $Q^{'}$ such that $Q\sigma \xrightarrow{\widetilde{\overline{a}(x)}} Q^{'}$ and $P^{'} S_{D^{'}} Q^{'}$ where $D^{'}=D\sigma \cup \{\tilde{x}\}\times (fn(P\sigma)\cup fn(Q\sigma)) \cup  (fn(P\sigma)\cup fn(Q\sigma))\times\{\tilde{x}\}$
+      if $\gamma$ is the sequence of bound outputs $\widetilde{\overline{a}(x)}$ then there exists $Q^{'}$ such that $Q\sigma \xrightarrow{\widetilde{\overline{a}(x)}}_{L} Q^{'}$ and $P^{'} S_{D^{'}} Q^{'}$ where $D^{'}=D\sigma \cup \{\tilde{x}\}\times (fn(P\sigma)\cup fn(Q\sigma)) \cup  (fn(P\sigma)\cup fn(Q\sigma))\times\{\tilde{x}\}$
     \item
-      if $\alpha$ is not a bound output then there exists $Q^{'}$ such that $Q\sigma \xrightarrow{\alpha} Q^{'}$ and $P^{'} S_{D\sigma} Q^{'}$
+      if $\alpha$ is not a bound output then there exists $Q^{'}$ such that $Q\sigma \xrightarrow{\alpha}_{L} Q^{'}$ and $P^{'} S_{D\sigma} Q^{'}$
   \end{itemize}
   $P$ and $Q$ are \emph{open D bisimilar}, written $P \dot{\sim}_{O}^{D} Q$ if there exists a member $S_{D}$ of an open bisimulation such that $P S_{D} Q$; they are \emph{open bisimilar} if they are open $\emptyset$ bisimilar, written $P \dot{\sim}_{O} D$.
 \end{definition}
