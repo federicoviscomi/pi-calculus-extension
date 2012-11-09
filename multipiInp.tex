@@ -395,10 +395,327 @@ In this case, a label can be a sequence of prefixes, whether in the original $\p
       }
   $
   \end{center}
-
-
 \end{example}
 
+
+
+
+\begin{definition}
+  $\twoheadrightarrow$ is the smallest relation induced by the all the rules in table \ref{multipisoloinputlatewith} except $Cong$. 
+\end{definition}
+
+\begin{proposition}\label{moveCongDown}
+  If $P\xrightarrow{\sigma} Q$ then there exists a process $R$ such that: $R\stackrel{\sigma}{\twoheadrightarrow}Q$ and $P\equiv R$
+  \begin{proof}
+    We show that we can move the rule $Cong$ down the inference tree of $P\xrightarrow{\sigma} Q$. So a derivation of $P\xrightarrow{\sigma} Q$ can translate into a derivation of $P\xrightarrow{\sigma} Q$ which uses the rule $Cong$ only as its last rule.
+    \begin{description}
+      \item[$SInp$]\hfill \\
+	\begin{center}
+	  $\inferrule* [left=\bf{SInp}]{
+	    \inferrule* [left=\bf{Cong}]{
+		P \equiv R
+	      \\
+		R \xrightarrow{\gamma} Q
+	    }{
+	      P \xrightarrow{\gamma} Q
+	    }
+	  }{
+	    \underline{x(z)}.P \xrightarrow{x(z) \cdot \gamma} Q
+	  }$
+	\end{center}
+	become
+	\begin{center}
+	  $\inferrule* [left=\bf{Cong}]{
+	    \inferrule* {
+	      P \equiv R
+	    }{
+	      \underline{x(z)}.P \equiv \underline{x(z)}.R
+	    }
+	  \\
+	    \inferrule* [left=\bf{SInp}]{
+	      R \xrightarrow{\gamma} Q
+	    }{
+	      \underline{x(z)}.R \xrightarrow{x(z) \cdot \gamma} Q
+	    }
+	  }{
+	    \underline{x(z)}.P \xrightarrow{x(z) \cdot \gamma} Q
+	  }$
+	\end{center}
+      \item[$Sum$]\hfill \\
+	\begin{center}
+	  $\inferrule* [left=\bf{Sum}]{
+	    \inferrule* [left=\bf{Cong}]{
+		P \equiv R
+	      \\
+		R \xrightarrow{\gamma} Q
+	    }{
+	      P \xrightarrow{\gamma} Q
+	    }
+	  }{
+	    P+S \xrightarrow{\gamma} Q
+	  }$
+	\end{center}
+	become
+	\begin{center}
+	  $\inferrule* [left=\bf{Cong}]{
+	    \inferrule* {
+	      P \equiv R
+	    }{
+	      P+S \equiv R+S
+	    }
+	  \\
+	    \inferrule* [left=\bf{Sum}]{
+	      R \xrightarrow{\gamma} Q
+	    }{
+	      R+S \xrightarrow{\gamma} Q
+	    }
+	  }{
+	    P+S \xrightarrow{\gamma} Q
+	  }$
+	\end{center}
+      \item[$Cong$]\hfill \\
+	\begin{center}
+	  $\inferrule* [left=\bf{Cong}]{
+	      P \equiv R
+	    \\
+	      \inferrule* [left=\bf{Cong}]{
+		  R \equiv S
+		\\
+		  S \xrightarrow{\gamma} Q
+	      }{
+		R \xrightarrow{\gamma} Q
+	      }
+	  }{
+	    P \xrightarrow{\gamma} Q
+	  }$
+	\end{center}
+	become
+	\begin{center}
+	  $\inferrule* [left=\bf{Cong}]{
+	    \inferrule* {
+		P \equiv R
+	      \\
+		R \equiv S
+	    }{
+	      P \equiv S
+	    }
+	  \\
+	    S \xrightarrow{\gamma} Q
+	  }{
+	    P \xrightarrow{\gamma} Q
+	  }$
+	\end{center}
+      \item[$Par$]\hfill \\
+	\begin{center}
+	  $\inferrule* [left=\bf{Par}]{
+	      \inferrule* [left=\bf{Cong}]{
+		  P \equiv R
+		\\
+		  R \xrightarrow{\gamma} Q
+	      }{
+		P \xrightarrow{\gamma} Q
+	      }
+	    \\
+	      bn(\gamma)\cap fn(S)=\emptyset
+	  }{
+	    P|S \xrightarrow{\gamma} Q
+	  }$
+	\end{center}
+	become
+	\begin{center}
+	  $\inferrule* [left=\bf{Cong}]{
+	      \inferrule* {
+		P \equiv R
+	      }{
+		P|S \equiv R|S
+	      }
+	    \\
+	      \inferrule* [left=\bf{Par}]{
+		  R \xrightarrow{\gamma} Q
+		\\
+		  bn(\gamma)\cap fn(S)=\emptyset
+	      }{
+		R|S \xrightarrow{\gamma} Q
+	      }
+	  }{
+	    P|S \xrightarrow{\gamma} Q
+	  }$
+	\end{center}
+      \item[$LComSeq$]\hfill \\
+	\begin{center}
+	  $\inferrule* [left=\bf{LComSeq}]{
+	      \inferrule* [left=\bf{Cong}]{
+		  P_{1} \equiv R_{1}
+		\\
+		  R_{1} \xrightarrow{x(y) \cdot \sigma} Q_{1}
+	      }{
+		P_{1} \xrightarrow{x(y) \cdot \sigma} Q_{1}
+	      }
+	    \\
+	      \inferrule* [left=\bf{Cong}]{
+		  P_{2} \equiv R_{2}
+		\\
+		  R_{2} \xrightarrow{\overline{x}z} Q_{2}
+	      }{
+		P_{2} \xrightarrow{\overline{x}z} Q_{2}
+	      }
+% 	    \\
+% 	      bn(\sigma) \cap fn(P_{2}) = \emptyset
+	  }{
+	    P_{1}|P_{2} \xrightarrow{\gamma\{z/y\}} Q_{1}\{z/y\}|Q_{2}
+	  }$
+	\end{center}
+	become
+	\begin{center}
+	  $\inferrule* [left=\bf{Cong}]{
+	      \inferrule* {
+		  P_{1} \equiv R_{1}
+		\\
+		  P_{2} \equiv R_{2}
+	      }{
+		P_{1}|P_{2} \equiv R_{1}|R_{2}
+	      }
+	    \\
+	      \inferrule* [left=\bf{LComSeq}]{
+		  R_{1} \xrightarrow{x(y) \cdot \sigma} Q_{1}
+		\\
+		  R_{2} \xrightarrow{\overline{x}z} Q_{2}
+	      }{
+		R_{1}|R_{2} \xrightarrow{\sigma\{z/y\}} Q_{1}\{z/y\}|Q_{2}
+	      }
+	  }{
+	    P_{1}|P_{2} \xrightarrow{\gamma\{z/y\}} Q_{1}\{z/y\}|Q_{2}
+	  }$
+	\end{center}
+      \item[$LCom$]\hfill \\
+	\begin{center}
+	  $\inferrule* [left=\bf{LCom}]{
+	      \inferrule* [left=\bf{Cong}]{
+		  P_{1} \equiv R_{1}
+		\\
+		  R_{1} \xrightarrow{x(y)} Q_{1}
+	      }{
+		P_{1} \xrightarrow{x(y)} Q_{1}
+	      }
+	    \\
+	      \inferrule* [left=\bf{Cong}]{
+		  P_{2} \equiv R_{2}
+		\\
+		  R_{2} \xrightarrow{\overline{x}z} Q_{2}
+	      }{
+		P_{2} \xrightarrow{\overline{x}z} Q_{2}
+	      }
+	  }{
+	    P_{1}|P_{2} \xrightarrow{\tau} Q_{1}\{z/y\}|Q_{2}
+	  }$
+	\end{center}
+	become
+	\begin{center}
+	  $\inferrule* [left=\bf{Cong}]{
+	      \inferrule* {
+		  P_{1} \equiv R_{1}
+		\\
+		  P_{2} \equiv R_{2}
+	      }{
+		P_{1}|P_{2} \equiv R_{1}|R_{2}
+	      }
+	    \\
+	      \inferrule* [left=\bf{LCom}]{
+		  R_{1} \xrightarrow{x(y)} Q_{1}
+		\\
+		  R_{2} \xrightarrow{\overline{x}z} Q_{2}
+	      }{
+		R_{1}|R_{2} \xrightarrow{\tau} Q_{1}\{z/y\}|Q_{2}
+	      }
+	  }{
+	    P_{1}|P_{2} \xrightarrow{\tau} Q_{1}\{z/y\}|Q_{2}
+	  }$
+	\end{center}
+      \item[$Res$]\hfill \\
+	\begin{center}
+	  $\inferrule* [left=\bf{Res}]{
+	      \inferrule* [left=\bf{Cong}]{
+		  P \equiv R
+		\\
+		  R \xrightarrow{\gamma} Q
+	      }{
+		P \xrightarrow{\gamma} Q
+	      }
+	    \\
+	      z\notin n(\gamma)
+	  }{
+	    (\nu z)P \xrightarrow{\gamma} (\nu z)Q
+	  }$
+	\end{center}
+	become
+	\begin{center}
+	  $\inferrule* [left=\bf{Cong}]{
+	      \inferrule* {
+		P \equiv R
+	      }{
+		(\nu z)P \equiv (\nu z)R
+	      }
+	    \\
+	      \inferrule* [left=\bf{Res}]{
+		  R \xrightarrow{\gamma} Q
+		\\
+		  z\notin n(\gamma)
+	      }{
+		(\nu z)R \xrightarrow{\gamma} (\nu z)Q
+	      }
+	  }{
+	    (\nu z)P \xrightarrow{\gamma} (\nu z)Q
+	  }$
+	\end{center}
+      \item[$Opn$]\hfill \\
+	\begin{center}
+	  $\inferrule* [left=\bf{Opn}]{
+	      \inferrule* [left=\bf{Cong}]{
+		  P \equiv R
+		\\
+		  R \xrightarrow{\overline{x}y} Q
+	      }{
+		P \xrightarrow{\overline{x}y} Q
+	      }
+	    \\
+	      y\neq x
+	  }{
+	    (\nu y)P \xrightarrow{\overline{x}(y)} Q
+	  }$
+	\end{center}
+	become
+	\begin{center}
+	  $\inferrule* [left=\bf{Cong}]{
+	      \inferrule* {
+		P \equiv R
+	      }{
+		(\nu y)P \equiv (\nu y)R
+	      }
+	    \\
+	      \inferrule* [left=\bf{Opn}]{
+		  R \xrightarrow{\overline{x}y} Q
+		\\
+		  y\neq x
+	      }{
+		(\nu y)R \xrightarrow{\overline{x}(y)} Q
+	      }
+	  }{
+	    (\nu y)P \xrightarrow{\overline{x}(y)} Q
+	  }$
+	\end{center}
+    \end{description}
+  \end{proof}
+\end{proposition}
+
+In the following lemma we call $\rightarrow_{3}$ the semantic defined in table \ref{multipisoloinputlatewith} and we call $\rightarrow_{2}$ the semantic defined in table \ref{multipisoloinputlatewith} but without rule $Cong$ and with rules: $Ide$ and the commutativity counterpart for rules $Par$, $Sum$, $ECom$, $EComSeq$. 
+\begin{lemma}\label{structuralCongruenceElimination}
+  If $P\xrightarrow{\gamma}_{3} P^{'}$ then there exist processes $N,N^{'}$ such that $N$ is a normal form, $P\equiv N$, $P^{'} \equiv N^{'}$ and $N\xrightarrow{\gamma}_{2} N^{'}$ without using the rules $Cls$. Also we can assume that the rules $ScpExtPar1$, $ScpExtSum1$ and the rules for commutativity are not used in the derivation of $P\equiv N$ because this rule can be emulated by $ScpExtPar2$, $ScpExtSum2$ and commutativity in $\rightarrow_{2}$.
+  \begin{proof}
+    The proof of this lemma is similar to those in section \ref{equivalenceOfEarlySemantics}
+  \end{proof}
+\end{lemma}
+
+In the following section the symbol $\rightarrow$ will refer to the late semantic with structural congruence of multi $\pi$ calculus with strong input which is illustrated in table \ref{multipisoloinputlatewith}. Also we consider a structural congruence without the rules $P|0\equiv 0$ and $P+0\equiv 0$. For the purpose of clarity the rule of structural congruence are repeated in this secition.
 
 
 \subsection{Low level semantic}
@@ -1344,591 +1661,7 @@ This section contains the definition of an alternative semantic for multi $\pi$.
 % 
 % \end{example}
 
-\section{Normal form}
-
-In the following section the symbol $\rightarrow$ will refer to the late semantic with structural congruence of multi $\pi$ calculus with strong input which is illustrated in table \ref{multipisoloinputlatewith}. Also we consider a structural congruence without the rules $P|0\equiv 0$ and $P+0\equiv 0$. For the purpose of clarity the rule of structural congruence are repeated in this secition.
-
-\begin{definition}
-  $\twoheadrightarrow$ is the smallest relation induced by the all the rules in table \ref{multipisoloinputlatewith} except $Cong$. 
-\end{definition}
-
-\begin{proposition}\label{moveCongDown}
-  If $P\xrightarrow{\sigma} Q$ then there exists a process $R$ such that: $R\stackrel{\sigma}{\twoheadrightarrow}Q$ and $P\equiv R$
-  \begin{proof}
-    We show that we can move the rule $Cong$ down the inference tree of $P\xrightarrow{\sigma} Q$. So a derivation of $P\xrightarrow{\sigma} Q$ can translate into a derivation of $P\xrightarrow{\sigma} Q$ which uses the rule $Cong$ only as its last rule.
-    \begin{description}
-      \item[$SInp$]\hfill \\
-	\begin{center}
-	  $\inferrule* [left=\bf{SInp}]{
-	    \inferrule* [left=\bf{Cong}]{
-		P \equiv R
-	      \\
-		R \xrightarrow{\gamma} Q
-	    }{
-	      P \xrightarrow{\gamma} Q
-	    }
-	  }{
-	    \underline{x(z)}.P \xrightarrow{x(z) \cdot \gamma} Q
-	  }$
-	\end{center}
-	become
-	\begin{center}
-	  $\inferrule* [left=\bf{Cong}]{
-	    \inferrule* {
-	      P \equiv R
-	    }{
-	      \underline{x(z)}.P \equiv \underline{x(z)}.R
-	    }
-	  \\
-	    \inferrule* [left=\bf{SInp}]{
-	      R \xrightarrow{\gamma} Q
-	    }{
-	      \underline{x(z)}.R \xrightarrow{x(z) \cdot \gamma} Q
-	    }
-	  }{
-	    \underline{x(z)}.P \xrightarrow{x(z) \cdot \gamma} Q
-	  }$
-	\end{center}
-      \item[$Sum$]\hfill \\
-	\begin{center}
-	  $\inferrule* [left=\bf{Sum}]{
-	    \inferrule* [left=\bf{Cong}]{
-		P \equiv R
-	      \\
-		R \xrightarrow{\gamma} Q
-	    }{
-	      P \xrightarrow{\gamma} Q
-	    }
-	  }{
-	    P+S \xrightarrow{\gamma} Q
-	  }$
-	\end{center}
-	become
-	\begin{center}
-	  $\inferrule* [left=\bf{Cong}]{
-	    \inferrule* {
-	      P \equiv R
-	    }{
-	      P+S \equiv R+S
-	    }
-	  \\
-	    \inferrule* [left=\bf{Sum}]{
-	      R \xrightarrow{\gamma} Q
-	    }{
-	      R+S \xrightarrow{\gamma} Q
-	    }
-	  }{
-	    P+S \xrightarrow{\gamma} Q
-	  }$
-	\end{center}
-      \item[$Cong$]\hfill \\
-	\begin{center}
-	  $\inferrule* [left=\bf{Cong}]{
-	      P \equiv R
-	    \\
-	      \inferrule* [left=\bf{Cong}]{
-		  R \equiv S
-		\\
-		  S \xrightarrow{\gamma} Q
-	      }{
-		R \xrightarrow{\gamma} Q
-	      }
-	  }{
-	    P \xrightarrow{\gamma} Q
-	  }$
-	\end{center}
-	become
-	\begin{center}
-	  $\inferrule* [left=\bf{Cong}]{
-	    \inferrule* {
-		P \equiv R
-	      \\
-		R \equiv S
-	    }{
-	      P \equiv S
-	    }
-	  \\
-	    S \xrightarrow{\gamma} Q
-	  }{
-	    P \xrightarrow{\gamma} Q
-	  }$
-	\end{center}
-      \item[$Par$]\hfill \\
-	\begin{center}
-	  $\inferrule* [left=\bf{Par}]{
-	      \inferrule* [left=\bf{Cong}]{
-		  P \equiv R
-		\\
-		  R \xrightarrow{\gamma} Q
-	      }{
-		P \xrightarrow{\gamma} Q
-	      }
-	    \\
-	      bn(\gamma)\cap fn(S)=\emptyset
-	  }{
-	    P|S \xrightarrow{\gamma} Q
-	  }$
-	\end{center}
-	become
-	\begin{center}
-	  $\inferrule* [left=\bf{Cong}]{
-	      \inferrule* {
-		P \equiv R
-	      }{
-		P|S \equiv R|S
-	      }
-	    \\
-	      \inferrule* [left=\bf{Par}]{
-		  R \xrightarrow{\gamma} Q
-		\\
-		  bn(\gamma)\cap fn(S)=\emptyset
-	      }{
-		R|S \xrightarrow{\gamma} Q
-	      }
-	  }{
-	    P|S \xrightarrow{\gamma} Q
-	  }$
-	\end{center}
-      \item[$LComSeq$]\hfill \\
-	\begin{center}
-	  $\inferrule* [left=\bf{LComSeq}]{
-	      \inferrule* [left=\bf{Cong}]{
-		  P_{1} \equiv R_{1}
-		\\
-		  R_{1} \xrightarrow{x(y) \cdot \sigma} Q_{1}
-	      }{
-		P_{1} \xrightarrow{x(y) \cdot \sigma} Q_{1}
-	      }
-	    \\
-	      \inferrule* [left=\bf{Cong}]{
-		  P_{2} \equiv R_{2}
-		\\
-		  R_{2} \xrightarrow{\overline{x}z} Q_{2}
-	      }{
-		P_{2} \xrightarrow{\overline{x}z} Q_{2}
-	      }
-% 	    \\
-% 	      bn(\sigma) \cap fn(P_{2}) = \emptyset
-	  }{
-	    P_{1}|P_{2} \xrightarrow{\gamma\{z/y\}} Q_{1}\{z/y\}|Q_{2}
-	  }$
-	\end{center}
-	become
-	\begin{center}
-	  $\inferrule* [left=\bf{Cong}]{
-	      \inferrule* {
-		  P_{1} \equiv R_{1}
-		\\
-		  P_{2} \equiv R_{2}
-	      }{
-		P_{1}|P_{2} \equiv R_{1}|R_{2}
-	      }
-	    \\
-	      \inferrule* [left=\bf{LComSeq}]{
-		  R_{1} \xrightarrow{x(y) \cdot \sigma} Q_{1}
-		\\
-		  R_{2} \xrightarrow{\overline{x}z} Q_{2}
-	      }{
-		R_{1}|R_{2} \xrightarrow{\sigma\{z/y\}} Q_{1}\{z/y\}|Q_{2}
-	      }
-	  }{
-	    P_{1}|P_{2} \xrightarrow{\gamma\{z/y\}} Q_{1}\{z/y\}|Q_{2}
-	  }$
-	\end{center}
-      \item[$LCom$]\hfill \\
-	\begin{center}
-	  $\inferrule* [left=\bf{LCom}]{
-	      \inferrule* [left=\bf{Cong}]{
-		  P_{1} \equiv R_{1}
-		\\
-		  R_{1} \xrightarrow{x(y)} Q_{1}
-	      }{
-		P_{1} \xrightarrow{x(y)} Q_{1}
-	      }
-	    \\
-	      \inferrule* [left=\bf{Cong}]{
-		  P_{2} \equiv R_{2}
-		\\
-		  R_{2} \xrightarrow{\overline{x}z} Q_{2}
-	      }{
-		P_{2} \xrightarrow{\overline{x}z} Q_{2}
-	      }
-	  }{
-	    P_{1}|P_{2} \xrightarrow{\tau} Q_{1}\{z/y\}|Q_{2}
-	  }$
-	\end{center}
-	become
-	\begin{center}
-	  $\inferrule* [left=\bf{Cong}]{
-	      \inferrule* {
-		  P_{1} \equiv R_{1}
-		\\
-		  P_{2} \equiv R_{2}
-	      }{
-		P_{1}|P_{2} \equiv R_{1}|R_{2}
-	      }
-	    \\
-	      \inferrule* [left=\bf{LCom}]{
-		  R_{1} \xrightarrow{x(y)} Q_{1}
-		\\
-		  R_{2} \xrightarrow{\overline{x}z} Q_{2}
-	      }{
-		R_{1}|R_{2} \xrightarrow{\tau} Q_{1}\{z/y\}|Q_{2}
-	      }
-	  }{
-	    P_{1}|P_{2} \xrightarrow{\tau} Q_{1}\{z/y\}|Q_{2}
-	  }$
-	\end{center}
-      \item[$Res$]\hfill \\
-	\begin{center}
-	  $\inferrule* [left=\bf{Res}]{
-	      \inferrule* [left=\bf{Cong}]{
-		  P \equiv R
-		\\
-		  R \xrightarrow{\gamma} Q
-	      }{
-		P \xrightarrow{\gamma} Q
-	      }
-	    \\
-	      z\notin n(\gamma)
-	  }{
-	    (\nu z)P \xrightarrow{\gamma} (\nu z)Q
-	  }$
-	\end{center}
-	become
-	\begin{center}
-	  $\inferrule* [left=\bf{Cong}]{
-	      \inferrule* {
-		P \equiv R
-	      }{
-		(\nu z)P \equiv (\nu z)R
-	      }
-	    \\
-	      \inferrule* [left=\bf{Res}]{
-		  R \xrightarrow{\gamma} Q
-		\\
-		  z\notin n(\gamma)
-	      }{
-		(\nu z)R \xrightarrow{\gamma} (\nu z)Q
-	      }
-	  }{
-	    (\nu z)P \xrightarrow{\gamma} (\nu z)Q
-	  }$
-	\end{center}
-      \item[$Opn$]\hfill \\
-	\begin{center}
-	  $\inferrule* [left=\bf{Opn}]{
-	      \inferrule* [left=\bf{Cong}]{
-		  P \equiv R
-		\\
-		  R \xrightarrow{\overline{x}y} Q
-	      }{
-		P \xrightarrow{\overline{x}y} Q
-	      }
-	    \\
-	      y\neq x
-	  }{
-	    (\nu y)P \xrightarrow{\overline{x}(y)} Q
-	  }$
-	\end{center}
-	become
-	\begin{center}
-	  $\inferrule* [left=\bf{Cong}]{
-	      \inferrule* {
-		P \equiv R
-	      }{
-		(\nu y)P \equiv (\nu y)R
-	      }
-	    \\
-	      \inferrule* [left=\bf{Opn}]{
-		  R \xrightarrow{\overline{x}y} Q
-		\\
-		  y\neq x
-	      }{
-		(\nu y)R \xrightarrow{\overline{x}(y)} Q
-	      }
-	  }{
-	    (\nu y)P \xrightarrow{\overline{x}(y)} Q
-	  }$
-	\end{center}
-    \end{description}
-  \end{proof}
-\end{proposition}
-
-
-% \begin{lemma}[Inversion lemma for structural congruence]\label{inversionlemmamultiinplatewithh}
-%   :\begin{description}
-%     \item[$Output$]
-%       $\overline{x}y.P \equiv R$ then $R$ is in the form $\overline{x}y.S$ such that $P\equiv S$
-%     \item[$Tau$]
-%       $\tau.P \equiv R$ then $R$ is in the form $\tau.S$ such that $P\equiv S$
-%     \item[$Sum$]
-%       $P+Q \equiv R$ then $R$ is in the form $A+B$ such that $(P\equiv A\; \wedge\; Q\equiv B)$ or $(P\equiv B\; \wedge\; Q\equiv A)$ NON FUNZIONA PERCHE' C'E' LO SCOPE EXTRUSION ANCHE PER LA SOMMA!
-%   \end{description}
-%   DA CONTINUARE
-%   \begin{proof}
-%   We can assume that the property of being a congruence amounts to having these rules:
-%   \begin{center}
-%     \begin{tabular}{ll}
-% 	$\inferrule* [left=\bf{Congr1}]{
-% 	  P\equiv Q
-% 	}{
-% 	  C[P]\equiv C[Q]
-% 	}$
-%       &
-% 	$\inferrule* [left=\bf{Congr2}]{
-% 	    P_{1}\equiv Q_{1}
-% 	  \\
-% 	    P_{2}\equiv Q_{2}
-% 	}{
-% 	  C[P_{1}, P_{2}]\equiv C[Q_{1}, Q_{2}]
-% 	}$
-%     \end{tabular}
-%   \end{center}
-%   \begin{description}
-%     \item[$Output$] the only rules that can be applied to a process whose top level is an output are: the $\alpha$ conversion rule, $Congr1$ and $Congr2$.
-%     \item[$Tau$] similar.
-%     \item[$Summation$] the only rules that can be applied to a process whose top level is a sum are: the $\alpha$ conversion rule, $Congr1$, $Congr2$ and the commutativity of sum.
-% 
-%   \end{description}
-%   \end{proof}
-% \end{lemma}
-
-% \begin{definition}
-%   Let $(\nu x)Q$ be an occurrence in a process $P$, i.e., there is a context $C[\_]$ such that $C[(\nu x)Q]=P$. We say that this occurrence is \emph{guarded} if it occurs inside a prefix. Otherwise we say that the occurrence is \emph{unguarded}. More formally the occurrence is \emph{guarded} if there are two contexts $C[\_], D[\_]$ and an action prefixing $\alpha$ such that $P=D[\alpha.C[(\nu x)Q]]$
-% \end{definition}
-
-\begin{definition}
-  Let $(\nu x)Q$ be an occurrence in a process $P$, i.e., there is a context $C[\_]$ such that $C[(\nu x)Q]=P$. We say that this occurrence is \emph{guarded} if it occurs right inside a prefix. Otherwise we say that the occurrence is \emph{unguarded}. More formally the occurrence $(\nu x)Q$ is \emph{guarded} in $P$ if there is a context $C[\_]$, an action prefixing $\alpha$ and names $\tilde{y}$ such that $P=C[\alpha.(\nu \tilde{y})(\nu x)Q]$
-\end{definition}
-
-\begin{definition}
-  We say that a process is in \emph{normal form} if all bound names are distinct and all unguarded restrictions are at the top level, i.e., of the form $(\nu \tilde{x})P$ where $P$ has no unguarded restrictions, note that $\tilde{x}$ can eventually be empty. If a process $P$ is in normal form, we write for short $P$ n.f.. 
-\end{definition}
-
-\begin{lemma}[Existence of a normal form]\label{existenceOfNormalForm}
-  Every process is structurally congruent to a process in normal form(but this process is not unique).
-  \begin{proof}
-    Let $P$ be a process. We have to show that there exists a process $N$ such that $P \equiv N$ and $N$ is in normal form. We prove this by structural induction on $P$:
-    \begin{description}
-      \item[$0$] 
-	in this case $P=0$ is already in normal form.
-      \item[$\alpha.P_{1}$] 
-	for inductive hypothesis there exists a process $N$ such that $P_{1} \equiv N$ and $N$ is in normal form. Then $\alpha.P_{1} \equiv \alpha.N$ and $\alpha.N$ is in normal form.
-      \item[$P_{1}+P_{2}$]
-	for inductive hypothesis there exist processes $N_{1}$ and $N_{2}$ such that $P_{1} \equiv N_{1}$, $P_{2} \equiv N_{2}$ and $N_{1}, N_{2}$ are in normal form. If $N_{1}$ or $N_{2}$ have unguarded restrictions at the top level then $N_{1}+N_{2}$ is not in normal form but we can move the restrictions up to the top level using $\alpha$ equivalence and the rule 
-	\begin{center}
-	  \begin{tabular}{ll}
-	      $(\nu x)(P+Q) \equiv P + (\nu x)Q$ 
-	    &
-	      if $x\notin fn(P)$
-	  \end{tabular}
-	\end{center}
-	and we get something that is in normal form and structurally equivalent to $N_{1}+N_{2}$ and so to $P_{1}+P_{2}$.
-      \item[$P_{1}|P_{2}$] similar.
-      \item[$(\nu x)P_{1}$] 
-	for inductive hypothesis there exists a process $N$ such that $P_{1} \equiv N$ and $N$ is in normal form. $(\nu x)N$ is in normal form and it is structurally congruent to $P$.
-    \end{description}
-  \end{proof}
-\end{lemma}
-
-% \begin{lemma}[Weak reduction to normal form]\label{mapToNormalForm}
-%   Let $\equiv_{2}$ be the smallest congruence induced by the rules for scope extrusion and for $\alpha$ equivalence. $P \xrightarrow{\gamma}_{3} Q$ imply that there exist $N$ in normal form such that $P\equiv_{2} N$, $N \xrightarrow{\gamma}_{2} M$, $M\equiv Q$ and the derivation of $N \xrightarrow{\gamma}_{2} M$ does not use the rules for scope closure.
-%   \begin{proof}
-%     The proof is by induction on the derivation of $P \xrightarrow{\gamma} Q$. The last rule used can be:
-%     \begin{description}
-%       \item[$Out$]
-% 	$\overline{x}y.P \xrightarrow{\overline{x}y} P$. For lemma \ref{existenceOfNormalForm}: there exists a process $N$ in normal form such that $P \equiv N$. For rule $Out$: $\overline{x}y.N \xrightarrow{\overline{x}y} N$. It also holds that $\overline{x}y.P$ is structurally congruent to $ \overline{x}y.N$ and that $\overline{x}y.N$ is in normal form.
-%       \item[$Tau$] similar.
-%       \item[$EInp$]
-% 	$x(y).P \xrightarrow{xz} P\{z/y\}$. For lemma \ref{existenceOfNormalForm}: there exists a process $N$ in normal form such that $P \equiv N$ so:
-% 	\begin{center}
-% 	  \begin{tabular}{ll}
-% 	    $\inferrule* {
-% 	      P \equiv N
-% 	    }{
-% 	      x(y).P \equiv x(y).N
-% 	    }$
-% 	  &
-% 	    $\inferrule* [left=\bf{EInp}]{
-% 	    }{
-% 	      x(y).N \xrightarrow{xz} N\{z/y\}
-% 	    }$
-% 	  \end{tabular}
-% 	\end{center}
-% 	and $x(y).N$ is a normal form.
-%       \item[$SInp$]:
-% 	\begin{center}	
-% 	  $\inferrule* [left=\bf{SInp}]{
-% 	      P \xrightarrow{\gamma} P^{'}
-% 	  }{
-% 	    \underline{x(y)}.P \xrightarrow{x(y) \cdot \gamma} P^{'}
-% 	  }$
-% 	\end{center}
-% 	for inductive hypothesis there exist processes $N,N^{'}$ in normal form such that $P \equiv_{2} N$, $N \xrightarrow{\gamma} N^{'}$ and $N^{'} \equiv P^{'}$. So:
-% 	\begin{center}
-% 	  \begin{tabular}{ll}
-% 	      $\inferrule* {
-% 		P \equiv_{2} N
-% 	      }{
-% 		\underline{x(y)}.P \equiv_{2} \underline{x(y)}.N
-% 	      }$
-% 	    &
-% 	      $\inferrule* [left=\bf{SInp}]{
-% 	      }{
-% 		\underline{x(y)}.N \xrightarrow{x(y) \cdot \gamma} N^{'}
-% 	      }$
-% 	  \end{tabular}
-% 	\end{center}
-%       \item[$LComSeq$]:
-% 	\begin{center}
-% 	  $\inferrule* [left=\bf{LComSeq}]{
-% 	      P \xrightarrow{x(y) \cdot \gamma} P^{'}
-% 	    \\
-% 	      Q \xrightarrow{\overline{x}z} Q^{'}
-% 	    \\
-% 	      bn(\gamma) \cap fn(Q) = \emptyset
-% 	  }{
-% 	    P|Q \xrightarrow{\gamma\{z/y\}} P^{'}\{z/y\}|Q
-% 	  }$
-% 	\end{center}
-% 	for inductive hypothesis there exist processes $N,N^{'},M,M^{'}$ such that $N,M$ are normal forms, $P \equiv_{2} N$, $N \xrightarrow{x(y) \cdot \gamma} N^{'}$, $N^{'} \equiv P^{'}$, $Q \equiv M$, $M \xrightarrow{\overline{x}z} M^{'}$ and $M^{'} \equiv Q^{'}$. So:
-% 	\begin{center}	
-% 	  \begin{tabular}{ll}
-% 	      $\inferrule* {
-% 		  P \equiv_{2} N
-% 		\\
-% 		  Q \equiv_{2} M
-% 	      }{
-% 		P|Q \equiv_{2} N|M
-% 	      }$
-% 	    &
-% 	      $\inferrule* [left=\bf{LComSeq}]{
-% 		  N \xrightarrow{x(y) \cdot \gamma} N^{'}
-% 		\\
-% 		  M \xrightarrow{\overline{x}z} M^{'}
-% 		\\
-% 		  bn(\gamma) \cap fn(Q) = \emptyset
-% 	      }{
-% 		N|M \xrightarrow{\gamma\{z/y\}} N^{'}\{z/y\}|M^{'}
-% 	      }$
-% 	  \end{tabular}
-% 	\end{center}
-% 	If $N|M$ is not a normal form then $N$ or $M$ have unguarded restrictions at the top level, for scope extension rules there is a normal form structurally equivalent to $N|M$ and the conclusion holds because of rule $Cong$.
-%       \item[$LCom$] similar.
-%       \item[$Par$]:
-% 	\begin{center}	
-% 	  $\inferrule* [left=\bf{Par}]{
-% 	      P \xrightarrow{\gamma} P^{'}
-% 	    \\
-% 	      bn(\gamma) \cap fn(Q) = \emptyset
-% 	  }{
-% 	    P|Q \xrightarrow{\gamma} P^{'}|Q
-% 	  }$
-% 	\end{center}
-% 	for inductive hypothesis there exist processes $N,N^{'}$ in normal form such that $P \equiv N$, $N \xrightarrow{\gamma} N^{'}$, $N^{'} \equiv P^{'}$. So
-% 	\begin{center}
-% 	  \begin{tabular}{ll}
-% 	    $\inferrule* {
-% 	      P \equiv N
-% 	    }{
-% 	      P|Q \equiv N|Q
-% 	    }$
-% 	  &  
-% 	    $\inferrule* [left=\bf{Par}]{
-% 		N \xrightarrow{\gamma} N^{'}
-% 	      \\
-% 		bn(\gamma) \cap fn(Q) = \emptyset
-% 	    }{
-% 	      N|Q \xrightarrow{\gamma} N^{'}|Q
-% 	    }$
-% 	  \end{tabular}
-% 	\end{center}
-% 	
-%       \item[$Sum$] similar.
-%       \item[$Cong$]:
-% 	\begin{center}	
-% 	  $\inferrule* [left=\bf{Cong}]{
-% 	      P \equiv Q
-% 	    \\
-% 	      Q \xrightarrow{\gamma} Q^{'}
-% 	  }{
-% 	    P \xrightarrow{\gamma} Q^{'}
-% 	  }$
-% 	\end{center}
-% 	for inductive hypothesis there exist processes $N,N^{'}$ in normal form such that $Q \equiv N$, $N \xrightarrow{\gamma} N^{'}$, $N^{'} \equiv Q^{'}$. For transitivity $P \equiv N$.
-%       \item[$Res$]:
-% 	\begin{center}	
-% 	  $\inferrule* [left=\bf{Res}]{
-% 	      P \xrightarrow{\gamma} P^{'}
-% 	    \\
-% 	      x\notin n(\gamma)
-% 	  }{
-% 	    (\nu x)P \xrightarrow{\gamma} (\nu x)P^{'}
-% 	  }$
-% 	\end{center}
-% 	for inductive hypothesis there exist processes $N,N^{'}$ in normal form such that $P \equiv N$, $N \xrightarrow{\gamma} N^{'}$, $N^{'} \equiv P^{'}$. So:
-% 	\begin{center}
-% 	  \begin{tabular}{ll}
-% 	    $\inferrule* {
-% 	      P \equiv N
-% 	    }{
-% 	      (\nu x)P \equiv (\nu x)N
-% 	    }$
-% 	  &  
-% 	    $\inferrule* [left=\bf{Res}]{
-% 		N \xrightarrow{\gamma} N^{'}
-% 	      \\
-% 		x\notin n(\gamma)
-% 	    }{
-% 	      (\nu x)N \xrightarrow{\gamma} (\nu x)N^{'}
-% 	    }$
-% 	  \end{tabular}
-% 	\end{center}
-%       \item[$Opn$] similar.
-%     \end{description}
-%   \end{proof}
-% \end{lemma}
-
-\begin{lemma}
-  If $P \xrightarrow{\gamma} Q$ then there exist processes $N,M$ in normal form such that $P\equiv N$, $N \xrightarrow{\gamma} M$, $Q\equiv M$ and the inference tree of $N \xrightarrow{\gamma} M$ is not deeper than the one of $P \xrightarrow{\gamma} Q$.
-  \begin{proof}
-    this lemma follows from lemma \ref{existenceOfNormalForm} and lemma \ref{mapToNormalForm}.
-  \end{proof}
-\end{lemma}
-
-% \begin{proposition}\label{moveCongDownNorm}
-%   Suppose that we replace the rules $LInp$ and $SInp$ with the following:
-%   \begin{center}
-%     $\inferrule* [left=\bf{Inp}]{
-%       n \geq 0
-%     }{
-%       \underline{x_{1}(y_{1})}.\; \ldots\; .\underline{x_{n}(y_{n})}.z(w).P 
-% 	\xrightarrow{\widetilde{x(y)} \cdot z(w)} 
-% 	  P
-%     }$
-%   \end{center}
-%   then the semantic does not change. Also if $P\xrightarrow{\sigma} Q$ then there exist processes $N,R$ such that: $P \equiv N\stackrel{\sigma}{\twoheadrightarrow} R \equiv M$ and $N$ is in normal form.
-%   SARA' VERO?
-%   \begin{proof}
-%     The proof is an induction on the depth of $P\xrightarrow{\sigma} Q$. The last rule used can be:
-%     \begin{description}
-%       \item[$Tau$] 
-% 	$P=\tau.P_{1} \xrightarrow{\tau} P_{1}=Q$. For lemma \ref{existenceOfNormalForm} there exists a normal form $N$ such that $\tau.P_{1}\equiv N$. For lemma \ref{inversionLemmaStructNorm} $N=\tau.N_{1}$ and $P_{1}\equiv N_{1}$. So for rule $Tau$: $P \equiv \tau.N_{1}\xrightarrow{\tau} N_{1} \equiv Q$ 
-%       \item[$Inp$]
-% 	$P=\underline{x_{1}(y_{1})}.\; \ldots\; .\underline{x_{n}(y_{n})}.z(w).P_{1}
-% 	  \xrightarrow{x_{1}(y_{1})\cdot \ldots \cdot x_{n}(y_{n})\cdot z(w)} 
-% 	    P_{1}=Q$. For lemma \ref{existenceOfNormalForm} there exists a normal form $N$ such that $P\equiv N$. For lemma \ref{inversionLemmaStructNorm} $N=\underline{x_{1}(y_{1})}.\; \ldots\; .\underline{x_{n}(y_{n})}.z(w).N_{1}$ and $P_{1}\equiv N_{1}$. For rule $Inp$: 
-% 	    $P\equiv \underline{x_{1}(y_{1})}.\; \ldots\; .\underline{x_{n}(y_{n})}.z(w).N_{1}
-% 	      \xrightarrow{x_{1}(y_{1})\cdot \ldots \cdot x_{n}(y_{n})\cdot z(w)} 
-% 		N_{1}\equiv Q$
-%       \item[$Out$] 
-% 	similar.
-%       \item[$Sum$]
-% 	$P=P_{1}+P_{2} \xrightarrow{\gamma} P_{1}^{'}=Q$. non si puo' applicare l'ipotesi induttiva alle premesse della regola sum.
-%     \end{description}
-%   \end{proof}
-% \end{proposition}
+\subsection{Semantic on normal forms}
 
 \begin{definition}
   The \emph{late transition relation for normal forms} is the smallest relation induced by the rules in table \ref{multipiInpNorm}, written $\rightarrow_{n}$. Every process in the head of transition in the premise of a rule in table \ref{multipiInpNorm} is assumed to be in normal form. Also when we write $(\nu \tilde{x})P$ is a normal form, it means that $P$ has no restriction at the top level.
@@ -1938,7 +1671,7 @@ In the following section the symbol $\rightarrow$ will refer to the late semanti
 	\\\\
 	  $\inferrule* [left=\bf{Out}]{
 	  }{
-	    \overline{x}y.N \xrightarrow{\overline{x}y}_{n} N
+	    \overline{x}y.P \xrightarrow{\overline{x}y}_{n} P
 	  }$
 	&
 	  $\inferrule* [left=\bf{Tau}]{
@@ -1949,131 +1682,126 @@ In the following section the symbol $\rightarrow$ will refer to the late semanti
 	  $\inferrule* [left=\bf{Inp}]{
 	      n \geq 0
 	  }{
-	    \underline{x_{1}(y_{1})}.\; \ldots\; .\underline{x_{n}(y_{n})}.z(w).N
+	    \underline{x_{1}(y_{1})}.\; \ldots\; .\underline{x_{n}(y_{n})}.z(w).P
 	      \xrightarrow{\widetilde{x(y)}\cdot z(w)}_{n}
-		N
+		P
 	  }$
       \\
       \end{tabular}
 	\\\\
       \begin{tabular}{l}
       \\
-	  $\inferrule* [left=\bf{LComSeq1}]{
+	  $\inferrule* [left=\bf{LComSeqL}]{
 	      (\nu \tilde{a})P \xrightarrow{x(y)\cdot \sigma}_{n} (\nu \tilde{b})P^{'}
 	    \\
 	      (\nu \tilde{c})Q \xrightarrow{\overline{x}z}_{n} (\nu \tilde{d})Q^{'}
   	    \\
-   	      bn(\sigma)\cap fn(Q) = \emptyset
+   	      bn(\sigma\{z/y\}) \cap fn(Q) = \emptyset
 	  }{
 	    (\nu \tilde{a} \tilde{c}) (P|Q) \xrightarrow{\sigma\{z/y\}}_{n} (\nu \tilde{b} \tilde{d})(P^{'}\{z/y\}|Q^{'})
 	  }$
-      \\
-	  $\inferrule* [left=\bf{LCom1}]{
+      \\\\
+	  $\inferrule* [left=\bf{LComL}]{
 	      (\nu \tilde{a}) P \xrightarrow{x(y)}_{n} (\nu \tilde{b})P^{'}
 	    \\
 	      (\nu \tilde{c}) Q\xrightarrow{\overline{x}z}_{n} (\nu \tilde{d})Q^{'}
 	  }{
 	    (\nu \tilde{a} \tilde{b})(P|Q) \xrightarrow{\tau}_{n} (\nu \tilde{c} \tilde{d})(P^{'}\{z/y\}|Q^{'})
 	  }$
-      \\
-	  $\inferrule* [left=\bf{LComSeq2}]{
-	      (\nu \tilde{a})P \xrightarrow{\overline{x}z}_{n} (\nu \tilde{b})P^{'}
-	    \\
-	      (\nu \tilde{c})Q \xrightarrow{x(y)\cdot \sigma}_{n} (\nu \tilde{d})Q^{'}
-  	    \\
-   	      bn(\sigma)\cap fn(Q) = \emptyset
-	  }{
-	    (\nu \tilde{a} \tilde{c}) (P|Q) \xrightarrow{\sigma\{z/y\}}_{n} (\nu \tilde{b} \tilde{d})(P^{'}\{z/y\}|Q^{'})
-	  }$
-	\\
-	  $\inferrule* [left=\bf{LCom2}]{
-	      (\nu \tilde{a}) P \xrightarrow{\overline{x}z}_{n} (\nu \tilde{b})P^{'}
-	    \\
-	      (\nu \tilde{c}) Q\xrightarrow{x(y)}_{n} (\nu \tilde{d})Q^{'}
-	  }{
-	    (\nu \tilde{a} \tilde{b})(P|Q) \xrightarrow{\tau}_{n} (\nu \tilde{c} \tilde{d})(P^{'}\{z/y\}|Q^{'})
-	  }$
+%       \\
+% 	  $\inferrule* [left=\bf{LComSeq2}]{
+% 	      (\nu \tilde{a})P \xrightarrow{\overline{x}z}_{n} (\nu \tilde{b})P^{'}
+% 	    \\
+% 	      (\nu \tilde{c})Q \xrightarrow{x(y)\cdot \sigma}_{n} (\nu \tilde{d})Q^{'}
+%   	    \\
+%    	      bn(\sigma)\cap fn(Q) = \emptyset
+% 	  }{
+% 	    (\nu \tilde{a} \tilde{c}) (P|Q) \xrightarrow{\sigma\{z/y\}}_{n} (\nu \tilde{b} \tilde{d})(P^{'}\{z/y\}|Q^{'})
+% 	  }$
+% 	\\
+% 	  $\inferrule* [left=\bf{LCom2}]{
+% 	      (\nu \tilde{a}) P \xrightarrow{\overline{x}z}_{n} (\nu \tilde{b})P^{'}
+% 	    \\
+% 	      (\nu \tilde{c}) Q\xrightarrow{x(y)}_{n} (\nu \tilde{d})Q^{'}
+% 	  }{
+% 	    (\nu \tilde{a} \tilde{b})(P|Q) \xrightarrow{\tau}_{n} (\nu \tilde{c} \tilde{d})(P^{'}\{z/y\}|Q^{'})
+% 	  }$
       \\
       \end{tabular}
 	\\\\
       \begin{tabular}{ll}
       \\
-	  $\inferrule* [left=\bf{Sum1}]{
+	  $\inferrule* [left=\bf{SumL}]{
 	      (\nu \tilde{a}) P \xrightarrow{\sigma}_{n} (\nu \tilde{b})P^{'}
 	    \\
 	      (\nu \tilde{c})Q\; n.\; f.
+	    \\
+	      \tilde{c} \cap n(\sigma) = \emptyset
 	  }{
 	    (\nu \tilde{a} \tilde{c}) (P+Q) \xrightarrow{\sigma}_{n} (\nu \tilde{b} \tilde{c})P^{'}
 	  }$
 	&
-	  $\inferrule* [left=\bf{Sum2}]{
-	      (\nu \tilde{a})P\; n.\; f.
-	    \\
-	      (\nu \tilde{b}) Q \xrightarrow{\sigma}_{n} (\nu \tilde{c})Q^{'}
-	  }{
-	    (\nu \tilde{a} \tilde{c}) (P+Q) \xrightarrow{\sigma}_{n} (\nu \tilde{b} \tilde{c})Q^{'}
-	  }$
+% 	  $\inferrule* [left=\bf{Sum2}]{
+% 	      (\nu \tilde{a})P\; n.\; f.
+% 	    \\
+% 	      (\nu \tilde{b}) Q \xrightarrow{\sigma}_{n} (\nu \tilde{c})Q^{'}
+% 	  }{
+% 	    (\nu \tilde{a} \tilde{c}) (P+Q) \xrightarrow{\sigma}_{n} (\nu \tilde{b} \tilde{c})Q^{'}
+% 	  }$
       \\
       \end{tabular}
 	\\
       \begin{tabular}{ll}
       \\
 	  $\inferrule* [left=\bf{Res}]{
-	      (\nu \tilde{a})P \xrightarrow{\sigma}_{n} (\nu \tilde{b})P^{'}
+	      P \xrightarrow{\sigma}_{n} P^{'}
 	    \\
-	      z\notin n(\alpha)
+	      z\notin n(\sigma)
 	  }{
-	    (\nu z \tilde{a}) P \xrightarrow{\sigma}_{n} (\nu z \tilde{b}) P^{'}
+	    (\nu z) P \xrightarrow{\sigma}_{n} (\nu z) P^{'}
 	  }$
 	  &
 	  $\inferrule* [left=\bf{Opn}]{
-	      (\nu \tilde{a})P \xrightarrow{\overline{x}z}_{n} P^{'}
+	      P \xrightarrow{\overline{x}z}_{n} P^{'}
 	    \\ 
 	      z\neq x
 	  }{
-	      (\nu z \tilde{a})P \xrightarrow{\overline{x}(z)}_{n} P^{'}
+	      (\nu z)P \xrightarrow{\overline{x}(z)}_{n} P^{'}
 	  }$
       \\
       \end{tabular}
 	\\
       \begin{tabular}{l}
       \\
-	  $\inferrule* [left=\bf{Par1}]{
+	  $\inferrule* [left=\bf{ParL}]{
 	      (\nu \tilde{a}) P \xrightarrow{\sigma}_{n} (\nu \tilde{b})P^{'}
 	    \\
 	      bn(\sigma)\cap fn(Q)=\emptyset
 	    \\
-	      (\nu \tilde{c})Q\; n.\; f.
+	      (\nu \tilde{c})Q\; n.f.
+	    \\
+	      \tilde{c} \cap n(\sigma) = \emptyset
 	  }{
 	    (\nu \tilde{a} \tilde{c})(P|Q) \xrightarrow{\sigma}_{n} (\nu \tilde{b} \tilde{c})(P^{'}|Q)
 	  }$
       \\
-	  $\inferrule* [left=\bf{Par2}]{
-	      (\nu \tilde{a})P\; n.\; f.
-	    \\
-	      bn(\sigma)\cap fn((\nu \tilde{a})P)=\emptyset
-	    \\
-	      (\nu \tilde{b}) Q \xrightarrow{\sigma}_{n} (\nu \tilde{c})Q^{'}
-	  }{
-	    (\nu \tilde{a} \tilde{c})(P|Q) \xrightarrow{\sigma}_{n} (\nu \tilde{b} \tilde{c})(P|Q^{'})
-	  }$
+% 	  $\inferrule* [left=\bf{Par2}]{
+% 	      (\nu \tilde{b}) Q \xrightarrow{\sigma}_{n} (\nu \tilde{c})Q^{'}
+% 	    \\
+% 	      bn(\sigma)\cap fn((\nu \tilde{a})P)=\emptyset
+% 	    \\
+% 	      (\nu \tilde{a})P\; n.f.
+% 	    \\
+% 	      \tilde{a} \cap n(\sigma) = \emptyset
+% 	  }{
+% 	    (\nu \tilde{a} \tilde{c})(P|Q) \xrightarrow{\sigma}_{n} (\nu \tilde{b} \tilde{c})(P|Q^{'})
+% 	  }$
 	\\\\\multicolumn{1}{l}{\line(1,0){415}}
     \end{tabular}
-    \caption{Multi $\pi$ late semantic for normal forms. Every process in the head of a transition in the premise of a rule is in normal form. The restrictions can be empty}
+    \caption{Multi $\pi$ calculus late semantic for normal forms. Every process in the head of a transition in the premise of a rule is in normal form. The restrictions can be empty. When we write $(\nu \tilde{x})P$ n.f. it means that $P$ has no restriction at the top level. Commutative counterpart of rule $ParL$, $SumL$, $EComL$ are omitted. Also in rules for prefix $P$ is a normal form}
     \label{multipiInpNorm}
   \end{table}
 \end{definition}
-
-
-\begin{lemma}\label{moveCongDownNorm2}
-  $P\xrightarrow{\gamma}Q$ imply $P\equiv N \xrightarrow{\gamma}_{n} M\equiv Q$ for some processes $N$ and $M$ in normal form. Also $N \xrightarrow{\gamma}_{n} M$ imply $N \xrightarrow{\gamma} M$
-\end{lemma}
-
-
-\begin{lemma}\label{structuralCongruenceElimination}
-  If $P\xrightarrow{\gamma}_{3} P^{'}$ then there exist processes $N,N^{'}$ such that $N$ is a normal form, $P\equiv N$, $P^{'} \equiv N^{'}$ and we can prove that $N\xrightarrow{\gamma}_{2} N^{'}$ without using the rules $Cls$ and $Alp$.
-\end{lemma}
-
 
 
 \section{Strong bisimilarity and equivalence}
@@ -2083,7 +1811,7 @@ In the following section the symbol $\rightarrow$ will refer to the late semanti
 In the following $\widetilde{x(y)}=x_{1}(y_{1}) \cdot \ldots \cdot x_{n}(y_{n})$ and $\tilde{x}= x_{1}\cdot \ldots \cdot x_{n}$. In the following section $\rightarrow$ and $\rightarrow_{3}$ are the late semantic with structural congruence of multi $\pi$ calculus with strong prefixing.
 
 \begin{definition}\label{strongLateBisimulation}
-  A \emph{strong bisimulation} is a simmetric binary relation $\mathbf{S}$ on multi $\pi$ processes such that for all $P\mathbf{S}Q$:
+  A \emph{strong bisimulation} is a symmetric binary relation $\mathbf{S}$ on multi $\pi$ processes such that for all $P\mathbf{S}Q$:
    \begin{itemize}
      \item 
        $P \xrightarrow{\alpha} P^{'}$, $bn(\alpha)$ is fresh and $\alpha$ is not an input nor a sequence of inputs then there exists some $Q^{'}$ such that $Q \xrightarrow{\alpha} Q^{'}$ and $P^{'}\mathbf{S}Q^{'}$
@@ -2140,12 +1868,12 @@ Is this definition a proper extension of the one in \cite{parrow}? The only way 
 % 	$\Rightarrow$ $A^{'} \sim_{L}_{E} B^{''} \mathbf{S} C^{''} \sim_{L}_{E} D^{'}$
 %       \end{tabular}
 %     \end{center}
-%     It is easy to see that the simmetric also holds.
+%     It is easy to see that the symmetric also holds.
 %   \end{proof}
 % \end{proposition}
 
 \begin{definition}\label{strongLateBisimulationUpTo}
-  Let $\mathbf{R}$ be a strong late bisimulation. A \emph{strong bisimulation up to $\mathbf{R}$} is a simmetric binary relation $\mathbf{S}$ on multi $\pi$ processes such that for all $P\mathbf{S}Q$:
+  Let $\mathbf{R}$ be a strong late bisimulation. A \emph{strong bisimulation up to $\mathbf{R}$} is a symmetric binary relation $\mathbf{S}$ on multi $\pi$ processes such that for all $P\mathbf{S}Q$:
    \begin{itemize}
      \item 
        $P \xrightarrow{\alpha} P^{'}$, $bn(\alpha)$ is fresh and $\alpha$ is not an input nor a sequence of inputs then there exist processes $Q^{'}, Q^{''}, P^{''}$ such that $Q \xrightarrow{\alpha} Q^{'}$ and $P^{'} \mathbf{R} P^{''} \mathbf{S} Q^{''} \mathbf{R} Q^{'}$
@@ -2178,7 +1906,7 @@ Is this definition a proper extension of the one in \cite{parrow}? The only way 
 	$\Rightarrow$ $A^{'} \mathbf{R} B^{''} \mathbf{S} C^{''} \mathbf{R} D^{'}$
       \end{tabular}
     \end{center}
-    It is easy to see that the simmetric also holds. For the other case: let $x_{1}(y_{1}) \cdot \ldots \cdot x_{n}(y_{n})= \tilde{x}(\tilde{y})$
+    It is easy to see that the symmetric also holds. For the other case: let $x_{1}(y_{1}) \cdot \ldots \cdot x_{n}(y_{n})= \tilde{x}(\tilde{y})$
      \begin{center}
        \begin{tabular}{l}
  	$A \xrightarrow{\tilde{x}(\tilde{y})} A^{'}$ $\wedge$ $A \mathbf{R} B$ $\wedge$ definition \ref{strongLateBisimulation}
@@ -2197,7 +1925,7 @@ Is this definition a proper extension of the one in \cite{parrow}? The only way 
 	$\Rightarrow$ $A^{'}\{\tilde{w}/\tilde{y}\} \mathbf{R} \mathbf{S} \mathbf{R} D^{'}\{\tilde{w}/\tilde{y}\}$
       \end{tabular}
     \end{center}
-    It is easy to see that the simmetric also holds.
+    It is easy to see that the symmetric also holds.
    \end{proof}
 \end{proposition}
 
@@ -2209,7 +1937,7 @@ Is this definition a proper extension of the one in \cite{parrow}? The only way 
 \end{lemma}
 
 
-\begin{lemma}
+\begin{lemma}\label{lateBisimulationAbsorbesStructuralCongruence}
   $P \sim_{L} Q$ and $P \equiv R$ then $R \sim_{L} Q$.
   \begin{proof}
     $P\equiv R$ implies for lemma \ref{structuralCongruenceIsALateBisimulation}: $P \sim_{L} R$. $P \sim_{L} Q$ and $P \sim_{L} R$ imply for transitivity and symmetry that $R\sim_{L}Q$
@@ -2217,7 +1945,7 @@ Is this definition a proper extension of the one in \cite{parrow}? The only way 
 \end{lemma}
 
 % \begin{definition}\label{strongLateBisimulationUpToStructuralCongruence}
-%     A \emph{strong bisimulation up to structural congruence} is a simmetric binary relation $\mathbf{S}$ on multi $\pi$ processes such that for all $P\mathbf{S}Q$:
+%     A \emph{strong bisimulation up to structural congruence} is a symmetric binary relation $\mathbf{S}$ on multi $\pi$ processes such that for all $P\mathbf{S}Q$:
 %    \begin{itemize}
 %      \item 
 %        $P \xrightarrow{\alpha} P^{'}$, $bn(\alpha)$ is fresh and $\alpha$ is not an input nor a sequence of inputs then there exist processes $Q^{'}, Q^{''}, P^{''}$ such that $Q \xrightarrow{\alpha} Q^{'}$ and $P^{'} \mathbf{R} P^{''} \mathbf{S} Q^{''} \mathbf{R} Q^{'}$
@@ -2228,381 +1956,396 @@ Is this definition a proper extension of the one in \cite{parrow}? The only way 
 % \end{definition}
 
 
+\begin{definition}\label{strongEarlyBisimulationUpToRestriction}
+  A \emph{strong bisimulation up to restriction} is a symmetric binary relation $\mathbf{S}$ on multi $\pi$ processes such that for all $P$ and $Q$: $P \mathbf{S} Q$ imply
+  \begin{itemize}
+    \item
+      for all $w\notin (fn(P)\cup fn(Q))$: $P\{w/z\} \sim_{L} Q\{w/z\}$
+    \item
+      if $P \xrightarrow{\overline{x}y} P^{'}$ then there exists $Q^{'}$ such that $Q \xrightarrow{\overline{x}y} Q^{'}$ and $P^{'} \mathbf{S} Q^{'}$
+    \item
+      if $y\notin n(P,Q)$ and $P \xrightarrow{x(y)} P^{'}$ then there exists $Q^{'}$ such that $Q \xrightarrow{x(y)} Q^{'}$ and for all $v$: $P^{'}\{v/y\} \mathbf{S} Q^{'}\{v/y\}$
+    \item
+      if $y\notin n(P,Q)$ and $P \xrightarrow{\overline{x}(y)} P^{'}$ then there exists $Q^{'}$ such that $Q \xrightarrow{\overline{x}(y)} Q^{'}$ and $P^{'} \mathbf{S} Q^{'}$
+    \item
+      if $P \xrightarrow{\tau} P^{'}$ then for some $Q^{'}$: $Q \xrightarrow{\tau} Q^{'}$ and either $P^{'} \mathbf{S} Q^{'}$ or for some $P^{''},Q^{''}$ and $w$: $P^{'}\equiv (\nu w)P^{''}$, $Q^{'}\equiv (\nu w)Q^{''}$ and $P^{''} \mathbf{S} Q^{''}$
+  \end{itemize}
+  Two processes $P,Q$ are \emph{strongly late bisimilar up to restriction}, written $P \sim_{L}^{\nu} Q$, if they are related by a strong early bisimulation up to restriction.
+\end{definition}
+
+\begin{lemma}
+  A strong bisimulation up to restriction is a strong bisimulation.
+\end{lemma}
 
 
-\begin{proposition}
-  $\sim_{L}$ is preserved by all operators except input prefix.
+\begin{lemma}\label{outPreservesBisimulation}
+  $\sim_{L}$ is preserved by output prefix.
   \begin{proof}
-    We have to try each operator in turn:
+    Let $P \sim_{L} Q$. There are two cases:
     \begin{description}
-      \item[Output prefix]
-    \end{description}
-	Let $P \sim_{L} Q$ and let $\overline{x}y.P \xrightarrow{\alpha} P^{'}$. The last rule used in the derivation of this transition can be:
-	\begin{description}
-	  \item[$Out$]
-	    $\overline{x}y.P \xrightarrow{\overline{x}y} P$ and $\overline{x}y.Q \xrightarrow{\overline{x}y} Q$ and $P \sim_{L} Q$
-	  \item[$Cong$]
-	    For lemma \ref{inversionlemmamultiinplatewithh} a process structurally congruent to $\overline{x}y.P$ must be in the form $\overline{x}y.R$ where $P \equiv R$ so $\overline{x}y.P \xrightarrow{\overline{x}y} R$.
-	\end{description}
-    \begin{description}
-      \item[Tau prefix] similar.
-    \end{description}
-    \begin{description}
-      \item[Input prefix] FARE UN ESEMPIO A PARTE DEL PERCH NON FUNZIONA
-    \end{description}
-    \begin{description}
-      \item[Strong input] FARE UN ESEMPIO A PARTE DEL PERCH NON FUNZIONA	
-    \end{description}
-    \begin{description}
-      \item[Summation] 
-    \end{description}
-	For lemma \ref{?} and reflexivity of structural congruence we can assume that every transition that starts from $P+R$ is in the form: $P+R\equiv S$, $S \xrightarrow{\gamma}S$ and this derivation does not used the rule $Cong$ but it is extended with rules for commutativity. So we can proceed by induction on the sum of the sizes of the derivations of $P+R\equiv S$ and $S \xrightarrow{\gamma}S$. Then by cases on the last pair of rules used:
-	    \begin{description}
-	      \item[$(CongSum, SumL)$]
-		$S$ is $A+B$, $P \equiv A$ and $R \equiv B$. Then $A+B \stackrel{\gamma}{\twoheadrightarrow} P^{'}$, the last rule used in this derivation must be $Sum$ so $A \stackrel{\gamma}{\twoheadrightarrow} P^{'}$. 
-		\begin{center}
-		  $\inferrule* [left=\bf{Cong}]{
-		      P\equiv A
-		    \\
-		      A \stackrel{\gamma}{\twoheadrightarrow} P^{'}
-		  }{
-		    P \xrightarrow{\gamma} P^{'}
-		  }$
-		\end{center}
-		Since $P\sim_{L}Q$ and $P\equiv A$ then $Q \sim_{L} A$ so we have $Q \xrightarrow{\gamma} Q^{'}$ and $P^{'} \sim_{L} Q^{'}$ or $P^{'}\{\tilde{w}/\tilde{y}\} \sim_{L} Q^{'}\{\tilde{w}/\tilde{y}\}$. For rule $Sum$: $Q+R \xrightarrow{\gamma} Q^{'}$
-	      \item[$(CongSum, SumR)$]
-	      \item[$(ScpExtSum2, Res)$]
-	      \item[$(ScpExtSum2, Opn)$]
-	      \item[$(ScpExtSum1, \_)$] rule $ScpExtSum1$ is emulated by $ScpExtSum2$ and commutativity.
-% 	      \item[$SumCom$]
-% 		$S$ is $R+P$. Then $R+P \stackrel{\gamma}{\twoheadrightarrow} P^{'}$, the last rule used in this derivation must be $Sum$ so $R \stackrel{\gamma}{\twoheadrightarrow} P^{'}$. 
-% 		\begin{center}
-% 		  $\inferrule* [left=\bf{Cong}]{
-% 		      Q+R\equiv R+Q
-% 		    \\
-% 			\inferrule* [left=\bf{Sum}]{
-% 			    R \stackrel{\gamma}{\twoheadrightarrow} P^{'}
-% 			}{
-% 			  R+Q \xrightarrow{\gamma} P^{'}
-% 			}
-% 		  }{
-% 		    Q+R \xrightarrow{\gamma} P^{'}
-% 		  }$
-% 		\end{center}
-% 	      \item[$Alp$]
-% 		$S$ is $\alpha$ equivalent to $P+R$ so $S=S_{1}+S_{2}$ such that $S_{1}\equiv_{\alpha}P$ and $S_{2}\equiv_{\alpha}R$. Then  $S_{1}+S_{2} \stackrel{\gamma}{\twoheadrightarrow} P^{'}$, the last rule used in this derivation must be $Sum$ so $S_{1} \stackrel{\gamma}{\twoheadrightarrow} P^{'}$. 
-% 		\begin{center}
-% 		  $\inferrule* [left=\bf{Cong}]{
-% 			    P\equiv_{\alpha}S_{1}
-% 			  \\
-% 			    S_{1} \stackrel{\gamma}{\twoheadrightarrow} P^{'}
-% 			}{
-% 			  P \xrightarrow{\gamma} P^{'}
-% 			}$
-% 		\end{center}
-% 		Since $P\sim_{L}Q$ we have $Q \xrightarrow{\gamma} Q^{'}$ and $P^{'} \sim_{L} Q^{'}$ or $P^{'}\{\tilde{w}/\tilde{y}\} \sim_{L} Q^{'}\{\tilde{w}/\tilde{y}\}$. For rule $Sum$: $Q+R \xrightarrow{\gamma} Q^{'}$
-% 	      \item[$ScpExtSum2$]\hfill \\
-% 		\begin{center}
-% 		  $\inferrule* [left=\bf{Cong}]{
-% 		      \inferrule* {
-% 			x \notin fn(P)
-% 		      }{
-% 			P+(\nu x)R\equiv (\nu x)(P+R)
-% 		      }
-% 		    \\
-% 		      (\nu x)(P+R) \stackrel{\gamma}{\twoheadrightarrow} P^{'}
-% 		  }{
-% 		    P+R \xrightarrow{\gamma} P^{'}
-% 		  }$
-% 		\end{center}
-% 		the last rule used in the derivation of $(\nu x)(P+R) \stackrel{\gamma}{\twoheadrightarrow} P^{'}$ can be:
-% 		\begin{description}
-% 		  \item[$Res$]\hfill \\ 
-% 		    \begin{center}
-% 		      $\inferrule* [left=\bf{Res}]{
-% 			  \inferrule* [left=\bf{Sum}]{
-% 			    P \stackrel{\gamma}{\twoheadrightarrow} P^{''}
-% 			  }{
-% 			    P+R \stackrel{\gamma}{\twoheadrightarrow} P^{''}
-% 			  }
-% 			\\
-% 			  x\notin n(\gamma)
-% 		      }{
-% 			(\nu x)(P+R) \stackrel{\gamma}{\twoheadrightarrow} (\nu x)P^{''}
-% 		      }$
-% 		    \end{center}
-% 		    $P \sim_{L} Q$ and $P \stackrel{\gamma}{\twoheadrightarrow} P^{''}$ imply $Q \xrightarrow{\gamma} Q^{''}$ and $P^{''} \sim_{L} Q^{''}$ or $P^{''}\{\tilde{w}/\tilde{y}\} \sim_{L} Q^{''}\{\tilde{w}/\tilde{y}\}$. For rules $Res$ and $Sum$: $Q+(\nu x)R \xrightarrow{\gamma} (\nu x)Q^{''}$.
-% 		  \item[$Opn$]
-% 		\end{description}
-% 	      \item[$SumAsc1(1)$]\hfill \\
-% 		\begin{center}
-% 		  $\inferrule* [left=\bf{Cong}]{
-% 		      \inferrule* [left=\bf{SumAsc1}] {
-% 		      }{
-% 			(P_{1}+P_{2})+R \equiv P_{1}+(P_{2}+R)
-% 		      }
-% 		    \\
-% 		      \inferrule* [left=\bf{Sum}] {
-% 			P_{1} \stackrel{\gamma}{\twoheadrightarrow} P^{'}
-% 		      }{
-% 			P_{1}+(P_{2}+R) \stackrel{\gamma}{\twoheadrightarrow} P^{'}
-% 		      }
-% 		  }{
-% 		    (P_{1}+P_{2})+R \xrightarrow{\gamma} P^{'}
-% 		  }$
-% 		\end{center}
-% 		$P_{1} \stackrel{\gamma}{\twoheadrightarrow} P^{'}$ imply $P=P_{1}+P_{2} \stackrel{\gamma}{\twoheadrightarrow} P^{'}$ so for bisimilarity $Q \xrightarrow{\gamma} Q^{'}$ and $P^{'}\sim_{L} Q^{'}$ or $P^{'}\{\tilde{w}/\tilde{y}\} \sim_{L} Q^{'}\{\tilde{w}/\tilde{y}\}$. For rule $Sum$: $Q+R \xrightarrow{\gamma} Q^{'}$.
-% 	      \item[$SumAsc1(2)$]\hfill \\
-% 		\begin{center}
-% 		  $\inferrule* [left=\bf{Cong}]{
-% 		      \inferrule* [left=\bf{SumAsc1}] {
-% 		      }{
-% 			(P+R_{1})+R_{2} \equiv P+(R_{1}+R_{2})
-% 		      }
-% 		    \\
-% 		      \inferrule* [left=\bf{Sum}] {
-% 			P \stackrel{\gamma}{\twoheadrightarrow} P^{'}
-% 		      }{
-% 			P+(R_{1}+R_{2}) \stackrel{\gamma}{\twoheadrightarrow} P^{'}
-% 		      }
-% 		  }{
-% 		    (P+R_{1})+R_{2} \xrightarrow{\gamma} P^{'}
-% 		  }$
-% 		\end{center}
-% 		$P \stackrel{\gamma}{\twoheadrightarrow} P^{'}$ so for bisimilarity $Q \xrightarrow{\gamma} Q^{'}$ and $P^{'}\sim_{L} Q^{'}$ or $P^{'}\{\tilde{w}/\tilde{y}\} \sim_{L} Q^{'}\{\tilde{w}/\tilde{y}\}$. For rule $Sum$: $Q+R \xrightarrow{\gamma} Q^{'}$.
-% 	      \item[$SumAsc2(2)$]\hfill \\
-% 		\begin{center}
-% 		  $\inferrule* [left=\bf{Cong}]{
-% 			P_{1}+(P_{2}+R) \equiv (P_{1}+P_{2})+R
-% 		    \\
-% 		      \inferrule* [left=\bf{Sum}] {
-% 			\inferrule* [left=\bf{Sum}]{
-% 			  P_{1} \stackrel{\gamma}{\twoheadrightarrow} P^{'}
-% 			}{
-% 			  P=P_{1}+P_{2} \xrightarrow{\gamma} P^{'}
-% 			}
-% 		      }{
-% 			(P_{1}+P_{2})+R \xrightarrow{\gamma} P^{'}
-% 		      }
-% 		  }{
-% 		    P_{1}+(P_{2}+R) \xrightarrow{\gamma} P^{'}
-% 		  }$
-% 		\end{center}
-% 		$P \stackrel{\gamma}{\twoheadrightarrow} P^{'}$ so for bisimilarity $Q \xrightarrow{\gamma} Q^{'}$ and $P^{'}\sim_{L} Q^{'}$ or $P^{'}\{\tilde{w}/\tilde{y}\} \sim_{L} Q^{'}\{\tilde{w}/\tilde{y}\}$. For rule $Sum$: $Q+R \xrightarrow{\gamma} Q^{'}$.
-	    \end{description}
-    \begin{description}
-      \item[Restriction] 
-    \end{description}
-	The relation 
+      \item[$Out$]:
+	$\overline{x}y.P \xrightarrow{\overline{x}y} P \sim_{L} Q \stackrel{\overline{x}y}{\leftarrow} \overline{x}y.Q$. 
+      \item[$Cong$]:
 	\begin{center}
-	  $Res(\sim_{L})=\{((\nu x)P,(\nu x)Q): P\sim_{L}Q\}\cup \sim_{L}$ 
+	  $\inferrule* [left=\bf{Cong}]{
+	      \inferrule* [left=\bf{CongOut}]{
+		P \equiv R
+	      }{
+		\overline{x}y.P \equiv \overline{x}y.R
+	      }
+	    \\
+	      \overline{x}y.R \xrightarrow{\overline{x}y} R
+	  }{
+	    \overline{x}y.P \xrightarrow{\overline{x}y} R
+	  }$
 	\end{center}
-	is a strong bisimulation. There are some cases to consider depending on rule applicable to $(\nu x)P$:
-	\begin{description}
-	  \item[$Res(1)$]
-	    let $\tilde{y}$ be fresh in $P,Q$.
-	    \begin{center}
-	      $\inferrule* [left=\bf{Res}]{
-		  P \xrightarrow{\widetilde{x(y)}} P^{'}
-		\\
-		  z \notin n(\widetilde{x(y)})
-	      }{
-		(\nu z)P \xrightarrow{\widetilde{x(y)}} (\nu z)P^{'}
-	      }$
-	    \end{center}
-	    $P \xrightarrow{\widetilde{x(y)}} P^{'}$ and $P\sim_{L}Q$ imply $Q \xrightarrow{\widetilde{x(y)}} Q^{'}$ and for all $\tilde{w}$: $P^{'}\{\tilde{w}/\tilde{y}\} \sim_{L} Q^{'}\{\tilde{w}/\tilde{y}\}$ which imply $(\nu z)(P^{'}\{\tilde{w}/\tilde{y}\}) Res(\sim_{L}) (\nu z)(Q^{'}\{\tilde{w}/\tilde{y}\})$. Under the hypothesis that $z\notin \tilde{w}$: $z \notin n(\widetilde{x(y)})$ imply $(\nu z)(P^{'}\{\tilde{w}/\tilde{y}\})=((\nu z) P^{'})\{\tilde{w}/\tilde{y}\}$. Nevertheless we have to prove that also for $z\in \tilde{w}$ and $z \notin n(\widetilde{x(y)})$: $((\nu z)P^{'})\{\tilde{w}/\tilde{y}\} Res(\sim_{L}) ((\nu z)Q^{'})\{\tilde{w}/\tilde{y}\}$.
-	    COME ?!?!?!?!
-	  \item[$Res(2)$]
-	    let $\gamma$ be a non input action 
-	    \begin{center}
-	      $\inferrule* [left=\bf{Res}]{
-		  P \xrightarrow{\gamma} P^{'}
-		\\
-		  z \notin n(\gamma)
-	      }{
-		(\nu z)P \xrightarrow{\gamma} (\nu z)P^{'}
-	      }$
-	    \end{center}
-	    $P \xrightarrow{\gamma} P^{'}$ and $P\sim_{L}Q$ imply $Q \xrightarrow{\gamma} Q^{'}$ and $P^{'} \sim_{L} Q^{'}$ which in turn imply $(\nu z)P^{'} Res(\sim_{L}) (\nu z)Q^{'}$.
-	  \item[$Opn$]
-	    let $\tilde{y}$ be fresh in $P,Q$.
-	    \begin{center}
-	      $\inferrule* [left=\bf{Opn}]{
-		  P \xrightarrow{\overline{x}y} P^{'}
-	      }{
-		(\nu y)P \xrightarrow{\overline{x}(y)} P^{'}
-	      }$
-	    \end{center}
-	    $P \xrightarrow{\overline{x}y} P^{'}$ and $P\sim_{L}Q$ imply $Q \xrightarrow{\overline{x}y} Q^{'}$ and $P^{'} \sim_{L} Q^{'}$ which imply that $((\nu z)P^{'}, (\nu z)Q^{'})$ is in $Res(\sim_{L})$.
-	  \item[$Cong$ $\rightarrow_{n}$]
-	    for lemma \ref{moveCongDownNorm2} we can assume that the proof tree of $(\nu x)P \xrightarrow{\widetilde{x(y)}} P^{'}$ ends in the following way:
-	    \begin{center}
-	      $\inferrule* [left=\bf{Cong}]{
-		  (\nu z)P \equiv R
-		\\
-		  R \xrightarrow{\widetilde{x(y)}}_{n} P^{'}
-	      }{
-		(\nu z)P \xrightarrow{\widetilde{x(y)}} P^{'}
-	      }$
-	    \end{center}
-	    where $R$ is in normal form. At this point the last rule of a derivation of $R \xrightarrow{\widetilde{x(y)}}_{n} P^{'}$ can be: 
-	    \begin{description}	
-	      \item[$Inp$] 
-		this case does not exist because $(\nu a)B \not \equiv c(d).E$
-	      \item[$LComSeq$]\hfill \\
-		\begin{center}
-		  $\inferrule* [left=\bf{LComSeq1}]{
-			  (\nu \tilde{a})R_{1} \xrightarrow{x(y)\cdot \sigma}_{n} (\nu \tilde{b})R_{1}^{'}
-			\\
-			  (\nu \tilde{c})R_{2} \xrightarrow{\overline{x}z}_{n} (\nu \tilde{d})R_{2}^{'}
-			\\
-			  bn(\sigma)\cap fn(Q) = \emptyset
-		      }{
-			(\nu \tilde{a} \tilde{c}) (R_{1}|R_{2}) \xrightarrow{\sigma\{z/y\}}_{n} (\nu \tilde{b} \tilde{d})(R_{1}^{'}|R_{2}^{'})
-		      }$
-		\end{center}
-		$(\nu z)P \equiv (\nu \tilde{a} \tilde{c}) (R_{1}|R_{2})$ and $\sigma\{z/y\}=\widetilde{x(y)}$.
-	      \item[$Sum1,2$]
-	      \item[$Res$]
-	      \item[$Par1,2$]
-	    \end{description}
-	  \item[$Cong$ $\twoheadrightarrow$]
-	    for lemma \ref{moveCongDown} we can assume that the proof tree of $(\nu x)P \xrightarrow{\widetilde{x(y)}} P^{'}$ ends in the following way:
-	    \begin{center}
-	      $\inferrule* [left=\bf{Cong}]{
-		  (\nu z)P \equiv R
-		\\
-		  R \stackrel{\widetilde{x(y)}}{\longtwoheadrightarrow} P^{'}
-	      }{
-		(\nu z)P \xrightarrow{\widetilde{x(y)}} P^{'}
-	      }$
-	    \end{center}
-	    so the proof goes on by cases on the last rule of the inference of $(\nu z)P \equiv R$ which bearing in mind lemma 
-	    RICONTROLLARE LA DIMOSTRAZIONE PERCHE' IL LEMMA ERA FALSO!
-	    can be:
-	    \begin{description}
-	      \item[$ResCom$]
-		so arranging some names in order to make it look more clear, the last part of the inference is:
-		\begin{center}
-		  $\inferrule* [left=\bf{Cong}]{
-		    \inferrule* [left=\bf{ResCom}]{
-		    }{
-		      (\nu z)(\nu w)P \equiv (\nu w)(\nu z)P
-		    }
-		    \\
-		    \inferrule* [left=\bf{Res}]{
-			\inferrule* [left=\bf{Res}]{
-			    P \stackrel{\widetilde{x(y)}}{\longtwoheadrightarrow} P^{'}
-			  \\
-			    w,z\notin n(\widetilde{x(y)})
-			}{
-			  (\nu z)P \stackrel{\widetilde{x(y)}}{\longtwoheadrightarrow} (\nu z)P^{'}
-			}
-% 		      \\
-% 			w\notin n(\widetilde{x(y)})
-		    }{
-		      (\nu w)(\nu z)P \stackrel{\widetilde{x(y)}}{\longtwoheadrightarrow} (\nu w)(\nu z)P^{'}
-		    }
-		  }{
-		    (\nu z)(\nu w)P \xrightarrow{\widetilde{x(y)}} P^{'}
-		  }$
-		\end{center}	      	
-		
-	      \item[$Trans$]
-	      \item[$ScpExtPar1$]
-		$\inferrule* [left=\bf{ScpExtPar1}]{z\notin fn(P_{1})}{(\nu z) (P_{1}|P_{2}) \equiv P_{1}|(\nu z) P_{2}}$
-	      \item[$ScpExtSum1$]
-		$\inferrule* [left=\bf{ScpExtSum1}]{z\notin fn(P_{1})}{(\nu z) (P_{1}+P_{2}) \equiv P_{1}+(\nu z) P_{2}}$
-	      \item[$Alp$]
-		$\inferrule* [left=\bf{Alp}] {
-		  P \equiv_{\alpha} Q
-		}{
-		  P\equiv Q
-		}$
-	    \end{description}
-	\end{description}
-    \begin{description}
-      \item[Parallel]
-	    \begin{description}
-	      \item[$SumAsc1$]
-		$\inferrule* [left=\bf{SumAsc1}]{}{M_{1}+(M_{2}+M_{3})\equiv (M_{1}+M_{2})+M_{3}}$ 
-	      \item[$ParAsc1$]
-		$\inferrule* [left=\bf{ParAsc1}]{}{P_{1}|(P_{2}|P_{3})\equiv (P_{1}|P_{2})|P_{3}}$
-	      \item[$SumAsc2$]
-		$\inferrule* [left=\bf{SumAsc2}]{}{(M_{1}+M_{2})+M_{3}\equiv M_{1}+(M_{2}+M_{3})}$
-	      \item[$ParAsc2$]
-		$\inferrule* [left=\bf{ParAsc2}]{}{(P_{1}|P_{2})|P_{3}\equiv P_{1}|(P_{2}|P_{3})}$ 
-	      \item[$ParCom$]
-		$\inferrule* [left=\bf{ParCom}]{}{P_{1}|P_{2}\equiv P_{2}|P_{1}}$ 
-	      \item[$ResCom$]
-	      	$\inferrule* [left=\bf{ResCom}]{}{(\nu x) (\nu y) P \equiv (\nu y) (\nu x) P}$
-      	      \item[$SumCom$]
-		$\inferrule* [left=\bf{SumCom}]{}{M_{1}+M_{2}\equiv M_{2}+M_{1}}$
-	      \item[$ScpExtPar1$]
-		$\inferrule* [left=\bf{ScpExtPar1}]{z\notin fn(P_{1})}{(\nu z) (P_{1}|P_{2}) \equiv P_{1}|(\nu z) P_{2}}$
-	      \item[$ScpExtPar2$]
-		$\inferrule* [left=\bf{ScpExtPar2}]{z\notin fn(P_{1})}{P_{1}|(\nu z) P_{2} \equiv (\nu z) (P_{1}|P_{2})}$ 
-	      \item[$ScpExtSum1$]
-		$\inferrule* [left=\bf{ScpExtSum1}]{z\notin fn(P_{1})}{(\nu z) (P_{1}+P_{2}) \equiv P_{1}+(\nu z) P_{2}}$
-	      \item[$ScpExtSum2$]
-		$\inferrule* [left=\bf{ScpExtSum2}]{z\notin fn(P_{1})}{P_{1}+(\nu z) P_{2} \equiv (\nu z) (P_{1}+P_{2})}$ 
-	      \item[$Ide$]
-		$\inferrule* [left=\bf{Ide}]{A(\tilde{x})\stackrel{def}{=}P}{A(\tilde{w})\equiv P\{\tilde{w}/\tilde{x}\}}$
-	      \item[$Trans$]
-		$\inferrule* [left=\bf{Trans}]{P \equiv Q \\ Q \equiv R}{P \equiv R}$
-	      \item[$Alp$]
-		$\inferrule* [left=\bf{Alp}] {
-		  P \equiv_{\alpha} Q
-		}{
-		  P\equiv Q
-		}$
-	      \item[$Cong1$]
-		$\inferrule* [left=\bf{Cong1}]{P \equiv Q}{C[P] \equiv C[Q]}$
-	      \item[$Cong2$]
-		$\inferrule* [left=\bf{Cong2}]{P_{1} \equiv Q_{1} \\ P_{2} \equiv Q_{2}}{C[P_{1}, P_{2}] \equiv C[Q_{1}, Q_{2}]}$
-	    \end{description}
+	for rule $Out$: $\overline{x}y.P \xrightarrow{\overline{x}y} P$. $P\equiv R$ imply $P\sim_{L}R$.
     \end{description}
   \end{proof}
-\end{proposition}
+\end{lemma}
 
-% 	    \begin{description}
-% 	      \item[$SumAsc1$]
-% 		$\inferrule* [left=\bf{SumAsc1}]{}{M_{1}+(M_{2}+M_{3})\equiv (M_{1}+M_{2})+M_{3}}$ 
-% 	      \item[$ParAsc1$]
-% 		$\inferrule* [left=\bf{ParAsc1}]{}{P_{1}|(P_{2}|P_{3})\equiv (P_{1}|P_{2})|P_{3}}$
-% 	      \item[$SumAsc2$]
-% 		$\inferrule* [left=\bf{SumAsc2}]{}{(M_{1}+M_{2})+M_{3}\equiv M_{1}+(M_{2}+M_{3})}$
-% 	      \item[$ParAsc2$]
-% 		$\inferrule* [left=\bf{ParAsc2}]{}{(P_{1}|P_{2})|P_{3}\equiv P_{1}|(P_{2}|P_{3})}$ 
-% 	      \item[$ParCom$]
-% 		$\inferrule* [left=\bf{ParCom}]{}{P_{1}|P_{2}\equiv P_{2}|P_{1}}$ 
-% 	      \item[$ResCom$]
-% 	      	$\inferrule* [left=\bf{ResCom}]{}{(\nu x) (\nu y) P \equiv (\nu y) (\nu x) P}$
-%       	      \item[$SumCom$]
-% 		$\inferrule* [left=\bf{SumCom}]{}{M_{1}+M_{2}\equiv M_{2}+M_{1}}$
-% 	      \item[$ScpExtPar1$]
-% 		$\inferrule* [left=\bf{ScpExtPar1}]{z\notin fn(P_{1})}{(\nu z) (P_{1}|P_{2}) \equiv P_{1}|(\nu z) P_{2}}$
-% 	      \item[$ScpExtPar2$]
-% 		$\inferrule* [left=\bf{ScpExtPar2}]{z\notin fn(P_{1})}{P_{1}|(\nu z) P_{2} \equiv (\nu z) (P_{1}|P_{2})}$ 
-% 	      \item[$ScpExtSum1$]
-% 		$\inferrule* [left=\bf{ScpExtSum1}]{z\notin fn(P_{1})}{(\nu z) (P_{1}+P_{2}) \equiv P_{1}+(\nu z) P_{2}}$
-% 	      \item[$ScpExtSum2$]
-% 		$\inferrule* [left=\bf{ScpExtSum2}]{z\notin fn(P_{1})}{P_{1}+(\nu z) P_{2} \equiv (\nu z) (P_{1}+P_{2})}$ 
-% 	      \item[$Ide$]
-% 		$\inferrule* [left=\bf{Ide}]{A(\tilde{x})\stackrel{def}{=}P}{A(\tilde{w})\equiv P\{\tilde{w}/\tilde{x}\}}$
-% 	      \item[$Trans$]
-% 		$\inferrule* [left=\bf{Trans}]{P \equiv Q \\ Q \equiv R}{P \equiv R}$
-% 	      \item[$Alp$]
-% 		$\inferrule* [left=\bf{Alp}] {
-% 		  P \equiv_{\alpha} Q
-% 		}{
-% 		  P\equiv Q
-% 		}$
-% 	      \item[$Cong1$]
-% 		$\inferrule* [left=\bf{Cong1}]{P \equiv Q}{C[P] \equiv C[Q]}$
-% 	      \item[$Cong2$]
-% 		$\inferrule* [left=\bf{Cong2}]{P_{1} \equiv Q_{1} \\ P_{2} \equiv Q_{2}}{C[P_{1}, P_{2}] \equiv C[Q_{1}, Q_{2}]}$
-% 	    \end{description}
+\begin{lemma}\label{tauPreservesBisimulation}
+  $\sim_{L}$ is preserved by $\tau$ prefix.
+  \begin{proof}
+    Let $P \sim_{L} Q$. There are two cases:
+    \begin{description}
+      \item[$Tau$]:
+	$\tau.P \xrightarrow{\tau} P \sim_{L} Q \stackrel{\tau}{\leftarrow} \tau.Q$. 
+      \item[$Cong$]:
+	\begin{center}
+	  $\inferrule* [left=\bf{Cong}]{
+	      \inferrule* [left=\bf{CongTau}]{
+		P \equiv R
+	      }{
+		\tau.P \equiv \tau.R
+	      }
+	    \\
+	      \tau.R \xrightarrow{\tau} R
+	  }{
+	    \tau.P \xrightarrow{\tau} R
+	  }$
+	\end{center}
+	for rule $Out$: $\tau.P \xrightarrow{\tau} P$. $P\equiv R$ imply $P\sim_{L}R$.
+    \end{description}
+  \end{proof}
+\end{lemma}
+
+\begin{lemma}\label{bisimulationPreservedByRestrictionSubLemma}
+  Let $y$ be fresh in $P,Q$. If for all $w$: $P\{w/y\} \sim_{L} Q\{w/y\}$ then $((\nu x) P)\{x/y\} \equiv_{\alpha} Res(\sim_{L}) \equiv_{\alpha} ((\nu x) Q)\{x/y\}$.
+  \begin{proof}
+    for all $w$: $P\{w/y\} \sim_{L} Q\{w/y\}$ imply $P\{x/y\} \sim_{L} Q\{x/y\}$ which imply $P\{x/y\} (xy) \sim_{L} Q\{x/y\} (xy)$ where $(xy)$ is the permutation that swaps $x$ with $y$ and does not change other names. $P\{x/y\} (xy) \sim_{L} Q\{x/y\} (xy)$ imply 
+    \begin{center}
+      $P\{y/x\} \equiv_{\alpha} P\{x/y\} (xy) \sim_{L} Q\{x/y\} (xy) \equiv_{\alpha} Q\{y/x\}$ 
+    \end{center}
+    which imply $P\{y/x\} \sim_{L}  Q\{y/x\}$. So $P\{y/x\} \sim_{L}  Q\{y/x\}$ and 
+    \begin{center}
+      $(\nu y)(P\{y/x\}) Res(\sim_{L}) (\nu y)(Q\{y/x\})$ 
+    \end{center}
+    which imply 
+    \begin{center}
+      $((\nu y)P\{y/x\})\{x/y\} Res(\sim_{L}) ((\nu y)Q\{y/x\})\{x/y\}$ 
+    \end{center}
+    and 
+    \begin{center}
+      $((\nu x)P)\{x/y\} \equiv_{\alpha} ((\nu y)P\{y/x\})\{x/y\} Res(\sim_{L}) ((\nu y)Q\{y/x\})\{x/y\} \equiv_{\alpha} ((\nu x)Q)\{x/y\}$
+    \end{center}
+  \end{proof}
+\end{lemma}
+
+
+\begin{lemma}\label{restrictionPreservesBisimulation}
+  Restriction preserves strong late bisimulation.
+  \begin{proof}
+    We prove that 
+    \begin{center}
+      $Res(\sim_{L})=\{((\nu x)P, (\nu x)Q): P\sim_{L} Q\}\cup \sim_{L}$
+    \end{center}
+    is a late bisimulation up to $\alpha$ equivalence. For lemma \ref{structuralCongruenceElimination} and reflexivity of structural congruence we can assume that every transition that starts from $(\nu x)P$ is in the form: $(\nu x)P \equiv S$, $S \xrightarrow{\gamma}S$ and this derivation does not used the rule $Cong$ but can use the commutative counterpart of the rules for sum, parallel and communication. So we can proceed by induction on the sum of the sizes of the derivations of $(\nu x)P\equiv S$ and $S \xrightarrow{\gamma}S$. Then by cases on the last pair of rules used:
+    \begin{description}
+      \item[$(CongRes, Res)$]:
+	\begin{center}
+	  \begin{tabular}{ll}
+	      $\inferrule* [left=\bf{CongRes}]{
+		  P \equiv P_{1}
+	      }{
+		(\nu x)P \equiv (\nu x)P_{1}
+	      }$
+	    &
+	      $\inferrule* [left=\bf{Res}]{
+		  P_{1} \xrightarrow{\gamma} P_{1}^{'}
+		\\
+		  x\notin n(\gamma)
+	      }{
+		(\nu x)P_{1} \xrightarrow{\gamma} (\nu x)P_{1}^{'}
+	      }$	      
+	  \end{tabular}
+	\end{center}
+	$P \equiv P_{1}$ and $P_{1} \xrightarrow{\gamma} P_{1}^{'}$ imply $P \xrightarrow{\gamma} P_{1}^{'}$. $P \sim_{L}$ and $P \xrightarrow{\gamma} P_{1}^{'}$ imply $Q \xrightarrow{\gamma} Q_{1}^{'}$ and the conditions of bisimulation on $P_{1}^{'}$ and $Q_{1}^{'}$ are met. For rule $Res$: $(\nu x)Q \xrightarrow{\gamma} (\nu x)Q_{1}^{'}$. There are three cases now:
+	\begin{itemize}
+	  \item 
+	    $\gamma$ is a sequence of bound outputs: $\widetilde{\overline{y}(z)}$. In this case for all $\tilde{w}$ such that $x\notin \tilde{w}$: $P_{1}^{'}\{\tilde{w}/\tilde{z}\}\sim_{L} Q_{1}^{'}\{\tilde{w}/\tilde{z}\}$ which imply $(\nu x)(P_{1}^{'}\{\tilde{w}/\tilde{z}\}) Res(\sim_{L}) (\nu x)(Q_{1}^{'}\{\tilde{w}/\tilde{z}\})$. For definition of substitution: $((\nu x)P_{1}^{'})\{\tilde{w}/\tilde{z}\} Res(\sim_{L}) ((\nu x)Q_{1}^{'})\{\tilde{w}/\tilde{z}\}$.
+	  \item 
+	    $\gamma$ is a sequence of bound outputs: $\widetilde{\overline{y}(z)}$. In this case for all $\tilde{w}$ such that $x\in \tilde{w}$: $P_{1}^{'}\{\tilde{w}/\tilde{z}\}\sim_{L} Q_{1}^{'}\{\tilde{w}/\tilde{z}\}$ which imply $(\nu x)(P_{1}^{'}\{\tilde{w}/\tilde{z}\}) Res(\sim_{L}) (\nu x)(Q_{1}^{'}\{\tilde{w}/\tilde{z}\})$. For definition of substitution and lemma \ref{bisimulationPreservedByRestrictionSubLemma}:
+	    \begin{center}
+	      $((\nu x^{'})P_{1}^{'}\{x^{'}/x\})\{\tilde{w}/\tilde{z}\} Res(\sim_{L})^{\equiv_{\alpha}} ((\nu x^{'})Q_{1}^{'}\{x^{'}/x\})\{\tilde{w}/\tilde{z}\}$
+	    \end{center}
+	  \item
+	    $\gamma$ is an action and not a bound output. In this case $P_{1}^{'}\sim_{L} Q_{1}^{'}$ and $(\nu x)(P_{1}^{'}) Res(\sim_{L}) (\nu x)(Q_{1}^{'})$.
+	\end{itemize}
+      \item[$(CongRes, Opn)$] similar.
+      \item[$(Alp, Res)(1)$]:
+	\begin{center}
+	  \begin{tabular}{ll}
+	      $\inferrule* [left=\bf{AlpRes}]{
+		  P \equiv_{\alpha} P_{1}
+	      }{
+		(\nu x)P \equiv_{\alpha} (\nu x)P_{1}
+	      }$
+	    &
+	      $\inferrule* [left=\bf{Res}]{
+		  P_{1} \xrightarrow{\gamma} P_{1}^{'}
+		\\
+		  x\notin n(\gamma)
+	      }{
+		(\nu x)P_{1} \xrightarrow{\gamma} (\nu x)P_{1}^{'}
+	      }$	      
+	  \end{tabular}
+	\end{center}
+	$P \equiv_{\alpha} P_{1}$ imply $P \equiv P_{1}$ and this case is similar to $(CongRes, Res)$.
+      \item[$(Alp, Res)(2)$]:
+	\begin{center}
+	  \begin{tabular}{ll}
+	      $\inferrule* [left=\bf{AlpRes}]{
+		  P \equiv_{\alpha} P_{1}
+		\\
+		  y\notin fn(P_{1},Q)
+	      }{
+		(\nu x)P \equiv_{\alpha} (\nu y)(P_{1}\{y/x\})
+	      }$
+	    &
+	      $\inferrule* [left=\bf{Res}]{
+		  P_{1}\{y/x\} \xrightarrow{\gamma} P_{1}^{'}
+		\\
+		  y\notin n(\gamma)
+	      }{
+		(\nu y)P_{1}\{y/x\} \xrightarrow{\gamma} (\nu y)P_{1}^{'}
+	      }$	      
+	  \end{tabular}
+	\end{center}
+	$y\notin fn(P_{1})$ and $(xy)$ is a permutation that swaps $x$ with $y$ imply that $P_{1}\{y/x\}\equiv_{\alpha} P_{1}(xy)$. $P\sim_{E}Q$ and $P\equiv_{\alpha}P_{1}$ imply $P_{1}\sim_{E} Q$. $P_{1}\sim_{E} Q$ imply $P_{1}(xy) \sim_{E} Q(xy)$. $P_{1}(xy) \sim_{E} Q(xy)$ and $P_{1}\{y/x\}\equiv_{\alpha} P_{1}(xy)$ imply $P_{1}\{y/x\}\sim_{E} Q(xy)$. $y\notin fn(Q)$ imply $Q\sim_{E} Q(xy)$. $Q\sim_{E} Q(xy)$ and $P_{1}\{y/x\}\sim_{E} Q(xy)$ imply $P_{1}\{y/x\}\sim_{E} Q$. So $Q \xrightarrow{\gamma} Q_{1}^{'}$ and $Q_{1}^{'}\sim_{E} P_{1}^{'}$. For rule $Res$: $(\nu x)Q \xrightarrow{\gamma} (\nu x)Q_{1}^{'}$ and $(\nu x)Q_{1}^{'} Res(\sim_{E}) (\nu x)P_{1}^{'}$.
+      \item[$(Alp, Opn)$] similar.
+      \item[$(ScpExtPar1, \_)$] 
+	rule $ScpExtPar1$ is emulated by $ScpExtPar2$ and commutativity.
+      \item[$(ScpExtSum1, \_)$] 
+	rule $ScpExtSum1$ is emulated by $ScpExtSum2$ and commutativity.
+    \end{description}
+  \end{proof}
+\end{lemma}
+
+\begin{lemma}\label{sumPreservesBisimulation}
+  $\sim_{L}$ is preserved by sum.
+  \begin{proof}
+    For lemma \ref{structuralCongruenceElimination} and reflexivity of structural congruence we can assume that every transition that starts from $P+R$ is in the form: $P+R\equiv S$, $S \xrightarrow{\gamma}S$ and this derivation does not used the rule $Cong$ but can use the commutative counterpart of the rules for sum, parallel and communication. So we can proceed by induction on the sum of the sizes of the derivations of $P+R\equiv S$ and $S \xrightarrow{\gamma}S$. Then by cases on the last pair of rules used:
+    \begin{description}
+      \item[$(CongSum, SumL)$]:
+	\begin{center}
+	  \begin{tabular}{ll}
+	      $\inferrule* [left=\bf{CongSum}]{
+		  P \equiv P_{1}
+		\\
+		  R \equiv R_{1}
+	      }{
+		P+R \equiv P_{1}+R_{1}
+	      }$
+	    &
+	      $\inferrule* [left=\bf{SumL}]{
+		  P_{1} \xrightarrow{\gamma} P_{1}^{'}
+	      }{
+		P_{1}+R_{1} \xrightarrow{\gamma} P_{1}^{'}
+	      }$	      
+	  \end{tabular}
+	\end{center}
+	$P \equiv P_{1}$ and $P_{1} \xrightarrow{\gamma} P_{1}^{'}$ imply $P \xrightarrow{\gamma} P_{1}^{'}$. $P \sim_{L} Q$ and $P \xrightarrow{\gamma} P_{1}^{'}$ imply $Q \xrightarrow{\gamma} Q_{1}^{'}$ and the condition of late bisimulation on $P_{1}^{'}$ and $Q_{1}^{'}$ are met. For rule $SumL$: $Q+R \xrightarrow{\gamma} Q_{1}^{'}$
+      \item[$(CongSum, SumR)$]:
+	\begin{center}
+	  \begin{tabular}{ll}
+	      $\inferrule* [left=\bf{CongSum}]{
+		  P \equiv P_{1}
+		\\
+		  R \equiv R_{1}
+	      }{
+		P+R \equiv P_{1}+R_{1}
+	      }$
+	    &
+	      $\inferrule* [left=\bf{SumR}]{
+		  R_{1} \xrightarrow{\gamma} R_{1}^{'}
+	      }{
+		P_{1}+R_{1} \xrightarrow{\gamma} R_{1}^{'}
+	      }$	      
+	  \end{tabular}
+	\end{center}
+	$R \equiv R_{1}$ and $R_{1} \xrightarrow{\gamma} P_{1}^{'}$ imply $R \xrightarrow{\gamma} R_{1}^{'}$. For rule $SumR$: $Q+R \xrightarrow{\gamma} R_{1}^{'}$
+      \item[$(ScpExtSum2, Res)(1)$]:
+	\begin{center}
+	  \begin{tabular}{ll}
+	      $\inferrule* [left=\bf{ScpExtSum2}]{
+		  P \equiv P_{1}
+		\\
+		  R \equiv R_{1}
+	      }{
+		P+(\nu x)R \equiv (\nu x)(P_{1}+R_{1})
+	      }$
+	    &
+	      $\inferrule* [left=\bf{Res}]{
+		  \inferrule* [left=\bf{SumL}]{
+		    P_{1} \xrightarrow{\gamma} P_{1}^{'}
+		  }{
+		    P_{1}+R_{1} \xrightarrow{\gamma} P_{1}^{'}
+		  }
+		\\
+		  x\notin n(\gamma)
+	      }{
+		(\nu x)(P_{1}+R_{1}) \xrightarrow{\gamma} (\nu x)P_{1}^{'}
+	      }$	      
+	  \end{tabular}
+	\end{center}
+	$P\equiv P_{1}$ and $P_{1} \xrightarrow{\gamma} P_{1}^{'}$ imply $P \xrightarrow{\gamma} P_{1}^{'}$. $P \sim_{L} Q$ and $P \xrightarrow{\gamma} P_{1}^{'}$ imply $Q \xrightarrow{\gamma} Q_{1}^{'}$ and the conditions of late bisimulation on $P_{1}^{'}$ and $Q_{1}^{'}$ are met. For rule $SumL$: $Q+(\nu x)R \xrightarrow{\gamma} Q_{1}^{'}$. For rules $Cong$ and $ScpExtSum2$: $(\nu x)(Q+R) \xrightarrow{\gamma} (\nu x)Q_{1}^{'}$. Also the conditions of late bisimulation on $(\nu x)P_{1}^{'}$ and $(\nu x)Q_{1}^{'}$ are met since for lemma \ref{restrictionPreservesBisimulation} restriction preserves late bisimulation.
+      \item[$(ScpExtSum2, Res)(2)$]:
+	\begin{center}
+	  \begin{tabular}{ll}
+	      $\inferrule* [left=\bf{ScpExtSum2}]{
+		  P \equiv P_{1}
+		\\
+		  R \equiv R_{1}
+	      }{
+		P+(\nu x)R \equiv (\nu x)(P_{1}+R_{1})
+	      }$
+	    &
+	      $\inferrule* [left=\bf{Res}]{
+		  \inferrule* [left=\bf{SumR}]{
+		    R_{1} \xrightarrow{\gamma} R_{1}^{'}
+		  }{
+		    P_{1}+R_{1} \xrightarrow{\gamma} R_{1}^{'}
+		  }
+		\\
+		  x\notin n(\gamma)
+	      }{
+		(\nu x)(P_{1}+R_{1}) \xrightarrow{\gamma} (\nu x)R_{1}^{'}
+	      }$	      
+	  \end{tabular}
+	\end{center}
+	For rules $SumR$, $Cong$ and $ScpExtSum2$: $(\nu x)(Q+R) \xrightarrow{\gamma} (\nu x)Q_{1}^{'}$ and the conditions of late bisimulation on $(\nu x)P_{1}^{'}$ and $(\nu x)Q_{1}^{'}$ are met.
+      \item[$(ScpExtSum2, Opn)$] 
+	similar.
+      \item[$(ScpExtSum1, \_)$] 
+	rule $ScpExtSum1$ is emulated by $ScpExtSum2$ and commutativity.    
+      \item[$(Alp, \_)$] 
+% 	$P \equiv_{\alpha} P_{1}$ and $P_{1} \xrightarrow{\gamma} P_{1}^{'}$ imply $P \xrightarrow{\gamma} P_{1}^{'}$. $P\sim_{L}$ and $P \xrightarrow{\gamma} P_{1}^{'}$ imply $Q \xrightarrow{\gamma} Q_{1}^{'}$. 
+    \end{description}
+  \end{proof}
+\end{lemma}
+
+\begin{lemma}
+  Parallel composition preserves late bisimilarity.
+  \begin{proof}
+    
+  \end{proof}
+\end{lemma}
+
+
+\begin{lemma}
+  $\sim_{L}$ is not preserved by input prefix and strong input prefix.
+  \begin{proof}
+    
+  \end{proof}
+\end{lemma}
+
+
+\begin{theorem}
+  $\sim_{L}$ is preserved by all operators except input prefix.
+  \begin{proof}
+    
+  \end{proof}
+\end{theorem}
+
+
+\subsection{Open bisimulation}
+
+
+Let $\rightarrow_{L}$ be the semantic defined in table \ref{multipisoloinputlatewith} the following is an attempt to extend the definition of strong open bisimulation found in \cite{parrow}:
+\begin{definition}
+  An \emph{strong open $\mathbb{D}$ bisimulation} is $\{S_{D}\}_{D\in \mathbb{D}}$ a family of symmetric binary relations on processes such that for each process $P, Q$, for each distinction $D\in \mathbb{D}$, for each name substitution $\sigma$ which respects $D$ if $P S_{D} Q$ then
+   \begin{itemize}
+    \item 
+      if $P\sigma \xrightarrow{\overline{a}(x)}_{L} P^{'}$ and $x$ is fresh then there exists $Q^{'}$ such that $Q\sigma \xrightarrow{\overline{a}(x)}_{L} Q^{'}$ and $P^{'} S_{D^{'}} Q^{'}$ where $D^{'}=D\sigma \cup \{x\}\times (fn(P\sigma)\cup fn(Q\sigma)) \cup  (fn(P\sigma)\cup fn(Q\sigma))\times\{x\}$
+    \item
+      if $P\sigma \xrightarrow{\gamma}_{L} P^{'}$ and $bn(\gamma)$ is fresh then there exists $Q^{'}$ such that $Q\sigma \xrightarrow{\gamma}_{L} Q^{'}$ and $P^{'} S_{D\sigma} Q^{'}$
+  \end{itemize}
+  $P$ and $Q$ are \emph{(strongly) open $\mathbb{D}$ bisimilar}, written $P \sim_{O}^{\mathbb{D}} Q$ if there exists a member $S_{D}$ of an open bisimulation such that $P S_{D} Q$. They are \emph{open bisimilar} if they are open $\mathbb{D}$ bisimilar and $\emptyset \in \mathbb{D}$, written $P \dot{\sim}_{O} D$.
+\end{definition}
+
+% \begin{definition}
+%   Let $Sem_{0}$ be the set of all process with empty semantic. Then we define $\sim_{O}^{0}$ as $(Sem_{0})^{2}$ plus all the pair $(P,Q)$ of processes such that: $P\xrightarrow{\gamma}P$ imply $Q\xrightarrow{\gamma}Q$ and vice versa. Then we define $\sim_{O}^{i+1}$ as the set of pairs $(P,Q)$ such that
+% 
+% DOVE VOGLIO ARRIVARE?  
+% 
+%   An \emph{strong open $\mathbb{D}$ bisimulation} is $\{S_{D}\}_{D\in \mathbb{D}}$ a family of symmetric binary relations on processes such that for each process $P, Q$, for each distinction $D\in \mathbb{D}$, for each name substitution $\sigma$ which respects $D$ if $P S_{D} Q$ then
+%    \begin{itemize}
+%     \item 
+%       if $P\sigma \xrightarrow{\overline{a}(x)}_{L} P^{'}$ and $x$ is fresh then there exists $Q^{'}$ such that $Q\sigma \xrightarrow{\overline{a}(x)}_{L} Q^{'}$ and $P^{'} S_{D^{'}} Q^{'}$ where $D^{'}=D\sigma \cup \{x\}\times (fn(P\sigma)\cup fn(Q\sigma)) \cup  (fn(P\sigma)\cup fn(Q\sigma))\times\{x\}$
+%     \item
+%       if $P\sigma \xrightarrow{\gamma}_{L} P^{'}$ and $bn(\gamma)$ is fresh then there exists $Q^{'}$ such that $Q\sigma \xrightarrow{\gamma}_{L} Q^{'}$ and $P^{'} S_{D\sigma} Q^{'}$
+%   \end{itemize}
+%   $P$ and $Q$ are \emph{(strongly) open $\mathbb{D}$ bisimilar}, written $P \sim_{O}^{\mathbb{D}} Q$ if there exists a member $S_{D}$ of an open bisimulation such that $P S_{D} Q$. They are \emph{open bisimilar} if they are open $\{\emptyset\}$ bisimilar, written $P \dot{\sim}_{O} D$.
+% \end{definition}
+
+
+\begin{lemma}
+  $P\sim_{O} Q$ imply $P\sim_{O}^{\mathbb{D}} Q$.
+  \begin{proof}
+    For definition $P\sim_{O} Q$ imply that there exists a $\mathbb{D}$ such that $P\sim_{O}^{\mathbb{D}} Q$.
+  \end{proof}
+\end{lemma}
+
+\begin{lemma}
+  Output prefixing preserves open $\mathbb{D}$ bisimulation.
+  \begin{proof}
+    Let $\mathbb{S}=\{S_{D}\}_{D\in \mathbb{D}}$ be an open $\mathbb{D}$ bisimulation and let $P S_{D} Q$ for some $D\in \mathbb{D}$. Then the goal is to prove that: $(\overline{x}y.P)\sigma S_{D\sigma} (\overline{x}y.Q)\sigma$. There are two cases according to the last rule that can be applied to $(\overline{x}y.P)\sigma$:
+    \begin{description}
+      \item[$Out$]:
+	$(\overline{x}y.P)\sigma \xrightarrow{(\overline{x}y)\sigma} P\sigma ? Q\sigma \stackrel{(\overline{x}y)\sigma}{\longleftarrowA} (\overline{x}y.Q)\sigma$
+	E POI?
+      \item[$Cong$] 
+	the last part of the derivation look like this:
+	\begin{center}
+	  $\inferrule* [left=\bf{Cong}]{
+	      \inferrule* [left=\bf{CongOut}]{
+		P \equiv R
+	      }{
+		\overline{x}y.P \equiv \overline{x}y.R
+	      }
+	    \\
+	      \inferrule* [left=\bf{Out}]{
+	      }{
+		\overline{x}y.R \xrightarrow{\overline{x}y} R
+	      }
+	  }{
+	    \overline{x}y.P \xrightarrow{\overline{x}y} R
+	  }$
+	\end{center}
+	For rule $Out$: $\overline{x}y.Q \xrightarrow{\overline{x}y} Q$. $P\equiv R$ imply $P \sim_{O}$
+    \end{description}
+  \end{proof}
+\end{lemma}
+
+
+
+\begin{theorem}
+  $P \sim_{O}^{D} Q$ is a congruence.
+  \begin{proof}
+    
+  \end{proof}
+\end{theorem}
 
 
 % 
