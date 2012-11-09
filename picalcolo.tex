@@ -2097,9 +2097,8 @@ In the proof of equivalence of the semantics in the next section we need the fol
 % 
 % 
 % 
-\section{Operational semantic with structural congruence}
 
-\subsection{Early semantic with $\alpha$ conversion only}
+\section{Early semantic with $\alpha$ conversion only}
 In this subsection we introduce the early operational semantic for $\pi$ calculus with the use of a minimal structural congruence, specifically we exploit only the easy of $\alpha$ conversion.
 
 \begin{definition}
@@ -2270,6 +2269,7 @@ The following example shows why the condition $bn(\alpha)\cap fn(Q)=\emptyset$ i
 \end{example}
 
 
+\section{Operational semantic with structural congruence}
 
 \subsection{Early semantic with structural congruence}
 
@@ -2578,9 +2578,19 @@ The following example shows why the condition $bn(\alpha)\cap fn(Q)=\emptyset$ i
 \end{example}
 
 
+\subsection{Permutation semantic}
+We can define an early permutation semantic just as the semantic in table \ref{earlysemanticwithstructuralcongruence} but the rule $EInp$ is replaced by the following rule
+\begin{center}
+  $\inferrule* [left=\bf{EInpPerm}]{
+    z\notin fn(P)
+  }{
+    x(y).P \xrightarrow{xz} P(zy)
+  }$
+\end{center}
+where $(zy)$ is a permutation of names that swaps $z$ with $y$ but does not alter other names. If we modify the rule $EInp$ in table \ref{earlysemanticwithstructuralcongruence} by adding the premise $z\notin fn(P)$ then: $P\xrightarrow{\gamma}P^{'}$ if and only if $P\xrightarrow{\gamma}P^{''}$ in the permutation semantic and $P^{'}\equiv_{\alpha}P^{''}$.
 
 \section{Equivalence of the semantics}
-\subsection{Equivalence of the early semantics}
+\subsection{Equivalence of the early semantics}\label{equivalenceOfEarlySemantics}
 In this subsection we write $\rightarrow_{1}$ for the early semantic without structural congruence, $\rightarrow_{2}$ for the early semantic with just $\alpha$ conversion and $\rightarrow_{3}$ for the early semantic with the full structural congruence. We call $R_{1}$ the set of rules for $\rightarrow_{1}$, $R_{2}$ the set of rules for $\rightarrow_{2}$ and $R_{3}$ the set of rules for $\rightarrow_{3}$. 
 
 
@@ -4628,6 +4638,379 @@ but there is no way to prove that $(\nu x)(\tau.0+Q) \xrightarrow{\tau}_{2} a(b)
 % 
 \subsection{Equivalence of the late semantics}
 
+\section{Normal form}
+
+\begin{definition}
+  Let $(\nu x)Q$ be an occurrence in a process $P$, i.e., there is a context $C[\_]$ such that $C[(\nu x)Q]=P$. We say that this occurrence is \emph{guarded} if it occurs right inside a prefix. Otherwise we say that the occurrence is \emph{unguarded}. More formally the occurrence $(\nu x)Q$ is \emph{guarded} in $P$ if there is a context $C[\_]$, an action prefixing $\alpha$ and names $\tilde{y}$ such that $P=C[\alpha.(\nu \tilde{y})(\nu x)Q]$
+\end{definition}
+
+\begin{definition}
+  We say that a process is in \emph{normal form} if all bound names are distinct and all unguarded restrictions are at the top level, i.e., of the form $(\nu \tilde{x})P$ where $P$ has no unguarded restrictions, note that $\tilde{x}$ can eventually be empty. If a process $P$ is in normal form, we write for short $P$ n.f.. 
+\end{definition}
+
+\begin{lemma}[Existence of a normal form]\label{existenceOfNormalForm}
+  Every process is structurally congruent to a process in normal form(but this process is not unique).
+  \begin{proof}
+    Let $P$ be a process. We have to show that there exists a process $N$ such that $P \equiv N$ and $N$ is in normal form. We prove this by structural induction on $P$:
+    \begin{description}
+      \item[$0$] 
+	in this case $P=0$ is already in normal form.
+      \item[$\alpha.P_{1}$] 
+	for inductive hypothesis there exists a process $N$ such that $P_{1} \equiv N$ and $N$ is in normal form. Then $\alpha.P_{1} \equiv \alpha.N$ and $\alpha.N$ is in normal form.
+      \item[$P_{1}+P_{2}$]
+	for inductive hypothesis there exist processes $N_{1}$ and $N_{2}$ such that $P_{1} \equiv N_{1}$, $P_{2} \equiv N_{2}$ and $N_{1}, N_{2}$ are in normal form. If $N_{1}$ or $N_{2}$ have unguarded restrictions at the top level then $N_{1}+N_{2}$ is not in normal form but we can move the restrictions up to the top level using $\alpha$ equivalence and the rule 
+	\begin{center}
+	  \begin{tabular}{ll}
+	      $(\nu x)(P+Q) \equiv P + (\nu x)Q$ 
+	    &
+	      if $x\notin fn(P)$
+	  \end{tabular}
+	\end{center}
+	and we get something that is in normal form and structurally equivalent to $N_{1}+N_{2}$ and so to $P_{1}+P_{2}$.
+      \item[$P_{1}|P_{2}$] similar.
+      \item[$(\nu x)P_{1}$] 
+	for inductive hypothesis there exists a process $N$ such that $P_{1} \equiv N$ and $N$ is in normal form. $(\nu x)N$ is in normal form and it is structurally congruent to $P$.
+    \end{description}
+  \end{proof}
+\end{lemma}
+
+% \begin{lemma}[Weak reduction to normal form]\label{mapToNormalForm}
+%   Let $\equiv_{2}$ be the smallest congruence induced by the rules for scope extrusion and for $\alpha$ equivalence. $P \xrightarrow{\gamma}_{3} Q$ imply that there exist $N$ in normal form such that $P\equiv_{2} N$, $N \xrightarrow{\gamma}_{2} M$, $M\equiv Q$ and the derivation of $N \xrightarrow{\gamma}_{2} M$ does not use the rules for scope closure.
+%   \begin{proof}
+%     The proof is by induction on the derivation of $P \xrightarrow{\gamma} Q$. The last rule used can be:
+%     \begin{description}
+%       \item[$Out$]
+% 	$\overline{x}y.P \xrightarrow{\overline{x}y} P$. For lemma \ref{existenceOfNormalForm}: there exists a process $N$ in normal form such that $P \equiv N$. For rule $Out$: $\overline{x}y.N \xrightarrow{\overline{x}y} N$. It also holds that $\overline{x}y.P$ is structurally congruent to $ \overline{x}y.N$ and that $\overline{x}y.N$ is in normal form.
+%       \item[$Tau$] similar.
+%       \item[$EInp$]
+% 	$x(y).P \xrightarrow{xz} P\{z/y\}$. For lemma \ref{existenceOfNormalForm}: there exists a process $N$ in normal form such that $P \equiv N$ so:
+% 	\begin{center}
+% 	  \begin{tabular}{ll}
+% 	    $\inferrule* {
+% 	      P \equiv N
+% 	    }{
+% 	      x(y).P \equiv x(y).N
+% 	    }$
+% 	  &
+% 	    $\inferrule* [left=\bf{EInp}]{
+% 	    }{
+% 	      x(y).N \xrightarrow{xz} N\{z/y\}
+% 	    }$
+% 	  \end{tabular}
+% 	\end{center}
+% 	and $x(y).N$ is a normal form.
+%       \item[$SInp$]:
+% 	\begin{center}	
+% 	  $\inferrule* [left=\bf{SInp}]{
+% 	      P \xrightarrow{\gamma} P^{'}
+% 	  }{
+% 	    \underline{x(y)}.P \xrightarrow{x(y) \cdot \gamma} P^{'}
+% 	  }$
+% 	\end{center}
+% 	for inductive hypothesis there exist processes $N,N^{'}$ in normal form such that $P \equiv_{2} N$, $N \xrightarrow{\gamma} N^{'}$ and $N^{'} \equiv P^{'}$. So:
+% 	\begin{center}
+% 	  \begin{tabular}{ll}
+% 	      $\inferrule* {
+% 		P \equiv_{2} N
+% 	      }{
+% 		\underline{x(y)}.P \equiv_{2} \underline{x(y)}.N
+% 	      }$
+% 	    &
+% 	      $\inferrule* [left=\bf{SInp}]{
+% 	      }{
+% 		\underline{x(y)}.N \xrightarrow{x(y) \cdot \gamma} N^{'}
+% 	      }$
+% 	  \end{tabular}
+% 	\end{center}
+%       \item[$LComSeq$]:
+% 	\begin{center}
+% 	  $\inferrule* [left=\bf{LComSeq}]{
+% 	      P \xrightarrow{x(y) \cdot \gamma} P^{'}
+% 	    \\
+% 	      Q \xrightarrow{\overline{x}z} Q^{'}
+% 	    \\
+% 	      bn(\gamma) \cap fn(Q) = \emptyset
+% 	  }{
+% 	    P|Q \xrightarrow{\gamma\{z/y\}} P^{'}\{z/y\}|Q
+% 	  }$
+% 	\end{center}
+% 	for inductive hypothesis there exist processes $N,N^{'},M,M^{'}$ such that $N,M$ are normal forms, $P \equiv_{2} N$, $N \xrightarrow{x(y) \cdot \gamma} N^{'}$, $N^{'} \equiv P^{'}$, $Q \equiv M$, $M \xrightarrow{\overline{x}z} M^{'}$ and $M^{'} \equiv Q^{'}$. So:
+% 	\begin{center}	
+% 	  \begin{tabular}{ll}
+% 	      $\inferrule* {
+% 		  P \equiv_{2} N
+% 		\\
+% 		  Q \equiv_{2} M
+% 	      }{
+% 		P|Q \equiv_{2} N|M
+% 	      }$
+% 	    &
+% 	      $\inferrule* [left=\bf{LComSeq}]{
+% 		  N \xrightarrow{x(y) \cdot \gamma} N^{'}
+% 		\\
+% 		  M \xrightarrow{\overline{x}z} M^{'}
+% 		\\
+% 		  bn(\gamma) \cap fn(Q) = \emptyset
+% 	      }{
+% 		N|M \xrightarrow{\gamma\{z/y\}} N^{'}\{z/y\}|M^{'}
+% 	      }$
+% 	  \end{tabular}
+% 	\end{center}
+% 	If $N|M$ is not a normal form then $N$ or $M$ have unguarded restrictions at the top level, for scope extension rules there is a normal form structurally equivalent to $N|M$ and the conclusion holds because of rule $Cong$.
+%       \item[$LCom$] similar.
+%       \item[$Par$]:
+% 	\begin{center}	
+% 	  $\inferrule* [left=\bf{Par}]{
+% 	      P \xrightarrow{\gamma} P^{'}
+% 	    \\
+% 	      bn(\gamma) \cap fn(Q) = \emptyset
+% 	  }{
+% 	    P|Q \xrightarrow{\gamma} P^{'}|Q
+% 	  }$
+% 	\end{center}
+% 	for inductive hypothesis there exist processes $N,N^{'}$ in normal form such that $P \equiv N$, $N \xrightarrow{\gamma} N^{'}$, $N^{'} \equiv P^{'}$. So
+% 	\begin{center}
+% 	  \begin{tabular}{ll}
+% 	    $\inferrule* {
+% 	      P \equiv N
+% 	    }{
+% 	      P|Q \equiv N|Q
+% 	    }$
+% 	  &  
+% 	    $\inferrule* [left=\bf{Par}]{
+% 		N \xrightarrow{\gamma} N^{'}
+% 	      \\
+% 		bn(\gamma) \cap fn(Q) = \emptyset
+% 	    }{
+% 	      N|Q \xrightarrow{\gamma} N^{'}|Q
+% 	    }$
+% 	  \end{tabular}
+% 	\end{center}
+% 	
+%       \item[$Sum$] similar.
+%       \item[$Cong$]:
+% 	\begin{center}	
+% 	  $\inferrule* [left=\bf{Cong}]{
+% 	      P \equiv Q
+% 	    \\
+% 	      Q \xrightarrow{\gamma} Q^{'}
+% 	  }{
+% 	    P \xrightarrow{\gamma} Q^{'}
+% 	  }$
+% 	\end{center}
+% 	for inductive hypothesis there exist processes $N,N^{'}$ in normal form such that $Q \equiv N$, $N \xrightarrow{\gamma} N^{'}$, $N^{'} \equiv Q^{'}$. For transitivity $P \equiv N$.
+%       \item[$Res$]:
+% 	\begin{center}	
+% 	  $\inferrule* [left=\bf{Res}]{
+% 	      P \xrightarrow{\gamma} P^{'}
+% 	    \\
+% 	      x\notin n(\gamma)
+% 	  }{
+% 	    (\nu x)P \xrightarrow{\gamma} (\nu x)P^{'}
+% 	  }$
+% 	\end{center}
+% 	for inductive hypothesis there exist processes $N,N^{'}$ in normal form such that $P \equiv N$, $N \xrightarrow{\gamma} N^{'}$, $N^{'} \equiv P^{'}$. So:
+% 	\begin{center}
+% 	  \begin{tabular}{ll}
+% 	    $\inferrule* {
+% 	      P \equiv N
+% 	    }{
+% 	      (\nu x)P \equiv (\nu x)N
+% 	    }$
+% 	  &  
+% 	    $\inferrule* [left=\bf{Res}]{
+% 		N \xrightarrow{\gamma} N^{'}
+% 	      \\
+% 		x\notin n(\gamma)
+% 	    }{
+% 	      (\nu x)N \xrightarrow{\gamma} (\nu x)N^{'}
+% 	    }$
+% 	  \end{tabular}
+% 	\end{center}
+%       \item[$Opn$] similar.
+%     \end{description}
+%   \end{proof}
+% \end{lemma}
+
+% \begin{lemma}
+%   If $P \xrightarrow{\gamma} Q$ then there exist processes $N,M$ in normal form such that $P\equiv N$, $N \xrightarrow{\gamma} M$, $Q\equiv M$ and the inference tree of $N \xrightarrow{\gamma} M$ is not deeper than the one of $P \xrightarrow{\gamma} Q$.
+%   \begin{proof}
+%     this lemma follows from lemma \ref{existenceOfNormalForm} and lemma \ref{mapToNormalForm}.
+%   \end{proof}
+% \end{lemma}
+
+% \begin{proposition}\label{moveCongDownNorm}
+%   Suppose that we replace the rules $LInp$ and $SInp$ with the following:
+%   \begin{center}
+%     $\inferrule* [left=\bf{Inp}]{
+%       n \geq 0
+%     }{
+%       \underline{x_{1}(y_{1})}.\; \ldots\; .\underline{x_{n}(y_{n})}.z(w).P 
+% 	\xrightarrow{\widetilde{x(y)} \cdot z(w)} 
+% 	  P
+%     }$
+%   \end{center}
+%   then the semantic does not change. Also if $P\xrightarrow{\sigma} Q$ then there exist processes $N,R$ such that: $P \equiv N\stackrel{\sigma}{\twoheadrightarrow} R \equiv M$ and $N$ is in normal form.
+%   SARA' VERO?
+%   \begin{proof}
+%     The proof is an induction on the depth of $P\xrightarrow{\sigma} Q$. The last rule used can be:
+%     \begin{description}
+%       \item[$Tau$] 
+% 	$P=\tau.P_{1} \xrightarrow{\tau} P_{1}=Q$. For lemma \ref{existenceOfNormalForm} there exists a normal form $N$ such that $\tau.P_{1}\equiv N$. For lemma \ref{inversionLemmaStructNorm} $N=\tau.N_{1}$ and $P_{1}\equiv N_{1}$. So for rule $Tau$: $P \equiv \tau.N_{1}\xrightarrow{\tau} N_{1} \equiv Q$ 
+%       \item[$Inp$]
+% 	$P=\underline{x_{1}(y_{1})}.\; \ldots\; .\underline{x_{n}(y_{n})}.z(w).P_{1}
+% 	  \xrightarrow{x_{1}(y_{1})\cdot \ldots \cdot x_{n}(y_{n})\cdot z(w)} 
+% 	    P_{1}=Q$. For lemma \ref{existenceOfNormalForm} there exists a normal form $N$ such that $P\equiv N$. For lemma \ref{inversionLemmaStructNorm} $N=\underline{x_{1}(y_{1})}.\; \ldots\; .\underline{x_{n}(y_{n})}.z(w).N_{1}$ and $P_{1}\equiv N_{1}$. For rule $Inp$: 
+% 	    $P\equiv \underline{x_{1}(y_{1})}.\; \ldots\; .\underline{x_{n}(y_{n})}.z(w).N_{1}
+% 	      \xrightarrow{x_{1}(y_{1})\cdot \ldots \cdot x_{n}(y_{n})\cdot z(w)} 
+% 		N_{1}\equiv Q$
+%       \item[$Out$] 
+% 	similar.
+%       \item[$Sum$]
+% 	$P=P_{1}+P_{2} \xrightarrow{\gamma} P_{1}^{'}=Q$. non si puo' applicare l'ipotesi induttiva alle premesse della regola sum.
+%     \end{description}
+%   \end{proof}
+% \end{proposition}
+
+
+\begin{definition}
+  The \emph{late transition relation for normal forms} is the smallest relation induced by the rules in table \ref{multipiInpNorm}, written $\rightarrow_{n}$. Every process in the head of transition in the premise of a rule in table \ref{multipiInpNorm} is assumed to be in normal form. Also when we write $(\nu \tilde{x})P$ is a normal form, it means that $P$ has no restriction at the top level.
+  \begin{table}
+    \begin{tabular}{lll}
+	\multicolumn{3}{l}{\line(1,0){415}}
+	\\\\
+	  $\inferrule* [left=\bf{Out}]{
+	  }{
+	    \overline{x}y.P \xrightarrow{\overline{x}y}_{n} P
+	  }$
+	&
+	  $\inferrule* [left=\bf{Tau}]{
+	  }{
+	    \tau.P \xrightarrow{\tau}_{n} P
+	  }$
+	&
+	  $\inferrule* [left=\bf{LInp}]{
+	  }{
+	    x(y).P \xrightarrow{x(y)}_{n} P
+	  }$
+      \\
+      \end{tabular}
+	\\\\
+      \begin{tabular}{l}
+%       \\
+% 	  $\inferrule* [left=\bf{LComSeqL}]{
+% 	      (\nu \tilde{a})P \xrightarrow{x(y)\cdot \sigma}_{n} (\nu \tilde{b})P^{'}
+% 	    \\
+% 	      (\nu \tilde{c})Q \xrightarrow{\overline{x}z}_{n} (\nu \tilde{d})Q^{'}
+%   	    \\
+%    	      bn(\sigma\{z/y\}) \cap fn(Q) = \emptyset
+% 	  }{
+% 	    (\nu \tilde{a} \tilde{c}) (P|Q) \xrightarrow{\sigma\{z/y\}}_{n} (\nu \tilde{b} \tilde{d})(P^{'}\{z/y\}|Q^{'})
+% 	  }$
+%       \\
+      \\
+	  $\inferrule* [left=\bf{LComL}]{
+	      (\nu \tilde{a}) P \xrightarrow{x(y)}_{n} (\nu \tilde{b})P^{'}
+	    \\
+	      (\nu \tilde{c}) Q\xrightarrow{\overline{x}z}_{n} (\nu \tilde{d})Q^{'}
+	  }{
+	    (\nu \tilde{a} \tilde{b})(P|Q) \xrightarrow{\tau}_{n} (\nu \tilde{c} \tilde{d})(P^{'}\{z/y\}|Q^{'})
+	  }$
+%       \\
+% 	  $\inferrule* [left=\bf{LComSeq2}]{
+% 	      (\nu \tilde{a})P \xrightarrow{\overline{x}z}_{n} (\nu \tilde{b})P^{'}
+% 	    \\
+% 	      (\nu \tilde{c})Q \xrightarrow{x(y)\cdot \sigma}_{n} (\nu \tilde{d})Q^{'}
+%   	    \\
+%    	      bn(\sigma)\cap fn(Q) = \emptyset
+% 	  }{
+% 	    (\nu \tilde{a} \tilde{c}) (P|Q) \xrightarrow{\sigma\{z/y\}}_{n} (\nu \tilde{b} \tilde{d})(P^{'}\{z/y\}|Q^{'})
+% 	  }$
+% 	\\
+% 	  $\inferrule* [left=\bf{LCom2}]{
+% 	      (\nu \tilde{a}) P \xrightarrow{\overline{x}z}_{n} (\nu \tilde{b})P^{'}
+% 	    \\
+% 	      (\nu \tilde{c}) Q\xrightarrow{x(y)}_{n} (\nu \tilde{d})Q^{'}
+% 	  }{
+% 	    (\nu \tilde{a} \tilde{b})(P|Q) \xrightarrow{\tau}_{n} (\nu \tilde{c} \tilde{d})(P^{'}\{z/y\}|Q^{'})
+% 	  }$
+      \\
+      \end{tabular}
+	\\\\
+      \begin{tabular}{ll}
+      \\
+	  $\inferrule* [left=\bf{SumL}]{
+	      (\nu \tilde{a}) P \xrightarrow{\sigma}_{n} (\nu \tilde{b})P^{'}
+	    \\
+	      (\nu \tilde{c})Q\; n.\; f.
+	    \\
+	      \tilde{c} \cap n(\sigma) = \emptyset
+	  }{
+	    (\nu \tilde{a} \tilde{c}) (P+Q) \xrightarrow{\sigma}_{n} (\nu \tilde{b} \tilde{c})P^{'}
+	  }$
+	&
+% 	  $\inferrule* [left=\bf{Sum2}]{
+% 	      (\nu \tilde{a})P\; n.\; f.
+% 	    \\
+% 	      (\nu \tilde{b}) Q \xrightarrow{\sigma}_{n} (\nu \tilde{c})Q^{'}
+% 	  }{
+% 	    (\nu \tilde{a} \tilde{c}) (P+Q) \xrightarrow{\sigma}_{n} (\nu \tilde{b} \tilde{c})Q^{'}
+% 	  }$
+      \\
+      \end{tabular}
+	\\
+      \begin{tabular}{ll}
+      \\
+	  $\inferrule* [left=\bf{Res}]{
+	      P \xrightarrow{\sigma}_{n} P^{'}
+	    \\
+	      z\notin n(\sigma)
+	  }{
+	    (\nu z) P \xrightarrow{\sigma}_{n} (\nu z) P^{'}
+	  }$
+	  &
+	  $\inferrule* [left=\bf{Opn}]{
+	      P \xrightarrow{\overline{x}z}_{n} P^{'}
+	    \\ 
+	      z\neq x
+	  }{
+	      (\nu z)P \xrightarrow{\overline{x}(z)}_{n} P^{'}
+	  }$
+      \\
+      \end{tabular}
+	\\
+      \begin{tabular}{l}
+      \\
+	  $\inferrule* [left=\bf{ParL}]{
+	      (\nu \tilde{a}) P \xrightarrow{\sigma}_{n} (\nu \tilde{b})P^{'}
+	    \\
+	      bn(\sigma)\cap fn(Q)=\emptyset
+	    \\
+	      (\nu \tilde{c})Q\; n.f.
+	    \\
+	      \tilde{c} \cap n(\sigma) = \emptyset
+	  }{
+	    (\nu \tilde{a} \tilde{c})(P|Q) \xrightarrow{\sigma}_{n} (\nu \tilde{b} \tilde{c})(P^{'}|Q)
+	  }$
+      \\
+% 	  $\inferrule* [left=\bf{Par2}]{
+% 	      (\nu \tilde{b}) Q \xrightarrow{\sigma}_{n} (\nu \tilde{c})Q^{'}
+% 	    \\
+% 	      bn(\sigma)\cap fn((\nu \tilde{a})P)=\emptyset
+% 	    \\
+% 	      (\nu \tilde{a})P\; n.f.
+% 	    \\
+% 	      \tilde{a} \cap n(\sigma) = \emptyset
+% 	  }{
+% 	    (\nu \tilde{a} \tilde{c})(P|Q) \xrightarrow{\sigma}_{n} (\nu \tilde{b} \tilde{c})(P|Q^{'})
+% 	  }$
+	\\\\\multicolumn{1}{l}{\line(1,0){415}}
+    \end{tabular}
+    \caption{$\pi$ calculus late semantic for normal forms. Every process in the head of a transition in the premise of a rule is in normal form. The restrictions can be empty. When we write $(\nu \tilde{x})P$ n.f. it means that $P$ has no restriction at the top level. Commutative counterpart of rule $ParL$, $SumL$, $EComL$ are omitted. Also in rules for prefix $P$ is a normal form}
+    \label{piNorm}
+  \end{table}
+\end{definition}
+
 
 
 \section{Bisimilarity, congruence and equivalence}
@@ -4695,11 +5078,11 @@ We refer to strong late bisimulation as strong \emph{ground} late bisimulation, 
 \end{proposition}
 
 \begin{definition}
-  Two processes $P$ and $Q$ are \emph{strong late equivalent} written $P\sim_{L}Q$ is for each substitution $\sigma$ $P\sigma \dot{\sim}_{L}Q\sigma$
+  Two processes $P$ and $Q$ are \emph{strong late equivalent} written $P\sim_{L}Q$ if for each substitution $\sigma$ $P\sigma \dot{\sim}_{L}Q\sigma$
 \end{definition}
 
 \begin{example}
-  If $z\notin fn(R)\cup \{x\}$ then $x(y).R \dot{\sim}_{L} (z)x(y).R$
+  If $z\notin (fn(R)\cup \{x\})$ then $x(y).R \dot{\sim}_{L} (z)x(y).R$
 \end{example}
 
 
@@ -4711,10 +5094,52 @@ We refer to strong late bisimulation as strong \emph{ground} late bisimulation, 
 \end{definition}
 
 \begin{definition}
-  Two processes $P$ and $Q$ are \emph{strong early equivalent} written $P\sim_{E}Q$ if for each substitution $\sigma$ $P\sigma \dot{\sim}_{E}Q\sigma$
+  Two processes $P$ and $Q$ are \emph{strong early equivalent} written $P\sim_{E}Q$ if for each substitution $\sigma$: $P\sigma \dot{\sim}_{E}Q\sigma$
 \end{definition}
-
-
+% 
+% \begin{definition}
+%   $\sim_{E}^{0}$ is the identity relation on the set of processes that have an empty semantic. $\sim_{E}^{i+1} \subseteq \mathbf{P}^{2}$ and for all $(P,Q)\in \sim_{E}^{i+1}$ it holds that:
+%   \begin{itemize}
+%     \item 
+%       for all $P\xrightarrow{\gamma}P^{'}$ there exists a process $Q^{'}$ such that $Q\xrightarrow{\gamma}Q^{'}$ and $P^{'}\sim_{E}^{i}Q^{'}$
+%     \item
+%       for all $Q\xrightarrow{\gamma}Q^{'}$ there exists a process $P^{'}$ such that $P\xrightarrow{\gamma}P^{'}$ and $Q^{'}\sim_{E}^{i}P^{'}$
+%   \end{itemize}
+%   then we can define $\sim_{E}^{\omega}=\bigcup_{i\in \mathbb{N}} \sim_{E}^{i}$
+% \end{definition}
+% $\sim_{E}^{\omega}$ is a bisimulation, but it does not hold that $\sim_{E} \subseteq \sim_{E}^{\omega}$ because for example
+% \begin{center}
+%   \begin{tabular}{ll}
+%       $A(x,y)\stackrel{def}{=} \overline{x}y.A$
+%     &
+%       $B(x,y)\stackrel{def}{=} \overline{x}y.B$
+%   \end{tabular}
+% \end{center}
+% It holds that $A \sim_{E} B$ but it does not hold that $A \sim_{E}^{\omega} B$. So we can try a new definition
+% \begin{definition}
+%   Let $Sem_{0}$ be the set of processes that have an empty semantic and let $\mathbb{P}$ be the set of all processes. We define $\sim_{E}^{0}$ as the union of: $(Sem_{0})^{2}$, the identity relation on $\mathbb{P}$ and every pair of processes $(P,Q)$ such that 
+%   \begin{itemize}
+%     \item 
+%       $P\xrightarrow{\gamma}P$ imply $Q\xrightarrow{\gamma}Q$
+%     \item
+%       $Q\xrightarrow{\gamma}Q$ imply $P\xrightarrow{\gamma}P$
+%   \end{itemize} 
+%   $\sim_{E}^{i+1} \subseteq \mathbb{P}^{2}$ and for all $(P,Q)\in \sim_{E}^{i+1}$ it holds that:
+%   \begin{itemize}
+%     \item 
+%       for all $P\xrightarrow{\gamma}P^{'}$ there exists a process $Q^{'}$ such that $Q\xrightarrow{\gamma}Q^{'}$ and $P^{'}\sim_{E}^{i}Q^{'}$
+%     \item
+%       for all $Q\xrightarrow{\gamma}Q^{'}$ there exists a process $P^{'}$ such that $P\xrightarrow{\gamma}P^{'}$ and $Q^{'}\sim_{E}^{i}P^{'}$
+%     \item 
+%       if there exists a cycle $P \xrightarrow{\gamma_{1}} P_{1} \cdots P_{n} \xrightarrow{\gamma_{n}} P$ then there is a cycle $Q \xrightarrow{\gamma_{1}} Q_{1} \cdots Q_{n} \xrightarrow{\gamma_{n}} Q$ and the pairs $(P,Q),(P_{1},Q_{1}),\cdots,(P_{n},Q_{n})$ are in $\sim_{E}^{i}$.
+%     \item 
+%       the symmetric of the previous case.
+%   \end{itemize}
+%   then we can define $\sim_{E}^{\omega}=\bigcup_{i\in \mathbb{N}} \sim_{E}^{i}$
+% \end{definition}
+% 
+% 
+% 
 
 \subsection{Congruence}
 
