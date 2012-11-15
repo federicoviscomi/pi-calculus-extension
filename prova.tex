@@ -1,0 +1,154 @@
+
+
+\begin{definition}
+  Let $\sigma$ be a permutation of names. $\beta,\sigma$ equivalence is the smallest binary relation on processes that satisfies the laws in table \ref{betaequivalence}. In a process $P$ we can assume that all bound names are different. 
+  \begin{table}
+    \begin{tabular}{ll}
+      \multicolumn{2}{l}{\line(1,0){415}}\\\\
+	  $\inferrule*[left=BetaOut]{
+	      P\equiv_{\beta}Q
+	    \\
+	      \sigma
+	  }{
+	      \overline{x}y.P\equiv_{\beta}\overline{z}w.Q
+	    \\
+	      \sigma (xz) (yw)
+	  }$
+	&
+	  $\inferrule*[left=BetaTau]{
+	      P\equiv_{\beta}Q
+	    \\
+	      \sigma
+	  }{
+	      \tau.P\equiv_{\beta}\tau.Q
+	    \\
+	      \sigma
+	  }$
+	\\\\
+	  $\inferrule*[left=BetaInp]{
+	      P\equiv_{\beta}Q
+	    \\
+	      \sigma
+	    \\
+	      y \sigma y
+	  }{
+	      x(y).P\equiv_{\beta}z(y).Q
+	    \\
+	      \sigma (xz)
+	  }$
+	&
+	  $\inferrule*[left=BetaRes]{
+	      P\equiv_{\beta}Q
+	    \\
+	      \sigma
+	    \\
+	      x \sigma x
+	  }{
+	    (\nu x)P\equiv_{\beta}(\nu x)Q
+	  }$
+      \\
+    \end{tabular}
+    \\
+    \begin{tabular}{lll}
+      \\
+	  $\inferrule*[left=BetaIde]{
+	  }{
+	      A(\tilde{x})\equiv_{\beta}A(\tilde{x})
+	    \\
+	      id
+	  }$
+	&
+	  $\inferrule*[left=BetaZero]{
+	  }{
+	      0\equiv_{\beta}0
+	    \\
+	      id
+	  }$
+	&
+
+      \\
+    \end{tabular}
+    \\
+    \begin{tabular}{l}
+      \\
+	  $\inferrule*[left=BetaPar]{
+	      P_{1}\equiv_{\beta}Q_{1}
+	    \\
+	      \sigma_{1}
+	    \\
+	      P_{2}\equiv_{\beta}Q_{2}
+	    \\
+	      \sigma_{2}
+	  }{
+	      P_{1}|P_{2}\equiv_{\beta}Q_{1}|Q_{2}
+	    \\
+	      \sigma_{1} \cdot \sigma_{2}
+	  }$
+      \\\\
+	  $\inferrule*[left=BetaSum]{
+	      P_{1}\equiv_{\beta}Q_{1}
+	    \\
+	      \sigma_{1}
+	    \\
+	      P_{2}\equiv_{\beta}Q_{2}
+	    \\
+	      \sigma_{2}
+	  }{
+	      P_{1}+P_{2}\equiv_{\beta}Q_{1}+Q_{2}
+	    \\
+	      \sigma_{1} \cdot \sigma_{2}
+	  }$
+      \\
+    \end{tabular}
+    \\
+    \begin{tabular}{l}
+      \\
+	  $\inferrule*[left=BetaRes1]{
+	      P\equiv_{\beta}Q
+	    \\
+	      \sigma
+	    \\
+	      ((xy)\in \sigma) \vee ((xx)(yy)\in \sigma)
+	  }{
+	      (\nu x)P\equiv_{\beta}(\nu y)Q
+	    \\
+	      \sigma - (xy)
+	  }$
+      \\\\
+	  $\inferrule*[left=BetaInp1]{
+	      P\equiv_{\beta}Q
+	    \\
+	      \sigma
+	    \\
+	      ((xw)\in \sigma) \vee ((xx)(ww)\in \sigma)
+	  }{
+	      x(y).P\equiv_{\beta}z(w).Q
+	    \\
+	      (\sigma (xz))- (yw)
+	  }$
+    \\\\\multicolumn{1}{l}{\line(1,0){415}}
+    \end{tabular}
+    \caption{$\beta$ equivalence laws}
+    \label{betaequivalence}
+  \end{table}
+\end{definition}
+
+
+\begin{definition}
+  Processes $P$ and $Q$ are \emph{$\alpha$ convertible} or \emph{$\alpha$ equivalent} if they are $\beta$ equivalent with respect to identity.
+\end{definition}
+
+\begin{lemma}
+  If $P\xrightarrow{\lambda}_{2} P^{'}$ then $P\equiv_{\alpha} Q$, $Q\stackrel{\lambda}{\twoheadrightarrow}_{2} Q^{'}$ and $P^{'}\equiv_{\alpha} Q^{'}$
+\end{lemma}
+
+
+\begin{lemma}
+  If $P\equiv_{\beta}^{\sigma} Q$, $Q\stackrel{\lambda}{\twoheadrightarrow}_{2} Q^{'}$ then $P\stackrel{\lambda\sigma}{\twoheadrightarrow}_{2} P^{'}$, $P^{'}\equiv_{\beta}^{\sigma^{'}} Q^{'}$ and $\sigma^{'}\subseteq \sigma$.
+\end{lemma}
+
+\begin{lemma}
+  If $P\equiv_{\alpha} Q$, $Q\stackrel{\lambda}{\twoheadrightarrow}_{2} Q^{'}$ then $P\stackrel{\lambda}{\twoheadrightarrow}_{2} P^{'}$ and $P^{'}\equiv_{\alpha} Q^{'}$.
+\end{lemma}
+
+in questo modo si puo' dimostrare che una bisimulazione e' conservata da un operatore senza trattare i casi dati dalla regola per l'alfa conversione
