@@ -1,20 +1,26 @@
 
 
 \begin{definition}
-  Let $\sigma$ be a permutation of names. $\beta,\sigma$ equivalence is the smallest binary relation on processes that satisfies the laws in table \ref{betaequivalence}. In a process $P$ we can assume that all bound names are different. 
+  Let $\sigma$ be a function of names. $\beta,\sigma$ equivalence is the smallest binary relation on processes that satisfies the laws in table \ref{betaequivalence}. In a process $P$ we can assume that all bound names are different. 
   \begin{table}
-    \begin{tabular}{ll}
-      \multicolumn{2}{l}{\line(1,0){415}}\\\\
+    \begin{tabular}{l}
+      \multicolumn{1}{l}{\line(1,0){415}}\\\\
 	  $\inferrule*[left=BetaOut]{
-	      P\equiv_{\beta}Q
+	      P\equiv_{\beta}^{\sigma}Q
 	    \\
-	      \sigma
+	      (x\sigma z) \vee (x,z \notin n(\sigma)) \vee (x \sigma x \wedge z \sigma z)
+	    \\
+	      (y\sigma w) \vee (y,w \notin n(\sigma)) \vee (y \sigma y \wedge w \sigma w)
 	  }{
 	      \overline{x}y.P\equiv_{\beta}\overline{z}w.Q
 	    \\
-	      \sigma \{x\mapsto z\} \{y\mapsto w\}
+	      \sigma \cup \{x\mapsto z\} \cup \{y\mapsto w\}
 	  }$
-	&
+	\\
+      \end{tabular}
+      \\
+      \begin{tabular}{ll}
+      \\
 	  $\inferrule*[left=BetaTau]{
 	      P\equiv_{\beta}Q
 	    \\
@@ -24,25 +30,38 @@
 	    \\
 	      \sigma
 	  }$
-	\\\\
+	&
+	  $\inferrule*[left=BetaZero]{
+	  }{
+	      0\equiv_{\beta}0
+	    \\
+	      \emptyset
+	  }$
+    \\
+    \end{tabular}
+      \\
+    \begin{tabular}{l}
+    \\
 	  $\inferrule*[left=BetaInp]{
 	      P\equiv_{\beta}Q
 	    \\
 	      \sigma
 	    \\
-	      y \sigma y
+	      (y \sigma y) \vee (y\notin n(\sigma))
+	    \\
+	      (x\sigma z) \vee (x,z\notin n(\sigma)) \vee (x\sigma x \wedge z\sigma z)
 	  }{
 	      x(y).P\equiv_{\beta}z(y).Q
 	    \\
 	      \sigma \{x\mapsto z\}
 	  }$
-	&
+	\\\\
 	  $\inferrule*[left=BetaRes]{
 	      P\equiv_{\beta}Q
 	    \\
 	      \sigma
 	    \\
-	      x \sigma x
+	      (x \sigma x) \vee (x\notin n(\sigma))
 	  }{
 	      (\nu x)P\equiv_{\beta}(\nu x)Q
 	    \\
@@ -51,23 +70,22 @@
       \\
     \end{tabular}
     \\
-    \begin{tabular}{lll}
+    \begin{tabular}{ll}
       \\
 	  $\inferrule*[left=BetaIde]{
 	  }{
 	      A(\tilde{x})\equiv_{\beta}A(\tilde{x})
 	    \\
-	      id
+	      \emptyset
 	  }$
 	&
-	  $\inferrule*[left=BetaZero]{
+	  $\inferrule*[left=BetaIde1]{
+	    \tilde{x} \neq \tilde{y}
 	  }{
-	      0\equiv_{\beta}0
+	      A(\tilde{x})\equiv_{\beta}A(\tilde{y})
 	    \\
-	      id
+	      \{x_{1}\mapsto y_{1}\}\cdot\{x_{n}\mapsto y_{n}\}
 	  }$
-	&
-
       \\
     \end{tabular}
     \\
@@ -81,13 +99,246 @@
 	      P_{2}\equiv_{\beta}Q_{2}
 	    \\
 	      \sigma_{2}
+	    \\
+	      (\sigma_{1}\subseteq \sigma_{2}) \vee (\sigma_{2}\subseteq \sigma_{1})
 	  }{
 	      P_{1}|P_{2}\equiv_{\beta}Q_{1}|Q_{2}
 	    \\
-	      \sigma_{1} \cdot \sigma_{2}
+	      \sigma_{1} \cup \sigma_{2}
 	  }$
       \\\\
 	  $\inferrule*[left=BetaSum]{
+	      P_{1}\equiv_{\beta} Q_{1}
+	    \\
+	      \sigma_{1}
+	    \\
+	      P_{2}\equiv_{\beta} Q_{2}
+	    \\
+	      \sigma_{2}
+	    \\
+	      (\sigma_{1}\subseteq \sigma_{2}) \vee (\sigma_{2}\subseteq \sigma_{1})
+	  }{
+	      P_{1}+P_{2}\equiv_{\beta}Q_{1}+Q_{2}
+	    \\
+	      \sigma_{1} \cup \sigma_{2}
+	  }$
+      \\
+    \end{tabular}
+    \\
+    \begin{tabular}{l}
+      \\
+	  $\inferrule*[left=BetaRes1]{
+	      P\equiv_{\beta}Q
+	    \\
+	      \sigma
+	    \\
+	      (x\sigma y) \vee (x\sigma x \wedge y\sigma y) \vee (x,y\notin n(\sigma))
+	    \\
+	      x \neq y
+	  }{
+	      (\nu x)P\equiv_{\beta}(\nu y)Q
+	    \\
+	      \sigma - \{x\mapsto y\}
+	  }$
+      \\\\
+	  $\inferrule*[left=BetaInp1]{
+	      P\equiv_{\beta}Q
+	    \\
+	      \sigma
+	    \\
+	      (y\sigma w) \vee (y \sigma y \wedge w \sigma w) \vee (y,w\notin n(\sigma))
+	    \\
+	      y \neq w
+	    \\
+	      (x\sigma z) \vee (x\sigma x \wedge z\sigma z) \vee (x,z\notin n(\sigma))
+	  }{
+	      x(y).P\equiv_{\beta}z(w).Q
+	    \\
+	      (\sigma \{x\mapsto z\})- \{y\mapsto w\}
+	  }$
+    \\\\\multicolumn{1}{l}{\line(1,0){415}}
+    \end{tabular}
+    \caption{$\beta$ equivalence laws}
+    \label{betaequivalence}
+  \end{table}
+\end{definition}
+
+\begin{definition}
+  Processes $P$ and $Q$ are \emph{$\alpha$ convertible} or \emph{$\alpha$ equivalent} if they are $\beta$ equivalent with respect to a substitution which is contained in the identity function on names.
+\end{definition}
+
+
+\begin{lemma}
+  $\alpha$ equivalence is reflexive.
+  \begin{proof}
+    We prove that $P\equiv_{\beta}^{\emptyset} P$. The proof is a structural induction on $P$:
+	\begin{center}
+	  \begin{tabular}{ll}
+	    $\inferrule*[left=BetaOut]{
+		P\equiv_{\beta}P
+	      \\
+		\emptyset
+	    }{
+		\overline{x}y.P\equiv_{\beta}\overline{x}y.Q
+	      \\
+		\emptyset \{x\mapsto x\} \{y\mapsto y\}
+	    }$
+	  &
+	    $\inferrule*[left=BetaTau]{
+	      P\equiv_{\beta}Q
+	    \\
+	      \emptyset
+	    }{
+		\tau.P\equiv_{\beta}\tau.Q
+	      \\
+		\emptyset
+	    }$
+	\\\\
+	  $\inferrule*[left=BetaInp]{
+	      P\equiv_{\beta}Q
+	    \\
+	      \emptyset
+	  }{
+	      x(y).P\equiv_{\beta}x(y).Q
+	    \\
+	      \emptyset \{x\mapsto x\}
+	  }$
+	&
+	  $\inferrule*[left=BetaRes]{
+	      P\equiv_{\beta}Q
+	    \\
+	      \emptyset
+	  }{
+	      (\nu x)P\equiv_{\beta}(\nu x)Q
+	    \\
+	      \emptyset \{x\mapsto x\}
+	  }$
+      \\\\
+	  $\inferrule*[left=BetaIde]{
+	  }{
+	      A(\tilde{x})\equiv_{\beta}A(\tilde{x})
+	    \\
+	      \emptyset
+	  }$
+	&
+	  $\inferrule*[left=BetaZero]{
+	  }{
+	      0\equiv_{\beta}0
+	    \\
+	      \emptyset
+	  }$
+      \\
+    \end{tabular}
+    \\
+    \begin{tabular}{l}
+      \\
+	  $\inferrule*[left=BetaPar]{
+	      P_{1}\equiv_{\beta}Q_{1}
+	    \\
+	      \emptyset 
+	    \\
+	      P_{2}\equiv_{\beta}Q_{2}
+	    \\
+	      \emptyset
+	  }{
+	      P_{1}|P_{2}\equiv_{\beta}Q_{1}|Q_{2}
+	    \\
+	      \emptyset \cup \emptyset
+	  }$
+      \\\\
+	  $\inferrule*[left=BetaSum]{
+	      P_{1}\equiv_{\beta}Q_{1}
+	    \\
+	      \emptyset
+	    \\
+	      P_{2}\equiv_{\beta}Q_{2}
+	    \\
+	      \emptyset
+	  }{
+	      P_{1}+P_{2}\equiv_{\beta}Q_{1}+Q_{2}
+	    \\
+	      \emptyset \cup \emptyset
+	  }$
+	\\
+	\end{tabular}
+      \end{center}
+  \end{proof}
+\end{lemma}
+
+\begin{lemma}
+  $\alpha$ equivalence is symmetric.
+  \begin{proof}
+    We prove that $P\equiv_{\beta}^{\sigma}Q$ imply $Q\equiv_{\beta}^{\sigma^{-1}}P$ by induction on the rules:
+    \begin{description}
+      \item[$BetaOut$]:
+	\begin{center}
+	  $\inferrule*[left=BetaOut]{
+	      P\equiv_{\beta}Q
+	    \\
+	      \sigma
+	    \\
+	      (x\sigma z) \vee (x\sigma x \wedge z\sigma z)
+	    \\
+	      (y\sigma w) \vee (y\sigma y \wedge w\sigma w)
+	  }{
+	      \overline{x}y.P\equiv_{\beta}\overline{z}w.Q
+	    \\
+	      \sigma \{x\mapsto z\} \{y\mapsto w\}
+	  }$
+	\end{center}
+	for inductive hypothesis: $Q\equiv_{\beta}^{\sigma^{-1}} P$. $(x\sigma z) \vee (x\sigma x \wedge z\sigma z)$ imply $(z\sigma^{-1} x) \vee (x\sigma^{-1} x \wedge z\sigma^{-1} z)$. $(y\sigma w) \vee (y\sigma y \wedge w\sigma w)$ imply $(w\sigma^{-1} y) \vee (y\sigma^{-1} y \wedge w\sigma^{-1} w)$. And rule $BetaOut$ imply $\overline{z}w.Q\equiv_{\beta}\overline{x}y.P$ with respect to $\sigma^{-1} \{z\mapsto x\} \{w\mapsto y\}$.
+      \item[$BetaTau$]:
+	\begin{center}
+	  $\inferrule*[left=BetaTau]{
+	      P\equiv_{\beta}Q
+	    \\
+	      \sigma
+	  }{
+	      \tau.P\equiv_{\beta}\tau.Q
+	    \\
+	      \sigma
+	  }$
+	\end{center}
+	for inductive hypothesis $Q\equiv_{\beta}^{\sigma^{-1}}P$ and for rule $BetaTau$: $\tau.Q\equiv_{\beta}\tau.P$.
+      \item[$BetaInp$]:
+	\begin{center}
+	  $\inferrule*[left=BetaInp]{
+	      P\equiv_{\beta}Q
+	    \\
+	      \sigma
+	    \\
+	      y \sigma y
+	    \\
+	      (x\sigma z) \vee (x\sigma x \wedge z\sigma z)
+	  }{
+	      x(y).P\equiv_{\beta}z(y).Q
+	    \\
+	      \sigma \{x\mapsto z\}
+	  }$	  
+	\end{center}
+	for inductive hypothesis $Q\equiv_{\beta}^{\sigma^{-1}}P$. $(x\sigma z) \vee (x\sigma x \wedge z\sigma z)$ imply $(z\sigma^{-1} x) \vee (x\sigma^{-1} x \wedge z\sigma^{-1} z)$. And rule $BetaInp$ imply $z(y).Q\equiv_{\beta} x(y).P$ with respect to $\sigma^{-1} \{z\mapsto x\}$.
+      \item[$BetaRes$]:
+	\begin{center}
+	  $\inferrule*[left=BetaRes]{
+	      P\equiv_{\beta}Q
+	    \\
+	      \sigma
+	    \\
+	      x \sigma x
+	  }{
+	      (\nu x)P\equiv_{\beta}(\nu x)Q
+	    \\
+	      \sigma
+	  }$	  
+	\end{center}
+	for inductive hypothesis $Q\equiv_{\beta}^{\sigma^{-1}}P$. $x \sigma x$ imply $x \sigma^{-1} x$. For rule $BetaRes$: $(\nu x)Q\equiv_{\beta}^{\sigma^{-1}}(\nu x)P$
+      \item[$BetaIde, BetaZero, BetaIde1$] it easy to see that the lemma holds in these cases
+	
+    \end{description}
+DA CONTINUARE
+    \begin{tabular}{l}
+      \\
+	  $\inferrule*[left=BetaPar]{
 	      P_{1}\equiv_{\beta}Q_{1}
 	    \\
 	      \sigma_{1}
@@ -95,10 +346,28 @@
 	      P_{2}\equiv_{\beta}Q_{2}
 	    \\
 	      \sigma_{2}
+	    \\
+	      (\sigma_{1}\subseteq \sigma_{2}) \vee (\sigma_{2}\subseteq \sigma_{1})
+	  }{
+	      P_{1}|P_{2}\equiv_{\beta}Q_{1}|Q_{2}
+	    \\
+	      \sigma_{1} \cup \sigma_{2}
+	  }$
+      \\\\
+	  $\inferrule*[left=BetaSum]{
+	      P_{1}\equiv_{\beta} Q_{1}
+	    \\
+	      \sigma_{1}
+	    \\
+	      P_{2}\equiv_{\beta} Q_{2}
+	    \\
+	      \sigma_{2}
+	    \\
+	      (\sigma_{1}\subseteq \sigma_{2}) \vee (\sigma_{2}\subseteq \sigma_{1})
 	  }{
 	      P_{1}+P_{2}\equiv_{\beta}Q_{1}+Q_{2}
 	    \\
-	      \sigma_{1} \cdot \sigma_{2}
+	      \sigma_{1} \cup \sigma_{2}
 	  }$
       \\
     \end{tabular}
@@ -127,130 +396,32 @@
 	      (y\sigma w) \vee (y \sigma y \wedge w \sigma w)
 	    \\
 	      y \neq w
+	    \\
+	      (x\sigma z) \vee (x\sigma x \wedge z\sigma z)
 	  }{
 	      x(y).P\equiv_{\beta}z(w).Q
 	    \\
 	      (\sigma \{x\mapsto z\})- \{y\mapsto w\}
 	  }$
-    \\\\\multicolumn{1}{l}{\line(1,0){415}}
-    \end{tabular}
-    \caption{$\beta$ equivalence laws}
-    \label{betaequivalence}
-  \end{table}
-\end{definition}
-
-\begin{definition}
-  Processes $P$ and $Q$ are \emph{$\alpha$ convertible} or \emph{$\alpha$ equivalent} if they are $\beta$ equivalent with respect to identity.
-\end{definition}
-
-
-\begin{lemma}
-  $\alpha$ equivalence is reflexive.
-  \begin{proof}
-    We prove that $P\equiv_{\beta}^{id} P$. The proof is a structural induction on $P$:
-	\begin{center}
-	  \begin{tabular}{ll}
-	    $\inferrule*[left=BetaOut]{
-		P\equiv_{\beta}P
-	      \\
-		id
-	    }{
-		\overline{x}y.P\equiv_{\beta}\overline{x}y.Q
-	      \\
-		id \{x\mapsto x\} \{y\mapsto y\}
-	    }$
-	  &
-	    $\inferrule*[left=BetaTau]{
-	      P\equiv_{\beta}Q
-	    \\
-	      id
-	    }{
-		\tau.P\equiv_{\beta}\tau.Q
-	      \\
-		id
-	    }$
-	\\\\
-	  $\inferrule*[left=BetaInp]{
-	      P\equiv_{\beta}Q
-	    \\
-	      id
-	    \\
-	      y id y
-	  }{
-	      x(y).P\equiv_{\beta}x(y).Q
-	    \\
-	      id \{x\mapsto x\}
-	  }$
-	&
-	  $\inferrule*[left=BetaRes]{
-	      P\equiv_{\beta}Q
-	    \\
-	      id
-	    \\
-	      x id x
-	  }{
-	      (\nu x)P\equiv_{\beta}(\nu x)Q
-	    \\
-	      id \{x\mapsto x\}
-	  }$
-      \\\\
-	  $\inferrule*[left=BetaIde]{
-	  }{
-	      A(\tilde{x})\equiv_{\beta}A(\tilde{x})
-	    \\
-	      id
-	  }$
-	&
-	  $\inferrule*[left=BetaZero]{
-	  }{
-	      0\equiv_{\beta}0
-	    \\
-	      id
-	  }$
-      \\
-    \end{tabular}
     \\
-    \begin{tabular}{l}
-      \\
-	  $\inferrule*[left=BetaPar]{
-	      P_{1}\equiv_{\beta}Q_{1}
-	    \\
-	      id 
-	    \\
-	      P_{2}\equiv_{\beta}Q_{2}
-	    \\
-	      id
-	  }{
-	      P_{1}|P_{2}\equiv_{\beta}Q_{1}|Q_{2}
-	    \\
-	      id \cdot id
-	  }$
-      \\\\
-	  $\inferrule*[left=BetaSum]{
-	      P_{1}\equiv_{\beta}Q_{1}
-	    \\
-	      id
-	    \\
-	      P_{2}\equiv_{\beta}Q_{2}
-	    \\
-	      id
-	  }{
-	      P_{1}+P_{2}\equiv_{\beta}Q_{1}+Q_{2}
-	    \\
-	      id \cdot id
-	  }$
-	\\
-	\end{tabular}
-      \end{center}
+    \end{tabular}    
   \end{proof}
 \end{lemma}
 
 \begin{lemma}
-  $\alpha$ equivalence is symmetric.
-  \begin{proof}
-    We prove that $P\equiv_{\beta}^{\sigma}Q$ imply $Q\equiv_{\beta}^{\sigma^{-1}}P$.
-  \end{proof}
+  $P\equiv_{\beta}^{\sigma}Q$ and $x\in fn(P)$ then one and only one of the following case holds: 
+  \begin{itemize}
+    \item 
+      $x\in fn(Q)$ and $(x\sigma x \vee x\notin n(\sigma))$ 
+    \item
+      $x\notin fn(Q)$ and there exists $y$ such that $y\in fn(Q)$ and $x\sigma y$
+  \end{itemize}
 \end{lemma}
+
+\begin{lemma}
+  $P\equiv_{\beta}^{\sigma}Q$ and $x\sigma y$ imply $x\in fn(P)$ and $y\in fn(Q)$
+\end{lemma}
+
 
 
 \begin{lemma}
@@ -259,9 +430,9 @@
     We have to prove that $P\equiv_{\beta}^{\sigma_{3}} R$. We go by induction on the derivation of both $P\equiv_{\beta}^{\sigma_{1}} Q$ and $Q\equiv_{\beta}^{\sigma_{2}} R$:
     \begin{description}
       \item[$(BetaIde, BetaIde)$]:
-	In this case $P$, $Q$ and $R$ are some identifier $A(\tilde{x})$ and $\sigma_{1}=\sigma_{2}=\sigma_{3}=id$.
+	In this case $P$, $Q$ and $R$ are some identifier $A(\tilde{x})$ and $\sigma_{1}=\sigma_{2}=\sigma_{3}=\emptyset$.
       \item[$(BetaZero, BetaZero)$]
-	in this case $P$, $Q$ and $R$ are $0$ and $\sigma_{1}=\sigma_{2}=\sigma_{3}=id$.
+	in this case $P$, $Q$ and $R$ are $0$ and $\sigma_{1}=\sigma_{2}=\sigma_{3}=\emptyset$.
       \item[$(BetaTau, BetaTau)$]:
 	\begin{center}
 	  \begin{tabular}{ll}
@@ -286,7 +457,7 @@
 	      }$
 	  \end{tabular}
 	\end{center}
-	for inductive hypothesis $P\equiv_{\beta}^{\sigma_{3}} R$ and $\sigma_{3}\subseteq (\sigma_{1}\cup \sigma_{2})$. For rule $BetaTau$: $\tau.P\equiv_{\beta}^{\sigma_{3}} \tau.R$
+	for inductive hypothesis $P\equiv_{\beta}^{\sigma_{3}} R$ and $\sigma_{3}=\sigma_{1}\cdot \sigma_{2}$. For rule $BetaTau$: $\tau.P\equiv_{\beta}^{\sigma_{3}} \tau.R$
       \item[$(BetaSum, BetaSum)$]
       \item[$(BetaPar, BetaPar)$]
       \item[$(BetaRes, BetaRes)$]
@@ -299,7 +470,7 @@
 		\\
 		  \sigma_{1}
 		\\
-		  ((xy)\in \sigma_{1})) \vee (x\sigma_{1}x \wedge y\sigma_{1}y)
+		  (x\sigma_{1}y) \vee (x\sigma_{1}x \wedge y\sigma_{1}y)
 		\\
 		  x \neq y
 	      }{
@@ -313,7 +484,7 @@
 		\\
 		  \sigma_{2}
 		\\
-		  ((yz)\in \sigma_{2})) \vee (y\sigma_{2}y \wedge z\sigma_{2}z)
+		  (y\sigma_{2}z) \vee (y\sigma_{2}y \wedge z\sigma_{2}z)
 		\\
 		  y \neq z
 	      }{
@@ -323,36 +494,26 @@
 	      }$
 	  \end{tabular}
 	\end{center}
-	for inductive hypothesis $P\equiv_{\beta}^{\sigma_{3}} R$ and $\sigma_{3} \subseteq (\sigma_{1}\cup \sigma_{2})$
-      \item[$(BetaRes1, BetaRes)$]:
-	\begin{center}
-	  \begin{tabular}{ll}
-	      $\inferrule*[left=BetaRes1]{
-		  P \equiv_{\beta}^{id} Q
-		\\
-		  \{x\mapsto x\}\{y\mapsto y\}\in id
-		\\
-		  x \neq y
-	      }{
-		  (\nu x)P \equiv_{\beta}^{id} (\nu y)Q
-	      }$	      
-	    &
-	      $\inferrule*[left=BetaRes]{
-		  Q \equiv_{\beta}^{id} R
-		\\
-		  \{y\mapsto y\}\in id
-	      }{
-		  (\nu y)Q \equiv_{\beta}^{id} (\nu y)R
-	      }$
-	  \end{tabular}
-	\end{center}
-	for inductive hypothesis $P\equiv_{\beta}^{id} R$. Clearly $\{x\mapsto x\}\{y\mapsto y\}\in id$ so for rule $BetaRes1$: $(\nu x)P \equiv_{\beta}^{id} (\nu y)R$
+	there can only happen two cases:
+	\begin{itemize}
+	  \item 
+	    $(x\sigma_{1}y)$ and $(y\sigma_{2}z)$
+	  \item
+	    or $(x\sigma_{1}x \wedge y\sigma_{1}y)$ and $(y\sigma_{2}y \wedge z\sigma_{2}z)$
+	\end{itemize}
+	in both cases we can apply the inductive hypothesis and get $P\equiv_{\beta}^{\sigma_{3}} R$ and $\sigma_{3} = \sigma_{1} \cdot \sigma_{2}$. Then the conclusion follows for rule $BetaRes1$.
+      \item[$(BetaRes1, BetaRes)$]
       \item[$(BetaRes, BetaRes1)$]:
       \item[$(BetaInp1, BetaInp1)$]
     \end{description}
   \end{proof}
 \end{lemma}
 
+\begin{corollary}
+  $\alpha$ equivalence is transitive.
+\end{corollary}
+
+$\rightarrow_{2}$ is the $\pi$ calculus early semantics without structural congruence but with explicit $\alpha$ conversion. Whether $\twoheadrightarrow_{2}$ is the same of $\rightarrow_{2}$ but without explicit $\alpha$ conversion.
 
 \begin{lemma}
   If $P\xrightarrow{\lambda}_{2} P^{'}$ then $P\equiv_{\alpha} Q$, $Q\stackrel{\lambda}{\twoheadrightarrow}_{2} Q^{'}$ and $P^{'}\equiv_{\alpha} Q^{'}$
@@ -360,11 +521,136 @@
 
 
 \begin{lemma}
-  If $P\equiv_{\beta}^{\sigma} Q$, $Q\stackrel{\lambda}{\twoheadrightarrow}_{2} Q^{'}$ then $P\stackrel{\lambda\sigma}{\twoheadrightarrow}_{2} P^{'}$, $P^{'}\equiv_{\beta}^{\sigma^{'}} Q^{'}$ and $\sigma^{'}\subseteq \sigma$.
+  $P\equiv_{\alpha}Q$ and $x\notin bn(P,Q)$ imply $P\{x/y\} \equiv_{\alpha} Q\{x/y\}$.
+  \begin{proof}
+    We prove that $P\equiv_{\beta}^{\sigma}Q$ and $x\notin bn(P,Q)$ imply $P\{x/y\} \equiv_{\beta}^{\sigma^{'}} Q\{x/y\}$ where $\sigma^{'}$ is such that:
+    $\{a\mapsto b\} \in \sigma$ imply $\{a\{x/y\}\mapsto b\{x/y\}\} \in \sigma^{'}$. Then the conclusion follows because if $\sigma\subseteq id$ then also $\sigma^{'}\subseteq id$.
+  \end{proof}
 \end{lemma}
 
+
 \begin{lemma}
-  If $P\equiv_{\alpha} Q$, $Q\stackrel{\lambda}{\twoheadrightarrow}_{2} Q^{'}$ then $P\stackrel{\lambda}{\twoheadrightarrow}_{2} P^{'}$ and $P^{'}\equiv_{\alpha} Q^{'}$.
+  $P\equiv_{\alpha}Q$ imply $P\{x/y\} \equiv_{\alpha} Q\{x/y\}$.
+  \begin{proof}
+    We prove that $P\equiv_{\beta}^{\sigma}Q$ imply $P\{x/y\} \equiv_{\beta}^{\sigma^{'}} Q\{x/y\}$ where $\sigma^{'}$ is such that:
+    $\{a\mapsto b\} \in \sigma$ imply $\{a\{x/y\}\mapsto b\{x/y\}\} \in \sigma^{'}$. Then the conclusion follows because if $\sigma\subseteq id$ then also $\sigma^{'}\subseteq id$.
+  \end{proof}
 \end{lemma}
+
+
+\begin{lemma}
+  If $P\equiv_{\alpha} Q$ and $Q\stackrel{\lambda}{\twoheadrightarrow}_{2} Q^{'}$ then $P\stackrel{\lambda}{\twoheadrightarrow}_{2} P^{'}$ and $P^{'}\equiv_{\alpha}^{\sigma^{'}} Q^{'}$.
+  \begin{proof}
+    The proof is an induction on both the derivation of $P\equiv_{\beta}^{\sigma} Q$ and $Q\stackrel{\lambda}{\twoheadrightarrow}_{2} Q^{'}$. The last pair of rules used can be:
+    \begin{description}
+      \item[$(BetaIde, Ide)$]:
+	\begin{center}
+	  \begin{tabular}{ll}
+	      $\inferrule*[left=BetaIde]{
+	      }{
+		  A(\tilde{y})\equiv_{\beta}A(\tilde{y})
+		\\
+		  \emptyset
+	      }$	      
+	    &
+	      $\inferrule*[left=Ide]{
+		  A(\tilde{x}) \stackrel{def}{=} P
+		\\
+		  P\{\tilde{y}/\tilde{x}\} \stackrel{\lambda}{\twoheadrightarrow}_{2} P^{'}
+	      }{
+		  A(\tilde{y}) \stackrel{\lambda}{\twoheadrightarrow}_{2} P^{'}
+	      }$	      
+	  \\
+	  \end{tabular}
+	\end{center}
+      \item[$(BetaInp, EInp)$]:
+	\begin{center}
+	  \begin{tabular}{l}
+	      $\inferrule*[left=BetaInp]{
+		  P\equiv_{\beta}^{\sigma}Q
+		\\
+		  (y \sigma y) \vee (y\notin n(\sigma))
+		\\
+		  (x \sigma x) \vee (x\notin n(\sigma))
+	      }{
+		  x(y).P\equiv_{\beta}x(y).Q
+		\\
+		  \sigma \{x\mapsto x\}
+	      }$
+	    \\
+	      $\inferrule*[left=EInp]{
+	      }{
+		  x(y).Q \stackrel{xw}{\longtwoheadrightarrow}_{2} Q\{w/y\}
+	      }$	      
+	  \\
+	  \end{tabular}
+	\end{center}
+	where $\sigma \subseteq id$. For rule $EInp$: $x(y).P \stackrel{xw}{\longtwoheadrightarrow}_{2} P\{w/y\}$. $P\equiv_{\beta}^{\sigma}Q$ and $\sigma\subseteq id$ imply $P\equiv_{\alpha}Q$ which in turn imply $P\{w/y\} \equiv_{\alpha} Q\{w/y\}$.
+      \item[$(BetaInp1, EInp)$]:
+	\begin{center}
+	  \begin{tabular}{l}
+	      $\inferrule*[left=BetaInp1]{
+		  P\equiv_{\beta}^{\sigma}Q
+		\\
+		  (y \sigma w) \vee (y,w\notin n(\sigma))
+		\\
+		  (x \sigma x) \vee (x\notin n(\sigma))
+	      }{
+		  x(y).P\equiv_{\beta}x(w).Q
+		\\
+		  \sigma \{x\mapsto x\}
+	      }$
+	    \\
+	      $\inferrule*[left=EInp]{
+	      }{
+		  x(w).Q \stackrel{xa}{\longtwoheadrightarrow}_{2} Q\{a/w\}
+	      }$	      
+	  \\
+	  \end{tabular}
+	\end{center}
+	where $\sigma \subseteq id$. For rule $EInp$: $x(y).P \stackrel{xa}{\longtwoheadrightarrow}_{2} P\{a/y\}$. The premises of rule $BetaInp$ imply $P\{a/y\} \equiv_{\alpha} Q\{a/w\}$. DA DIMOSTRARE!
+      \item[$(BetaOut, Out)$]:
+	\begin{center}
+	  \begin{tabular}{l}
+	      $\inferrule*[left=BetaOut]{
+		  P\equiv_{\beta}^{\sigma}Q
+		\\
+		  (y \sigma y) \vee (y\notin n(\sigma))
+		\\
+		  (x \sigma x) \vee (x\notin n(\sigma))
+	      }{
+		  \overline{x}y.P\equiv_{\beta} \overline{x}y.Q
+		\\
+		  \sigma \cup \{x\mapsto x\} \cup \{y\mapsto y\}
+	      }$
+	    \\
+	      $\inferrule*[left=Out]{
+	      }{
+		  \overline{x}y.Q \stackrel{\overline{x}y}{\longtwoheadrightarrow}_{2} Q
+	      }$	      
+	  \\
+	  \end{tabular}
+	\end{center}
+	where $\sigma \subseteq id$. For rule $Out$: $\overline{x}y.P \stackrel{\overline{x}y}{\longtwoheadrightarrow}_{2} P$ 
+      \item[$(BetaPar, Par)$]
+      \item[$(BetaPar, ECom)$]
+      \item[$(BetaRes, Res)$]
+      \item[$(BetaRes, Opn)$]
+      \item[$(BetaRes1, Res)$]
+      \item[$(BetaRes1, Opn)$]
+      \item[$(BetaSum, Sum)$]
+      \item[$(BetaTau, Tau)$]
+    \end{description}
+  \end{proof}
+\end{lemma}
+
+\begin{corollary}
+  If $P\equiv_{\alpha} Q$, $Q\stackrel{\lambda}{\twoheadrightarrow}_{2} Q^{'}$ then $P\stackrel{\lambda}{\twoheadrightarrow}_{2} P^{'}$ and $P^{'}\equiv_{\alpha} Q^{'}$.
+\end{corollary}
+
+\begin{lemma}
+  If $P\xrightarrow{\lambda}_{2} P^{'}$ then $P\stackrel{\lambda}{\twoheadrightarrow}_{2} P^{''}$ and $P^{'}\equiv_{\alpha} P^{''}$.
+\end{lemma}
+
 
 in questo modo si puo' dimostrare che una bisimulazione e' conservata da un operatore senza trattare i casi dati dalla regola per l'alfa conversione
