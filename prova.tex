@@ -780,7 +780,7 @@
 \section{Properties of the semantic}
 In the following $\rightarrow_{2}$ is the $\pi$ calculus early semantics without structural congruence but with explicit $\alpha$ equivalence. Whether $\twoheadrightarrow_{2}$ is the same of $\rightarrow_{2}$ but without rule $Alp$.
 
-\begin{lemma}
+\begin{lemma}\label{moveAlphaEquivalenceDownward}
   If $P\xrightarrow{\lambda}_{2} P^{'}$ then for some processes $Q, Q^{'}$: $P\equiv_{\alpha} Q$, $Q\stackrel{\lambda}{\twoheadrightarrow}_{2} Q^{'}$ and $Q^{'}\equiv_{\alpha} P^{'}$
   \begin{proof}
     We prove by induction and the by cases, that in a derivation of $P\xrightarrow{\alpha}_{2}P^{'}$ we can move downward to the end of the derivation any occurrence of the rule $Alp$:
@@ -1068,27 +1068,29 @@ In the following $\rightarrow_{2}$ is the $\pi$ calculus early semantics without
   \end{proof}
 \end{lemma}
 
-\begin{lemma}
+\begin{lemma}\label{moveAlphaEquivalenceForward}
   If $P\equiv_{\alpha} Q$ and $Q\stackrel{\lambda}{\twoheadrightarrow}_{2} Q^{'}$ then $P\stackrel{\lambda}{\twoheadrightarrow}_{2} P^{'}$ and $P^{'}\equiv_{\alpha} Q^{'}$.
-  \begin{proof}AGGIORNARE LA DIMOSTRAZIONE ALLE NUOVE REGOLE
+  \begin{proof}
     The proof is an induction on both the derivation of $P\equiv_{\beta}^{\sigma} Q$ and $Q\stackrel{\lambda}{\twoheadrightarrow}_{2} Q^{'}$. The last pair of rules used can be:
     \begin{description}
       \item[$(BetaIde, Ide)$]:
 	\begin{center}
-	  \begin{tabular}{l}
-	      $A(\tilde{x})\equiv_{\beta}A(\tilde{y}), (\{x_{1}\mapsto y_{1}\}-\{x_{1}\mapsto x_{1}\}) \cup \ldots \cup (\{x_{n}\mapsto y_{n}\}-\{x_{n}\mapsto x_{n}\})$	
-	    \\\\
-	      $\inferrule*[left=Ide]{
+	  \begin{tabular}{ll}
+	      $\inferrule* [left=\bf{BetaIde}]{
+		}{
+		A(\tilde{x})\equiv_{\beta}^{\emptyset}A(\tilde{x})
+	      }$
+	    &
+	      $\inferrule*[left=\bf{Ide}]{
 		  A(\tilde{y}) \stackrel{def}{=} P
 		\\
-		  P\{\tilde{w}/\tilde{y}\} \stackrel{\lambda}{\twoheadrightarrow}_{2} P^{'}
+		  P\{\tilde{x}/\tilde{y}\} \stackrel{\lambda}{\twoheadrightarrow}_{2} P^{'}
 	      }{
-		  A(\tilde{w}) \stackrel{\lambda}{\twoheadrightarrow}_{2} P^{'}
+		  A(\tilde{x}) \stackrel{\lambda}{\twoheadrightarrow}_{2} P^{'}
 	      }$	      
 	  \\
 	  \end{tabular}
 	\end{center}
-	since $(\{x_{1}\mapsto y_{1}\}-\{x_{1}\mapsto x_{1}\}) \cup \ldots \cup (\{x_{n}\mapsto y_{n}\}-\{x_{n}\mapsto x_{n}\})=\emptyset$ then $\tilde{x}=\tilde{y}$.
       \item[$(BetaInp, EInp)$]:
 	\begin{center}
 	  \begin{tabular}{l}
@@ -1101,56 +1103,102 @@ In the following $\rightarrow_{2}$ is the $\pi$ calculus early semantics without
 	      }{
 		  x(y).P\equiv_{\beta}x(w).Q,
 		\\
-		  \sigma- \{y\mapsto w\}
+		  (\sigma \cup (\{x\mapsto x\})-\{x\mapsto x\}))- \{y\mapsto w\}
 	      }$
-	    \\
-	      $\inferrule*[left=EInp]{
+	    \\\\
+	      $\inferrule*[left=\bf{EInp}]{
 	      }{
-		  x(y).Q \stackrel{xw}{\longtwoheadrightarrow}_{2} Q\{w/y\}
+		  x(y).Q \stackrel{xa}{\longtwoheadrightarrow}_{2} Q\{a/y\}
 	      }$	      
 	  \\
 	  \end{tabular}
 	\end{center}
-	where $\sigma \subseteq \{y\mapsto w\}$. For rule $EInp$: $x(y).P \stackrel{xw}{\longtwoheadrightarrow}_{2} P\{w/y\}$. $P\equiv_{\beta}^{\sigma}Q$ and $\sigma\subseteq id$ imply $P\equiv_{\alpha}Q$ which in turn imply $P\{w/y\} \equiv_{\alpha} Q\{w/y\}$.
+	For rule $EInp$: $x(y).P \stackrel{xa}{\longtwoheadrightarrow}_{2} P\{a/y\}$. $P\equiv_{\beta}^{\sigma}Q$ and $\sigma\subseteq \{y\mapsto w\}$ imply $P\{a/y\} \equiv_{\alpha} Q\{a/y\}$. DA DIMOSTRARE
       \item[$(BetaOut, Out)$]:
 	\begin{center}
 	  \begin{tabular}{l}
-	      $\inferrule*[left=BetaOut]{
-		  P\equiv_{\beta}^{\sigma}Q
+	      $\inferrule*[left=\bf{BetaOut}]{
+		  P\equiv_{\beta}^{\emptyset}Q
 		\\
-		  (y \sigma y) \vee (y\notin n(\sigma))
+		  x\notin n(\emptyset)
 		\\
-		  (x \sigma x) \vee (x\notin n(\sigma))
+		  y\notin n(\emptyset)
 	      }{
-		  \overline{x}y.P\equiv_{\beta} \overline{x}y.Q
+		  \overline{x}y.P\equiv_{\beta}\overline{x}y.Q,
 		\\
-		  \sigma \cup \{x\mapsto x\} \cup \{y\mapsto y\}
+		  \emptyset \cup (\{x\mapsto x\}-\{x\mapsto x\}) \cup (\{y\mapsto y\}-\{y\mapsto y\})
 	      }$
-	    \\
-	      $\inferrule*[left=Out]{
+	    \\\\
+	      $\inferrule*[left=\bf{Out}]{
 	      }{
 		  \overline{x}y.Q \stackrel{\overline{x}y}{\longtwoheadrightarrow}_{2} Q
 	      }$	      
 	  \\
 	  \end{tabular}
 	\end{center}
-	where $\sigma \subseteq id$. For rule $Out$: $\overline{x}y.P \stackrel{\overline{x}y}{\longtwoheadrightarrow}_{2} P$ 
-      \item[$(BetaPar, Par)$]
-      \item[$(BetaPar, ECom)$]
-      \item[$(BetaRes, Res)$]
-      \item[$(BetaRes, Opn)$]
-      \item[$(BetaRes1, Res)$]
-      \item[$(BetaRes1, Opn)$]
-      \item[$(BetaSum, Sum)$]
-      \item[$(BetaTau, Tau)$]
+	For rule $Out$: $\overline{x}y.P \stackrel{\overline{x}y}{\longtwoheadrightarrow}_{2} P$ and $P\equiv_{\alpha}Q$.
+      \item[$(BetaPar, ParL)$]:
+	\begin{center}
+	  \begin{tabular}{l}
+	      $\inferrule*[left=\bf{BetaPar}]{
+		  P_{1}\equiv_{\beta}^{\emptyset}Q_{1}
+		\\
+		  P_{2}\equiv_{\beta}^{\emptyset}Q_{2}
+		\\
+		  \forall x,y: x,y\notin n(\emptyset)
+	      }{
+		  P_{1}|P_{2}\equiv_{\beta}Q_{1}|Q_{2},
+		\\
+		  \emptyset
+	      }$
+	    \\\\
+	      $\inferrule* [left=\bf{ParL}]{
+		  Q_{1} \stackrel{\alpha}{\twoheadrightarrow} Q_{1}^{'}
+		\\
+		  bn(\alpha)\cap fn(Q)=\emptyset
+	      }{
+		Q_{1}|Q_{2} \stackrel{\alpha}{\twoheadrightarrow} Q_{1}^{'}|Q_{2}
+	      }$
+	  \end{tabular}
+	\end{center}
+	$P_{1}\equiv_{\beta}^{\emptyset}Q_{1}$ and $Q_{1} \stackrel{\alpha}{\twoheadrightarrow} Q_{1}^{'}$ imply for inductive hypothesis: $P_{1} \stackrel{\alpha}{\twoheadrightarrow} P_{1}^{'}$ and $P_{1}^{'} \equiv_{\alpha} Q_{1}^{'}$. For rule $ParL$: $P_{1}|P_{2} \stackrel{\alpha}{\twoheadrightarrow} P_{1}^{'}|Q_{2}$ and $P_{1}^{'}|Q_{1} \equiv_{\alpha} Q_{1}^{'}|Q_{2}$.
+      \item[$(BetaPar, ParR),(BetaSum, SumL),(BetaSum, SumR)$] similar.
+      \item[$(BetaPar, EComL)$]: DA FARE.
+      \item[$(BetaPar, EComR)$]: DA FARE.
+      \item[$(BetaRes, Res)$]: DA FARE.
+      \item[$(BetaRes, Opn)$]: DA FARE.
+      \item[$(BetaTau, Tau)$]: DA FARE.
     \end{description}
   \end{proof}
 \end{lemma}
 
 \begin{lemma}\label{pushAlfaEquivalence}
-  If $P\xrightarrow{\lambda}_{2} P^{'}$ then $P\stackrel{\lambda}{\twoheadrightarrow}_{2} P^{''}$ and $P^{'}\equiv_{\alpha} P^{''}$.
-  \begin{proof}
-    DA FARE.
+  If $P\xrightarrow{\lambda}_{2} P^{'}$ then $P\stackrel{\lambda}{\twoheadrightarrow}_{2} R$ and $P^{'}\equiv_{\alpha} R$.
+  \begin{proof}:
+    \begin{center}
+      \begin{tabular}{ll}
+	    $P\xrightarrow{\lambda}_{2} P^{'}$ 
+	  &
+	    lemma \ref{moveAlphaEquivalenceDownward} 
+	\\
+	    imply $P\equiv_{\alpha}Q$, $Q\stackrel{\lambda}{\twoheadrightarrow}_{2} Q^{'}$ and $Q^{'}\equiv_{\alpha}P^{'}$.
+	  &
+	\\
+	    $P\equiv_{\alpha}Q$ and $Q\stackrel{\lambda}{\twoheadrightarrow}_{2} Q^{'}$ 
+	  &
+	    lemma \ref{moveAlphaEquivalenceForward} 
+	\\
+	    imply $P\stackrel{\lambda}{\twoheadrightarrow}_{2} R$ and $R\equiv_{\alpha} Q^{'}$
+	  &
+	\\
+	    $R\equiv_{\alpha} Q^{'}$ and $Q^{'}\equiv_{\alpha}P^{'}$
+	  &
+	    transitivity of $\alpha$ equivalence
+	\\
+	    imply $R\equiv_{\alpha}P^{'}$
+	  &
+      \end{tabular}
+    \end{center}
   \end{proof}
 \end{lemma}
 
@@ -1318,7 +1366,7 @@ In the following $\rightarrow_{2}$ is the $\pi$ calculus early semantics without
 	\begin{center}
 	  $P|R \stackrel{\tau}{\twoheadrightarrow} P^{'} \equiv_{\alpha} P_{1}^{'}|R_{1}^{'} Par(\sim_{E}) Q^{'}|R_{1}^{'} \stackrel{\tau}{\leftarrow} Q|R$
 	\end{center}
-      \item[$ClsL$]:
+      \item[$ClsL$]: DA FARE.
 % 	    \begin{center}
 % 	      $\inferrule* {
 % 		  P \xrightarrow{\overline{x}(y) \cdot (\nu y)} P^{'}
