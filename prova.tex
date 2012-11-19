@@ -127,7 +127,7 @@
 % \end{definition}
 
 
-In a definition $A(\tilde{x})=P$ the $\tilde{x}$ are exactly the free names contained in $P$, specifically $fn(P) = \{\tilde{x}\}$. If we look at the definitions of $bn$ and of $fn$ we notice that if $P$ contains another identifier whose definition is: $B(\tilde{z})=Q$ then we have $fn(Q)\subseteq\{\tilde{x}\}$.
+% In a definition $A(\tilde{x})=P$ the $\tilde{x}$ are exactly the free names contained in $P$, specifically $fn(P) = \{\tilde{x}\}$. If we look at the definitions of $bn$ and of $fn$ we notice that if $P$ contains another identifier whose definition is: $B(\tilde{z})=Q$ then we have $fn(Q)\subseteq\{\tilde{x}\}$.
 
 
 \begin{definition}
@@ -158,7 +158,7 @@ In a definition $A(\tilde{x})=P$ the $\tilde{x}$ are exactly the free names cont
 	$(x(a).Q)\{b/a\} = x\{b/a\}(a).Q$
       \\\\
 	$\inferrule{
-	    c\notin n(x(b).Q)
+	    c\notin (n(Q)\cup\{b\})
 	  \\
 	    a\in fn(Q)
 	}{
@@ -193,7 +193,7 @@ In a definition $A(\tilde{x})=P$ the $\tilde{x}$ are exactly the free names cont
       &
 	$((\nu a)Q)\{b/a\} =(\nu a)Q$
       \\\\
-	$\inferrule{c\notin n((\nu b)Q) \\ a\in fn(Q)}{((\nu b)Q)\{b/a\} =(\nu c)((Q\{c/b\})\{b/a\})}$ 
+	$\inferrule{c\notin (n(Q)\cup \{b\}) \\ a\in fn(Q)}{((\nu b)Q)\{b/a\} =(\nu c)((Q\{c/b\})\{b/a\})}$ 
       &
 	$\inferrule{a\notin fn(Q)}{((\nu b)Q)\{b/a\} =(\nu b)Q}$ 
       \\\multicolumn{2}{l}{\line(1,0){415}}
@@ -206,126 +206,75 @@ In a definition $A(\tilde{x})=P$ the $\tilde{x}$ are exactly the free names cont
 
 
 
-\section{$\alpha$ conversion}
+\section{$\alpha$ equivalence}
 \begin{definition}
-  Let $\sigma$ be a function of names. $\beta,\sigma$ equivalence is the smallest binary relation on processes that satisfies the laws in table \ref{betaequivalence}. In a process $P$ we can assume that all bound names are different. 
+  Let $\sigma$ be a function on names. $\beta,\sigma$ equivalence is the smallest binary relation on processes that satisfies the laws in table \ref{betaequivalence}. In a process $P$ we can assume that all bound names are different. If two processes $P,Q$ are $\beta,\sigma$ equivalent, we write $P\equiv_{\beta}^{\sigma} Q$ or $P\equiv_{\beta} Q, \sigma$.
   \begin{table}
     \begin{tabular}{l}
       \multicolumn{1}{l}{\line(1,0){415}}\\\\
-	  $\inferrule*[left=BetaOut]{
+	  \bf{BetaZero} $0\equiv_{\beta}^{\emptyset}0$
+      \\\\
+	  \bf{BetaIde} $A(\tilde{x})\equiv_{\beta}A(\tilde{y}), (\{x_{1}\mapsto y_{1}\}-\{x_{1}\mapsto x_{1}\}) \cup \ldots \cup (\{x_{n}\mapsto y_{n}\}-\{x_{n}\mapsto x_{n}\})$
+      \\\\
+	  $\inferrule*[left=\bf{BetaOut}]{
 	      P\equiv_{\beta}^{\sigma}Q
 	    \\
-	      (x\sigma z) \vee (x,z \notin n(\sigma)) \vee (x \sigma x \wedge z \sigma z)
+	      (x\sigma z) \vee (x,z\notin n(\sigma))
 	    \\
-	      (y\sigma w) \vee (y,w \notin n(\sigma)) \vee (y \sigma y \wedge w \sigma w)
+	      (y\sigma w) \vee (y,w\notin n(\sigma))
 	  }{
-	      \overline{x}y.P\equiv_{\beta}\overline{z}w.Q
+	      \overline{x}y.P\equiv_{\beta}\overline{z}w.Q,
 	    \\
-	      \sigma \cup \{x\mapsto z\} \cup \{y\mapsto w\}
+	      \sigma \cup (\{x\mapsto z\}-\{x\mapsto x\}) \cup (\{y\mapsto w\}-\{y\mapsto y\})
 	  }$
-	\\
+      \\\\
+	  $\inferrule*[left=\bf{BetaInp}]{
+	      P\equiv_{\beta}^{\sigma}Q
+	    \\
+	      (y\sigma w) \vee (y,w\notin n(\sigma))
+	    \\
+	      (x\sigma z) \vee (x,z\notin n(\sigma))
+	  }{
+	      x(y).P\equiv_{\beta}z(w).Q,
+	    \\
+	      ((\sigma \cup \{x\mapsto z\})-\{x\mapsto x\})- \{y\mapsto w\}
+	  }$
+      \\
       \end{tabular}
       \\
       \begin{tabular}{ll}
       \\
-	  $\inferrule*[left=BetaTau]{
-	      P\equiv_{\beta}Q
-	    \\
-	      \sigma
+	  $\inferrule*[left=\bf{BetaTau}]{
+	      P\equiv_{\beta}^{\sigma}Q
 	  }{
-	      \tau.P\equiv_{\beta}\tau.Q
-	    \\
-	      \sigma
+	      \tau.P\equiv_{\beta}^{\sigma}\tau.Q
 	  }$
 	&
-	  $\inferrule*[left=BetaZero]{
-	  }{
-	      0\equiv_{\beta}0
-	    \\
-	      \emptyset
-	  }$
-    \\
-    \end{tabular}
-      \\
-    \begin{tabular}{l}
-    \\
-	  $\inferrule*[left=BetaInp]{
-	      P\equiv_{\beta}Q
-	    \\
-	      \sigma
-	    \\
-	      (y \sigma y) \vee (y\notin n(\sigma))
-	    \\
-	      (x\sigma z) \vee (x,z\notin n(\sigma)) \vee (x\sigma x \wedge z\sigma z)
-	  }{
-	      x(y).P\equiv_{\beta}z(y).Q
-	    \\
-	      \sigma \{x\mapsto z\}
-	  }$
-	\\\\
-	  $\inferrule*[left=BetaRes]{
-	      P\equiv_{\beta}Q
-	    \\
-	      \sigma
-	    \\
-	      (x \sigma x) \vee (x\notin n(\sigma))
-	  }{
-	      (\nu x)P\equiv_{\beta}(\nu x)Q
-	    \\
-	      \sigma
-	  }$
-      \\
-    \end{tabular}
-    \\
-    \begin{tabular}{ll}
-      \\
-	  $\inferrule*[left=BetaIde]{
-	  }{
-	      A(\tilde{x})\equiv_{\beta}A(\tilde{x})
-	    \\
-	      \emptyset
-	  }$
-	&
-	  $\inferrule*[left=BetaIde1]{
-	    \tilde{x} \neq \tilde{y}
-	  }{
-	      A(\tilde{x})\equiv_{\beta}A(\tilde{y})
-	    \\
-	      \{x_{1}\mapsto y_{1}\}\cdot\{x_{n}\mapsto y_{n}\}
-	  }$
       \\
     \end{tabular}
     \\
     \begin{tabular}{l}
       \\
-	  $\inferrule*[left=BetaPar]{
-	      P_{1}\equiv_{\beta}Q_{1}
+	  $\inferrule*[left=\bf{BetaPar}]{
+	      P_{1}\equiv_{\beta}^{\sigma_{1}}Q_{1}
 	    \\
-	      \sigma_{1}
+	      P_{2}\equiv_{\beta}^{\sigma_{2}}Q_{2}
 	    \\
-	      P_{2}\equiv_{\beta}Q_{2}
-	    \\
-	      \sigma_{2}
-	    \\
-	      (\sigma_{1}\subseteq \sigma_{2}) \vee (\sigma_{2}\subseteq \sigma_{1})
+	      \forall x,y: ((x\sigma_{1}y \vee x,y\notin n(\sigma_{1})) \Leftrightarrow (x\sigma_{2}y \vee x,y\notin n(\sigma_{2})))
 	  }{
-	      P_{1}|P_{2}\equiv_{\beta}Q_{1}|Q_{2}
+	      P_{1}|P_{2}\equiv_{\beta}Q_{1}|Q_{2},
 	    \\
 	      \sigma_{1} \cup \sigma_{2}
 	  }$
       \\\\
-	  $\inferrule*[left=BetaSum]{
-	      P_{1}\equiv_{\beta} Q_{1}
+	  $\inferrule*[left=\bf{BetaSum}]{
+	      P_{1}\equiv_{\beta}^{\sigma_{1}} Q_{1}
 	    \\
-	      \sigma_{1}
+	      P_{2}\equiv_{\beta}^{\sigma_{2}} Q_{2}
 	    \\
-	      P_{2}\equiv_{\beta} Q_{2}
-	    \\
-	      \sigma_{2}
-	    \\
-	      (\sigma_{1}\subseteq \sigma_{2}) \vee (\sigma_{2}\subseteq \sigma_{1})
+	      \forall x,y: ((x\sigma_{1}y \vee x,y\notin n(\sigma_{1})) \Leftrightarrow (x\sigma_{2}y \vee x,y\notin n(\sigma_{2})))
 	  }{
-	      P_{1}+P_{2}\equiv_{\beta}Q_{1}+Q_{2}
+	      P_{1}+P_{2}\equiv_{\beta}Q_{1}+Q_{2},
 	    \\
 	      \sigma_{1} \cup \sigma_{2}
 	  }$
@@ -334,34 +283,16 @@ In a definition $A(\tilde{x})=P$ the $\tilde{x}$ are exactly the free names cont
     \\
     \begin{tabular}{l}
       \\
-	  $\inferrule*[left=BetaRes1]{
-	      P\equiv_{\beta}Q
+	  $\inferrule*[left=\bf{BetaRes}]{
+	      P\equiv_{\beta}Q,
 	    \\
 	      \sigma
 	    \\
-	      (x\sigma y) \vee (x\sigma x \wedge y\sigma y) \vee (x,y\notin n(\sigma))
-	    \\
-	      x \neq y
+	      (x\sigma y) \vee (x,y\notin n(\sigma))
 	  }{
-	      (\nu x)P\equiv_{\beta}(\nu y)Q
+	      (\nu x)P\equiv_{\beta}(\nu y)Q,
 	    \\
 	      \sigma - \{x\mapsto y\}
-	  }$
-      \\\\
-	  $\inferrule*[left=BetaInp1]{
-	      P\equiv_{\beta}Q
-	    \\
-	      \sigma
-	    \\
-	      (y\sigma w) \vee (y \sigma y \wedge w \sigma w) \vee (y,w\notin n(\sigma))
-	    \\
-	      y \neq w
-	    \\
-	      (x\sigma z) \vee (x\sigma x \wedge z\sigma z) \vee (x,z\notin n(\sigma))
-	  }{
-	      x(y).P\equiv_{\beta}z(w).Q
-	    \\
-	      (\sigma \{x\mapsto z\})- \{y\mapsto w\}
 	  }$
     \\\\\multicolumn{1}{l}{\line(1,0){415}}
     \end{tabular}
@@ -371,279 +302,250 @@ In a definition $A(\tilde{x})=P$ the $\tilde{x}$ are exactly the free names cont
 \end{definition}
 
 \begin{definition}
-  Processes $P$ and $Q$ are \emph{$\alpha$ convertible} or \emph{$\alpha$ equivalent} if they are $\beta$ equivalent with respect to a substitution which is contained in the identity function on names.
+  Processes $P$ and $Q$ are \emph{$\alpha$ equivalent} if they are $\beta$ equivalent with respect to $\emptyset$.
 \end{definition}
 
 
-\begin{lemma}
+\begin{lemma}\label{alphaEquivalenceIsReflexive}
   $\alpha$ equivalence is reflexive.
   \begin{proof}
     We prove that $P\equiv_{\beta}^{\emptyset} P$. The proof is a structural induction on $P$:
+    \begin{description}
+      \item[$BetaZero$]: 
+	$0\equiv_{\beta}^{\emptyset}0$.
+      \item[$BetaIde$]: 
+	$\tilde{x}=\tilde{y}$ imply $(\{x_{1}\mapsto y_{1}\}-\{x_{1}\mapsto x_{1}\}) \cup \ldots \cup (\{x_{n}\mapsto y_{n}\}-\{x_{n}\mapsto x_{n}\})=\emptyset$.
+      \item[$BetaOut$]:
 	\begin{center}
-	  \begin{tabular}{ll}
-	    $\inferrule*[left=BetaOut]{
-		P\equiv_{\beta}P
-	      \\
-		\emptyset
-	    }{
-		\overline{x}y.P\equiv_{\beta}\overline{x}y.Q
-	      \\
-		\emptyset \{x\mapsto x\} \{y\mapsto y\}
-	    }$
-	  &
-	    $\inferrule*[left=BetaTau]{
-	      P\equiv_{\beta}Q
+	  $\inferrule*[left=\bf{BetaOut}]{
+	      P\equiv_{\beta}^{\sigma}P
 	    \\
-	      \emptyset
-	    }{
-		\tau.P\equiv_{\beta}\tau.Q
-	      \\
-		\emptyset
-	    }$
-	\\\\
-	  $\inferrule*[left=BetaInp]{
-	      P\equiv_{\beta}Q
+	      (x\sigma x) \vee (x\notin n(\sigma))
 	    \\
-	      \emptyset
+	      (y\sigma y) \vee (y\notin n(\sigma))
 	  }{
-	      x(y).P\equiv_{\beta}x(y).Q
+	      \overline{x}y.P\equiv_{\beta}\overline{x}y.P,
 	    \\
-	      \emptyset \{x\mapsto x\}
+	      \sigma \cup (\{x\mapsto x\}-\{x\mapsto x\}) \cup (\{y\mapsto y\}-\{y\mapsto y\})
 	  }$
-	&
-	  $\inferrule*[left=BetaRes]{
-	      P\equiv_{\beta}Q
+	\end{center}
+	for inductive hypothesis $\sigma=\emptyset$ so $\sigma \cup (\{x\mapsto x\}-\{x\mapsto x\}) \cup (\{y\mapsto y\}-\{y\mapsto y\})=\emptyset$.
+      \item[$BetaInp$]:
+	\begin{center}
+	  $\inferrule*[left=\bf{BetaInp}]{
+	      P\equiv_{\beta}^{\sigma}P
 	    \\
-	      \emptyset
+	      (y\sigma y) \vee (y\notin n(\sigma))
+	    \\
+	      (x\sigma x) \vee (x\notin n(\sigma))
 	  }{
-	      (\nu x)P\equiv_{\beta}(\nu x)Q
+	      x(y).P\equiv_{\beta}x(y).P,
 	    \\
-	      \emptyset \{x\mapsto x\}
+	      ((\sigma \cup \{x\mapsto x\})-\{x\mapsto x\})- \{y\mapsto y\}
 	  }$
-      \\\\
-	  $\inferrule*[left=BetaIde]{
+	\end{center}
+	for inductive hypothesis $\sigma=\emptyset$ so $((\sigma \cup \{x\mapsto x\})-\{x\mapsto x\})- \{y\mapsto y\}=\emptyset$.
+      \item[$BetaTau$]:
+	\begin{center}
+	  $\inferrule*[left=\bf{BetaTau}]{
+	      P\equiv_{\beta}^{\sigma}P
 	  }{
-	      A(\tilde{x})\equiv_{\beta}A(\tilde{x})
-	    \\
-	      \emptyset
+	      \tau.P\equiv_{\beta}^{\sigma}\tau.P
 	  }$
-	&
-	  $\inferrule*[left=BetaZero]{
+	\end{center}
+	for inductive hypothesis $\sigma=\emptyset$.
+      \item[$BetaPar$]:
+	\begin{center}
+  	  $\inferrule*[left=\bf{BetaPar}]{
+	      P_{1}\equiv_{\beta}^{\sigma_{1}}P_{1}
+	    \\
+	      P_{2}\equiv_{\beta}^{\sigma_{2}}P_{2}
+	    \\
+	      \forall x,y: ((x\sigma_{1}y \vee x,y\notin n(\sigma_{1})) \Leftrightarrow (x\sigma_{2}y \vee x,y\notin n(\sigma_{2})))
 	  }{
-	      0\equiv_{\beta}0
+	      P_{1}|P_{2}\equiv_{\beta}P_{1}|P_{2},
 	    \\
-	      \emptyset
+	      \sigma_{1} \cup \sigma_{2}
 	  }$
-      \\
-    \end{tabular}
-    \\
-    \begin{tabular}{l}
-      \\
-	  $\inferrule*[left=BetaPar]{
-	      P_{1}\equiv_{\beta}Q_{1}
+	\end{center}
+	for inductive hypothesis $\sigma_{1}=\sigma_{2}=\emptyset$ so $\sigma_{1} \cup \sigma_{2}=\emptyset$.
+      \item[$BetaSum$]: similar.
+      \item[$BetaRes$]: 
+	\begin{center}
+	  $\inferrule*[left=\bf{BetaRes}]{
+	      P\equiv_{\beta}P,
 	    \\
-	      \emptyset 
+	      \sigma
 	    \\
-	      P_{2}\equiv_{\beta}Q_{2}
-	    \\
-	      \emptyset
+	      (x\sigma x) \vee (x\notin n(\sigma))
 	  }{
-	      P_{1}|P_{2}\equiv_{\beta}Q_{1}|Q_{2}
+	      (\nu x)P\equiv_{\beta}(\nu x)P,
 	    \\
-	      \emptyset \cup \emptyset
+	      \sigma - \{x\mapsto x\}
 	  }$
-      \\\\
-	  $\inferrule*[left=BetaSum]{
-	      P_{1}\equiv_{\beta}Q_{1}
-	    \\
-	      \emptyset
-	    \\
-	      P_{2}\equiv_{\beta}Q_{2}
-	    \\
-	      \emptyset
-	  }{
-	      P_{1}+P_{2}\equiv_{\beta}Q_{1}+Q_{2}
-	    \\
-	      \emptyset \cup \emptyset
-	  }$
-	\\
-	\end{tabular}
-      \end{center}
+	\end{center}
+	for inductive hypothesis $\sigma=\emptyset$ which imply $\sigma - \{x\mapsto x\}=\emptyset$.
+    \end{description}
   \end{proof}
 \end{lemma}
 
-\begin{lemma}
+\begin{lemma}\label{alphaEquivalenceIsSymmetric}
   $\alpha$ equivalence is symmetric.
   \begin{proof}
     We prove that $P\equiv_{\beta}^{\sigma}Q$ imply $Q\equiv_{\beta}^{\sigma^{-1}}P$ by induction on the rules:
     \begin{description}
+      \item[$BetaZero$]: 
+	$0\equiv_{\beta}^{\emptyset}0$ and $\emptyset^{-1}=\emptyset$.
+      \item[$BetaIde$]:
+	\begin{center}
+	  \begin{tabular}{l}
+	    $A(\tilde{x})\equiv_{\beta}A(\tilde{y}), (\{x_{1}\mapsto y_{1}\}-\{x_{1}\mapsto x_{1}\}) \cup \ldots \cup (\{x_{n}\mapsto y_{n}\}-\{x_{n}\mapsto x_{n}\})$ \\ 
+	    imply $A(\tilde{y})\equiv_{\beta}A(\tilde{x}), (\{y_{1}\mapsto x_{1}\}-\{y_{1}\mapsto y_{1}\}) \cup \ldots \cup (\{y_{n}\mapsto x_{n}\}-\{y_{n}\mapsto y_{n}\})$ \\\\
+	    $(\{y_{1}\mapsto x_{1}\}-\{y_{1}\mapsto y_{1}\}) \cup \ldots \cup (\{y_{n}\mapsto x_{n}\}-\{y_{n}\mapsto y_{n}\})$\\
+	    $=(\{x_{1}\mapsto y_{1}\}-\{x_{1}\mapsto x_{1}\}) \cup \ldots \cup (\{x_{n}\mapsto y_{n}\}-\{x_{n}\mapsto x_{n}\})^{-1}$
+	  \end{tabular}
+	\end{center}
       \item[$BetaOut$]:
 	\begin{center}
-	  $\inferrule*[left=BetaOut]{
-	      P\equiv_{\beta}Q
+	  $\inferrule*[left=\bf{BetaOut}]{
+	      P\equiv_{\beta}^{\sigma}Q
 	    \\
-	      \sigma
+	      (x\sigma z) \vee (x,z\notin n(\sigma))
 	    \\
-	      (x\sigma z) \vee (x\sigma x \wedge z\sigma z)
-	    \\
-	      (y\sigma w) \vee (y\sigma y \wedge w\sigma w)
+	      (y\sigma w) \vee (y,w\notin n(\sigma))
 	  }{
-	      \overline{x}y.P\equiv_{\beta}\overline{z}w.Q
+	      \overline{x}y.P\equiv_{\beta}\overline{z}w.Q,
 	    \\
-	      \sigma \{x\mapsto z\} \{y\mapsto w\}
+	      \sigma \cup (\{x\mapsto z\}-\{x\mapsto x\}) \cup (\{y\mapsto w\}-\{y\mapsto y\})
 	  }$
 	\end{center}
-	for inductive hypothesis: $Q\equiv_{\beta}^{\sigma^{-1}} P$. $(x\sigma z) \vee (x\sigma x \wedge z\sigma z)$ imply $(z\sigma^{-1} x) \vee (x\sigma^{-1} x \wedge z\sigma^{-1} z)$. $(y\sigma w) \vee (y\sigma y \wedge w\sigma w)$ imply $(w\sigma^{-1} y) \vee (y\sigma^{-1} y \wedge w\sigma^{-1} w)$. And rule $BetaOut$ imply $\overline{z}w.Q\equiv_{\beta}\overline{x}y.P$ with respect to $\sigma^{-1} \{z\mapsto x\} \{w\mapsto y\}$.
+	for inductive hypothesis: $Q\equiv_{\beta}^{\sigma^{-1}} P$. 
+	\begin{center}
+	  $(x\sigma z) \vee (x,z\notin n(\sigma))$ imply $(z\sigma^{-1} x) \vee (x,z\notin n(\sigma^{-1}))$\\
+	  $(y\sigma w) \vee (y,w\notin n(\sigma))$ imply $(w\sigma^{-1} y) \vee (y,w\notin n(\sigma^{-1}))$
+	\end{center}
+	Rule $BetaOut$ imply $\overline{z}w.Q\equiv_{\beta}\overline{x}y.P$ with respect to 
+	\begin{center}
+	  $\sigma^{-1} \cup (\{z\mapsto x\}-\{z\mapsto z\}) \cup (\{w\mapsto y\}-\{w\mapsto w\})=(\sigma \cup (\{x\mapsto z\}-\{x\mapsto x\}) \cup (\{y\mapsto w\}-\{y\mapsto y\}))^{-1}$.
+	\end{center}
       \item[$BetaTau$]:
 	\begin{center}
-	  $\inferrule*[left=BetaTau]{
-	      P\equiv_{\beta}Q
+	  $\inferrule*[left=\bf{BetaTau}]{
+	      P\equiv_{\beta}Q,
 	    \\
 	      \sigma
 	  }{
-	      \tau.P\equiv_{\beta}\tau.Q
+	      \tau.P\equiv_{\beta}\tau.Q,
 	    \\
 	      \sigma
 	  }$
 	\end{center}
-	for inductive hypothesis $Q\equiv_{\beta}^{\sigma^{-1}}P$ and for rule $BetaTau$: $\tau.Q\equiv_{\beta}\tau.P$.
+	for inductive hypothesis $Q\equiv_{\beta}^{\sigma^{-1}}P$ and for rule $BetaTau$: $\tau.Q\equiv_{\beta}\tau.P$ with respect to $\sigma^{-1}$.
       \item[$BetaInp$]:
 	\begin{center}
-	  $\inferrule*[left=BetaInp]{
-	      P\equiv_{\beta}Q
+	  $\inferrule*[left=\bf{BetaInp}]{
+	      P\equiv_{\beta}^{\sigma}Q
 	    \\
-	      \sigma
+	      (y\sigma w) \vee (y,w\notin n(\sigma))
 	    \\
-	      y \sigma y
-	    \\
-	      (x\sigma z) \vee (x\sigma x \wedge z\sigma z)
+	      (x\sigma z) \vee (x,z\notin n(\sigma))
 	  }{
-	      x(y).P\equiv_{\beta}z(y).Q
+	      x(y).P\equiv_{\beta}z(w).Q,
 	    \\
-	      \sigma \{x\mapsto z\}
-	  }$	  
+	      ((\sigma \cup \{x\mapsto z\})-\{x\mapsto x\})- \{y\mapsto w\}
+	  }$
 	\end{center}
-	for inductive hypothesis $Q\equiv_{\beta}^{\sigma^{-1}}P$. $(x\sigma z) \vee (x\sigma x \wedge z\sigma z)$ imply $(z\sigma^{-1} x) \vee (x\sigma^{-1} x \wedge z\sigma^{-1} z)$. And rule $BetaInp$ imply $z(y).Q\equiv_{\beta} x(y).P$ with respect to $\sigma^{-1} \{z\mapsto x\}$.
+	for inductive hypothesis $Q\equiv_{\beta}^{\sigma^{-1}}P$. 
+	\begin{center}
+	  $(x\sigma z) \vee (x,z\notin n(\sigma))$ imply $(z\sigma^{-1} x) \vee (x,z\notin n(\sigma^{-1}))$
+	\end{center}
+	Rule $BetaInp$ imply $z(y).Q\equiv_{\beta} x(y).P$ with respect to 
+	\begin{center}
+	  $((\sigma^{-1} \cup \{z\mapsto x\})-\{z\mapsto z\})- \{w\mapsto y\}=(((\sigma \cup \{x\mapsto z\})-\{x\mapsto x\})- \{y\mapsto w\})^{-1}$.
+	\end{center}
       \item[$BetaRes$]:
 	\begin{center}
-	  $\inferrule*[left=BetaRes]{
-	      P\equiv_{\beta}Q
+	  $\inferrule*[left=\bf{BetaRes}]{
+	      P\equiv_{\beta}Q,
 	    \\
 	      \sigma
 	    \\
-	      x \sigma x
+	      (x\sigma y) \vee (x,y\notin n(\sigma))
 	  }{
-	      (\nu x)P\equiv_{\beta}(\nu x)Q
-	    \\
-	      \sigma
-	  }$	  
-	\end{center}
-	for inductive hypothesis $Q\equiv_{\beta}^{\sigma^{-1}}P$. $x \sigma x$ imply $x \sigma^{-1} x$. For rule $BetaRes$: $(\nu x)Q\equiv_{\beta}^{\sigma^{-1}}(\nu x)P$
-      \item[$BetaIde, BetaZero, BetaIde1$] it easy to see that the lemma holds in these cases
-	
-    \end{description}
-DA CONTINUARE
-    \begin{tabular}{l}
-      \\
-	  $\inferrule*[left=BetaPar]{
-	      P_{1}\equiv_{\beta}Q_{1}
-	    \\
-	      \sigma_{1}
-	    \\
-	      P_{2}\equiv_{\beta}Q_{2}
-	    \\
-	      \sigma_{2}
-	    \\
-	      (\sigma_{1}\subseteq \sigma_{2}) \vee (\sigma_{2}\subseteq \sigma_{1})
-	  }{
-	      P_{1}|P_{2}\equiv_{\beta}Q_{1}|Q_{2}
-	    \\
-	      \sigma_{1} \cup \sigma_{2}
-	  }$
-      \\\\
-	  $\inferrule*[left=BetaSum]{
-	      P_{1}\equiv_{\beta} Q_{1}
-	    \\
-	      \sigma_{1}
-	    \\
-	      P_{2}\equiv_{\beta} Q_{2}
-	    \\
-	      \sigma_{2}
-	    \\
-	      (\sigma_{1}\subseteq \sigma_{2}) \vee (\sigma_{2}\subseteq \sigma_{1})
-	  }{
-	      P_{1}+P_{2}\equiv_{\beta}Q_{1}+Q_{2}
-	    \\
-	      \sigma_{1} \cup \sigma_{2}
-	  }$
-      \\
-    \end{tabular}
-    \\
-    \begin{tabular}{l}
-      \\
-	  $\inferrule*[left=BetaRes1]{
-	      P\equiv_{\beta}Q
-	    \\
-	      \sigma
-	    \\
-	      (x\sigma y) \vee (x\sigma x \wedge y\sigma y)
-	    \\
-	      x \neq y
-	  }{
-	      (\nu x)P\equiv_{\beta}(\nu y)Q
+	      (\nu x)P\equiv_{\beta}(\nu y)Q,
 	    \\
 	      \sigma - \{x\mapsto y\}
 	  }$
-      \\\\
-	  $\inferrule*[left=BetaInp1]{
-	      P\equiv_{\beta}Q
+	\end{center}
+	for inductive hypothesis $Q\equiv_{\beta}^{\sigma^{-1}}P$. 
+	\begin{center}
+	  $(x \sigma x) \vee (x\notin n(\sigma))$ imply $(x \sigma^{-1} x) \vee (x\notin n(\sigma^{-1}))$
+	\end{center}
+	For rule $BetaRes$: $(\nu x)Q\equiv_{\beta}(\nu x)P$ with respect to $\sigma^{-1} - \{y\mapsto x\}=(\sigma - \{x\mapsto y\})^{-1}$.
+      \item[$BetaIde, BetaZero, BetaIde1$] it easy to see that the lemma holds in these cases
+      \item[$BetaPar$]:
+	\begin{center}
+	  $\inferrule*[left=\bf{BetaPar}]{
+	      P_{1}\equiv_{\beta}^{\sigma_{1}}Q_{1}
 	    \\
-	      \sigma
+	      P_{2}\equiv_{\beta}^{\sigma_{2}}Q_{2}
 	    \\
-	      (y\sigma w) \vee (y \sigma y \wedge w \sigma w)
-	    \\
-	      y \neq w
-	    \\
-	      (x\sigma z) \vee (x\sigma x \wedge z\sigma z)
+	      \forall x,y: ((x\sigma_{1}y \vee x,y\notin n(\sigma_{1})) \Leftrightarrow (x\sigma_{2}y \vee x,y\notin n(\sigma_{2})))
 	  }{
-	      x(y).P\equiv_{\beta}z(w).Q
+	      P_{1}|P_{2}\equiv_{\beta}Q_{1}|Q_{2},
 	    \\
-	      (\sigma \{x\mapsto z\})- \{y\mapsto w\}
+	      \sigma_{1} \cup \sigma_{2}
 	  }$
-    \\
-    \end{tabular}    
+	\end{center}
+	For inductive hypothesis $Q_{1}\equiv_{\beta}P_{1}$ with respect to $\sigma_{1}^{-1}$ and $Q_{2}\equiv_{\beta}P_{2}$ with respect to $\sigma_{2}^{-1}$. For all $x,y$:
+	\begin{center}
+	  $(x\sigma_{1}y \vee x,y\notin n(\sigma_{1})) \Leftrightarrow (x\sigma_{2}y \vee x,y\notin n(\sigma_{2}))$ imply $(y\sigma_{1}^{-1}x \vee x,y\notin n(\sigma_{1}^{-1})) \Leftrightarrow (y\sigma_{2}^{-1}x \vee x,y\notin n(\sigma_{2}^{-1}))$
+	\end{center}
+	For rule $BetaPar$: $Q_{1}|Q_{2}\equiv_{\beta}P_{1}|P_{2}$ with respect to $\sigma_{1}^{-1}\cup \sigma_{2}^{-1}=(\sigma_{1} \cup \sigma_{2})^{-1}$
+      \item[$BetaSum$] similar.
+    \end{description}
   \end{proof}
 \end{lemma}
 
-\begin{lemma}
+\begin{lemma}\label{freeNamesAndBetaEquivalence1}
   $P\equiv_{\beta}^{\sigma}Q$ and $x\in fn(P)$ then one and only one of the following case holds: 
   \begin{itemize}
     \item 
-      $x\in fn(Q)$ and $(x\sigma x \vee x\notin n(\sigma))$ 
+      $x\in fn(Q)$ and $x\notin n(\sigma)$ 
     \item
       $x\notin fn(Q)$ and there exists $y$ such that $y\in fn(Q)$ and $x\sigma y$
   \end{itemize}
+  \begin{proof}
+    DA FARE.
+  \end{proof}
 \end{lemma}
 
-\begin{lemma}
+\begin{corollary}
+  $P\equiv_{\alpha}Q$ imply $fn(P)=fn(Q)$.
+\end{corollary}
+
+
+\begin{lemma}\label{freeNamesAndBetaEquivalence2}
   $P\equiv_{\beta}^{\sigma}Q$ and $x\sigma y$ imply $x\in fn(P)$ and $y\in fn(Q)$
+  \begin{proof}
+    DA FARE.
+  \end{proof}
 \end{lemma}
 
 
 
-\begin{lemma}
+\begin{lemma}\label{alphaEquivalenceIsTransitive}
   If $P\equiv_{\beta}^{\sigma_{1}} Q$ and $Q\equiv_{\beta}^{\sigma_{2}} R$ then $P \equiv_{\beta}^{\sigma_{3}} R$ and $\sigma_{3}= \sigma_{1} \cdot \sigma_{2}$.
   \begin{proof}
     We have to prove that $P\equiv_{\beta}^{\sigma_{3}} R$. We go by induction on the derivation of both $P\equiv_{\beta}^{\sigma_{1}} Q$ and $Q\equiv_{\beta}^{\sigma_{2}} R$:
     \begin{description}
-      \item[$(BetaIde, BetaIde)$]:
-	In this case $P$, $Q$ and $R$ are some identifier $A(\tilde{x})$ and $\sigma_{1}=\sigma_{2}=\sigma_{3}=\emptyset$.
+      \item[$(BetaIde, BetaIde)$]: DA FARE.
       \item[$(BetaZero, BetaZero)$]
 	in this case $P$, $Q$ and $R$ are $0$ and $\sigma_{1}=\sigma_{2}=\sigma_{3}=\emptyset$.
       \item[$(BetaTau, BetaTau)$]:
 	\begin{center}
 	  \begin{tabular}{ll}
-	      $\inferrule*[left=BetaTau]{
+	      $\inferrule*[left=\bf{BetaTau}]{
 		  P \equiv_{\beta} Q
 		\\
 		   \sigma_{1}
@@ -653,7 +555,7 @@ DA CONTINUARE
 		  \sigma_{1}
 	      }$	      
 	    &
-	      $\inferrule*[left=BetaTau]{
+	      $\inferrule*[left=\bf{BetaTau}]{
 		  Q \equiv_{\beta} R
 		\\
 		  \sigma_{2}
@@ -665,14 +567,13 @@ DA CONTINUARE
 	  \end{tabular}
 	\end{center}
 	for inductive hypothesis $P\equiv_{\beta}^{\sigma_{3}} R$ and $\sigma_{3}=\sigma_{1}\cdot \sigma_{2}$. For rule $BetaTau$: $\tau.P\equiv_{\beta}^{\sigma_{3}} \tau.R$
-      \item[$(BetaSum, BetaSum)$]
-      \item[$(BetaPar, BetaPar)$]
-      \item[$(BetaRes, BetaRes)$]
-      \item[$(BetaInp, BetaInp)$]
-      \item[$(BetaRes1, BetaRes1)(1)$]:
+      \item[$(BetaSum, BetaSum)$]: DA FARE.
+      \item[$(BetaPar, BetaPar)$]: DA FARE.
+      \item[$(BetaInp, BetaInp)$]: DA FARE.
+      \item[$(BetaRes, BetaRes)$]: DA SISTEMARE.
 	\begin{center}
 	  \begin{tabular}{l}
-	      $\inferrule*[left=BetaRes1]{
+	      $\inferrule*[left=\bf{BetaRes1}]{
 		  P \equiv_{\beta} Q
 		\\
 		  \sigma_{1}
@@ -686,7 +587,7 @@ DA CONTINUARE
 		  \sigma_{1} - (xy)
 	      }$	      
 	    \\\\
-	      $\inferrule*[left=BetaRes1]{
+	      $\inferrule*[left=\bf{BetaRes1}]{
 		  Q \equiv_{\beta}^{\sigma_{2}} R
 		\\
 		  \sigma_{2}
@@ -701,7 +602,7 @@ DA CONTINUARE
 	      }$
 	  \end{tabular}
 	\end{center}
-	there can only happen two cases:
+	thanks to lemmas \ref{freeNamesAndBetaEquivalence1} and \ref{freeNamesAndBetaEquivalence2} there can only happen two cases:
 	\begin{itemize}
 	  \item 
 	    $(x\sigma_{1}y)$ and $(y\sigma_{2}z)$
@@ -709,19 +610,15 @@ DA CONTINUARE
 	    or $(x\sigma_{1}x \wedge y\sigma_{1}y)$ and $(y\sigma_{2}y \wedge z\sigma_{2}z)$
 	\end{itemize}
 	in both cases we can apply the inductive hypothesis and get $P\equiv_{\beta}^{\sigma_{3}} R$ and $\sigma_{3} = \sigma_{1} \cdot \sigma_{2}$. Then the conclusion follows for rule $BetaRes1$.
-      \item[$(BetaRes1, BetaRes)$]
-      \item[$(BetaRes, BetaRes1)$]:
-      \item[$(BetaInp1, BetaInp1)$]
     \end{description}
   \end{proof}
 \end{lemma}
 
-\begin{corollary}
-  $\alpha$ equivalence is transitive.
-\end{corollary}
-
 \begin{proposition}
   $\alpha$ equivalence is an equivalence relation.
+  \begin{proof}
+    Lemmas \ref{alphaEquivalenceIsReflexive}, \ref{alphaEquivalenceIsSymmetric} and \ref{alphaEquivalenceIsTransitive}
+  \end{proof}
 \end{proposition}
 
 
@@ -730,6 +627,7 @@ DA CONTINUARE
   \begin{proof}
     We prove that $P\equiv_{\beta}^{\sigma}Q$ and $x\notin bn(P,Q)$ imply $P\{x/y\} \equiv_{\beta}^{\sigma^{'}} Q\{x/y\}$ where $\sigma^{'}$ is such that:
     $\{a\mapsto b\} \in \sigma$ imply $\{a\{x/y\}\mapsto b\{x/y\}\} \in \sigma^{'}$. Then the conclusion follows because if $\sigma\subseteq id$ then also $\sigma^{'}\subseteq id$.
+    DA CONTINUARE.
   \end{proof}
 \end{lemma}
 
@@ -739,14 +637,15 @@ DA CONTINUARE
   \begin{proof}
     We prove that $P\equiv_{\beta}^{\sigma}Q$ imply $P\{x/y\} \equiv_{\beta}^{\sigma^{'}} Q\{x/y\}$ where $\sigma^{'}$ is such that:
     $\{a\mapsto b\} \in \sigma$ imply $\{a\{x/y\}\mapsto b\{x/y\}\} \in \sigma^{'}$. Then the conclusion follows because if $\sigma\subseteq id$ then also $\sigma^{'}\subseteq id$.
+    DA CONTINUARE.
   \end{proof}
 \end{lemma}
 
 
-\section{Early semantic with explicit $\alpha$ conversion}
+\section{Early semantic with explicit $\alpha$ equivalence}
 
 \begin{definition}
-  The \emph{early transition relation with $\alpha$ conversion} $\rightarrow$ is the smallest relation induced by the rules in table \ref{transitionrelationearlywithalphaconversion}.
+  The \emph{early transition relation with $\alpha$ equivalence} $\rightarrow$ is the smallest relation induced by the rules in table \ref{transitionrelationearlywithalphaequivalence}.
 
   \begin{table}
     \begin{tabular}{lll}  
@@ -871,61 +770,338 @@ DA CONTINUARE
 	  }$
       \\	\multicolumn{2}{l}{\line(1,0){415}}
     \end{tabular}
-    \caption{Early transition relation with $\alpha$ conversion but without structural congruence}
-    \label{transitionrelationearlywithalphaconversion}
+    \caption{Early transition relation with $\alpha$ equivalence but without structural congruence}
+    \label{transitionrelationearlywithalphaequivalence}
   \end{table}
 \end{definition}
 
 
 
 \section{Properties of the semantic}
-In the following $\rightarrow_{2}$ is the $\pi$ calculus early semantics without structural congruence but with explicit $\alpha$ conversion. Whether $\twoheadrightarrow_{2}$ is the same of $\rightarrow_{2}$ but without rule $Alp$.
+In the following $\rightarrow_{2}$ is the $\pi$ calculus early semantics without structural congruence but with explicit $\alpha$ equivalence. Whether $\twoheadrightarrow_{2}$ is the same of $\rightarrow_{2}$ but without rule $Alp$.
 
 \begin{lemma}
-  If $P\xrightarrow{\lambda}_{2} P^{'}$ then $P\equiv_{\alpha} Q$, $Q\stackrel{\lambda}{\twoheadrightarrow}_{2} Q^{'}$ and $P^{'}\equiv_{\alpha} Q^{'}$
+  If $P\xrightarrow{\lambda}_{2} P^{'}$ then for some processes $Q, Q^{'}$: $P\equiv_{\alpha} Q$, $Q\stackrel{\lambda}{\twoheadrightarrow}_{2} Q^{'}$ and $Q^{'}\equiv_{\alpha} P^{'}$
+  \begin{proof}
+    We prove by induction and the by cases, that in a derivation of $P\xrightarrow{\alpha}_{2}P^{'}$ we can move downward to the end of the derivation any occurrence of the rule $Alp$:
+    \begin{description}
+     \item[$ParL$]:
+	\begin{center}
+	  $\inferrule* [left=\bf{ParL}]{
+	    \inferrule* [left=\bf{Alp}]{
+		P \equiv_{\beta}^{\emptyset} R
+	      \\
+		R \xrightarrow{\alpha} P^{'}
+	    }{
+	      P \xrightarrow{\alpha} P^{'}
+	    }
+	    \\
+	    bn(\alpha) \cap fn(Q) = \emptyset
+	  }{
+	    P|Q \xrightarrow{\alpha} P^{'}|Q
+	  }$
+	\end{center}
+	became
+	\begin{center}
+	  $\inferrule* [left=\bf{Alp}]{
+	      \inferrule* [left=\bf{BetaPar}]{
+		  P \equiv_{\beta}^{\emptyset} R
+		\\
+		  Q \equiv_{\beta}^{\emptyset} Q
+	      }{
+		P|Q \equiv_{\beta}^{\emptyset} R|Q
+	      }
+	    \\
+	      \inferrule* [left=\bf{ParL}]{
+		  R \xrightarrow{\alpha} P^{'}
+		\\
+		  bn(\alpha) \cap fn(Q) = \emptyset
+	      }{
+		R|Q \xrightarrow{\alpha} P^{'}|Q
+	      }
+	  }{
+	    P|Q \xrightarrow{\alpha} P^{'}|Q
+	  }$
+	\end{center}
+      \item[$ParR$]:
+	\begin{center}
+	  $\inferrule* [left=\bf{ParR}]{
+	    \inferrule* [left=\bf{Alp}]{
+		Q \equiv_{\beta}^{\sigma} R
+	      \\
+		\sigma\subseteq id
+	      \\
+		R \xrightarrow{\alpha} R^{'}
+	    }{
+	      Q \xrightarrow{\alpha} R^{'}
+	    }
+	    \\
+	    bn(\alpha) \cap fn(P) = \emptyset
+	  }{
+	    P|Q \xrightarrow{\alpha} P|R^{'}
+	  }$
+	\end{center}
+	became
+	\begin{center}
+	  $\inferrule* [left=\bf{Alp}]{
+	      \inferrule* [left=\bf{BetaPar}]{
+		  P \equiv_{\beta}^{\emptyset} P
+		\\
+		  Q \equiv_{\beta}^{\emptyset} R
+	      }{
+		P|Q \equiv_{\beta}^{\emptyset} P|R
+	      }
+	    \\
+	      \inferrule* [left=\bf{ParR}]{
+		  R \xrightarrow{\alpha} P^{'}
+		\\
+		  bn(\alpha) \cap fn(P) = \emptyset
+	      }{
+		P|R \xrightarrow{\alpha} P|R^{'}
+	      }
+	  }{
+	    P|Q \xrightarrow{\alpha} P|R^{'}
+	  }$
+	\end{center}
+      \item[$SumL$]:
+	\begin{center}
+	  $\inferrule* [left=\bf{SumL}]{
+	    \inferrule* [left=\bf{Alp}]{
+		P \equiv_{\beta}^{\emptyset} R
+	      \\
+		R \xrightarrow{\alpha} P^{'}
+	    }{
+	      P \xrightarrow{\alpha} P^{'}
+	    }
+	    \\
+	      bn(\alpha) \cap fn(Q) = \emptyset
+	  }{
+	    P+Q \xrightarrow{\alpha} P^{'}
+	  }$
+	\end{center}
+	became
+	\begin{center}
+	  $\inferrule* [left=\bf{Alp}]{
+	      \inferrule* [left=\bf{BetaSum}]{
+		  P \equiv_{\beta}^{\emptyset} R
+		\\
+		  Q \equiv_{\beta}^{\emptyset} Q
+	      }{
+		P+Q \equiv_{\beta}^{\emptyset} R+Q
+	      }
+	    \\
+	      \inferrule* [left=\bf{SumL}]{
+		  R \xrightarrow{\alpha} P^{'}
+		\\
+		  bn(\alpha) \cap fn(Q) = \emptyset
+	      }{
+		R+Q \xrightarrow{\alpha} P^{'}
+	      }
+	  }{
+	    P+Q \xrightarrow{\alpha} P^{'}
+	  }$
+	\end{center}
+      \item[$SumR$] similar.
+      \item[$Alp$] 
+	since $\alpha$ equivalence is transitive, we can merge any pair of consecutive instance of the rule $Alp$
+     \item[$Res$]:
+	\begin{center}
+	  $\inferrule* [left=\bf{Res}]{
+	      \inferrule* [left=\bf{Alp}]{
+		  P \equiv_{\beta}^{\emptyset} R
+		\\
+		  R \xrightarrow{\alpha} P^{'}
+	      }{
+		P \xrightarrow{\alpha} P^{'}
+	      }
+	    \\
+	      z\notin n(\alpha)
+	  }{
+	    (\nu z)P \xrightarrow{\alpha} (\nu z)P^{'}
+	  }$
+	\end{center}
+	became
+	\begin{center}
+	  $\inferrule* [left=\bf{Alp}]{
+	      \inferrule* [left=\bf{BetaRes}]{
+		P \equiv_{\beta}^{\emptyset} R
+	      }{
+		(\nu z)P \equiv_{\beta}^{\emptyset} (\nu z)R
+	      }
+	    \\
+	      \inferrule* [left=\bf{Res}]{
+		  R \xrightarrow{\alpha} P^{'}
+		\\
+		  z\notin n(\alpha)
+	      }{
+		(\nu z)R \xrightarrow{\alpha} (\nu z)P^{'}
+	      }
+	  }{
+	    (\nu z)P \xrightarrow{\alpha} (\nu z)P^{'}
+	  }$
+	\end{center}
+      \item[$Opn$]
+	similar.
+      \item[$EComL$]:
+	\begin{center}
+	  $\inferrule* [left=\bf{EComL}]{
+	      \inferrule* [left=\bf{Alp}]{
+		  P \equiv_{\beta}^{\emptyset} R
+		\\
+		  R \xrightarrow{xy} P^{'}
+	      }{
+		P \xrightarrow{xy} P^{'}
+	      }
+	    \\
+	      \inferrule* [left=\bf{Alp}]{
+		  Q \equiv_{\beta}^{\emptyset} S
+		\\
+		  S \xrightarrow{\overline{x}y} S^{'}
+	      }{
+		Q \xrightarrow{\overline{x}y} S^{'}
+	      }
+	  }{
+	    P|Q \xrightarrow{\tau} P^{'}|S^{'}
+	  }$
+	\end{center}
+	became
+	\begin{center}
+	  $\inferrule* [left=\bf{Alp}]{
+	      \inferrule* [left=\bf{BetaPar}]{
+		  P \equiv_{\beta}^{\emptyset} R
+		\\
+		  Q \equiv_{\beta}^{\emptyset} S
+	      }{
+		P|Q \equiv_{\beta}^{\emptyset} R|S
+	      }
+	    \\
+	      \inferrule* [left=\bf{EComL}]{
+		  R \xrightarrow{xy} P^{'}
+		\\
+		  S \xrightarrow{\overline{x}y} S^{'}
+	      }{
+		R|S \xrightarrow{\tau} S^{'}
+	      }
+	  }{
+	    P|Q \xrightarrow{\tau} P^{'}|S^{'}
+	  }$
+	\end{center}
+      \item[$EComR$] 
+	similar.
+      \item[$ClsR$]:
+	\begin{center}
+	  $\inferrule* [left=\bf{ClsR}]{
+	      \inferrule* [left=\bf{Alp}]{
+		  P \equiv_{\beta}^{\emptyset} R
+		\\
+		  R \xrightarrow{xy} P^{'}
+	      }{
+		P \xrightarrow{xy} P^{'}
+	      }
+	    \\
+	      \inferrule* [left=\bf{Alp}]{
+		  Q \equiv_{\beta}^{\emptyset} S
+		\\
+		  S \xrightarrow{\overline{x}(y)} S^{'}
+	      }{
+		Q \xrightarrow{\overline{x}(y)} S^{'}
+	      }
+	    \\
+	      z\notin fn(P)
+	  }{
+	    P|Q \xrightarrow{\tau} (\nu z)(P^{'}|S^{'})
+	  }$
+	\end{center}
+	became
+	\begin{center}
+	  $\inferrule* [left=\bf{Alp}]{
+	      \inferrule* [left=\bf{BetaPar}]{
+		  P \equiv_{\beta}^{\emptyset} R
+		\\
+		  Q \equiv_{\beta}^{\emptyset} S
+	      }{
+		P|Q \equiv_{\beta}^{\emptyset} R|S
+	      }
+	    \\
+	      \inferrule* [left=\bf{ClsR}]{
+		  R \xrightarrow{xy} P^{'}
+		\\
+		  S \xrightarrow{\overline{x}y} S^{'}
+		\\
+		  z\notin fn(R)
+	      }{
+		R|S \xrightarrow{\tau} (\nu y)(P^{'}|S^{'})
+	      }
+	  }{
+	    P|Q \xrightarrow{\tau} (\nu y)(P^{'}|S^{'})
+	  }$
+	\end{center}
+      \item[$ClsL$]
+	similar.
+      \item[$Ide$]:
+	\begin{center}
+	  $\inferrule* [left=\bf{Ide}]{
+	      A(\tilde{x}) \stackrel{def}{=} P
+	    \\
+	      \inferrule* [left=\bf{Alp}]{
+		  P\{\tilde{w}/\tilde{x}\} \equiv_{\beta}^{\emptyset} R
+		\\
+		  R \xrightarrow{\alpha} P^{'}
+	      }{
+		P\{\tilde{w}/\tilde{x}\} \xrightarrow{\alpha} P^{'}
+	      }
+	  }{
+	    A(\tilde{w}) \xrightarrow{\alpha} P^{'}
+	  }$
+	\end{center}
+	we can add a new definition $A(\tilde{w})\stackrel{def}{=} R$ and this derivation became:
+	\begin{center}
+	  $\inferrule* [left=\bf{Ide}]{	
+	      A(\tilde{w})\stackrel{def}{=} R
+	    \\
+	      R \xrightarrow{\alpha} P^{'}
+	  }{
+	    A(\tilde{w}) \xrightarrow{\alpha} P^{'}
+	  }$
+	\end{center}
+    \end{description}
+  \end{proof}
 \end{lemma}
-
-
-
 
 \begin{lemma}
   If $P\equiv_{\alpha} Q$ and $Q\stackrel{\lambda}{\twoheadrightarrow}_{2} Q^{'}$ then $P\stackrel{\lambda}{\twoheadrightarrow}_{2} P^{'}$ and $P^{'}\equiv_{\alpha} Q^{'}$.
-  \begin{proof}
+  \begin{proof}AGGIORNARE LA DIMOSTRAZIONE ALLE NUOVE REGOLE
     The proof is an induction on both the derivation of $P\equiv_{\beta}^{\sigma} Q$ and $Q\stackrel{\lambda}{\twoheadrightarrow}_{2} Q^{'}$. The last pair of rules used can be:
     \begin{description}
       \item[$(BetaIde, Ide)$]:
 	\begin{center}
-	  \begin{tabular}{ll}
-	      $\inferrule*[left=BetaIde]{
-	      }{
-		  A(\tilde{y})\equiv_{\beta}A(\tilde{y})
-		\\
-		  \emptyset
-	      }$	      
-	    &
+	  \begin{tabular}{l}
+	      $A(\tilde{x})\equiv_{\beta}A(\tilde{y}), (\{x_{1}\mapsto y_{1}\}-\{x_{1}\mapsto x_{1}\}) \cup \ldots \cup (\{x_{n}\mapsto y_{n}\}-\{x_{n}\mapsto x_{n}\})$	
+	    \\\\
 	      $\inferrule*[left=Ide]{
-		  A(\tilde{x}) \stackrel{def}{=} P
+		  A(\tilde{y}) \stackrel{def}{=} P
 		\\
-		  P\{\tilde{y}/\tilde{x}\} \stackrel{\lambda}{\twoheadrightarrow}_{2} P^{'}
+		  P\{\tilde{w}/\tilde{y}\} \stackrel{\lambda}{\twoheadrightarrow}_{2} P^{'}
 	      }{
-		  A(\tilde{y}) \stackrel{\lambda}{\twoheadrightarrow}_{2} P^{'}
+		  A(\tilde{w}) \stackrel{\lambda}{\twoheadrightarrow}_{2} P^{'}
 	      }$	      
 	  \\
 	  \end{tabular}
 	\end{center}
+	since $(\{x_{1}\mapsto y_{1}\}-\{x_{1}\mapsto x_{1}\}) \cup \ldots \cup (\{x_{n}\mapsto y_{n}\}-\{x_{n}\mapsto x_{n}\})=\emptyset$ then $\tilde{x}=\tilde{y}$.
       \item[$(BetaInp, EInp)$]:
 	\begin{center}
 	  \begin{tabular}{l}
-	      $\inferrule*[left=BetaInp]{
+	      $\inferrule*[left=\bf{BetaInp}]{
 		  P\equiv_{\beta}^{\sigma}Q
 		\\
-		  (y \sigma y) \vee (y\notin n(\sigma))
+		  (y\sigma w) \vee (y,w\notin n(\sigma))
 		\\
-		  (x \sigma x) \vee (x\notin n(\sigma))
+		  (x\sigma x) \vee (x\notin n(\sigma))
 	      }{
-		  x(y).P\equiv_{\beta}x(y).Q
+		  x(y).P\equiv_{\beta}x(w).Q,
 		\\
-		  \sigma \{x\mapsto x\}
+		  \sigma- \{y\mapsto w\}
 	      }$
 	    \\
 	      $\inferrule*[left=EInp]{
@@ -935,30 +1111,7 @@ In the following $\rightarrow_{2}$ is the $\pi$ calculus early semantics without
 	  \\
 	  \end{tabular}
 	\end{center}
-	where $\sigma \subseteq id$. For rule $EInp$: $x(y).P \stackrel{xw}{\longtwoheadrightarrow}_{2} P\{w/y\}$. $P\equiv_{\beta}^{\sigma}Q$ and $\sigma\subseteq id$ imply $P\equiv_{\alpha}Q$ which in turn imply $P\{w/y\} \equiv_{\alpha} Q\{w/y\}$.
-      \item[$(BetaInp1, EInp)$]:
-	\begin{center}
-	  \begin{tabular}{l}
-	      $\inferrule*[left=BetaInp1]{
-		  P\equiv_{\beta}^{\sigma}Q
-		\\
-		  (y \sigma w) \vee (y,w\notin n(\sigma))
-		\\
-		  (x \sigma x) \vee (x\notin n(\sigma))
-	      }{
-		  x(y).P\equiv_{\beta}x(w).Q
-		\\
-		  \sigma \{x\mapsto x\}
-	      }$
-	    \\
-	      $\inferrule*[left=EInp]{
-	      }{
-		  x(w).Q \stackrel{xa}{\longtwoheadrightarrow}_{2} Q\{a/w\}
-	      }$	      
-	  \\
-	  \end{tabular}
-	\end{center}
-	where $\sigma \subseteq id$. For rule $EInp$: $x(y).P \stackrel{xa}{\longtwoheadrightarrow}_{2} P\{a/y\}$. The premises of rule $BetaInp$ imply $P\{a/y\} \equiv_{\alpha} Q\{a/w\}$. DA DIMOSTRARE!
+	where $\sigma \subseteq \{y\mapsto w\}$. For rule $EInp$: $x(y).P \stackrel{xw}{\longtwoheadrightarrow}_{2} P\{w/y\}$. $P\equiv_{\beta}^{\sigma}Q$ and $\sigma\subseteq id$ imply $P\equiv_{\alpha}Q$ which in turn imply $P\{w/y\} \equiv_{\alpha} Q\{w/y\}$.
       \item[$(BetaOut, Out)$]:
 	\begin{center}
 	  \begin{tabular}{l}
@@ -996,7 +1149,22 @@ In the following $\rightarrow_{2}$ is the $\pi$ calculus early semantics without
 
 \begin{lemma}\label{pushAlfaEquivalence}
   If $P\xrightarrow{\lambda}_{2} P^{'}$ then $P\stackrel{\lambda}{\twoheadrightarrow}_{2} P^{''}$ and $P^{'}\equiv_{\alpha} P^{''}$.
+  \begin{proof}
+    DA FARE.
+  \end{proof}
 \end{lemma}
+
+\begin{lemma}\label{pushSubstitution}
+  If $P\{c/y\} \stackrel{\gamma}{\twoheadrightarrow} P^{'}$ and $c$ is fresh then $P \xrightarrow{\gamma\{y/c\}} Q$ and $P^{'}\equiv_{\alpha}Q\{y/c\}$.
+  \begin{proof}
+    DA FARE.
+  \end{proof}\end{lemma}
+
+\begin{lemma}\label{substitutionOverTransition}
+  If $P \stackrel{\gamma}{\twoheadrightarrow} P^{'}$ and $c$ is fresh then $P\{c/y\} \xrightarrow{\gamma\{c/y\}} Q$ and $P^{'}\equiv_{\alpha}Q\{c/y\}$.
+  \begin{proof}
+    DA FARE.
+  \end{proof}\end{lemma}
 
 
 \section{Bisimilarity, congruence and equivalence}
@@ -1066,7 +1234,7 @@ In the following $\rightarrow_{2}$ is the $\pi$ calculus early semantics without
   \begin{proof}:
     \begin{itemize}
       \item
-	Let $P\equiv_{\alpha} Q$ and $P\xrightarrow{\gamma}P^{'}$. For symmetry of $\alpha$ conversion: $Q\equiv_{\alpha}P$. For rule $Alp$: $Q\xrightarrow{\gamma}P^{'}$ and for reflexivity $P^{'}\equiv_{\alpha}P^{'}$.
+	Let $P\equiv_{\alpha} Q$ and $P\xrightarrow{\gamma}P^{'}$. For symmetry of $\alpha$ equivalence: $Q\equiv_{\alpha}P$. For rule $Alp$: $Q\xrightarrow{\gamma}P^{'}$ and for reflexivity $P^{'}\equiv_{\alpha}P^{'}$.
       \item
 	Let $P\equiv_{\alpha} Q$ and $Q\xrightarrow{\gamma}Q^{'}$ then for rule $Alp$: $P\xrightarrow{\gamma}Q^{'}$ and for reflexivity $Q^{'}\equiv_{\alpha}Q^{'}$
     \end{itemize}
@@ -1074,7 +1242,7 @@ In the following $\rightarrow_{2}$ is the $\pi$ calculus early semantics without
 \end{proposition}
 
 
-\begin{lemma}
+\begin{lemma}\label{outputPreservesEarlyBisimulation}
   Output prefixing preserves early bisimulation. 
   \begin{proof}
     We prove that $\{(\overline{x}y.P, \overline{x}y.Q): P\sim_{E}Q\}\cup \sim_{E}$ is a strong early bisimulation. Let $\overline{x}y.P\xrightarrow{\gamma}P^{'}$ then for lemma \ref{pushAlfaEquivalence}: $\overline{x}y.P\stackrel{\gamma}{\longtwoheadrightarrow} R$ and $R\equiv_{\alpha}P^{'}$. The only rule that can be applied to derive the latter transition is $Out$ so $\gamma = \overline{x}y$ and $R=P$. For rule $Out$: $\overline{x}y.Q\xrightarrow{\gamma} Q$. Putting it all together: 
@@ -1085,7 +1253,7 @@ In the following $\rightarrow_{2}$ is the $\pi$ calculus early semantics without
 \end{lemma}
 
 
-\begin{lemma}
+\begin{lemma}\label{tauPreservesEarlyBisimulation}
   $\tau$ prefixing preserves early bisimulation. 
   \begin{proof}
     We prove that $\{(\tau.P, \tau.Q): P\sim_{E}Q\}\cup \sim_{E}$ is a strong early bisimulation. Let $\tau.P\xrightarrow{\gamma}P^{'}$ then for lemma \ref{pushAlfaEquivalence}: $\tau.P\stackrel{\gamma}{\longtwoheadrightarrow} R$ and $R\equiv_{\alpha}P^{'}$. The only rule that can be applied to derive the latter transition is $Tau$ so $\gamma = \tau$ and $R=P$. For rule $Out$: $\tau.Q\xrightarrow{\gamma} Q$. Putting it all together: 
@@ -1096,7 +1264,7 @@ In the following $\rightarrow_{2}$ is the $\pi$ calculus early semantics without
 \end{lemma}
 
 
-\begin{lemma}
+\begin{lemma}\label{sumPreservesEarlyBisimulation}
   Sum preserves early bisimulation. 
   \begin{proof}
     We prove that $\{(P+R, Q+R): P\sim_{E}Q\}\cup \sim_{E}$ is a strong early bisimulation. Let $P+R\xrightarrow{\gamma}P^{'}$ then for lemma \ref{pushAlfaEquivalence}: $P+R\stackrel{\gamma}{\longtwoheadrightarrow} S$ and $S\equiv_{\alpha}P^{'}$. The only rules that can be applied to derive the latter transition are $SumL$ or $SumR$. We show just the case of $SumL$, so $P\stackrel{\gamma}{\longtwoheadrightarrow} S$. $P\sim_{E} Q$ and $P\stackrel{\gamma}{\longtwoheadrightarrow} S$ imply $Q\xrightarrow{\gamma} T$ and $S\sim_{E} T$. For rule $SumL$: $Q+R\xrightarrow{\gamma} T$. Putting it all together:
@@ -1106,7 +1274,7 @@ In the following $\rightarrow_{2}$ is the $\pi$ calculus early semantics without
   \end{proof}
 \end{lemma}
 
-\begin{lemma}
+\begin{lemma}\label{restrictionPreservesEarlyBisimulation}
   Restriction preserves early bisimulation.
   \begin{proof}:
       We prove that the relation $Res(\sim_{E})=\{((\nu x)P, (\nu x)Q): P\sim_{E} Q\} \cup \sim_{E}$ is a strong early bisimulation up to $\alpha$ equivalence. This imply that $Res(\sim_{E})$ is a strong early bisimulation. If $(\nu x)P\xrightarrow{\gamma}P^{''}$ then for lemma \ref{pushAlfaEquivalence}: $(\nu x)P\stackrel{\gamma}{\twoheadrightarrow}P^{'}$ and $P^{'}\equiv_{\alpha}P^{''}$. So the proof can go on by cases on the last rule of the derivation of $(\nu x)P\stackrel{\gamma}{\twoheadrightarrow} P^{'}$:
@@ -1131,7 +1299,7 @@ In the following $\rightarrow_{2}$ is the $\pi$ calculus early semantics without
 \end{lemma}
 
 
-\begin{lemma}
+\begin{lemma}\label{parallelCompositionPreservesEarlyBisimulation}
   Parallel composition preserves early bisimulation.
   \begin{proof}
     We prove that the relation $Par(\sim_{E})=\{(P|R, Q|R): P\sim_{E} Q\} \cup \sim_{E}$ is a strong early bisimulation up to $\alpha$ equivalence. This imply that $Par(\sim_{E})$ is a strong early bisimulation. Let $P|R \xrightarrow{\gamma} P^{'}$ then for lemma \ref{pushAlfaEquivalence}: $P|R \stackrel{\gamma}{\twoheadrightarrow} S$ and $S\equiv_{\alpha} P^{'}$. The proof goes on by cases on the last rule of the derivation of $P|R \stackrel{\gamma}{\twoheadrightarrow} S$:
@@ -1230,9 +1398,9 @@ In the following $\rightarrow_{2}$ is the $\pi$ calculus early semantics without
 
 
 \begin{lemma}\label{distinctionSubstitution}
-  Let $\sigma$ be a substitution, $D$ be a distinction and $c\notin n(D)$. If $\sigma$ respects $D$ then $\sigma\{c/x\}$ respects $D-\{x\}$.
+  Let $\sigma$ be a substitution, $D$ be a distinction and $c\notin n(D)$. If $\sigma$ respects $D$ then $\{c/x\}\sigma$ respects $D-\{x\}$.
   \begin{proof}:
-    $\sigma$ respects $D$ and $D-\{x\}\subseteq D$ imply $\sigma$ respects $D-\{x\}$. $(d_{1},d_{2}) \in (D-\{x\})$ imply $d_{1} \sigma\{c/x\} = d_{1} \sigma$ and $d_{2} \sigma = d_{2} \sigma\{c/x\}$. $\sigma$ respects $D-\{x\}$ and $(d_{1},d_{2}) \in (D-\{x\})$ for definition \ref{distinction} imply $d_{1} \sigma \neq d_{2} \sigma$.  Putting it all together $\sigma \{c/x\}$ respects $(d_{1}, d_{2})$.
+    $\sigma$ respects $D$ and $D-\{x\}\subseteq D$ imply $\sigma$ respects $D-\{x\}$. $(d_{1},d_{2}) \in (D-\{x\})$ imply $d_{1} \{c/x\}\sigma = d_{1} \sigma$ and $d_{2} \sigma = d_{2} \{c/x\}\sigma$. $\sigma$ respects $D-\{x\}$ and $(d_{1},d_{2}) \in (D-\{x\})$ for definition \ref{distinction} imply $d_{1} \sigma \neq d_{2} \sigma$.  Putting it all together $\{c/x\}\sigma $ respects $(d_{1}, d_{2})$.
   \end{proof}
 \end{lemma}
 
@@ -1257,22 +1425,6 @@ In the following $\rightarrow_{2}$ is the $\pi$ calculus early semantics without
   \end{proof}
 \end{lemma}
 
-\begin{lemma}\label{pushSubstitution}
-  If $P\{c/y\} \stackrel{\gamma}{\twoheadrightarrow} P^{'}$ and $c$ is fresh then $P \xrightarrow{\gamma\{y/c\}} Q$ and $P^{'}\equiv_{\alpha}Q\{y/c\}$.
-  \begin{proof}
-    
-  \end{proof}
-\end{lemma}
-
-\begin{lemma}\label{substitutionOverTransition}
-  If $P \stackrel{\gamma}{\twoheadrightarrow} P^{'}$ and $c$ is fresh then $P\{c/y\} \xrightarrow{\gamma\{c/y\}} Q$ and $P^{'}\equiv_{\alpha}Q\{c/y\}$.
-  \begin{proof}
-    
-  \end{proof}
-\end{lemma}
-
-
-
 \begin{lemma}\label{freshSubstitutionPreservesEarlyBisimulation}
   If $P \sim_{E} Q$ and $c$ fresh then $P\{c/y\} \sim_{E} Q\{c/y\}$.
   \begin{proof}
@@ -1295,7 +1447,11 @@ In the following $\rightarrow_{2}$ is the $\pi$ calculus early semantics without
 	  $(x(y).P)\sigma \xrightarrow{\; x\sigma w \;} P^{'} \equiv_{\alpha} (P\sigma)\{w/y\} \sim_{E} (Q\sigma)\{w/y\} \stackrel{x\sigma w}{\longleftarrowB} (x(y).Q)\sigma$
 	\end{center}
       \item
-	$(x(y).P)\sigma = x\sigma(c).P\{c/y\}\sigma$, $(x(y).Q)\sigma = x\sigma(c).Q\{c/y\}\sigma$ and $c$ is fresh in $D$, in $\sigma$ and in the processes $P,Q$. Let $x\sigma(c).P\{c/y\}\sigma \xrightarrow{\gamma} P^{'}$ then for lemma \ref{pushAlfaEquivalence}: 
+	$(x(y).P)\sigma = x\sigma(c).P\{c/y\}\sigma$, $(x(y).Q)\sigma = x\sigma(c).Q\{c/y\}\sigma$ and $c$ is fresh in $D$, in $\sigma$ and in the processes $P,Q$. For example we can choose $c$ as the minimum element of the set
+	\begin{center}
+	  $\mathcal{N}-(n(D) \cup n(x(y).P) \cup n(x(y).Q) \cup n(\sigma))$
+	\end{center}
+	there exists a total order on names because names are countable and there exists the minimum of this set because we subtract a finite set from a countable set.  Let $x\sigma(c).P\{c/y\}\sigma \xrightarrow{\gamma} P^{'}$ then for lemma \ref{pushAlfaEquivalence}: 
 	\begin{center}
 	  $x\sigma(c).P\{c/y\}\sigma \stackrel{x\sigma w}{\Longtwoheadrightarrow} P\{c/y\}\sigma \{w/c\}$ and $P\{c/y\}\sigma \{w/c\}\equiv_{\alpha} P^{'}$. 
 	\end{center}
@@ -1309,7 +1465,7 @@ In the following $\rightarrow_{2}$ is the $\pi$ calculus early semantics without
 \end{lemma}
 
 
-\begin{lemma}\label{stringDEquivalencePreservedByAllExceptInput}
+\begin{lemma}\label{strongDEquivalencePreservedByAllExceptInput}
       If $P \sim^{D} Q$ then 
       \begin{itemize}
 	\item 
@@ -1406,7 +1562,7 @@ In the following $\rightarrow_{2}$ is the $\pi$ calculus early semantics without
 	  \\
 	      $\Rightarrow$ $\forall \sigma$ respecting $D.$ $P\sigma \sim_{E} Q\sigma$
 	    &
-	      lemma \ref{parallelCompositionEarlyBisimulation}
+	      lemma \ref{parallelCompositionPreservesEarlyBisimulation}
 	  \\
 	      $\Rightarrow$ $(P\sigma)|(R\sigma) \sim_{E} (Q\sigma)|(R\sigma)$
 	    &
@@ -1452,7 +1608,7 @@ In the following $\rightarrow_{2}$ is the $\pi$ calculus early semantics without
 	  \begin{tabular}{ll}
  	      $\sigma$ respects $D-\{x\}$
  	    &
- 	      lemma \ref{distinctionSubstitution2}
+ 	      lemma \ref{distinctionSubstitution}
  	  \\
  	      $\Rightarrow \{c/x\}\sigma$ respects $D$
  	    &
@@ -1460,7 +1616,7 @@ In the following $\rightarrow_{2}$ is the $\pi$ calculus early semantics without
  	  \\
  	      $\Rightarrow$ $P\{c/x\}\sigma \sim_{E} Q\{c/x\}\sigma$
  	    &
- 	      lemma \ref{earlyBisimulationProprerties}
+ 	      lemma \ref{restrictionPreservesEarlyBisimulation}
  	  \\
  	      $\Rightarrow$ $(\nu c)(P\{c/x\}\sigma) \sim_{E} (\nu c)(Q\{c/x\}\sigma)$
  	    &
@@ -1483,7 +1639,7 @@ In the following $\rightarrow_{2}$ is the $\pi$ calculus early semantics without
 \begin{theorem}
   $\sim^{\emptyset}$ is a congruence.
   \begin{proof}
-    Lemma \ref{strongDEquivalenceIsAnEquivalence} and put $D=\emptyset$ in lemma \ref{stringDEquivalencePreservedByAllExceptInput} and in lemma \ref{strongDEquivalencePreservedByInput}
+    Lemma \ref{strongDEquivalenceIsAnEquivalence} and put $D=\emptyset$ in lemma \ref{strongDEquivalencePreservedByAllExceptInput} and in lemma \ref{strongDEquivalencePreservedByInput}
   \end{proof}
 \end{theorem}
 
